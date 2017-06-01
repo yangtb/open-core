@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.sm</groupId>
+    <artifactId>open-core-parent</artifactId>
+    <packaging>pom</packaging>
+    <version>1.0.0-SNAPSHOT</version>
+    <modules>
+        <module>open-core-common</module>
+        <module>open-core-dal</module>
+        <module>open-core-facade</module>
+        <module>open-core-integration</module>
+        <module>open-core-model</module>
+        <module>open-core-service</module>
+        <module>open-core-service-mb</module>
+    </modules>
+
+
+</project>
