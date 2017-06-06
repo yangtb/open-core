@@ -5,12 +5,99 @@
     <parent>
         <artifactId>open-core-parent</artifactId>
         <groupId>com.sm</groupId>
-        <version>1.0.0-SNAPSHOT</version>
+        <version>1.0.0</version>
     </parent>
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.sm</groupId>
     <artifactId>open-core-service-mb</artifactId>
+    <packaging>jar</packaging>
+    <version>${open.core.service.mb.version}</version>
 
+    <dependencies>
+        <dependency>
+            <groupId>com.sm</groupId>
+            <artifactId>open-care-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sm</groupId>
+            <artifactId>open-core-dal</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sm</groupId>
+            <artifactId>open-core-facade</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.sm</groupId>
+            <artifactId>open-core-integration</artifactId>
+        </dependency>
 
+        <!--  -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-web</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-httpclient</groupId>
+            <artifactId>commons-httpclient</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+
+        <!--
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>jcl104-over-slf4j</artifactId>
+            <scope>provided</scope>
+        </dependency>
+        -->
+
+        <!--log4j2日志配置 start-->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <!--log4j2日志配置 end-->
+    </dependencies>
 </project>

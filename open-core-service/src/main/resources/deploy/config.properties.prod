@@ -1,0 +1,11 @@
+app_name=opencore
+
+log_level=info
+loggingRoot=/home/admin/logs
+
+jdbc.url=jdbc:mysql://localhost:3306/med?zeroDateTimeBehavior=convertToNull&amp;allowMultiQueries=true
+jdbc.username=root
+jdbc.password=Yangtb0424
+
+dubbo.registry.address=zookeeper://127.0.0.1:2181
+dubbo.cache.file=/Users/yangtongbin/work/cache/dubbo/dubbo.cache
