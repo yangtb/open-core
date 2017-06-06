@@ -18,7 +18,7 @@ public class OpenCoreRpcServer {
     public static void main(String[] args) {
         try {
             LOGGER.info(SERVERNAME + " server is starting …… ");
-            final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/opencore_service.xml");
+            final ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("spring/opencore-service.xml");
             context.start();
             LOGGER.info(SERVERNAME + " server is started successful.");
             Runtime.getRuntime().addShutdownHook(new Thread() {

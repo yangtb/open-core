@@ -22,9 +22,9 @@
 		<property name="fileEncoding" value="utf-8" />
 	</bean>
 
-	<import resource="classpath*:spring/opencore_service_server.xml" />
+	<import resource="classpath*:spring/opencore-service-server.xml" />
 
 	<import resource="classpath*:spring/opencore-schedule-thread-pool.xml"/>
 
-	<import resource="classpath*:spring/dubbo/opencore_rpc_dubbo_provider.xml"/>
+	<import resource="classpath*:spring/dubbo/opencore-rpc-dubbo-provider.xml"/>
 </beans>

@@ -11,6 +11,6 @@
     <dubbo:protocol name="${dubbo.protocol.name}" port="${dubbo.protocol.port}" accesslog="${dubbo.protocol.accesslog}"/>
 
     <!-- 引入各个模块的dubbo服务 -->
-    <import resource="classpath*:spring/dubbo/opencore_rpc_dubbo_provider_mb.xml"/>
+    <import resource="classpath*:spring/dubbo/opencore-rpc-dubbo-provider-mb.xml"/>
 
 </beans>
