@@ -6,22 +6,30 @@ public class MbTestParam implements Serializable {
 
     private static final long serialVersionUID = -310053372064720675L;
 
-    private Long    id;
-    private String  name;
+    private Long    testId;
+    private String  testName;
 
-    public Long getId() {
-        return id;
+    public Long getTestId() {
+        return testId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTestId(Long testId) {
+        this.testId = testId;
+    }
+
+    public String getTestName() {
+        return testName;
+    }
+
+    public void setTestName(String testName) {
+        this.testName = testName;
     }
 
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("MbTestParam{");
-        sb.append("id=").append(id);
-        sb.append(", name='").append(name).append('\'');
+        sb.append("testId=").append(testId);
+        sb.append(", testName='").append(testName).append('\'');
         sb.append('}');
         return sb.toString();
     }

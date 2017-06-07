@@ -24,9 +24,9 @@ public class MbTestFacadeImpl implements MbTestFacade {
     @Override
     public CommonResult<Integer> testOpen(MbTestParam mbTestParam) {
         try {
-            LOGGER.info("【MbTestFacadeImpl-testOpen-params】svRemindParam={}", mbTestParam.toString());
+            LOGGER.info("【MbTestFacadeImpl-testOpen-params】{}", mbTestParam.toString());
             /* 参数校验 */
-            Assert.isTrue(null != mbTestParam.getId(), MbTestConstant.ID_PARAM_IS_NULL, MbTestConstant.ID_PARAM_IS_NULL_MSG);
+            Assert.isTrue(null != mbTestParam.getTestId(), MbTestConstant.ID_PARAM_IS_NULL, MbTestConstant.ID_PARAM_IS_NULL_MSG);
 
             return ResultFactory.initCommonResultWithSuccess(mbTestService.testOpen());
         } catch (BizRuntimeException e) {
