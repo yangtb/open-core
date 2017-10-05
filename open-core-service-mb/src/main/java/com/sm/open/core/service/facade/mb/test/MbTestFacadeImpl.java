@@ -1,6 +1,7 @@
 package com.sm.open.core.service.facade.mb.test;
 
 import com.sm.open.care.core.exception.BizRuntimeException;
+import com.sm.open.care.core.log.LoggerUtil;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.core.facade.mb.test.MbTestFacade;
 import com.sm.open.core.facade.model.param.mb.test.MbTestParam;
@@ -24,16 +25,16 @@ public class MbTestFacadeImpl implements MbTestFacade {
     @Override
     public CommonResult<Integer> testOpen(MbTestParam mbTestParam) {
         try {
-            LOGGER.info("【MbTestFacadeImpl-testOpen-params】{}", mbTestParam.toString());
+            LoggerUtil.info(LOGGER,"2-【MbTestFacadeImpl-testOpen-params】{0}", mbTestParam.toString());
             /* 参数校验 */
             Assert.isTrue(null != mbTestParam.getTestId(), MbTestConstant.ID_PARAM_IS_NULL, MbTestConstant.ID_PARAM_IS_NULL_MSG);
 
             return ResultFactory.initCommonResultWithSuccess(mbTestService.testOpen());
         } catch (BizRuntimeException e) {
-            LOGGER.error("【MbTestFacadeImpl-testOpen-error】, e.getMessage():{}", e.getMessage());
+            LoggerUtil.info(LOGGER,"【MbTestFacadeImpl-testOpen-error】, e.getMessage():{0}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【MbTestFacadeImpl-testOpen-error】, e.getMessage():{}", e.getMessage());
+            LoggerUtil.info(LOGGER,"【MbTestFacadeImpl-testOpen-error】, e.getMessage():{0}", e.getMessage());
             return CommonResult.toCommonResult(
                     ResultFactory.initResultWithError(MbTestConstant.TESTOPEN_UNKNOWN_ERROR, MbTestConstant.TESTOPEN_UNKNOWN_ERROR_MSG));
         }
