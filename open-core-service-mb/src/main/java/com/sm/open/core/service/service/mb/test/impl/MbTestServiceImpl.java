@@ -1,6 +1,5 @@
 package com.sm.open.core.service.service.mb.test.impl;
 
-import com.sm.open.care.core.log.LoggerUtil;
 import com.sm.open.core.dal.mb.test.MbTestDao;
 import com.sm.open.core.service.service.mb.test.MbTestService;
 import org.slf4j.Logger;
@@ -19,7 +18,7 @@ public class MbTestServiceImpl implements MbTestService {
 
     @Override
     public Integer testOpen() {
-        LoggerUtil.info(LOGGER,"3-【MbTestServiceImpl-testOpen-params】");
+        LOGGER.info("3-测试service层");
         return mbTestDao.testOpen();
     }
 }

@@ -1,6 +1,5 @@
 package com.sm.open.core.service.test;
 
-import com.sm.open.care.core.log.LoggerUtil;
 import com.sm.open.core.facade.mb.test.MbTestFacade;
 import com.sm.open.core.facade.model.param.mb.test.MbTestParam;
 import com.sm.open.core.facade.model.rpc.CommonResult;
@@ -20,8 +19,9 @@ public class TestFacade extends ApplicationContextTest {
 
     @Test
     public void doTestFacade() {
-        LoggerUtil.info(LOGGER,"1-【TestFacade-testOpen-params】");
+        LOGGER.info("1-测试facade层");
         MbTestParam mbTestParam = new MbTestParam();
+        mbTestParam.setTestId(1L);
         CommonResult<Integer> result = mbTestFacade.testOpen(mbTestParam);
         System.out.println(result.getContent());
     }

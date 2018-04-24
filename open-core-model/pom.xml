@@ -14,23 +14,24 @@
     <version>${open.core.model.version}</version>
 
     <dependencies>
+        <!-- 【架构体系内的jar start】 -->
+
+        <!-- 【架构体系内的jar end】 -->
+
+
+        <!-- 以下为第三方jar -->
         <dependency>
-            <groupId>com.sm</groupId>
-            <artifactId>open-care-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sm</groupId>
-            <artifactId>open-core-common</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sm</groupId>
-            <artifactId>open-core-facade</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
         </dependency>
         <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-lang3</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

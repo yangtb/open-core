@@ -1,5 +1,7 @@
 package com.sm.open.core.facade.model.param.mb.test;
 
+import com.alibaba.fastjson.JSON;
+
 import java.io.Serializable;
 
 public class MbTestParam implements Serializable {
@@ -27,10 +29,6 @@ public class MbTestParam implements Serializable {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("MbTestParam{");
-        sb.append("testId=").append(testId);
-        sb.append(", testName='").append(testName).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return JSON.toJSONString(this);
     }
 }

@@ -15,17 +15,18 @@
 
     <dependencies>
         <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.alibaba</groupId>
             <artifactId>fastjson</artifactId>
         </dependency>
+        <!-- mybatis分页插件 -->
         <dependency>
-            <groupId>com.sm</groupId>
-            <artifactId>open-care-core</artifactId>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-
-    </build>
 
 </project>

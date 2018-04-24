@@ -16,10 +16,6 @@
     <dependencies>
         <dependency>
             <groupId>com.sm</groupId>
-            <artifactId>open-care-core</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>com.sm</groupId>
             <artifactId>open-core-common</artifactId>
         </dependency>
         <dependency>
@@ -27,6 +23,36 @@
             <artifactId>open-core-model</artifactId>
         </dependency>
 
+        <!-- 【架构体系内的jar start】 -->
+        <dependency>
+            <groupId>com.sm</groupId>
+            <artifactId>open-care-core</artifactId>
+        </dependency>
+        <!-- 【架构体系内的jar end】 -->
+
+        <!-- 以下为第三方jar -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context-support</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-aspects</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>dubbo</artifactId>
+            <exclusions>
+                <exclusion>
+                    <artifactId>spring</artifactId>
+                    <groupId>org.springframework</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
     </dependencies>
 
     <build>

@@ -1,8 +1,9 @@
 <assembly>
-	<id>1.0.0</id>
+	<id>bin-1.0.0</id>
 	<formats>
-		<format>tar</format>
+		<format>zip</format>
 	</formats>
+	<!-- <includeBaseDirectory>true</includeBaseDirectory>-->
 	<dependencySets>
 		<dependencySet>
 			<useProjectArtifact>false</useProjectArtifact>

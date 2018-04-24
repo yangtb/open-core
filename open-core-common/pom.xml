@@ -14,14 +14,25 @@
     <version>${open.core.common.version}</version>
 
     <dependencies>
+        <!-- 【项目里的jar start】 -->
+
+        <!-- 【项目里的jar end】 -->
+
+
+        <!-- 【架构体系内的jar start】 -->
+
+        <!-- 【架构体系内的jar end】 -->
+
+
+        <!-- 以下为第三方jar -->
         <dependency>
-            <groupId>com.sm</groupId>
-            <artifactId>open-care-core</artifactId>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>commons-lang</groupId>
+            <artifactId>commons-lang</artifactId>
         </dependency>
     </dependencies>
-
-    <build>
-
-    </build>
 
 </project>
