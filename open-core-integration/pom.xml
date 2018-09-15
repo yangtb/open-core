@@ -11,7 +11,7 @@
 
     <artifactId>open-core-integration</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.integration.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>

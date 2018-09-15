@@ -11,7 +11,7 @@
 
     <artifactId>open-core-service</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.service.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -34,7 +34,10 @@
             <groupId>com.sm</groupId>
             <artifactId>open-core-service-mb</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>com.sm</groupId>
+            <artifactId>open-core-service-pf</artifactId>
+        </dependency>
         <!-- 分布式消息中间件 -->
 
 
@@ -71,11 +74,6 @@
         </dependency>
 
         <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>
-
-        <dependency>
             <groupId>org.aspectj</groupId>
             <artifactId>aspectjweaver</artifactId>
         </dependency>
@@ -84,13 +82,7 @@
             <groupId>commons-logging</groupId>
             <artifactId>commons-logging</artifactId>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>jcl104-over-slf4j</artifactId>
-            <scope>provided</scope>
-        </dependency>
- -->
+
         <!--log4j2日志配置 start-->
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
@@ -137,76 +129,32 @@
         </dependency>
     </dependencies>
 
-    <!-- 打分散的lib包及可jar包外配置文件修改的配置start -->
-    <!--
     <build>
         <finalName>${project.artifactId}</finalName>
         <plugins>
+            <!-- 编译时 跳过测试 -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
+                <artifactId>maven-surefire-plugin</artifactId>
                 <configuration>
-                    <outputDirectory>${project.build.directory}/${project.artifactId}</outputDirectory>
-                    <archive>
-                        <addMavenDescriptor>false</addMavenDescriptor>
-                        <manifest>
-                            <addClasspath>true</addClasspath>
-                            <classpathPrefix>lib/</classpathPrefix>
-                            <mainClass>com.sm.open.core.</mainClass>
-                            <addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-                            <addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-                        </manifest>
-                        <manifestEntries>
-                            <Class-Path>./conf/</Class-Path>
-                        </manifestEntries>
-                    </archive>
+                    <skip>true</skip>
                 </configuration>
             </plugin>
-            <plugin>
-                <artifactId>maven-assembly-plugin</artifactId>
-                <version>2.4.1</version>
-                <executions>
-                    <execution>
-                        <id>make-zip</id>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>single</goal>
-                        </goals>
-                        <configuration>
-                            <descriptors>
-                                <descriptor>src/main/resources/assembly.xml</descriptor>
-                            </descriptors>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-        </plugins>
-    </build>
-    <profiles>
-        <profile>
-            <id>local</id>
-            <build>
-                <filters>
-                    <filter>src/main/resources/deploy/config.properties.local</filter>
-                </filters>
-                <resources>
-                    <resource>
-                        <directory>src/main/resources</directory>
-                        <filtering>true</filtering>
-                    </resource>
-                </resources>
-            </build>
-            <activation>
-                <activeByDefault>true</activeByDefault>
-            </activation>
-        </profile>
-    </profiles>
-    -->
-    <!-- 打分散的lib包及可jar包外配置文件修改的配置end -->
 
-    <build>
-        <finalName>${project.artifactId}</finalName>
-        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.5.1</version>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                    <encoding>${project.build.sourceEncoding}</encoding>
+                    <compilerArgument>-Xlint:all</compilerArgument>
+                    <showWarnings>true</showWarnings>
+                    <showDeprecation>true</showDeprecation>
+                </configuration>
+            </plugin>
+
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>

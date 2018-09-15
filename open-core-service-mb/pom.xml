@@ -11,7 +11,7 @@
 
     <artifactId>open-core-service-mb</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.service.mb.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -61,11 +61,6 @@
             <groupId>org.slf4j</groupId>
             <artifactId>slf4j-api</artifactId>
         </dependency>
-
-        <!--<dependency>
-            <groupId>org.slf4j</groupId>
-            <artifactId>slf4j-log4j12</artifactId>
-        </dependency>-->
 
         <dependency>
             <groupId>org.aspectj</groupId>

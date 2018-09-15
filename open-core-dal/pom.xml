@@ -11,7 +11,7 @@
 
     <artifactId>open-core-dal</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.dal.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <!-- 【项目里的jar start】 -->

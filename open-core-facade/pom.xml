@@ -11,7 +11,7 @@
 
     <artifactId>open-core-facade</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.facade.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <dependency>
@@ -26,6 +26,12 @@
         <dependency>
             <groupId>com.github.pagehelper</groupId>
             <artifactId>pagehelper</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

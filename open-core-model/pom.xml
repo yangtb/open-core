@@ -11,7 +11,7 @@
 
     <artifactId>open-core-model</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.model.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <!-- 【架构体系内的jar start】 -->
@@ -31,6 +31,12 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>1.16.18</version>
+            <scope>provided</scope>
         </dependency>
     </dependencies>
 

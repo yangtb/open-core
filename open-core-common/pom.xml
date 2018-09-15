@@ -11,7 +11,7 @@
 
     <artifactId>open-core-common</artifactId>
     <packaging>jar</packaging>
-    <version>${open.core.common.version}</version>
+    <version>1.0.0</version>
 
     <dependencies>
         <!-- 【项目里的jar start】 -->

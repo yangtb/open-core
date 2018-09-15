@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+       http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+
+    <!-- 资媒服务 -->
+    <dubbo:service ref="pfMediaFacade" interface="com.sm.open.core.facade.pf.biz.media.PfMediaFacade"/>
+
+    <!-- 字典服务 -->
+    <dubbo:service ref="pfDicFacade" interface="com.sm.open.core.facade.pf.system.dic.PfDicFacade"/>
+
+    <!-- 监控服务 -->
+    <dubbo:service ref="pfMonitorFacade" interface="com.sm.open.core.facade.pf.system.monitor.PfMonitorFacade"/>
+
+    <!-- 公告服务 -->
+    <dubbo:service ref="pfNoticeFacade" interface="com.sm.open.core.facade.pf.system.notice.PfNoticeFacade"/>
+
+    <!-- 参数服务 -->
+    <dubbo:service ref="pfParamFacade" interface="com.sm.open.core.facade.pf.system.param.PfParamFacade"/>
+
+    <!-- 用户服务 -->
+    <dubbo:service ref="pfUserFacade" interface="com.sm.open.core.facade.pf.user.login.PfUserFacade"/>
+
+    <!-- 菜单服务 -->
+    <dubbo:service ref="pfMenuFacade" interface="com.sm.open.core.facade.pf.user.menu.PfMenuFacade"/>
+
+    <!-- 角色服务 -->
+    <dubbo:service ref="pfRoleFacade" interface="com.sm.open.core.facade.pf.user.role.PfRoleFacade"/>
+
+</beans>
