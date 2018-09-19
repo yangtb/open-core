@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans" 
+<beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
@@ -28,4 +28,9 @@
     <!-- 角色服务 -->
     <dubbo:service ref="pfRoleFacade" interface="com.sm.open.core.facade.pf.user.role.PfRoleFacade"/>
 
+    <!-- 系统设置服务 -->
+    <dubbo:service ref="pfSetFacade" interface="com.sm.open.core.facade.pf.system.set.PfSetFacade"/>
+
+    <!-- 消息模板服务 -->
+    <dubbo:service ref="pfMessageFacade" interface="com.sm.open.core.facade.pf.system.message.PfMessageFacade"/>
 </beans>

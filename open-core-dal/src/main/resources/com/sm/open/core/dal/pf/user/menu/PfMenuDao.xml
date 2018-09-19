@@ -10,7 +10,8 @@
     <!-- 获取用户所有菜单 -->
     <select id="listMyMenus" resultType="com.sm.open.core.model.entity.SysFunction">
         SELECT
-            sf.id, sf.function_url, sf.name, sf.level, sf.icon_source, sf.code, sf.parent_code
+            sf.id, sf.function_url, sf.name, sf.level,
+            sf.icon_source, sf.code, sf.parent_code, sf.position
         FROM
             user_role ur
         INNER JOIN sys_role_menu srm ON srm.role_id = ur.role_id
@@ -26,7 +27,8 @@
     <!-- 获取系统所有菜单 -->
     <select id="listAllMenus" resultType="com.sm.open.core.model.entity.SysFunction">
         SELECT
-            sf.id, sf.function_url, sf.name, sf.level, sf.icon_source, sf.code, sf.parent_code
+            sf.id, sf.function_url, sf.name, sf.level,
+            sf.icon_source, sf.code, sf.parent_code, sf.position
         FROM
             sys_function sf
         WHERE
@@ -40,7 +42,7 @@
             resultType="com.sm.open.core.model.entity.SysFunction">
         SELECT  id , name , code , parent_code , sys_function_code , level , function_url ,
                 sort_num , function_type , platform_type , status ,
-                icon_type , icon_source , gmt_create , gmt_modify
+                icon_type , icon_source , position , gmt_create , gmt_modify
         FROM
             sys_function sf
         WHERE
@@ -87,12 +89,12 @@
         INSERT INTO sys_function (
           	name , code , parent_code , sys_function_code , level ,
             function_url , sort_num , function_type , platform_type ,
-            status , icon_type , icon_source , gmt_create , gmt_modify
+            status , icon_type , icon_source , position ,  gmt_create , gmt_modify
         )
         VALUES(
           #{name}, #{code} , #{parentCode} , #{sysFunctionCode} , #{level} ,
           #{functionUrl} , #{sortNum} , #{functionType} , #{platformType} ,
-          #{status} , #{iconType} , #{iconSource} , NOW() , NOW()
+          #{status} , #{iconType} , #{iconSource} , #{position} ,  NOW() , NOW()
         )
     </insert>
 
@@ -111,6 +113,7 @@
             status = #{status} ,
             icon_type = #{iconType} ,
             icon_source = #{iconSource} ,
+            position = #{position} ,
             gmt_modify = NOW()
         WHERE
             id = #{id}

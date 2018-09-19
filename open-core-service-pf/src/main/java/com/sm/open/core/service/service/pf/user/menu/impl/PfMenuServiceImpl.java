@@ -67,10 +67,12 @@ public class PfMenuServiceImpl implements PfMenuService {
         for (SysFunction sysMenu : menus) {
             pfMenuVo = new PfMenuVo();
             if (sysMenu.getLevel() == 1) {
+                pfMenuVo.setParentMenuId(sysMenu.getId());
                 pfMenuVo.setParentCode(sysMenu.getCode());
                 pfMenuVo.setParentMenuName(sysMenu.getName());
                 pfMenuVo.setParentImg(sysMenu.getIconSource());
                 pfMenuVo.setParentUrl(sysMenu.getFunctionUrl());
+                pfMenuVo.setPosition(sysMenu.getPosition());
                 parentMenuList.add(pfMenuVo);
             }
         }

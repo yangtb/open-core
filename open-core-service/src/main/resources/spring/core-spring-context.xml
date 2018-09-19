@@ -23,4 +23,14 @@
 	<import resource="classpath*:spring/core-thread-pool.xml"/>
 
 	<import resource="classpath*:spring/dubbo/core-dubbo-provider.xml"/>
+
+	<!-- email config -->
+	<bean id="htmlMailUtil" class="com.sm.open.care.core.utils.HtmlMailUtil">
+		<property name="encoding" value="${core.email.encoding}" />
+		<property name="host" value="${core.email.host}" />
+		<property name="nickname" value="${core.email.nickname}" />
+		<property name="password" value="${core.email.password}" />
+		<property name="sender" value="${core.email.sender}" />
+		<property name="userName" value="${core.email.userName}" />
+	</bean>
 </beans>

@@ -109,11 +109,4 @@ public interface PfRoleDao {
     Integer cancelRole(@Param("state") Integer state,
                        @Param("roleId") Long roleId);
 
-    /**
-     * 获取用户有权限url
-     *
-     * @param userId
-     * @return
-     */
-    List<SysAuthority> selectAuthority(@Param("userId") Long userId);
 }

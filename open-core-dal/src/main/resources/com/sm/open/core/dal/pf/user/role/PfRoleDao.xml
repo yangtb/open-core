@@ -72,22 +72,6 @@
         </foreach>
     </insert>
 
-    <!-- 获取用户有权限url -->
-    <select id="selectAuthority" resultType="com.sm.open.core.model.entity.SysAuthority">
-        SELECT
-            sa.authority_id ,
-            sa.authority_name ,
-            sa.authority_type
-        FROM
-            sys_role_authority_ref srar
-        INNER JOIN user_role ur ON ur.role_id = srar.role_id
-        INNER JOIN sys_authority sa ON srar.authority_id = sa.authority_id
-        WHERE
-            ur.user_id = #{userId}
-        GROUP BY
-            sa.authority_id
-    </select>
-
     <select id="list" resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
         SELECT
             sr.role_id, sr.name

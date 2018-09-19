@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.system.message.PfMessageDao">
+
+    <insert id="addMessageTemplate">
+        INSERT INTO message_template(
+            template_name, template_type, content,
+            is_deleted, operator, gmt_create, gmt_modify
+        )
+        VALUES(
+            #{templateName} , #{templateType} , #{content} ,
+            'N' , #{operator} , NOW() , NOW()
+        );
+    </insert>
+
+    <update id="editMessageTemplate">
+        UPDATE message_template
+        SET
+        <if test="templateName != null and templateName != ''">
+            template_name = #{templateName} ,
+        </if>
+        <if test="templateType != null and templateType != ''">
+            template_type = #{templateType} ,
+        </if>
+        <if test="content != null and content != ''">
+            content = #{content} ,
+        </if>
+        gmt_modify = NOW()
+        WHERE
+        template_id = #{templateId}
+    </update>
+
+    <delete id="updateStatus">
+        UPDATE message_template SET is_deleted = #{isDeleted}
+        WHERE
+        template_id in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+    <select id="countMessages" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            message_template
+        WHERE
+            1 = 1
+        <if test="templateName != null and templateName != '' ">
+            AND template_name like concat(#{templateName},'%')
+        </if>
+        <if test="templateType != null and templateType != '' ">
+            AND template_type = #{templateType}
+        </if>
+        <if test="isDeleted != null and isDeleted != '' ">
+            AND is_deleted = #{isDeleted}
+        </if>
+    </select>
+
+    <select id="listMessages" resultType="com.sm.open.core.model.entity.MessageTemplate">
+        SELECT
+            template_id, template_name, template_type, content,
+            is_deleted, operator, gmt_create, gmt_modify
+        FROM
+            message_template
+        WHERE
+            1 = 1
+        <if test="templateName != null and templateName != '' ">
+            AND template_name like concat(#{templateName},'%')
+        </if>
+        <if test="templateType != null and templateType != '' ">
+            AND template_type = #{templateType}
+        </if>
+        <if test="isDeleted != null and isDeleted != '' ">
+            AND is_deleted = #{isDeleted}
+        </if>
+        ORDER BY template_id desc
+        limit #{offset}, #{limit}
+    </select>
+</mapper>

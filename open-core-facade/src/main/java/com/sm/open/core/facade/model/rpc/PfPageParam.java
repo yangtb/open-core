@@ -1,6 +1,8 @@
 package com.sm.open.core.facade.model.rpc;
 
-import com.alibaba.fastjson.JSON;
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
 
 import java.io.Serializable;
 
@@ -10,44 +12,25 @@ import java.io.Serializable;
  * @Author yangtongbin
  * @Date 2017/9/8 12:36
  */
+@Setter
+@Getter
+@ToString
 public class PfPageParam implements Serializable {
+
     private static final long serialVersionUID = 3938095740389970783L;
 
-    private Integer page; //页码
+    /**
+     * 页码
+     */
+    private Integer page;
     /**
      * 数据偏移量，从当前这个数目开始查询
      */
     private Long offset = 0L;
-    private Integer limit; //每页数据量
-
-    public Integer getPage() {
-        return page;
-    }
-
-    public void setPage(Integer page) {
-        this.page = page;
-    }
-
-    public Long getOffset() {
-        return offset;
-    }
-
-    public void setOffset(Long offset) {
-        this.offset = offset;
-    }
-
-    public Integer getLimit() {
-        return limit;
-    }
-
-    public void setLimit(Integer limit) {
-        this.limit = limit;
-    }
-
-    @Override
-    public String toString() {
-        return JSON.toJSONString(this);
-    }
+    /**
+     * 每页数据量
+     */
+    private Integer limit;
 
     public static void initPageDto(PfPageParam pageDto) {
         if (pageDto != null) {

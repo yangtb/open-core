@@ -30,6 +30,7 @@ public class SysFunction implements Serializable {
     private String      status;             // 状态：有效(enabled)、无效(disabled) , 默认有效
     private int         iconType;           // 图标类型,0表示无，1表示iconfont的矢量图标，2表示url图标
     private String      iconSource;         // 图标源
+    private String      position;           // 菜单位置left=左边，top=顶部
     private Date        gmtCreate;          // 创建时间
     private Date        gmtModify;          // 更新时间
 
