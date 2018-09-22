@@ -12,14 +12,20 @@
             keyColumn="user_id" keyProperty="userId">
         INSERT INTO user_info(
             username , password , salt , email , phone_no ,
-            enabled , role_type , role_desc , real_name , sex,
+            enabled , role_type , role_desc , real_name ,
+            <if test="sex!=0">
+                sex,
+            </if>
             remark , gmt_create , gmt_modify , operator
         )
         VALUES
             (
               #{username} , #{password} , #{salt} ,  #{email} ,  #{phoneNo} ,
-              #{enabled} , #{roleType} , #{roleDesc} , #{realName} , #{sex} ,
-              #{remark}  , now() , now() , #{operator}
+              #{enabled} , #{roleType} , #{roleDesc} , #{realName} ,
+            <if test="sex!=0">
+                #{sex} ,
+            </if>
+              #{remark} , now() , now() , #{operator}
             );
     </insert>
 

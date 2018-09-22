@@ -7,6 +7,7 @@ import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
 import com.sm.open.core.model.entity.UserInfo;
 import com.sm.open.core.model.vo.pf.user.login.PfUsersVo;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -46,7 +47,9 @@ public class PfUserServiceImpl implements PfUserService {
         // 新增用户
         pfUserDao.saveUser(user);
         // 插入用户角色
-        pfUserDao.saveUserRole(dto.getRoles(), user.getUserId());
+        if (CollectionUtils.isNotEmpty(dto.getRoles())) {
+            pfUserDao.saveUserRole(dto.getRoles(), user.getUserId());
+        }
         return true;
     }
 

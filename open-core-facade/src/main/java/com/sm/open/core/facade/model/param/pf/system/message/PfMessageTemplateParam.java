@@ -17,6 +17,10 @@ public class PfMessageTemplateParam implements Serializable {
      */
     private String templateId;
     /**
+     * 模板编码
+     */
+    private String templateCode;
+    /**
      *模板名称
      */
     private String templateName;

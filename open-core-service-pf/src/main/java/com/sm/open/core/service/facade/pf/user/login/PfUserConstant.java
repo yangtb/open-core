@@ -35,6 +35,10 @@ public class PfUserConstant {
     public static final String FIND_AUTHORITIES_FAILED              = "findAuthoritiesByUserIdFailed";
     public static final String FIND_AUTHORITIES_FAILED_MSG          = "查找用户的权限编码集合失败";
 
+    public static final String SEND_REGISTER_EMAIL_VCODE_FAILED     = "sendRegisterEmailVcodeFailed";
+    public static final String SEND_REGISTER_EMAIL_VCODE_FAILED_MSG = "发送邮件验证码失败";
 
+    public static final String EMAIL_VCODE_EXPIRED                  = "emailVcodeExpired";
+    public static final String EMAIL_VCODE_EXPIRED_MSG              = "验证码已失效";
 
 }

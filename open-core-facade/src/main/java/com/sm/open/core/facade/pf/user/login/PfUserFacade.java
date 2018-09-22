@@ -3,6 +3,7 @@ package com.sm.open.core.facade.pf.user.login;
 import com.sm.open.core.facade.model.param.pf.user.PfUserParam;
 import com.sm.open.core.facade.model.param.pf.user.login.RegisterParam;
 import com.sm.open.core.facade.model.param.pf.user.login.UpdatePswParam;
+import com.sm.open.core.facade.model.param.pf.user.register.UserRegisterParam;
 import com.sm.open.core.facade.model.result.pf.common.auth.UserInfoResult;
 import com.sm.open.core.facade.model.result.pf.user.login.PfUsersResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
@@ -88,4 +89,20 @@ public interface PfUserFacade {
      * @return
      */
     CommonResult<List<String>> findAuthoritiesByUserId(Long userId);
+
+    /**
+     * 用户注册
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> registerUser(UserRegisterParam param);
+
+    /**
+     * 发送邮件验证码
+     *
+     * @param email 邮箱
+     * @return
+     */
+    CommonResult<Boolean> sendRegisterEmailVcode(String email, Long userId);
 }

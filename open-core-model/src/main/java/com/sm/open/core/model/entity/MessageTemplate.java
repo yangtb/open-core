@@ -12,6 +12,10 @@ import java.util.Date;
 @ToString
 public class MessageTemplate implements Serializable {
     private String templateId;//模板ID
+    /**
+     * 模板编码
+     */
+    private String templateCode;
     private String templateName;//模板名称
     private String templateType;//模板类型sms=短信, email=邮件
     private String content;//模板内容

@@ -54,4 +54,12 @@ public interface PfMessageService {
      * @return
      */
     boolean updateStatus(PfBachChangeStatusDto dto);
+
+    /**
+     * 查询模板是否已存在
+     *
+     * @param templateCode 模板code
+     * @return
+     */
+    boolean isExistTemplate(String templateCode);
 }

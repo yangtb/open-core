@@ -105,4 +105,5 @@ public interface PfUserService {
      */
     boolean matchPassword(String rawPwd, String salt, String encriptPwd);
 
+
 }

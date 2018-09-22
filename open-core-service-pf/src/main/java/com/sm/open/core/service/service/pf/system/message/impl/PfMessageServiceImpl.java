@@ -41,4 +41,9 @@ public class PfMessageServiceImpl implements PfMessageService {
     public boolean updateStatus(PfBachChangeStatusDto dto) {
         return pfMessageDao.updateStatus(dto.getList(), dto.getStatus()) >= 1 ? true : false;
     }
+
+    @Override
+    public boolean isExistTemplate(String templateCode) {
+        return pfMessageDao.isExistTemplate(templateCode) >= 1 ? true : false;
+    }
 }

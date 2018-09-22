@@ -2,10 +2,12 @@ package com.sm.open.core.service.facade.pf.user.login;
 
 import com.sm.open.care.core.enums.YesOrNo;
 import com.sm.open.care.core.exception.BizRuntimeException;
+import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.user.PfUserParam;
 import com.sm.open.core.facade.model.param.pf.user.login.RegisterParam;
 import com.sm.open.core.facade.model.param.pf.user.login.UpdatePswParam;
+import com.sm.open.core.facade.model.param.pf.user.register.UserRegisterParam;
 import com.sm.open.core.facade.model.result.pf.common.auth.UserInfoResult;
 import com.sm.open.core.facade.model.result.pf.user.login.PfUsersResult;
 import com.sm.open.core.facade.model.rpc.*;
@@ -13,16 +15,22 @@ import com.sm.open.core.facade.pf.user.login.PfUserFacade;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
+import com.sm.open.core.model.entity.RegisterVerification;
 import com.sm.open.core.model.entity.UserInfo;
 import com.sm.open.core.service.service.pf.system.email.PfEmailService;
+import com.sm.open.core.service.service.pf.system.org.PfOrgService;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
 import com.sm.open.core.service.service.pf.user.security.AuthorityService;
+import com.sm.open.core.service.service.pf.user.verification.PfVerificationService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.Date;
 import java.util.List;
 
 @Component("pfUserFacade")
@@ -32,10 +40,18 @@ public class PfUserFacadeImpl implements PfUserFacade {
 
     @Resource
     private PfUserService pfUserService;
+
     @Resource
     private PfEmailService pfEmailService;
+
     @Resource
     private AuthorityService authorityService;
+
+    @Resource
+    private PfOrgService pfOrgService;
+
+    @Resource
+    private PfVerificationService pfVerificationService;
 
     /**
      * 发送邮件开关
@@ -181,6 +197,59 @@ public class PfUserFacadeImpl implements PfUserFacade {
             LOGGER.error("【PfUserFacadeImpl-findAuthoritiesByUserId-error】根据用户ID查找用户的权限编码集合失败，usId:" + userId, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfUserConstant.FIND_AUTHORITIES_FAILED, PfUserConstant.FIND_AUTHORITIES_FAILED_MSG));
+        }
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public CommonResult<Boolean> registerUser(UserRegisterParam param) {
+        try {
+            /* 参数校验 */
+            Assert.isTrue(StringUtils.isNotBlank(param.getEmail()), "email");
+            Assert.isTrue(StringUtils.isNotBlank(param.getEmailVercode()), "emailVercode");
+            Assert.isTrue(StringUtils.isNotBlank(param.getOrgName()), "orgName");
+            Assert.isTrue(StringUtils.isNotBlank(param.getPassword()), "password");
+            Assert.isTrue(StringUtils.isNotBlank(param.getPhone()), "phone");
+            Assert.isTrue(StringUtils.isNotBlank(param.getUsername()), "orgName");
+
+            // email验证码校验
+            RegisterVerification registerVerification = pfVerificationService.selectRvByReceiver(param.getEmail());
+            if (registerVerification == null || registerVerification.getEndTime().before(new Date())) {
+                throw new BizRuntimeException(PfUserConstant.EMAIL_VCODE_EXPIRED, PfUserConstant.EMAIL_VCODE_EXPIRED_MSG);
+            }
+
+            // add 机构
+            pfOrgService.addOrg(PfUserHelper.bulidOrgParam(param));
+
+            // add 用户
+            if (pfUserService.isExistUser(param.getUsername())) {
+                throw new BizRuntimeException(PfUserConstant.ADD_USER_ISEXIST, PfUserConstant.ADD_USER_ISEXIST_MSG);
+            }
+            pfUserService.saveUser(PfUserHelper.bulidRegisterParam(param));
+
+            return ResultFactory.initCommonResultWithSuccess(true);
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfUserFacadeImpl-registerUser】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfUserFacadeImpl-registerUser-error】用户注册失败，param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfUserConstant.SEND_REGISTER_EMAIL_VCODE_FAILED, PfUserConstant.SEND_REGISTER_EMAIL_VCODE_FAILED_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> sendRegisterEmailVcode(String email, Long userId) {
+        try {
+            Assert.isTrue(StringUtils.isNotBlank(email), "email");
+            return ResultFactory.initCommonResultWithSuccess(pfVerificationService.sendRegisterEmailVcode(email, userId));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfUserFacadeImpl-sendRegisterEmailVcode】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfUserFacadeImpl-sendRegisterEmailVcode-error】发送邮件验证码失败，email:" + email, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfUserConstant.SEND_REGISTER_EMAIL_VCODE_FAILED, PfUserConstant.SEND_REGISTER_EMAIL_VCODE_FAILED_MSG));
         }
     }
 }

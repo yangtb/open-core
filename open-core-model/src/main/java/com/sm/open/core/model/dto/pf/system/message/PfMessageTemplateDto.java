@@ -18,6 +18,10 @@ public class PfMessageTemplateDto implements Serializable {
      */
     private String templateId;
     /**
+     * 模板编码
+     */
+    private String templateCode;
+    /**
      *模板名称
      */
     private String templateName;

@@ -33,4 +33,7 @@
 
     <!-- 消息模板服务 -->
     <dubbo:service ref="pfMessageFacade" interface="com.sm.open.core.facade.pf.system.message.PfMessageFacade"/>
+
+    <!-- 机构服务 -->
+    <dubbo:service ref="pfOrgFacade" interface="com.sm.open.core.facade.pf.system.org.PfOrgFacade"/>
 </beans>
