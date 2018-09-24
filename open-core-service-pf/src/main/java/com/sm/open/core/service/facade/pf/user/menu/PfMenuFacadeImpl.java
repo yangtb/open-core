@@ -122,10 +122,10 @@ public class PfMenuFacadeImpl implements PfMenuFacade {
     }
 
     @Override
-    public CommonResult<List<PfMenuResult>> listMyMenus(boolean isSuper, Long userId) {
+    public CommonResult<List<PfMenuResult>> listMyMenus(boolean isSuper, boolean isAnonymousUser, Long userId) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    PfMenuBeanUtils.convertMyMenuList(pfMenuService.listMyMenus(isSuper, userId)));
+                    PfMenuBeanUtils.convertMyMenuList(pfMenuService.listMyMenus(isSuper,isAnonymousUser, userId)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfMenuFacadeImpl-listMyMenus】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

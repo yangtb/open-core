@@ -187,9 +187,9 @@ public class PfUserFacadeImpl implements PfUserFacade {
     }
 
     @Override
-    public CommonResult<List<String>> findAuthoritiesByUserId(Long userId) {
+    public CommonResult<List<String>> findAuthoritiesByUserId(Long userId, String roleType) {
         try {
-            return ResultFactory.initCommonResultWithSuccess(authorityService.findAuthoritiesByUserId(userId));
+            return ResultFactory.initCommonResultWithSuccess(authorityService.findAuthoritiesByUserId(userId, roleType));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfUserFacadeImpl-findAuthoritiesByUserId】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

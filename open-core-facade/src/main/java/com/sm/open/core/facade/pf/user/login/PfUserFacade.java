@@ -85,10 +85,11 @@ public interface PfUserFacade {
     /**
      * 根据用户ID查找用户的权限编码集合
      *
-     * @param userId 用户id
+     * @param userId   用户id
+     * @param roleType 角色类型
      * @return
      */
-    CommonResult<List<String>> findAuthoritiesByUserId(Long userId);
+    CommonResult<List<String>> findAuthoritiesByUserId(Long userId, String roleType);
 
     /**
      * 用户注册

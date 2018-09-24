@@ -12,7 +12,7 @@
             keyColumn="user_id" keyProperty="userId">
         INSERT INTO user_info(
             username , password , salt , email , phone_no ,
-            enabled , role_type , role_desc , real_name ,
+            enabled , real_name ,
             <if test="sex!=0">
                 sex,
             </if>
@@ -21,7 +21,7 @@
         VALUES
             (
               #{username} , #{password} , #{salt} ,  #{email} ,  #{phoneNo} ,
-              #{enabled} , #{roleType} , #{roleDesc} , #{realName} ,
+              #{enabled} , #{realName} ,
             <if test="sex!=0">
                 #{sex} ,
             </if>

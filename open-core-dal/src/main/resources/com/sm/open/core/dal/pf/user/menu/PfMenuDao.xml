@@ -157,5 +157,20 @@
              sf.status = 'enabled'
     </select>
 
+    <select id="listAnonymousUserMenus" resultType="com.sm.open.core.model.entity.SysFunction">
+        SELECT
+            sf.id, sf.function_url, sf.name, sf.level,
+            sf.icon_source, sf.code, sf.parent_code, sf.position
+        FROM
+            sys_function sf
+        LEFT JOIN sys_role_menu srm ON srm.menu_id = sf.id
+        left join sys_role sr on srm.role_id = sr.role_id
+        WHERE
+            sf.status = 'enabled'
+        AND sr.code='PFTOU'
+        AND sf.function_type = 1
+        ORDER BY sf.sort_num
+    </select>
+
 
 </mapper>

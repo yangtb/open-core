@@ -78,10 +78,14 @@ public interface PfMenuService {
     /**
      * 获取用户菜单
      *
-     * @param userId 用户id
+     * @param isSuper         超级管理员
+     * @param isAnonymousUser 匿名用户
+     * @param userId          用户id
      * @return
      */
-    List<PfMenuVo> listMyMenus(boolean isSuper, Long userId);
+    List<PfMenuVo> listMyMenus(boolean isSuper,
+                               boolean isAnonymousUser,
+                               Long userId);
 
 
 }
