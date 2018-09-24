@@ -12,12 +12,18 @@ import java.util.List;
  */
 public interface AuthorityDao {
 
-	/**
-	 * 根据用户ID查找用户拥有的功能菜单及资源的权限编码集合
-	 * @param userId
-	 * @return
-	 */
-	List<String> findFunctionCodesByUserId(@Param("userId") Long userId);
-	
-	
+    /**
+     * 根据用户ID查找用户拥有的功能菜单及资源的权限编码集合
+     *
+     * @param userId 用户id
+     * @return
+     */
+    List<String> findFunctionCodesByUserId(@Param("userId") Long userId);
+
+    /**
+     * 超级管理员权限
+     *
+     * @return
+     */
+    List<String> findFunctionCodesByRoot();
 }

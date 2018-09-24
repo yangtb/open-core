@@ -13,7 +13,17 @@
 		left join sys_function sf on srm.menu_id = sf.id
 		WHERE
 			ur.user_id = #{userId}
+		AND sf.status = 'enabled'
 	</select>
-	
-	
+
+	<select id="findFunctionCodesByRoot" resultType="java.lang.String">
+		SELECT
+			sf.CODE AS 'authority'
+		FROM
+			sys_function sf
+		WHERE
+			sf.status = 'enabled'
+	</select>
+
+
 </mapper>
