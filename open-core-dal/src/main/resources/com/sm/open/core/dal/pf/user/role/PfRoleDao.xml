@@ -3,7 +3,7 @@
 <mapper namespace="com.sm.open.core.dal.pf.user.role.PfRoleDao">
 
     <sql id="Base_Column_List" >
-        name , resume , state , is_deleted , operator , gmt_create , gmt_update
+        code, name , resume , state , is_deleted , operator , gmt_create , gmt_update
     </sql>
 
     <!-- 获取用户角色 -->
@@ -17,7 +17,7 @@
             <include refid="Base_Column_List"/>
         )
         VALUES(
-            #{name} , #{resume} , 0 , 'N' , #{operator} , NOW() , NOW()
+            #{code},  #{name} , #{resume} , 0 , 'N' , #{operator} , NOW() , NOW()
         );
     </insert>
 
@@ -25,16 +25,19 @@
     <update id="updateRole" parameterType="com.sm.open.core.model.entity.SysRole">
         UPDATE sys_role
         SET
-            <if test="name != null">
+            <if test="code != null and code != ''">
+                code = #{code} ,
+            </if>
+            <if test="name != null and name != ''">
                 name = #{name} ,
             </if>
-            <if test="resume != null">
+            <if test="resume != null and resume != ''">
                 resume = #{resume} ,
             </if>
             <if test="state != null">
                 state = #{state} ,
             </if>
-            <if test="operator != null">
+            <if test="operator != null and operator != ''">
                 operator = #{operator} ,
             </if>
             gmt_update = NOW()
@@ -101,7 +104,7 @@
     <select id="listRoles" parameterType="com.sm.open.core.model.dto.pf.user.role.PfRoleDto"
             resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
         SELECT
-            sr.role_id, sr.name , sr.resume , sr.state , sr.operator , sr.gmt_create
+            sr.role_id, sr.code , sr.name , sr.resume , sr.state , sr.operator , sr.gmt_create
         FROM
             sys_role sr
         WHERE
