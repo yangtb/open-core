@@ -1,9 +1,12 @@
 package com.sm.open.core.service.service.pf.system.org;
 
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.system.org.PfBachOrgDto;
+import com.sm.open.core.model.dto.pf.system.org.PfOrgAuthDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
 import com.sm.open.core.model.entity.SysOrgReg;
+import com.sm.open.core.model.vo.pf.system.org.SysOrgAuthVo;
 
 import java.util.List;
 
@@ -24,6 +27,22 @@ public interface PfOrgService {
      * @return
      */
     List<SysOrg> listOrgs(PfOrgDto dto);
+
+    /**
+     * 机构认证总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countAuthOrg(PfOrgAuthDto dto);
+
+    /**
+     * 机构认证列表
+     *
+     * @param dto
+     * @return
+     */
+    List<SysOrgAuthVo> listAuthOrg(PfOrgAuthDto dto);
 
     /**
      * 查询所有机构
@@ -70,7 +89,15 @@ public interface PfOrgService {
      * @param dto
      * @return
      */
-    boolean authOrg(PfBachChangeStatusDto dto);
+    boolean authOrg(PfBachOrgDto dto);
+
+    /**
+     * 机构认证驳回
+     *
+     * @param dto
+     * @return
+     */
+    boolean rejectOrg(PfBachOrgDto dto);
 
     /**
      * 根据id查询机构信息

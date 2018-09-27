@@ -3,18 +3,22 @@ package com.sm.open.core.service.facade.pf.system.org;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.care.core.utils.DateUtil;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
-import com.sm.open.core.facade.model.param.pf.system.org.PfOrgParam;
-import com.sm.open.core.facade.model.param.pf.system.org.SysOrgParam;
-import com.sm.open.core.facade.model.param.pf.system.org.SysOrgRegParam;
+import com.sm.open.core.facade.model.param.pf.system.org.*;
+import com.sm.open.core.facade.model.result.pf.system.org.SysOrgAuthResult;
 import com.sm.open.core.facade.model.result.pf.system.org.SysOrgResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.system.org.PfOrgFacade;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.system.org.PfBachOrgDto;
+import com.sm.open.core.model.dto.pf.system.org.PfOrgAuthDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
 import com.sm.open.core.model.entity.SysOrgReg;
 import com.sm.open.core.service.service.pf.system.org.PfOrgService;
+import org.apache.commons.collections.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -41,6 +45,27 @@ public class PfOrgFacadeImpl implements PfOrgFacade {
             LOGGER.error("【PfOrgFacadeImpl-listOrgs-error】获取机构列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
                     PfOrgConstant.SELECT_PAGE_ORG_LIST_ERROR, PfOrgConstant.SELECT_PAGE_ORG_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public PfPageResult listAuthOrg(PfOrgAuthParam param) {
+        try {
+            // 时间设置
+            if (StringUtils.isNotBlank(param.getGmtApplyStart())) {
+                param.setGmtApplyStart(param.getGmtApplyStart() + "-01");
+            }
+            if (StringUtils.isNotBlank(param.getGmtApplyEnd())) {
+                param.setGmtApplyEnd(DateUtil.getLastDayOfMonth(param.getGmtApplyEnd()));
+            }
+            PfPageParam.initPageDto(param);
+            PfOrgAuthDto pfOrgAuthDto = BeanUtil.convert(param, PfOrgAuthDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(pfOrgService.countAuthOrg(pfOrgAuthDto),
+                    BeanUtil.convertList(pfOrgService.listAuthOrg(pfOrgAuthDto), SysOrgAuthResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfOrgFacadeImpl-listAuthOrg-error】获取机构认证列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfOrgConstant.LIST_AUTH_ORG_ERROR, PfOrgConstant.LIST_AUTH_ORG_ERROR_MSG);
         }
     }
 
@@ -105,10 +130,11 @@ public class PfOrgFacadeImpl implements PfOrgFacade {
     }
 
     @Override
-    public CommonResult<Boolean> authOrg(PfBachChangeStatusParam param) {
+    public CommonResult<Boolean> authOrg(PfBachOrgParam param) {
         try {
-            return ResultFactory.initCommonResultWithSuccess(
-                    pfOrgService.authOrg(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getIdRegList()), "申请ID");
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getIdRegList()), "机构ID");
+            return ResultFactory.initCommonResultWithSuccess(pfOrgService.authOrg(BeanUtil.convert(param, PfBachOrgDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfOrgFacadeImpl-authOrg】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -116,6 +142,21 @@ public class PfOrgFacadeImpl implements PfOrgFacade {
             LOGGER.error("【PfOrgFacadeImpl-authOrg-error】机构认证失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfOrgConstant.AUTH_ORG_ERROR, PfOrgConstant.AUTH_ORG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> rejectOrg(PfBachOrgParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getIdRegList()), "申请ID");
+            return ResultFactory.initCommonResultWithSuccess(pfOrgService.rejectOrg(BeanUtil.convert(param, PfBachOrgDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfOrgFacadeImpl-rejectOrg】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfOrgFacadeImpl-rejectOrg-error】机构认证驳回失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfOrgConstant.REJECT_ORG_ERROR, PfOrgConstant.REJECT_ORG_ERROR_MSG));
         }
     }
 

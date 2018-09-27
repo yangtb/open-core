@@ -1,14 +1,20 @@
 package com.sm.open.core.service.service.pf.system.org.impl;
 
+import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.core.dal.pf.system.org.PfOrgDao;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.system.org.PfBachOrgDto;
+import com.sm.open.core.model.dto.pf.system.org.PfOrgAuthDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
 import com.sm.open.core.model.entity.SysOrgReg;
+import com.sm.open.core.model.enums.SdRegEnum;
+import com.sm.open.core.model.vo.pf.system.org.SysOrgAuthVo;
 import com.sm.open.core.service.facade.pf.system.org.PfOrgConstant;
 import com.sm.open.core.service.service.pf.system.org.PfOrgService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -27,6 +33,16 @@ public class PfOrgServiceImpl implements PfOrgService {
     @Override
     public List<SysOrg> listOrgs(PfOrgDto dto) {
         return pfOrgDao.listOrgs(dto);
+    }
+
+    @Override
+    public Long countAuthOrg(PfOrgAuthDto dto) {
+        return pfOrgDao.countAuthOrg(dto);
+    }
+
+    @Override
+    public List<SysOrgAuthVo> listAuthOrg(PfOrgAuthDto dto) {
+        return pfOrgDao.listAuthOrg(dto);
     }
 
     @Override
@@ -57,9 +73,21 @@ public class PfOrgServiceImpl implements PfOrgService {
         return pfOrgDao.delOrg(dto) >= 1 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean authOrg(PfBachChangeStatusDto dto) {
-        return pfOrgDao.authOrg(dto) >= 1 ? true : false;
+    public boolean authOrg(PfBachOrgDto dto) {
+        // 修改机构认证表状态
+        pfOrgDao.updateAuthRecord(dto.getIdRegList(), dto.getConfirmor(), dto.getOperator(), SdRegEnum.PASS.getCode());
+        // 修改机构表状态
+        pfOrgDao.authOrg(dto.getIdOrgList(), dto.getOperator(), YesOrNoNum.YES.getCode());
+        return true;
+    }
+
+    @Override
+    public boolean rejectOrg(PfBachOrgDto dto) {
+        int num = pfOrgDao.updateAuthRecord(dto.getIdRegList(), dto.getConfirmor(),
+                dto.getOperator(), SdRegEnum.REJECT.getCode());
+        return num >= 1 ? true : false;
     }
 
     @Override

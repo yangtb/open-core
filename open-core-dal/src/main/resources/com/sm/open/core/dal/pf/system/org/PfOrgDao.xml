@@ -87,8 +87,22 @@
         )
     </delete>
 
+    <update id="updateAuthRecord">
+        UPDATE sys_org_reg
+        SET sd_reg = #{status}, confirmor = #{confirmor}, gmt_confirm = now(),
+            operator = #{operator}, gmt_modify = now()
+        WHERE
+        id_reg in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
     <update id="authOrg">
-        UPDATE sys_org SET fg_active = #{status}
+        UPDATE sys_org
+        SET fg_active = #{status}, gmt_valid = null,
+            operator = #{operator}, gmt_modify = now()
         WHERE
         id_org in (
         <foreach collection="list" item="item" separator="," >
@@ -169,8 +183,50 @@
         WHERE id_org = #{idOrg}
     </select>
 
+
+    <select id="countAuthOrg" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            sys_org_reg sor left join sys_org so on so.id_org = sor.id_org
+        WHERE
+            1 = 1
+        <if test="name != null and name != '' ">
+            AND so.name like concat(#{name},'%')
+        </if>
+        <if test="sdReg != null and sdReg != ''">
+            AND sor.sd_reg = #{sdReg}
+        </if>
+        <if test="gmtApplyStart != null and gmtApplyStart != ''">
+            AND sor.gmt_apply &gt;= #{gmtApplyStart}
+            AND sor.gmt_apply &lt;= #{gmtApplyEnd}
+        </if>
+    </select>
+
+    <select id="listAuthOrg" resultType="com.sm.open.core.model.vo.pf.system.org.SysOrgAuthVo">
+        SELECT
+            sor.id_reg, sor.sd_reg,sor.applyor, sor.gmt_apply, sor.confirmor, sor.gmt_confirm,
+            so.id_org, so.name , so.des , so.addr , so.phone , so.email ,
+            so.fg_plat , so.fg_active , so.fg_valid , DATE_FORMAT(so.gmt_valid,'%Y-%m-%d') as gmtValid,
+            so.sort , so.creator , so.operator , so.gmt_create , so.gmt_modify
+        FROM
+            sys_org_reg sor left join sys_org so on so.id_org = sor.id_org
+        WHERE
+            1 = 1
+        <if test="name != null and name != '' ">
+            AND so.name like concat(#{name},'%')
+        </if>
+        <if test="sdReg != null and sdReg != ''">
+            AND sor.sd_reg = #{sdReg}
+        </if>
+        <if test="gmtApplyStart != null and gmtApplyStart != ''">
+            AND sor.gmt_apply &gt;= #{gmtApplyStart}
+            AND sor.gmt_apply &lt;= #{gmtApplyEnd}
+        </if>
+    </select>
+
     <select id="isExistApplyActiveRecord" resultType="java.lang.Integer">
-        select count(1) from sys_org_reg where sd_reg ='0'
+        select count(1) from sys_org_reg where sd_reg ='0' and id_org = #{idOrg}
     </select>
 
     <insert id="addActiveOrg">

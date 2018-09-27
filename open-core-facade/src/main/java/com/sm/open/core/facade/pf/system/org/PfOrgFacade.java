@@ -1,9 +1,7 @@
 package com.sm.open.core.facade.pf.system.org;
 
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
-import com.sm.open.core.facade.model.param.pf.system.org.PfOrgParam;
-import com.sm.open.core.facade.model.param.pf.system.org.SysOrgParam;
-import com.sm.open.core.facade.model.param.pf.system.org.SysOrgRegParam;
+import com.sm.open.core.facade.model.param.pf.system.org.*;
 import com.sm.open.core.facade.model.result.pf.system.org.SysOrgResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -25,6 +23,14 @@ public interface PfOrgFacade {
      * @return
      */
     PfPageResult listOrgs(PfOrgParam param);
+
+    /**
+     * 机构认证列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listAuthOrg(PfOrgAuthParam param);
 
     /**
      * 获取所有机构
@@ -63,7 +69,15 @@ public interface PfOrgFacade {
      * @param param
      * @return
      */
-    CommonResult<Boolean> authOrg(PfBachChangeStatusParam param);
+    CommonResult<Boolean> authOrg(PfBachOrgParam param);
+
+    /**
+     * 机构认证驳回
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> rejectOrg(PfBachOrgParam param);
 
     /**
      * 根据id查询机构信息

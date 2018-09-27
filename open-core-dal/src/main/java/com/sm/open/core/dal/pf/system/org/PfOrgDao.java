@@ -1,9 +1,11 @@
 package com.sm.open.core.dal.pf.system.org;
 
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.system.org.PfOrgAuthDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
 import com.sm.open.core.model.entity.SysOrgReg;
+import com.sm.open.core.model.vo.pf.system.org.SysOrgAuthVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -27,6 +29,23 @@ public interface PfOrgDao {
      * @return
      */
     List<SysOrg> listOrgs(PfOrgDto dto);
+
+    /**
+     * 机构认证总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countAuthOrg(PfOrgAuthDto dto);
+
+    /**
+     * 机构认证列表
+     *
+     * @param dto
+     * @return
+     */
+    List<SysOrgAuthVo> listAuthOrg(PfOrgAuthDto dto);
+
 
     /**
      * 查询所有机构
@@ -70,10 +89,23 @@ public interface PfOrgDao {
     /**
      * 机构认证
      *
-     * @param dto
+     * @param idRegList
      * @return
      */
-    int authOrg(PfBachChangeStatusDto dto);
+    int updateAuthRecord(@Param("list") List<Long> idRegList,
+                         @Param("confirmor") String confirmor,
+                         @Param("operator") String operator,
+                         @Param("status") String status);
+
+    /**
+     * 机构认证
+     *
+     * @param idOrgList
+     * @return
+     */
+    int authOrg(@Param("list") List<Long> idOrgList,
+                @Param("operator") String operator,
+                @Param("status") String status);
 
     /**
      * 根据id查询机构信息
