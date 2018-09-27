@@ -50,4 +50,9 @@ public class PfUsersVo implements Serializable {
     @JSONField(name = "gmt_modify")
     private Date        gmtModify;
 
+    /**
+     * 所属机构id
+     */
+    private Long        idOrg;
+
 }

@@ -16,5 +16,5 @@ public class PfUserDto extends PageParam implements Serializable {
 
     private String type;
     private String conditionValue;
-
+    private Long idOrg;
 }

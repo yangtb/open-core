@@ -16,5 +16,5 @@ public class PfUserParam extends PfPageParam implements Serializable {
 
     private String type;
     private String conditionValue;
-
+    private Long idOrg;
 }

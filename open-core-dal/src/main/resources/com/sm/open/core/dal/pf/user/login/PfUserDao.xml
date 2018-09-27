@@ -122,10 +122,13 @@
     <!-- 根据用户获取用户信息 -->
     <select id="selectUser" resultType="com.sm.open.core.model.entity.UserInfo">
         SELECT
-        <include refid="Base_Column_List" />
-        FROM user_info
-        WHERE username = #{userName}
-        and is_deleted = 'N'
+            ui.user_id, ui.username, ui.password, ui.salt, ui.email, ui.phone_no, ui.enabled,
+            ui.is_first, ui.role_type, ui.role_desc,ui.id_org ,
+            ui.real_name, ui.remark, ui.last_login_time, ui.is_deleted, ui.gmt_create, ui.gmt_modify,
+            so.fg_active, so.fg_plat
+        FROM user_info ui left join sys_org so on ui.id_org = so.id_org
+        WHERE ui.username = #{userName}
+        and ui.is_deleted = 'N'
     </select>
 
     <!-- 根据用户id获取用户信息 -->
@@ -142,7 +145,7 @@
         SELECT
             user_id , username , email , sex , phone_no , enabled ,
             is_first , real_name , last_login_time , is_deleted , role_type,
-            gmt_create , gmt_modify, operator
+            gmt_create , gmt_modify, operator, id_org
         FROM
             user_info
         WHERE is_deleted = 'N'
@@ -158,6 +161,9 @@
                     and phone_no like concat(#{conditionValue},'%')
                 </when>
             </choose>
+        </if>
+        <if test="idOrg != null">
+            and id_org = #{idOrg}
         </if>
         and username != 'super'
         ORDER BY user_id
@@ -183,6 +189,10 @@
                 </when>
             </choose>
         </if>
+        <if test="idOrg != null">
+            and id_org = #{idOrg}
+        </if>
+        and username != 'super'
     </select>
 
     <!-- 判断是否存在相同的用户名 -->

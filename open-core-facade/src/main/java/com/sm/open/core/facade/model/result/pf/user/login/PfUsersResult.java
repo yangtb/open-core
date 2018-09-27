@@ -49,5 +49,9 @@ public class PfUsersResult implements Serializable {
      */
     @JSONField(name = "gmt_modify")
     private Date        gmtModify;
+    /**
+     * 所属机构id
+     */
+    private Long        idOrg;
 
 }
