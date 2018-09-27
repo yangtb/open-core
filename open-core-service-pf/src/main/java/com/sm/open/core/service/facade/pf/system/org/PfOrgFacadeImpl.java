@@ -6,12 +6,14 @@ import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.system.org.PfOrgParam;
 import com.sm.open.core.facade.model.param.pf.system.org.SysOrgParam;
+import com.sm.open.core.facade.model.param.pf.system.org.SysOrgRegParam;
 import com.sm.open.core.facade.model.result.pf.system.org.SysOrgResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.system.org.PfOrgFacade;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
+import com.sm.open.core.model.entity.SysOrgReg;
 import com.sm.open.core.service.service.pf.system.org.PfOrgService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -132,4 +134,25 @@ public class PfOrgFacadeImpl implements PfOrgFacade {
                     PfOrgConstant.SELECT_ORG_INFO_ERROR, PfOrgConstant.SELECT_ORG_INFO_ERROR_MSG));
         }
     }
+
+    @Override
+    public CommonResult<Boolean> activeOrg(SysOrgRegParam param) {
+        try {
+            Assert.isTrue(param.getIdOrg() != null, "idOrg");
+            Assert.isTrue(param.getApplyor() != null, "applyor");
+            if (pfOrgService.isExistApplyActiveRecord(param.getIdOrg())) {
+                throw new BizRuntimeException(PfOrgConstant.EXIST_APPLY_ORG_ERROR, PfOrgConstant.EXIST_APPLY_ORG_ERROR_MSG);
+            }
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfOrgService.activeOrg(BeanUtil.convert(param, SysOrgReg.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfOrgFacadeImpl-activeOrg】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfOrgFacadeImpl-activeOrg-error】申请激活机构失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfOrgConstant.APPLY_ACTIVE_ORG_ERROR, PfOrgConstant.APPLY_ACTIVE_ORG_ERROR_MSG));
+        }
+    }
+
 }

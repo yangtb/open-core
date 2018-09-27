@@ -26,4 +26,9 @@ public class PfOrgConstant {
     public static final String SELECT_ORG_INFO_ERROR                = "selectOrgInfoByIdFailed";
     public static final String SELECT_ORG_INFO_ERROR_MSG            = "机构认证失败";
 
+    public static final String APPLY_ACTIVE_ORG_ERROR               = "applyActiveOrgFailed";
+    public static final String APPLY_ACTIVE_ORG_ERROR_MSG           = "申请激活机构失败";
+
+    public static final String EXIST_APPLY_ORG_ERROR                = "existApplyRecordFailed";
+    public static final String EXIST_APPLY_ORG_ERROR_MSG            = "已存在申请记录，请您耐心等待";
 }

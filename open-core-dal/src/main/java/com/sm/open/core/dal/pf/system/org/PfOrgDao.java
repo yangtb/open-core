@@ -3,6 +3,7 @@ package com.sm.open.core.dal.pf.system.org;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
+import com.sm.open.core.model.entity.SysOrgReg;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -81,5 +82,22 @@ public interface PfOrgDao {
      * @return
      */
     SysOrg selectOrgInfoById(@Param("idOrg") Long idOrg);
+
+
+    /**
+     * 申请激活
+     *
+     * @param dto
+     * @return
+     */
+    boolean addActiveOrg(SysOrgReg dto);
+
+    /**
+     * 已存在申请激活记录
+     *
+     * @param idOrg 机构id
+     * @return
+     */
+    int isExistApplyActiveRecord(Long idOrg);
 
 }

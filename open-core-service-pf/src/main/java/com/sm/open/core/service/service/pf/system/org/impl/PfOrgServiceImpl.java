@@ -5,6 +5,7 @@ import com.sm.open.core.dal.pf.system.org.PfOrgDao;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
+import com.sm.open.core.model.entity.SysOrgReg;
 import com.sm.open.core.service.facade.pf.system.org.PfOrgConstant;
 import com.sm.open.core.service.service.pf.system.org.PfOrgService;
 import org.springframework.stereotype.Service;
@@ -65,4 +66,15 @@ public class PfOrgServiceImpl implements PfOrgService {
     public SysOrg selectOrgInfoById(Long idOrg) {
         return pfOrgDao.selectOrgInfoById(idOrg);
     }
+
+    @Override
+    public boolean activeOrg(SysOrgReg dto) {
+        return pfOrgDao.addActiveOrg(dto);
+    }
+
+    @Override
+    public boolean isExistApplyActiveRecord(Long idOrg) {
+        return pfOrgDao.isExistApplyActiveRecord(idOrg) >= 1 ? true : false;
+    }
+
 }

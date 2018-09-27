@@ -169,4 +169,22 @@
         WHERE id_org = #{idOrg}
     </select>
 
+    <select id="isExistApplyActiveRecord" resultType="java.lang.Integer">
+        select count(1) from sys_org_reg where sd_reg ='0'
+    </select>
+
+    <insert id="addActiveOrg">
+        INSERT INTO sys_org_reg (
+            id_org, sd_reg, applyor, gmt_apply,
+            creator, gmt_create,
+            operator, gmt_modify
+        )
+        VALUES(
+            #{idOrg}, '0', #{applyor}, now(),
+            #{creator}, now(),
+            #{operator}, now()
+        )
+    </insert>
+
+
 </mapper>

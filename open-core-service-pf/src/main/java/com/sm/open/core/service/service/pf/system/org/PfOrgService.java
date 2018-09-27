@@ -3,6 +3,7 @@ package com.sm.open.core.service.service.pf.system.org;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.system.org.PfOrgDto;
 import com.sm.open.core.model.entity.SysOrg;
+import com.sm.open.core.model.entity.SysOrgReg;
 
 import java.util.List;
 
@@ -78,4 +79,21 @@ public interface PfOrgService {
      * @return
      */
     SysOrg selectOrgInfoById(Long idOrg);
+
+    /**
+     * 申请激活
+     *
+     * @param dto
+     * @return
+     */
+    boolean activeOrg(SysOrgReg dto);
+
+    /**
+     * 已存在申请激活记录
+     *
+     * @param idOrg 机构id
+     * @return
+     */
+    boolean isExistApplyActiveRecord(Long idOrg);
+
 }
