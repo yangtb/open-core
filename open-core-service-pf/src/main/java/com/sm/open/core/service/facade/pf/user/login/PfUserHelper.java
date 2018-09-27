@@ -31,9 +31,11 @@ public class PfUserHelper {
         sysOrg.setPhone(param.getPhone());
         sysOrg.setEmail(param.getEmail());
         sysOrg.setFgPlat(YesOrNoNum.NO.getCode());
-        sysOrg.setFgActive(YesOrNoNum.NO.getCode());
         if (orgExpiryDay > 0) {
+            sysOrg.setFgActive(YesOrNoNum.YES.getCode());
             sysOrg.setGmtValid(DateUtil.date2Str(DateUtil.addDate(new Date(), orgExpiryDay), DateUtil.FORMAT_DATE));
+        } else {
+            sysOrg.setFgActive(YesOrNoNum.NO.getCode());
         }
         sysOrg.setCreator(param.getOrgName());
         sysOrg.setOperator(param.getOrgName());
