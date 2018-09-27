@@ -4,6 +4,9 @@
        xsi:schemaLocation="http://www.springframework.org/schema/beans
        http://www.springframework.org/schema/beans/spring-beans.xsd http://code.alibabatech.com/schema/dubbo http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
 
+    <!-- 首页服务 -->
+    <dubbo:service ref="pfHomeFacade" interface="com.sm.open.core.facade.pf.home.PfHomeFacade"/>
+
     <!-- 资媒服务 -->
     <dubbo:service ref="pfMediaFacade" interface="com.sm.open.core.facade.pf.biz.media.PfMediaFacade"/>
 
