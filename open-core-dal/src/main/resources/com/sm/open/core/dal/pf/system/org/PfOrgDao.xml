@@ -103,7 +103,7 @@
         FROM
             sys_org
         WHERE
-            1 = 1
+            fg_valid = '0'
         <if test="name != null and name != '' ">
             AND name like concat(#{name},'%')
         </if>
@@ -112,6 +112,11 @@
         </if>
         <if test="fgValid != null and fgValid != '' ">
             AND fg_valid = #{fgValid}
+        </if>
+        <if test="gmtValid != null and gmtValid != '' ">
+            AND gmt_valid is not null
+            AND fg_active='1'
+            AND gmt_valid &lt;= #{gmtValid}
         </if>
     </select>
 
@@ -123,7 +128,7 @@
         FROM
             sys_org
         WHERE
-            1 = 1
+            fg_valid = '0'
         <if test="name != null and name != '' ">
             AND name like concat(#{name},'%')
         </if>
@@ -132,6 +137,11 @@
         </if>
         <if test="fgValid != null and fgValid != '' ">
             AND fg_valid = #{fgValid}
+        </if>
+        <if test="gmtValid != null and gmtValid != '' ">
+            AND gmt_valid is not null
+            AND fg_active='1'
+            AND gmt_valid &lt;= #{gmtValid}
         </if>
         ORDER BY sort desc
         limit #{offset}, #{limit}

@@ -17,5 +17,8 @@ public class PfOrgParam extends PfPageParam implements Serializable {
     private String name;
     private String fgActive;
     private String fgValid;
-
+    /**
+     * 临过期时间
+     */
+    private String gmtValid;
 }
