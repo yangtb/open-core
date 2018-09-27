@@ -72,6 +72,11 @@ public class PfRoleServiceImpl implements PfRoleService {
     }
 
     @Override
+    public PfRoleVo selectRoleInfoByCode(String code) {
+        return pfRoleDao.selectRoleInfoByCode(code);
+    }
+
+    @Override
     public boolean delRoleMenu(Long roleId) {
         return pfRoleDao.delRoleMenu(roleId) >= 1 ? true : false;
     }

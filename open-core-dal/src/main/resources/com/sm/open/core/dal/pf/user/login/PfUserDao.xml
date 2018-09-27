@@ -3,7 +3,7 @@
 <mapper namespace="com.sm.open.core.dal.pf.user.login.PfUserDao">
 
     <sql id="Base_Column_List" >
-         user_id, username, password, salt, email, phone_no, enabled, is_first, role_type, role_desc,
+         user_id, username, password, salt, email, phone_no, enabled, is_first, role_type, role_desc,id_org ,
          real_name, remark, last_login_time, is_deleted, gmt_create, gmt_modify
     </sql>
 
@@ -12,7 +12,7 @@
             keyColumn="user_id" keyProperty="userId">
         INSERT INTO user_info(
             username , password , salt , email , phone_no ,
-            enabled , real_name ,
+            enabled , real_name , id_org ,
             <if test="sex!=0">
                 sex,
             </if>
@@ -21,10 +21,10 @@
         VALUES
             (
               #{username} , #{password} , #{salt} ,  #{email} ,  #{phoneNo} ,
-              #{enabled} , #{realName} ,
-            <if test="sex!=0">
+              #{enabled} , #{realName} , #{idOrg} ,
+              <if test="sex!=0">
                 #{sex} ,
-            </if>
+              </if>
               #{remark} , now() , now() , #{operator}
             );
     </insert>

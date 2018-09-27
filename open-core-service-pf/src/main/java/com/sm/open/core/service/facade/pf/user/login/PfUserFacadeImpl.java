@@ -16,10 +16,16 @@ import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
 import com.sm.open.core.model.entity.RegisterVerification;
+import com.sm.open.core.model.entity.SysParam;
 import com.sm.open.core.model.entity.UserInfo;
+import com.sm.open.core.model.enums.PfRoleEnum;
+import com.sm.open.core.model.enums.SysParamEnum;
+import com.sm.open.core.model.vo.pf.user.role.PfRoleVo;
 import com.sm.open.core.service.service.pf.system.email.PfEmailService;
 import com.sm.open.core.service.service.pf.system.org.PfOrgService;
+import com.sm.open.core.service.service.pf.system.param.PfParamService;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
+import com.sm.open.core.service.service.pf.user.role.PfRoleService;
 import com.sm.open.core.service.service.pf.user.security.AuthorityService;
 import com.sm.open.core.service.service.pf.user.verification.PfVerificationService;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +55,12 @@ public class PfUserFacadeImpl implements PfUserFacade {
 
     @Resource
     private PfOrgService pfOrgService;
+
+    @Resource
+    private PfRoleService pfRoleService;
+
+    @Resource
+    private PfParamService pfParamService;
 
     @Resource
     private PfVerificationService pfVerificationService;
@@ -219,13 +231,29 @@ public class PfUserFacadeImpl implements PfUserFacade {
             }
 
             // add 机构
-            pfOrgService.addOrg(PfUserHelper.bulidOrgParam(param));
+            int orgExpiryDay = 0;
+            SysParam orgTrialSwitchParam = pfParamService.selectParamByCode(SysParamEnum.ORG_TRIAL_SWITCH.getCode());
+            if (orgTrialSwitchParam != null && orgTrialSwitchParam.getParamValue().equals(YesOrNo.YES.getCode())) {
+                SysParam orgExpiryDayParam = pfParamService.selectParamByCode(SysParamEnum.ORG_EXPIRY_DAY.getCode());
+                if (orgExpiryDayParam != null && StringUtils.isNotBlank(orgExpiryDayParam.getParamValue())) {
+                    try {
+                        orgExpiryDay = Integer.parseInt(orgExpiryDayParam.getParamValue().trim());
+                    } catch (NumberFormatException e) {
+                        throw new BizRuntimeException("orgExpiryDayParamSetError", "机构试用有效期参数配置有误");
+                    }
+                }
+            }
+            Long idOrg = pfOrgService.addOrg(PfUserHelper.bulidOrgParam(param, orgExpiryDay));
 
             // add 用户
             if (pfUserService.isExistUser(param.getUsername())) {
                 throw new BizRuntimeException(PfUserConstant.ADD_USER_ISEXIST, PfUserConstant.ADD_USER_ISEXIST_MSG);
             }
-            pfUserService.saveUser(PfUserHelper.bulidRegisterParam(param));
+            PfRoleVo pfRoleVo = pfRoleService.selectRoleInfoByCode(PfRoleEnum.MCADM.getCode());
+            if (pfRoleVo == null && pfRoleVo.getRoleId() == null) {
+                throw new BizRuntimeException(PfUserConstant.ORG_ROLE_ERROR, PfUserConstant.ORG_ROLE_ERROR_MSG);
+            }
+            pfUserService.saveUser(PfUserHelper.bulidRegisterParam(param, pfRoleVo, idOrg));
 
             return ResultFactory.initCommonResultWithSuccess(true);
         } catch (BizRuntimeException e) {

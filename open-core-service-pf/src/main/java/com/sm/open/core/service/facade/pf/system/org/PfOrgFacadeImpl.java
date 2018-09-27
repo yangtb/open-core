@@ -1,6 +1,7 @@
 package com.sm.open.core.service.facade.pf.system.org;
 
 import com.sm.open.care.core.exception.BizRuntimeException;
+import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.system.org.PfOrgParam;
@@ -17,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Component("pfOrgFacade")
 public class PfOrgFacadeImpl implements PfOrgFacade {
@@ -41,10 +43,25 @@ public class PfOrgFacadeImpl implements PfOrgFacade {
     }
 
     @Override
+    public CommonResult<List<SysOrgResult>> listAllOrg() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfOrgService.listAllOrg(), SysOrgResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfOrgFacadeImpl-listAllOrg】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfOrgFacadeImpl-listAllOrg-error】查询所有机构失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfOrgConstant.LIST_ALL_ORG_ERROR, PfOrgConstant.LIST_ALL_ORG_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<Boolean> addOrg(SysOrgParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    pfOrgService.addOrg(BeanUtil.convert(param, SysOrg.class)));
+                    pfOrgService.addOrg(BeanUtil.convert(param, SysOrg.class)) == null ? false : true);
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfOrgFacadeImpl-addOrg】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -97,6 +114,22 @@ public class PfOrgFacadeImpl implements PfOrgFacade {
             LOGGER.error("【PfOrgFacadeImpl-authOrg-error】机构认证失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfOrgConstant.AUTH_ORG_ERROR, PfOrgConstant.AUTH_ORG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<SysOrgResult> selectOrgInfoById(Long idOrg) {
+        try {
+            Assert.isTrue(idOrg != null, "idOrg");
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfOrgService.selectOrgInfoById(idOrg), SysOrgResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfOrgFacadeImpl-selectOrgInfoById】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfOrgFacadeImpl-selectOrgInfoById-error】根据id查询机构信息失败, idOrg:" + idOrg, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfOrgConstant.SELECT_ORG_INFO_ERROR, PfOrgConstant.SELECT_ORG_INFO_ERROR_MSG));
         }
     }
 }

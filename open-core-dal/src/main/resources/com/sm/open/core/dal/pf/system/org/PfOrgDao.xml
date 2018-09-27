@@ -2,7 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sm.open.core.dal.pf.system.org.PfOrgDao">
 
-    <insert id="addOrg">
+    <insert id="addOrg" useGeneratedKeys="true" keyProperty="idOrg">
         INSERT INTO sys_org(
             name , des , addr , phone , email ,
             <if test="fgPlat != null and fgPlat!=''">
@@ -139,6 +139,24 @@
 
     <select id="countOrgByEmail" resultType="java.lang.Integer">
         SELECT count(1) FROM sys_org WHERE email = #{email}
+    </select>
+
+    <select id="listAllOrg" resultType="com.sm.open.core.model.entity.SysOrg">
+        SELECT
+            id_org, name , phone , email , fg_active
+        FROM
+            sys_org
+        ORDER BY sort, fg_active
+    </select>
+
+    <select id="selectOrgInfoById" resultType="com.sm.open.core.model.entity.SysOrg">
+        SELECT
+            id_org, name , des , addr , phone , email ,
+            fg_plat , fg_active , fg_valid , gmt_valid , sort ,
+            creator , operator , gmt_create , gmt_modify
+        FROM
+            sys_org
+        WHERE id_org = #{idOrg}
     </select>
 
 </mapper>

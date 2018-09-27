@@ -71,7 +71,9 @@
         INSERT INTO sys_role_menu(role_id, menu_id, gmt_create, gmt_modify)
         VALUES
         <foreach collection="list" item="item" separator="," >
-            (#{item.roleId}, #{item.menuId}, NOW(), NOW())
+            <if test="item.menuId > 0">
+                (#{item.roleId}, #{item.menuId}, NOW(), NOW())
+            </if>
         </foreach>
     </insert>
 
@@ -132,6 +134,16 @@
     <!-- 判断是否存在该角色 -->
     <select id="isExistRole" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_role WHERE name = #{roleName}
+    </select>
+
+    <select id="selectRoleInfoByCode" resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
+        SELECT
+            sr.role_id, sr.code , sr.name , sr.resume , sr.state , sr.operator , sr.gmt_create
+        FROM
+            sys_role sr
+        WHERE
+            sr.is_deleted = 'N'
+        AND sr.code = #{code}
     </select>
 
 </mapper>

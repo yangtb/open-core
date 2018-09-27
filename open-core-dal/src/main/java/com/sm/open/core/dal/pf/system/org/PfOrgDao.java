@@ -28,6 +28,13 @@ public interface PfOrgDao {
     List<SysOrg> listOrgs(PfOrgDto dto);
 
     /**
+     * 查询所有机构
+     *
+     * @return
+     */
+    List<SysOrg> listAllOrg();
+
+    /**
      * 新增机构
      *
      * @param dto
@@ -66,5 +73,13 @@ public interface PfOrgDao {
      * @return
      */
     int authOrg(PfBachChangeStatusDto dto);
+
+    /**
+     * 根据id查询机构信息
+     *
+     * @param idOrg 机构id
+     * @return
+     */
+    SysOrg selectOrgInfoById(@Param("idOrg") Long idOrg);
 
 }

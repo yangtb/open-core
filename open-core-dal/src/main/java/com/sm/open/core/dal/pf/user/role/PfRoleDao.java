@@ -109,4 +109,12 @@ public interface PfRoleDao {
     Integer cancelRole(@Param("state") Integer state,
                        @Param("roleId") Long roleId);
 
+
+    /**
+     * 根据角色编码获取角色信息
+     *
+     * @param code 角色编码
+     * @return
+     */
+    PfRoleVo selectRoleInfoByCode(@Param("code") String code);
 }

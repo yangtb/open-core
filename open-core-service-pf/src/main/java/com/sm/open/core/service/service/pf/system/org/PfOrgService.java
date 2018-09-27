@@ -25,12 +25,19 @@ public interface PfOrgService {
     List<SysOrg> listOrgs(PfOrgDto dto);
 
     /**
+     * 查询所有机构
+     *
+     * @return
+     */
+    List<SysOrg> listAllOrg();
+
+    /**
      * 新增机构
      *
      * @param dto
      * @return
      */
-    boolean addOrg(SysOrg dto);
+    Long addOrg(SysOrg dto);
 
     /**
      * 一个邮箱只能注册一个机构
@@ -63,4 +70,12 @@ public interface PfOrgService {
      * @return
      */
     boolean authOrg(PfBachChangeStatusDto dto);
+
+    /**
+     * 根据id查询机构信息
+     *
+     * @param idOrg 机构id
+     * @return
+     */
+    SysOrg selectOrgInfoById(Long idOrg);
 }

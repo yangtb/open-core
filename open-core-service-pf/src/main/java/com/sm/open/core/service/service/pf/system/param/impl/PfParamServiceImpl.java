@@ -54,4 +54,11 @@ public class PfParamServiceImpl implements PfParamService {
     public boolean changeStatus(List<Long> list, String status) {
         return pfParamDao.changeStatus(list, status) >= 1 ? true : false;
     }
+
+    @Override
+    public SysParam selectParamByCode(String paramCode) {
+        return pfParamDao.selectParamByCode(paramCode);
+    }
+
+
 }

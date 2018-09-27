@@ -1,4 +1,4 @@
-package com.sm.open.core.model.entity;
+package com.sm.open.core.facade.model.result.pf.common.auth;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +13,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class UserInfo implements Serializable {
+public class UserInfoResult implements Serializable {
 
     private static final long serialVersionUID = 8710243137962838732L;
 

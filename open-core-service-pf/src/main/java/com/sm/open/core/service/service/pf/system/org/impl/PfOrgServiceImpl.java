@@ -29,11 +29,16 @@ public class PfOrgServiceImpl implements PfOrgService {
     }
 
     @Override
-    public boolean addOrg(SysOrg dto) {
+    public List<SysOrg> listAllOrg() {
+        return pfOrgDao.listAllOrg();
+    }
+
+    @Override
+    public Long addOrg(SysOrg dto) {
         if (pfOrgDao.countOrgByEmail(dto.getEmail()) >= 1) {
             throw new BizRuntimeException(PfOrgConstant.ORG_EMAIL_ERROR, PfOrgConstant.ORG_EMAIL_ERROR_MSG);
         }
-        return pfOrgDao.addOrg(dto) == 1 ? true : false;
+        return pfOrgDao.addOrg(dto) == 1 ? dto.getIdOrg() : null;
     }
 
     @Override
@@ -54,5 +59,10 @@ public class PfOrgServiceImpl implements PfOrgService {
     @Override
     public boolean authOrg(PfBachChangeStatusDto dto) {
         return pfOrgDao.authOrg(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public SysOrg selectOrgInfoById(Long idOrg) {
+        return pfOrgDao.selectOrgInfoById(idOrg);
     }
 }

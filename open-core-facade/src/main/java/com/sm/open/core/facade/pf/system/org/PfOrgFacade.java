@@ -3,8 +3,11 @@ package com.sm.open.core.facade.pf.system.org;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.system.org.PfOrgParam;
 import com.sm.open.core.facade.model.param.pf.system.org.SysOrgParam;
+import com.sm.open.core.facade.model.result.pf.system.org.SysOrgResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
+
+import java.util.List;
 
 /**
  * @ClassName: PfOrgFacade
@@ -21,6 +24,13 @@ public interface PfOrgFacade {
      * @return
      */
     PfPageResult listOrgs(PfOrgParam param);
+
+    /**
+     * 获取所有机构
+     *
+     * @return
+     */
+    CommonResult<List<SysOrgResult>> listAllOrg();
 
     /**
      * 新增机构
@@ -53,4 +63,12 @@ public interface PfOrgFacade {
      * @return
      */
     CommonResult<Boolean> authOrg(PfBachChangeStatusParam param);
+
+    /**
+     * 根据id查询机构信息
+     *
+     * @param idOrg 机构id
+     * @return
+     */
+    CommonResult<SysOrgResult> selectOrgInfoById(Long idOrg);
 }

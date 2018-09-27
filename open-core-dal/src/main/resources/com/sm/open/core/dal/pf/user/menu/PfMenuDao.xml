@@ -20,8 +20,10 @@
             ur.user_id = #{userId}
         AND sf.status = 'enabled'
 	    AND sf.function_type = 1
-        GROUP BY
-            sf.sort_num
+	    AND ur.is_deleted = 'N'
+	    AND srm.is_deleted = 'N'
+        ORDER BY
+            sf.level, sf.sort_num
     </select>
 
     <!-- 获取系统所有菜单 -->
@@ -137,11 +139,14 @@
             sf.code as id,
             sf.name as name ,
             sf.parent_code as pId,
-            true as open
+            true as open,
+            sf.level,
+            sf.position
         FROM
             sys_function sf
         WHERE
             sf.status = 'enabled'
+        ORDER BY sf.level, sf.sort_num
     </select>
 
     <!-- 获取角色拥有菜单 -->

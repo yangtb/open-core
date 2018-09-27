@@ -57,6 +57,14 @@
         SELECT COUNT(1) FROM sys_param WHERE param_code = #{paramCode} AND sys_type = #{sysType}
     </select>
 
+    <select id="selectParamByCode" resultType="com.sm.open.core.model.entity.SysParam">
+        SELECT
+          <include refid="base_sql"/>
+        FROM sys_param
+        WHERE param_code = #{paramCode}
+        AND status = 'enabled'
+    </select>
+
     <!-- 新增参数 -->
     <insert id="addParam" parameterType="com.sm.open.core.model.entity.SysDictionary">
         INSERT INTO sys_param (

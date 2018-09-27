@@ -8,7 +8,7 @@ import java.io.Serializable;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"password"})
 public class UserRegisterParam implements Serializable {
 
     private static final long serialVersionUID = -8667177751976950453L;

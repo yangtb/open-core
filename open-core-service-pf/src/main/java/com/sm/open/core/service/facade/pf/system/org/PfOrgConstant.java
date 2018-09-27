@@ -19,4 +19,11 @@ public class PfOrgConstant {
 
     public static final String ORG_EMAIL_ERROR                      = "orgEmailError";
     public static final String ORG_EMAIL_ERROR_MSG                  = "一个邮箱只能注册一个机构";
+
+    public static final String LIST_ALL_ORG_ERROR                   = "listAllOrgFailed";
+    public static final String LIST_ALL_ORG_ERROR_MSG               = "新增机构失败";
+
+    public static final String SELECT_ORG_INFO_ERROR                = "selectOrgInfoByIdFailed";
+    public static final String SELECT_ORG_INFO_ERROR_MSG            = "机构认证失败";
+
 }

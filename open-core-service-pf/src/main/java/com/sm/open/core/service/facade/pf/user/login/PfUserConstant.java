@@ -41,4 +41,6 @@ public class PfUserConstant {
     public static final String EMAIL_VCODE_EXPIRED                  = "emailVcodeExpired";
     public static final String EMAIL_VCODE_EXPIRED_MSG              = "验证码已失效";
 
+    public static final String ORG_ROLE_ERROR                       = "orgRoleError";
+    public static final String ORG_ROLE_ERROR_MSG                   = "机构角色未配置";
 }

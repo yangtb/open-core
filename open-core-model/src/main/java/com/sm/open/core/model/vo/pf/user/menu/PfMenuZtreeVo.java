@@ -13,11 +13,17 @@ public class PfMenuZtreeVo implements Serializable {
 
     private static final long serialVersionUID = -4901737093643963963L;
 
-    private Long        menuId;     // 菜单id
-    private String      id;
-    private String      pId;
-    private String      name;
-    private boolean     checked;
-    private boolean     open;
+    /**
+     * 菜单id
+     */
+    private Long menuId;
+    private String id;
+    private String pId;
+    private String name;
+    private boolean checked;
+    private boolean open;
+
+    private int level;
+    private String position;
 
 }
