@@ -1,9 +1,12 @@
 package com.sm.open.core.service.facade.pf.user.login;
 
+import com.sm.open.care.core.ErrorCode;
+import com.sm.open.care.core.ErrorMessage;
 import com.sm.open.care.core.enums.YesOrNo;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.param.pf.user.PfUserParam;
 import com.sm.open.core.facade.model.param.pf.user.login.RegisterParam;
 import com.sm.open.core.facade.model.param.pf.user.login.UpdatePswParam;
@@ -12,6 +15,7 @@ import com.sm.open.core.facade.model.result.pf.common.auth.UserInfoResult;
 import com.sm.open.core.facade.model.result.pf.user.login.PfUsersResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.user.login.PfUserFacade;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
@@ -28,6 +32,7 @@ import com.sm.open.core.service.service.pf.user.login.PfUserService;
 import com.sm.open.core.service.service.pf.user.role.PfRoleService;
 import com.sm.open.core.service.service.pf.user.security.AuthorityService;
 import com.sm.open.core.service.service.pf.user.verification.PfVerificationService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -105,7 +110,8 @@ public class PfUserFacadeImpl implements PfUserFacade {
     @Override
     public CommonResult<Boolean> updateUser(RegisterParam param) {
         try {
-            return ResultFactory.initCommonResultWithSuccess(pfUserService.updateUser(BeanUtil.convert(param, RegisterDto.class)));
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfUserService.updateUser(BeanUtil.convert(param, RegisterDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfUserFacadeImpl-updateUser】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -117,28 +123,38 @@ public class PfUserFacadeImpl implements PfUserFacade {
     }
 
     @Override
-    public CommonResult<Boolean> delUser(List<Long> users) {
+    public CommonResult<Boolean> delUser(PfCommonListParam param) {
         try {
-            return ResultFactory.initCommonResultWithSuccess(pfUserService.delUser(users));
+            /* 参数校验 */
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "list入参不能为空");
+            Assert.isTrue(param.getCurrentUserOrgId() != null, "当前用户机构id");
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfUserService.delUser(BeanUtil.convert(param, PfCommonListDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfUserFacadeImpl-delUser】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfUserFacadeImpl-delUser-error】批量删除用户失败，param={}", users, e);
+            LOGGER.error("【PfUserFacadeImpl-delUser-error】批量删除用户失败，param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfUserConstant.DEL_USER_FAILED, PfUserConstant.DEL_USER_FAILED_MSG));
         }
     }
 
     @Override
-    public CommonResult<Boolean> freezeUser(List<Long> users) {
+    public CommonResult<Boolean> freezeUser(PfCommonListParam param) {
         try {
-            return ResultFactory.initCommonResultWithSuccess(pfUserService.freezeUser(users));
+            /* 参数校验 */
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "list入参不能为空");
+            Assert.isTrue(param.getCurrentUserOrgId() != null, "当前用户机构id");
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfUserService.freezeUser(BeanUtil.convert(param, PfCommonListDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfUserFacadeImpl-freezeUser】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfUserFacadeImpl-freezeUser-error】批量冻结用户失败，param={}", users, e);
+            LOGGER.error("【PfUserFacadeImpl-freezeUser-error】批量冻结用户失败，param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfUserConstant.FREEZE_USER_FAILED, PfUserConstant.FREEZE_USER_FAILED_MSG));
         }
@@ -166,6 +182,14 @@ public class PfUserFacadeImpl implements PfUserFacade {
     @Override
     public CommonResult<Boolean> resetPsw(RegisterParam param) {
         try {
+            if (!param.isPlatOrSuper()) {
+                // 操作机构校验
+                UserInfo userInfo = pfUserService.selectUserById(param.getUserId());
+                Assert.isTrue(userInfo != null, PfUserConstant.USER_NOT_EXIST, PfUserConstant.USER_NOT_EXIST_MSG);
+                Assert.isTrue(!userInfo.getIdOrg().equals(param.getCurrentUserOrgId()),
+                        ErrorCode.USER_AUTH_EXCEPTION, ErrorMessage.USER_AUTH_EXCEPTION_MSG);
+            }
+
             UpdatePswDto updatePswDto = new UpdatePswDto();
             updatePswDto.setUserId(param.getUserId());
             updatePswDto.setNewPassword(param.getPassword());

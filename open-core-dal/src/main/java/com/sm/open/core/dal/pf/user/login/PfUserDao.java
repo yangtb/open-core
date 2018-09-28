@@ -68,6 +68,14 @@ public interface PfUserDao {
     Integer updateUser(UserInfo user);
 
     /**
+     * 获取用户所在机构集合
+     *
+     * @param users
+     * @return
+     */
+    List<Long> selectOrgId(@Param("list") List<Long> users);
+
+    /**
      * 删除用户
      *
      * @param users 用户id集合
@@ -81,7 +89,7 @@ public interface PfUserDao {
      * @param users 用户id集合
      * @return
      */
-    int freezeUser(List<Long> users);
+    int freezeUser(@Param("list") List<Long> users);
 
     /**
      * 根据用户获取用户信息

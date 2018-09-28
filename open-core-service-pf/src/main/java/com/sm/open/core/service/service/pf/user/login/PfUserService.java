@@ -1,6 +1,7 @@
 package com.sm.open.core.service.service.pf.user.login;
 
 
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
@@ -57,18 +58,18 @@ public interface PfUserService {
     /**
      * 删除用户
      *
-     * @param users 用户id集合
+     * @param dto 用户id集合
      * @return
      */
-    boolean delUser(List<Long> users);
+    boolean delUser(PfCommonListDto dto);
 
     /**
      * 删除用户
      *
-     * @param users 用户id集合
+     * @param dto 用户id集合
      * @return
      */
-    boolean freezeUser(List<Long> users);
+    boolean freezeUser(PfCommonListDto dto);
 
     /**
      * 根据用户获取用户信息
@@ -77,6 +78,14 @@ public interface PfUserService {
      * @return
      */
     UserInfo selectUser(String userName);
+
+    /**
+     * 根据用户id获取用户信息
+     *
+     * @param userId 用户id
+     * @return
+     */
+    UserInfo selectUserById(Long userId);
 
     /**
      * 修改密码

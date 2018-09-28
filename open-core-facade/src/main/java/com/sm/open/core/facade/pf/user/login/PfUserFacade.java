@@ -1,5 +1,6 @@
 package com.sm.open.core.facade.pf.user.login;
 
+import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.param.pf.user.PfUserParam;
 import com.sm.open.core.facade.model.param.pf.user.login.RegisterParam;
 import com.sm.open.core.facade.model.param.pf.user.login.UpdatePswParam;
@@ -46,18 +47,18 @@ public interface PfUserFacade {
     /**
      * 删除用户
      *
-     * @param users 用户ID
+     * @param param 用户ID
      * @return
      */
-    CommonResult<Boolean> delUser(List<Long> users);
+    CommonResult<Boolean> delUser(PfCommonListParam param);
 
     /**
      * 删除用户
      *
-     * @param users 用户ID
+     * @param param
      * @return
      */
-    CommonResult<Boolean> freezeUser(List<Long> users);
+    CommonResult<Boolean> freezeUser(PfCommonListParam param);
 
     /**
      * 修改密码

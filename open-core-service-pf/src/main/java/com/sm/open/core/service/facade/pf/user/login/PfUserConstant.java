@@ -8,6 +8,9 @@ public class PfUserConstant {
     public static final String ADD_USER_ISEXIST                     = "addUserIsExist";
     public static final String ADD_USER_ISEXIST_MSG                 = "该用户名已被使用";
 
+    public static final String USER_NOT_EXIST                       = "userIsNotExist";
+    public static final String USER_NOT_EXIST_MSG                   = "该用户名不存在";
+
     public static final String OLD_PASSWORD_ERROR                   = "oldPasswordError";
     public static final String OLD_PASSWORD_ERROR_MSG               = "原密码错误";
 
@@ -43,4 +46,5 @@ public class PfUserConstant {
 
     public static final String ORG_ROLE_ERROR                       = "orgRoleError";
     public static final String ORG_ROLE_ERROR_MSG                   = "机构角色未配置";
+
 }

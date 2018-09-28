@@ -33,4 +33,13 @@ public class RegisterParam implements Serializable {
     private List<Long>  roles;          // 用户角色
     private String      operator;       // 操作人员
 
+    /**
+     * 当前登陆用户机构id
+     */
+    private Long currentUserOrgId;
+
+    /**
+     * 平台或超级管理员用户
+     */
+    private boolean platOrSuper;
 }

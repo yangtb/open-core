@@ -45,6 +45,18 @@
         update user_role set is_deleted = 'Y' where user_id = #{userId}
     </delete>
 
+    <!-- 获取用户所在机构集合 -->
+    <select id="selectOrgId" resultType="java.lang.Long">
+        SELECT id_org
+        FROM  user_info
+        WHERE
+        user_id in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+
     <!-- 删除用户 -->
     <update id="delUser" parameterType="java.util.List">
         UPDATE user_info SET is_deleted = 'Y', gmt_modify = now()
