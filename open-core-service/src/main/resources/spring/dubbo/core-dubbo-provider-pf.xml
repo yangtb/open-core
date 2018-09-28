@@ -39,4 +39,9 @@
 
     <!-- 机构服务 -->
     <dubbo:service ref="pfOrgFacade" interface="com.sm.open.core.facade.pf.system.org.PfOrgFacade"/>
+
+    <!-- 疾病服务 -->
+    <dubbo:service ref="pfDiseaseFacade" interface="com.sm.open.core.facade.pf.biz.disease.PfDiseaseFacade"/>
+
+
 </beans>
