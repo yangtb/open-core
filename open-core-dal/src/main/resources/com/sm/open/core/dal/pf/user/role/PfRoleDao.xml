@@ -3,7 +3,7 @@
 <mapper namespace="com.sm.open.core.dal.pf.user.role.PfRoleDao">
 
     <sql id="Base_Column_List" >
-        code, name , resume , state , is_deleted , operator , gmt_create , gmt_update
+        code, name , resume , level , state , is_deleted , operator , gmt_create , gmt_update
     </sql>
 
     <!-- 获取用户角色 -->
@@ -17,7 +17,7 @@
             <include refid="Base_Column_List"/>
         )
         VALUES(
-            #{code},  #{name} , #{resume} , 0 , 'N' , #{operator} , NOW() , NOW()
+            #{code}, #{name} , #{resume} , #{level},  0 , 'N' , #{operator} , NOW() , NOW()
         );
     </insert>
 
@@ -33,6 +33,9 @@
             </if>
             <if test="resume != null and resume != ''">
                 resume = #{resume} ,
+            </if>
+            <if test="level != null">
+                level = #{level} ,
             </if>
             <if test="state != null">
                 state = #{state} ,
@@ -106,7 +109,7 @@
     <select id="listRoles" parameterType="com.sm.open.core.model.dto.pf.user.role.PfRoleDto"
             resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
         SELECT
-            sr.role_id, sr.code , sr.name , sr.resume , sr.state , sr.operator , sr.gmt_create
+            sr.role_id, sr.code , sr.name , sr.resume , sr.level , sr.state , sr.operator , sr.gmt_create
         FROM
             sys_role sr
         WHERE
