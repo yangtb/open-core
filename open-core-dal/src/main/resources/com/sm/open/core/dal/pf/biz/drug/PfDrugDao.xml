@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.drug.PfDrugDao">
+
+
+    <select id="countDrugInfo" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_drugs
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+        <if test="fgActive != null and fgActive != '' ">
+            AND fg_active = #{fgActive}
+        </if>
+        <if test="pinyin != null and pinyin != '' ">
+            AND pinyin like concat('%',#{pinyin},'%')
+        </if>
+    </select>
+
+    <select id="listDrugInfo" resultType="com.sm.open.core.model.entity.BasDrugs">
+        SELECT
+            id_drugs, name, cd_drugsclass, spec, unit, pinyin,
+            fg_active, fg_valid, sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_drugs
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+        <if test="fgActive != null and fgActive != '' ">
+            AND fg_active = #{fgActive}
+        </if>
+        <if test="pinyin != null and pinyin != '' ">
+            AND pinyin like concat('%',#{pinyin},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+</mapper>

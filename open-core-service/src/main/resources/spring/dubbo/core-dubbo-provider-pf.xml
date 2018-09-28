@@ -43,5 +43,7 @@
     <!-- 疾病服务 -->
     <dubbo:service ref="pfDiseaseFacade" interface="com.sm.open.core.facade.pf.biz.disease.PfDiseaseFacade"/>
 
+    <!-- 药品服务 -->
+    <dubbo:service ref="pfDrugFacade" interface="com.sm.open.core.facade.pf.biz.drug.PfDrugFacade"/>
 
 </beans>
