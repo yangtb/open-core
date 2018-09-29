@@ -2,6 +2,67 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sm.open.core.dal.pf.biz.disease.PfDiseaseDao">
 
+    <insert id="addDiseaseInfo">
+        INSERT INTO bas_die
+        (
+                name,
+            <if test="cdDieclass!=null">
+                cd_dieclass,
+            </if>
+            <if test="icd!=null">
+                icd,
+            </if>
+                pinyin,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="cdDieclass!=null">
+                #{cdDieclass},
+            </if>
+            <if test="icd!=null">
+                #{icd},
+            </if>
+                #{pinyin},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editDiseaseInfo">
+        UPDATE bas_die
+        SET
+            name = #{name},
+            cd_dieclass = #{cdDieclass},
+            icd = #{icd},
+            pinyin = #{pinyin},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_die = #{idDie}
+    </update>
+
+    <delete id="delDiseaseInfo">
+        UPDATE bas_die
+        SET fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+        id_die in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
 
     <select id="countDiseaseInfo" resultType="java.lang.Long">
         SELECT

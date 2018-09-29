@@ -1,6 +1,9 @@
 package com.sm.open.core.facade.pf.biz.disease;
 
+import com.sm.open.core.facade.model.param.pf.biz.disease.BasDieParam;
 import com.sm.open.core.facade.model.param.pf.biz.disease.PfDiseaseInfoParam;
+import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
 /**
@@ -19,5 +22,29 @@ public interface PfDiseaseFacade {
      */
     PfPageResult listDiseaseInfo(PfDiseaseInfoParam param);
 
+
+    /**
+     * 新增疾病信息
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> addDiseaseInfo(BasDieParam param);
+
+    /**
+     * 编辑疾病信息
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> editDiseaseInfo(BasDieParam param);
+
+    /**
+     * 删除疾病信息
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delDiseaseInfo(PfBachChangeStatusParam param);
 
 }
