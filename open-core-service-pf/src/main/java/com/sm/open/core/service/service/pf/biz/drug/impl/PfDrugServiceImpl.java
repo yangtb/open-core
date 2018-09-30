@@ -1,5 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.drug.impl;
 
+import com.sm.open.care.core.utils.TpinyinUtil;
 import com.sm.open.core.dal.pf.biz.drug.PfDrugDao;
 import com.sm.open.core.model.dto.pf.biz.drug.PfDrugInfoDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -69,11 +71,25 @@ public class PfDrugServiceImpl implements PfDrugService {
 
     @Override
     public boolean addDrugInfo(BasDrugs dto) {
+        if (StringUtils.isBlank(dto.getPinyin())) {
+            try {
+                dto.setPinyin(TpinyinUtil.cn2py(dto.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return pfDrugDao.addDrugInfo(dto) == 1 ? true : false;
     }
 
     @Override
     public boolean editDrugInfo(BasDrugs dto) {
+        if (StringUtils.isBlank(dto.getPinyin())) {
+            try {
+                dto.setPinyin(TpinyinUtil.cn2py(dto.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return pfDrugDao.editDrugInfo(dto) == 1 ? true : false;
     }
 

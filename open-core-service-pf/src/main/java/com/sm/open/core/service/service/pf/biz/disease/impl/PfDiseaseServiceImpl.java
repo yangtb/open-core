@@ -1,5 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.disease.impl;
 
+import com.sm.open.care.core.utils.TpinyinUtil;
 import com.sm.open.core.dal.pf.biz.disease.PfDiseaseDao;
 import com.sm.open.core.model.dto.pf.biz.disease.PfDiseaseInfoDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
@@ -13,6 +14,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -70,11 +72,25 @@ public class PfDiseaseServiceImpl implements PfDiseaseService {
 
     @Override
     public boolean addDiseaseInfo(BasDie dto) {
+        if (StringUtils.isBlank(dto.getPinyin())) {
+            try {
+                dto.setPinyin(TpinyinUtil.cn2py(dto.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return pfDiseaseDao.addDiseaseInfo(dto) == 1 ? true : false;
     }
 
     @Override
     public boolean editDiseaseInfo(BasDie dto) {
+        if (StringUtils.isBlank(dto.getPinyin())) {
+            try {
+                dto.setPinyin(TpinyinUtil.cn2py(dto.getName()));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
         return pfDiseaseDao.editDiseaseInfo(dto) == 1 ? true : false;
     }
 
