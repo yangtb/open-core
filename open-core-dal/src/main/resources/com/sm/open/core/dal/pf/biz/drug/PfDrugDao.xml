@@ -44,6 +44,41 @@
         )
     </insert>
 
+    <insert id="saveDrugCatalogue" useGeneratedKeys="true" keyProperty="idDrugsclass">
+        INSERT INTO bas_drugs_class
+        (
+                name,
+                cd,
+            <if test="cdPar!=null">
+                cd_par,
+            </if>
+                fg_active,
+            <if test="sort!=null">
+                sort,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+                #{cd},
+            <if test="cdPar!=null">
+                #{cdPar},
+            </if>
+                #{fgActive},
+            <if test="sort!=null">
+                #{sort},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
     <update id="editDrugInfo">
         UPDATE bas_drugs
         SET
@@ -60,7 +95,23 @@
         
     </update>
 
-    <delete id="delDrugInfo">
+    <update id="editDrugCatalogue">
+        UPDATE bas_drugs_class
+        SET
+            name = #{name},
+            cd = #{cd},
+            cd_par = #{cdPar},
+            fg_active = #{fgActive},
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_drugsclass = #{idDrugsclass}
+    </update>
+
+    <update id="delDrugInfo">
         UPDATE bas_drugs
         SET fg_valid = #{status},
             operator = #{operator},
@@ -71,7 +122,20 @@
             #{item}
         </foreach>
         )
-    </delete>
+    </update>
+
+    <update id="delDrugCatalogue">
+        UPDATE
+            bas_drugs_class
+        SET
+            fg_valid = #{status}, operator = #{operator}, gmt_modify = now()
+        WHERE
+            id_drugsclass in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
 
     <select id="countDrugInfo" resultType="java.lang.Long">
         SELECT
@@ -110,4 +174,42 @@
         </if>
         limit #{offset}, #{limit}
     </select>
+
+    <select id="listDrugCatalogueTree" resultType="com.sm.open.core.model.vo.pf.biz.drug.PfDrugZtreeVo">
+        SELECT
+            id_drugsclass,
+            cd AS id ,
+            cd_par AS pId ,
+            name,
+            fg_active
+        FROM
+            bas_drugs_class
+        WHERE
+        fg_valid = '0'
+        <if test="async == true">
+            <choose>
+                <when test="id != null">
+                    and cd_par = #{id}
+                </when>
+                <otherwise>
+                    and (cd_par is null or cd_par = '')
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectDrugDetail" resultType="com.sm.open.core.model.entity.BasDrugsClass">
+        SELECT
+           id_drugsclass, name, cd, cd_par, fg_active, fg_valid,
+           sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_drugs_class
+        WHERE
+            id_drugsclass = #{idDrugsclass}
+    </select>
+
+    <select id="isExistDrugCatalogue" resultType="java.lang.Integer">
+        select count(1) from bas_drugs_class where cd = #{cd} and fg_valid = '0'
+    </select>
+
 </mapper>
