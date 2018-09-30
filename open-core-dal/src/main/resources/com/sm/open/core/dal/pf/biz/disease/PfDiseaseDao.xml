@@ -36,6 +36,53 @@
                 now()
         )
     </insert>
+    
+    <insert id="saveDiseaseCatalogue" useGeneratedKeys="true" keyProperty="idDieclass">
+        INSERT INTO bas_die_class
+        (
+                name,
+                cd,
+            <if test="cdPar!=null">
+                cd_par,
+            </if>
+            <if test="icdB!=null">
+                icd_b,
+            </if>
+            <if test="icdE!=null">
+                icd_e,
+            </if>
+                fg_active,
+            <if test="sort!=null">
+                sort,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+                #{cd},
+            <if test="cdPar!=null">
+                #{cdPar},
+            </if>
+            <if test="icdB!=null">
+                #{icdB},
+            </if>
+            <if test="icdE!=null">
+                #{icdE},
+            </if>
+                #{fgActive},
+            <if test="sort!=null">
+                #{sort},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
 
     <update id="editDiseaseInfo">
         UPDATE bas_die
@@ -51,9 +98,29 @@
             id_die = #{idDie}
     </update>
 
-    <delete id="delDiseaseInfo">
-        UPDATE bas_die
-        SET fg_valid = #{status},
+    <update id="editDiseaseCatalogue">
+        UPDATE bas_die_class
+        SET
+            name = #{name},
+            cd = #{cd},
+            cd_par = #{cdPar},
+            icd_b = #{icdB},
+            icd_e = #{icdE},
+            fg_active = #{fgActive},
+            <if test="sort != null">
+              sort = #{sort},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_dieclass = #{idDieclass}
+    </update>
+
+    <update id="delDiseaseInfo">
+        UPDATE
+            bas_die
+        SET
+            fg_valid = #{status},
             operator = #{operator},
             gmt_modify = now()
         WHERE
@@ -62,7 +129,20 @@
             #{item}
         </foreach>
         )
-    </delete>
+    </update>
+
+    <update id="delDiseaseCatalogue">
+        UPDATE
+            bas_die_class
+        SET
+            fg_valid = #{status}, operator = #{operator}, gmt_modify = now()
+        WHERE
+            id_dieclass in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
 
     <select id="countDiseaseInfo" resultType="java.lang.Long">
         SELECT
@@ -106,6 +186,45 @@
             AND pinyin like concat('%',#{pinyin},'%')
         </if>
         limit #{offset}, #{limit}
+    </select>
+
+    <select id="listDiseaseCatalogueTree"
+            parameterType="com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto"
+            resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
+        SELECT
+            id_dieclass,
+            cd AS id ,
+            cd_par AS pId ,
+            name,
+            fg_active
+        FROM
+            bas_die_class
+        WHERE
+            fg_valid = '0'
+        <if test="async == true">
+            <choose>
+                <when test="id != null">
+                    and cd_par = #{id}
+                </when>
+                <otherwise>
+                    and (cd_par is null or cd_par = '')
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectDiseaseDetail" resultType="com.sm.open.core.model.entity.BasDieClass">
+        SELECT
+            id_dieclass, name, cd, cd_par, icd_b, icd_e, fg_active, fg_valid,
+            sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_die_class
+        WHERE
+            id_dieclass = #{idDieClass}
+    </select>
+
+    <select id="isExistDiseaseCatalogue" resultType="java.lang.Integer">
+         select count(1) from bas_die_class where cd = #{cd} and fg_valid = '0'
     </select>
 
 </mapper>
