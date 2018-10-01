@@ -46,7 +46,6 @@ public interface PfOrgDao {
      */
     List<SysOrgAuthVo> listAuthOrg(PfOrgAuthDto dto);
 
-
     /**
      * 查询所有机构
      *
@@ -115,7 +114,6 @@ public interface PfOrgDao {
      */
     SysOrg selectOrgInfoById(@Param("idOrg") Long idOrg);
 
-
     /**
      * 申请激活
      *
@@ -132,4 +130,10 @@ public interface PfOrgDao {
      */
     int isExistApplyActiveRecord(Long idOrg);
 
+    /**
+     * 过期机构改为未激活状态
+     *
+     * @return
+     */
+    Integer updateExpireOrg();
 }

@@ -111,6 +111,19 @@
         )
     </update>
 
+    <update id="updateExpireOrg">
+        UPDATE
+            sys_org
+        SET
+            fg_active='0', operator='system', gmt_modify=now()
+        WHERE
+            fg_valid = '0'
+        AND fg_active = '1'
+        AND fg_plat != '1'
+        AND gmt_valid is not null
+        AND gmt_valid &lt; now()
+    </update>
+
     <select id="countOrgs" resultType="java.lang.Long">
         SELECT
             count(1)
