@@ -167,23 +167,24 @@
 
     <select id="listDiseaseInfo" resultType="com.sm.open.core.model.entity.BasDie">
         SELECT
-            id_die, name, cd_dieclass, icd, pinyin, fg_active, fg_valid,
-            sort, creator, gmt_create, operator, gmt_modify
+            bd.id_die, bd.name, bd.cd_dieclass,bdc.name as cdDieclassText,
+            bd.icd, bd.pinyin, bd.fg_active, bd.fg_valid,
+            bd.sort, bd.creator, bd.gmt_create, bd.operator, bd.gmt_modify
         FROM
-            bas_die
+            bas_die bd left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
         WHERE
-            fg_valid = '0'
+            bd.fg_valid = '0'
         <if test="name != null and name != '' ">
-            AND name like concat('%',#{name},'%')
+            AND bd.name like concat('%',#{name},'%')
         </if>
         <if test="fgActive != null and fgActive != '' ">
-            AND fg_active = #{fgActive}
+            AND bd.fg_active = #{fgActive}
         </if>
         <if test="icd != null and icd != '' ">
-            AND icd like concat('%',#{icd},'%')
+            AND bd.icd like concat('%',#{icd},'%')
         </if>
         <if test="pinyin != null and pinyin != '' ">
-            AND pinyin like concat('%',#{pinyin},'%')
+            AND bd.pinyin like concat('%',#{pinyin},'%')
         </if>
         limit #{offset}, #{limit}
     </select>
@@ -196,7 +197,8 @@
             cd AS id ,
             cd_par AS pId ,
             name,
-            fg_active
+            fg_active,
+            is_parent
         FROM
             bas_die_class
         WHERE

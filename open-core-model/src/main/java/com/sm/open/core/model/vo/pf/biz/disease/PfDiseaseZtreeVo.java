@@ -17,7 +17,7 @@ public class PfDiseaseZtreeVo extends PfCommonZtreeVo implements Serializable {
     /**
      * 疾病目录ID
      */
-    private Long        idDieclass;
+    private Long idDieclass;
 
     /**
      * 激活标志

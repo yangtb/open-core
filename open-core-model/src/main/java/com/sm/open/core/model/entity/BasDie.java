@@ -37,6 +37,11 @@ public class BasDie implements Serializable {
     private String cdDieclass;
 
     /**
+     * 疾病目录名称
+     */
+    private String cdDieclassText;
+
+    /**
      * ICD编码
      */
     private String icd;
