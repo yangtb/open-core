@@ -50,7 +50,7 @@ public class PfDrugFacadeImpl implements PfDrugFacade {
             LOGGER.warn("【PfDrugFacadeImpl-listDrugCatalogueTree】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfDrugFacadeImpl-listDrugCatalogueTree】编辑药品信息失败", e);
+            LOGGER.error("【PfDrugFacadeImpl-listDrugCatalogueTree】查询药品目录树失败", e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfDrugConstant.LIST_DRUG_CATALOGUE_TREE_ERROR, PfDrugConstant.LIST_DRUG_CATALOGUE_TREE_ERROR_MSG));
         }
