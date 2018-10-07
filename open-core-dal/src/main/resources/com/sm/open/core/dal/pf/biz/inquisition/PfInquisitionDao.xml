@@ -1,0 +1,241 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.inquisition.PfInquisitionDao">
+
+    <insert id="addQuestionClassify" useGeneratedKeys="true" keyProperty="idInquesCa">
+        INSERT INTO bas_inques_ca
+        (
+                name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <insert id="addQuestion">
+        INSERT INTO bas_inques
+        (
+            des_inques,
+            id_inques_ca,
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{desInques},
+            #{idInquesCa},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+
+    <insert id="saveAnswer">
+        INSERT INTO bas_inques_answer
+        (
+                des_answer,
+                id_inques,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+            <if test="fgReason!=null">
+                fg_reason,
+            </if>
+            <if test="fgBack!=null">
+                fg_back,
+            </if>
+            <if test="desExpert!=null">
+                des_expert,
+            </if>
+            <if test="fgTag!=null">
+                fg_tag,
+            </if>
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{desAnswer},
+                #{idInques},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+            <if test="fgReason!=null">
+                #{fgReason},
+            </if>
+            <if test="fgBack!=null">
+                #{fgBack},
+            </if>
+            <if test="desExpert!=null">
+                #{desExpert},
+            </if>
+            <if test="fgTag!=null">
+                #{fgTag},
+            </if>
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editQuestionClassify">
+        UPDATE bas_inques_ca
+        SET
+            name = #{name},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inques_ca = #{idInquesCa}
+    </update>
+
+    <update id="delQuestionClassify">
+        UPDATE bas_inques_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inques_ca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <update id="editQuestion">
+        UPDATE bas_inques
+        SET
+            des_inques = #{desInques},
+            <if test="fgActive != null and fgActive!=''">
+            fg_active = #{fgActive},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inques = #{idInques}
+    </update>
+
+    <update id="delQuestion">
+        UPDATE bas_inques
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inques in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    
+    <update id="editAnswer">
+        UPDATE bas_inques_answer
+        SET
+            des_answer = #{desAnswer},
+            id_inques = #{idInques},
+            <if test="idMedia != null">
+            id_media = #{idMedia},
+            </if>
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            des_expert = #{desExpert},
+            fg_tag = #{fgTag},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_answer = #{idAnswer}
+    </update>
+
+    <update id="delAnswer">
+        UPDATE bas_inques_answer
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_answer in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_inques_ca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            bas_inques_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+
+    <select id="countQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_inques
+        WHERE
+            fg_valid = '0'
+        AND id_inques_ca = #{idInquesCa}
+        <if test="desInques != null and desInques != '' ">
+            AND des_inques like concat('%',#{desInques},'%')
+        </if>
+    </select>
+
+    <select id="listQuestion" resultType="com.sm.open.core.model.entity.BasInques">
+        SELECT
+            bi.id_inques, bi.des_inques, bi.id_inques_ca,bic.name as idInquesCaText, bi.fg_active,
+            bi.fg_valid, bi.creator, bi.gmt_create, bi.operator, bi.gmt_modify
+        FROM
+            bas_inques bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.fg_valid = '0'
+        AND bi.id_inques_ca = #{idInquesCa}
+        <if test="desInques != null and desInques != '' ">
+            AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasInquesAnswer">
+        select
+            bia.id_answer, bia.des_answer, bia.id_inques, bia.id_media, bia.fg_reason, bia.fg_back, bia.des_expert,
+            bia.fg_tag, bia.fg_active, bia.fg_valid, bia.creator, bia.gmt_create, bia.operator, bia.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_inques_answer bia left join bas_media bm on bia.id_media = bm.id_media
+        where
+            bia.fg_valid = '0'
+        and bia.id_inques = 1
+        and id_inques = #{idInques}
+    </select>
+
+</mapper>
