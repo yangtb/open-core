@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.common.upload.PfUploadDao">
+
+    <insert id="addBasMedia" useGeneratedKeys="true" keyProperty="idMedia">
+        INSERT INTO bas_media
+        (
+                sd_type,
+            <if test="des!=null">
+                des,
+            </if>
+                name,
+                format,
+                size,
+                path,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{sdType},
+            <if test="des!=null">
+                #{des},
+            </if>
+                #{name},
+                #{format},
+                #{size},
+                #{path},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+</mapper>
