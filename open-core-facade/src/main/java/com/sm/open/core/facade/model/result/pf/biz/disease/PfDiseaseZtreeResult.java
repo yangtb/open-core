@@ -1,5 +1,6 @@
 package com.sm.open.core.facade.model.result.pf.biz.disease;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import lombok.Getter;
 import lombok.Setter;
@@ -17,11 +18,16 @@ public class PfDiseaseZtreeResult extends PfCommonZtreeResult implements Seriali
     /**
      * 疾病目录ID
      */
-    private Long        idDieclass;
+    private Long idDieclass;
 
     /**
      * 激活标志
      */
     private String fgActive;
 
+    /**
+     * 是否是父节点
+     */
+    @JSONField(name = "isParent")
+    private boolean isParent;
 }

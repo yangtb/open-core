@@ -1,5 +1,6 @@
 package com.sm.open.core.facade.model.result.pf.biz.drug;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,4 +25,9 @@ public class PfDrugZtreeResult extends PfCommonZtreeResult implements Serializab
      */
     private String fgActive;
 
+    /**
+     * 是否是父节点
+     */
+    @JSONField(name = "isParent")
+    private boolean isParent;
 }

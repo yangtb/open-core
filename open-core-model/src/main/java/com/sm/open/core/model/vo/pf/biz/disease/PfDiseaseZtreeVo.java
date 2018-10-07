@@ -1,5 +1,6 @@
 package com.sm.open.core.model.vo.pf.biz.disease;
 
+import com.alibaba.fastjson.annotation.JSONField;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,4 +25,9 @@ public class PfDiseaseZtreeVo extends PfCommonZtreeVo implements Serializable {
      */
     private String fgActive;
 
+    /**
+     * 是否是父节点
+     */
+    @JSONField(name = "isParent")
+    private boolean isParent;
 }
