@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.exam.PfExamDao">
+
+    <insert id="addQuestionClassify" useGeneratedKeys="true" keyProperty="idInspect">
+        INSERT INTO bas_inspect_ca
+        (
+                name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <insert id="addQuestion">
+        INSERT INTO bas_inspect_item
+        (
+                na_item,
+                id_inspect,
+            <if test="naShort!=null">
+                na_short,
+            </if>
+                des_stand,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{naItem},
+                #{idInspect},
+            <if test="naShort!=null">
+                #{naShort},
+            </if>
+                #{desStand},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <insert id="saveAnswer" useGeneratedKeys="true" keyProperty="idResult">
+        INSERT INTO bas_item_result
+        (
+                des_result,
+                id_inspect_item,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+            <if test="costMoney!=null">
+                cost_money,
+            </if>
+            <if test="costTime!=null">
+                cost_time,
+            </if>
+                fg_show,
+                fg_reason,
+                fg_back,
+            <if test="desExpert!=null">
+                des_expert,
+            </if>
+                fg_tag,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{desResult},
+                #{idInspectItem},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+            <if test="costMoney!=null">
+                #{costMoney},
+            </if>
+            <if test="costTime!=null">
+                #{costTime},
+            </if>
+                #{fgShow},
+                #{fgReason},
+                #{fgBack},
+            <if test="desExpert!=null">
+                #{desExpert},
+            </if>
+                #{fgTag},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editQuestionClassify">
+        UPDATE bas_inspect_ca
+        SET
+            name = #{name},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inspect = #{idInspect}
+    </update>
+
+    <update id="delQuestionClassify">
+        UPDATE bas_inspect_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inspect in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <update id="editQuestion">
+        UPDATE bas_inspect_item
+        SET
+            na_item = #{naItem},
+            id_inspect = #{idInspect},
+            <if test="naShort != null and naShort!=''">
+                na_short = #{naShort},
+            </if>
+            des_stand = #{desStand},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inspect_item = #{idInspectItem}
+    </update>
+
+    <update id="delQuestion">
+        UPDATE bas_inspect_item
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_inspect_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    
+    <update id="editAnswer">
+        UPDATE bas_item_result
+        SET
+            des_result = #{desResult},
+            id_inspect_item = #{idInspectItem},
+            id_media = #{idMedia},
+            cost_money = #{costMoney},
+            cost_time = #{costTime},
+            fg_show = #{fgShow},
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            des_expert = #{desExpert},
+            fg_tag = #{fgTag},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_result = #{idResult}
+    </update>
+
+    <update id="delAnswer">
+        UPDATE bas_item_result
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_result in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_inspect AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            bas_inspect_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+
+    <select id="countQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_inspect_item
+        WHERE
+            fg_valid = '0'
+        AND id_inspect = #{idInspect}
+        <if test="naItem != null and naItem != '' ">
+            AND na_item like concat('%',#{naItem},'%')
+        </if>
+    </select>
+
+    <select id="listQuestion" resultType="com.sm.open.core.model.entity.BasInspectItem">
+        SELECT
+            bii.id_inspect_item, bii.na_item, bii.id_inspect, bii.na_short, bii.des_stand,
+            bii.fg_active, bii.fg_valid, bii.creator, bii.gmt_create, bii.operator, bii.gmt_modify,
+            bic.name as idInspectText
+        FROM
+            bas_inspect_item bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        WHERE
+            bii.fg_valid = '0'
+        AND bii.id_inspect = #{idInspect}
+        <if test="naItem != null and naItem != '' ">
+            AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasItemResult">
+        select
+            bir.id_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money, 
+            bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.
+            fg_tag, bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_item_result bir left join bas_media bm on bir.id_media = bm.id_media
+        where
+            bir.fg_valid = '0'
+        and bir.id_inspect_item = #{idInspectItem}
+    </select>
+
+</mapper>
