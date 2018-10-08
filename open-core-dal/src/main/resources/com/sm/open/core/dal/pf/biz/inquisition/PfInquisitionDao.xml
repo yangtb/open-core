@@ -48,7 +48,7 @@
         )
     </insert>
 
-    <insert id="saveAnswer">
+    <insert id="saveAnswer" useGeneratedKeys="true" keyProperty="idAnswer">
         INSERT INTO bas_inques_answer
         (
                 des_answer,
@@ -234,8 +234,7 @@
             bas_inques_answer bia left join bas_media bm on bia.id_media = bm.id_media
         where
             bia.fg_valid = '0'
-        and bia.id_inques = 1
-        and id_inques = #{idInques}
+        and bia.id_inques = #{idInques}
     </select>
 
 </mapper>

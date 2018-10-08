@@ -79,13 +79,13 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
     }
 
     @Override
-    public boolean saveAnswer(BasInquesAnswer dto) {
+    public Long saveAnswer(BasInquesAnswer dto) {
         Integer num;
         if (dto.getIdAnswer() == null) {
             num = pfInquisitionDao.saveAnswer(dto);
         } else {
             num = pfInquisitionDao.editAnswer(dto);
         }
-        return num == 1 ? true : false;
+        return num == 1 ? dto.getIdAnswer() : null;
     }
 }

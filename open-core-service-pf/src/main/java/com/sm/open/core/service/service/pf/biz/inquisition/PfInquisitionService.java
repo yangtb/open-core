@@ -111,5 +111,5 @@ public interface PfInquisitionService {
      * @param dto
      * @return
      */
-    boolean saveAnswer(BasInquesAnswer dto);
+    Long saveAnswer(BasInquesAnswer dto);
 }

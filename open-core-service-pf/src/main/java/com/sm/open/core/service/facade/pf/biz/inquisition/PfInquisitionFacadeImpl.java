@@ -199,7 +199,7 @@ public class PfInquisitionFacadeImpl implements PfInquisitionFacade {
     }
 
     @Override
-    public CommonResult<Boolean> saveAnswer(BasInquesAnswerParam param) {
+    public CommonResult<Long> saveAnswer(BasInquesAnswerParam param) {
         try {
             /* 参数校验 */
             Assert.isTrue(StringUtils.isNotBlank(param.getDesAnswer()), "desAnswer");

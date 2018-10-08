@@ -105,6 +105,6 @@ public interface PfInquisitionFacade {
      * @param param
      * @return
      */
-    CommonResult<Boolean> saveAnswer(BasInquesAnswerParam param);
+    CommonResult<Long> saveAnswer(BasInquesAnswerParam param);
 
 }
