@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.check.PfCheckDao">
+
+    <insert id="addQuestionClassify" useGeneratedKeys="true" keyProperty="idBodyCa">
+        INSERT INTO bas_body_ca
+        (
+                name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+            <if test="fgActive!=null">
+                fg_active,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+            <if test="fgActive!=null">
+                #{fgActive},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <insert id="addQuestion">
+        INSERT INTO bas_body
+        (
+            des_body,
+            sd_body,
+            id_body_ca,
+            cd_check,
+            fg_active,
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{desBody},
+            #{sdBody},
+            #{idBodyCa},
+            #{cdCheck},
+            #{fgActive},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+
+    <insert id="saveAnswer"  useGeneratedKeys="true" keyProperty="idResult">
+        INSERT INTO bas_body_result
+        (
+                des_result,
+                id_body,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+                fg_reason,
+                fg_back,
+            <if test="desExpert!=null">
+                des_expert,
+            </if>
+                fg_tag,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{desResult},
+                #{idBody},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+                #{fgReason},
+                #{fgBack},
+            <if test="desExpert!=null">
+                #{desExpert},
+            </if>
+                #{fgTag},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editQuestionClassify">
+        UPDATE bas_body_ca
+        SET
+            name = #{name},
+            <if test="idPar != null and idPar!=''">
+            id_par = #{idPar},
+            </if>
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body_ca = #{idBodyCa}
+    </update>
+
+    <update id="delQuestionClassify">
+        UPDATE bas_body_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body_ca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <update id="editQuestion">
+        UPDATE bas_body
+        SET
+            des_body = #{desBody},
+            sd_body = #{sdBody},
+            id_body_ca = #{idBodyCa},
+            cd_check = #{cdCheck},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body = #{idBody}
+    </update>
+
+    <update id="delQuestion">
+        UPDATE bas_body
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    
+    <update id="editAnswer">
+        UPDATE bas_body_result
+        SET
+            des_result = #{desResult},
+            id_body = #{idBody},
+            <if test="idMedia != null">
+                id_media = #{idMedia},
+            </if>
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            <if test="desExpert != null and desExpert!=''">
+                des_expert = #{desExpert},
+            </if>
+            fg_tag = #{fgTag},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_result = #{idResult}
+    </update>
+
+    <update id="delAnswer">
+        UPDATE bas_body_result
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_result in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_body_ca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            bas_body_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+
+    <select id="countQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_body
+        WHERE
+            fg_valid = '0'
+        AND id_body_ca = #{idBodyCa}
+        <if test="desBody != null and desBody != '' ">
+            AND des_body like concat('%',#{desBody},'%')
+        </if>
+    </select>
+
+    <select id="listQuestion" resultType="com.sm.open.core.model.entity.BasBody">
+        SELECT
+            bb.id_body, bb.des_body, bb.sd_body, bb.id_body_ca, bbc.name as idBodyCaText,
+            bb.cd_check, bb.fg_active,
+            bb.fg_valid, bb.creator, bb.gmt_create, bb.operator, bb.gmt_modify
+        FROM
+            bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.fg_valid = '0'
+        AND bb.id_body_ca = #{idBodyCa}
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasBodyResult">
+        select
+            bbr.id_result, bbr.des_result, bbr.id_body, bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert, 
+            bbr.fg_tag, bbr.fg_active, bbr.fg_valid, bbr.creator, bbr.gmt_create, bbr.operator, bbr.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_body_result bbr left join bas_media bm on bbr.id_media = bm.id_media
+        where
+            bbr.fg_valid = '0'
+        and bbr.id_body = #{idBody}
+    </select>
+
+</mapper>
