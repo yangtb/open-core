@@ -30,6 +30,11 @@ public class BasItemResult extends BasMediaVo implements Serializable {
     /**
      * 结果值
      */
+    private String valResult;
+
+    /**
+     * 结果说明
+     */
     private String desResult;
 
     /**

@@ -61,7 +61,10 @@
     <insert id="saveAnswer" useGeneratedKeys="true" keyProperty="idResult">
         INSERT INTO bas_item_result
         (
+                val_result,
+            <if test="desResult!=null">
                 des_result,
+            </if>
                 id_inspect_item,
             <if test="idMedia!=null">
                 id_media,
@@ -87,7 +90,10 @@
         )
         VALUES
         (
+                #{valResult},
+            <if test="desResult!=null">
                 #{desResult},
+            </if>
                 #{idInspectItem},
             <if test="idMedia!=null">
                 #{idMedia},
@@ -170,6 +176,7 @@
     <update id="editAnswer">
         UPDATE bas_item_result
         SET
+            val_result = #{valResult},
             des_result = #{desResult},
             id_inspect_item = #{idInspectItem},
             id_media = #{idMedia},
@@ -244,7 +251,7 @@
 
     <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasItemResult">
         select
-            bir.id_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money, 
+            bir.id_result, bir.val_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money,
             bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.
             fg_tag, bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
 	        bm.sd_type, bm.path
