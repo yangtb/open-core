@@ -82,4 +82,22 @@ public interface PfDicDao {
      */
     int isExistEnum(@Param("dictCode") String dictCode,
                     @Param("groupCode") String groupCode);
+
+    /**
+     * 根据id查询字典信息
+     *
+     * @param id 主键
+     * @return
+     */
+    SysDictionary selectDicInfoById(@Param("id") Long id);
+
+    /**
+     * 更新字典groupCode
+     *
+     * @param oldGroupCode 原groupCode
+     * @param newGroupCode 新groupCode
+     * @return
+     */
+    Integer updateDicGroup(@Param("oldGroupCode") String oldGroupCode,
+                           @Param("newGroupCode") String newGroupCode);
 }

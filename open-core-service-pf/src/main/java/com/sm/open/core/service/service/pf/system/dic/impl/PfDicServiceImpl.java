@@ -50,7 +50,14 @@ public class PfDicServiceImpl implements PfDicService {
 
     @Override
     public boolean editDic(SysDictionary dto) {
-        return pfDicDao.editDic(dto) == 1 ? true : false;
+        Integer num;
+        SysDictionary oldDic = pfDicDao.selectDicInfoById(dto.getId());
+        num = pfDicDao.editDic(dto);
+        if (!oldDic.getDictCode().equals(dto.getDictCode())) {
+            // 更新字典所属group
+            pfDicDao.updateDicGroup(oldDic.getDictCode(), dto.getDictCode());
+        }
+        return num == 1 ? true : false;
     }
 
     @Override

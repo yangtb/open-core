@@ -97,6 +97,16 @@
         SELECT COUNT(1) FROM sys_dictionary WHERE dict_code = #{dictCode} AND group_code = #{groupCode}
     </select>
 
+    <select id="selectDicInfoById" resultType="com.sm.open.core.model.entity.SysDictionary">
+        SELECT
+            id ,group_name , group_code , dict_name , dict_code ,
+            ext_value , gmt_create , gmt_modify , status , sort_num , operator , remark , sys_type
+        FROM
+            sys_dictionary
+        WHERE
+            id = #{id}
+    </select>
+
     <!-- 新增字典 -->
     <insert id="addDic" parameterType="com.sm.open.core.model.entity.SysDictionary">
         INSERT INTO sys_dictionary (
@@ -129,6 +139,10 @@
             gmt_modify = NOW()
         WHERE
         id = #{id}
+    </update>
+
+    <update id="updateDicGroup">
+        update sys_dictionary set group_code = #{newGroupCode} where group_code = #{oldGroupCode};
     </update>
 
     <!-- 删除字典 -->
