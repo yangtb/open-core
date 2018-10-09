@@ -7,6 +7,8 @@ import com.sm.open.core.facade.model.result.pf.system.param.SysParamResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
+import java.util.List;
+
 /**
  * @ClassName: PfParamFacade
  * @Description: 参数facade接口
@@ -47,4 +49,10 @@ public interface PfParamFacade {
      */
     CommonResult<Boolean> changeStatus(PfParamListParam param);
 
+    /**
+     * 查询所有参数
+     *
+     * @return
+     */
+    CommonResult<List<SysParamResult>> listAllParam();
 }

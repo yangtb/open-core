@@ -9,7 +9,8 @@ package com.sm.open.core.model.enums;
 public enum SysParamEnum {
 
     ORG_TRIAL_SWITCH("orgTrialSwitch", "是否开启机构试用"),
-    ORG_EXPIRY_DAY("orgExpiryDay", "机构试用有效期");
+    ORG_EXPIRY_DAY("orgExpiryDay", "机构试用有效期"),
+    VISITOR_SWITCH("visitorSwitch","是否开启游客功能");
 
     private String code;
     private String desc;
