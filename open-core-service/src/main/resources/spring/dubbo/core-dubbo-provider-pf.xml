@@ -59,4 +59,8 @@
     <!-- 检验服务 -->
     <dubbo:service ref="pfExamFacade" interface="com.sm.open.core.facade.pf.biz.exam.PfExamFacade"/>
 
+    <!-- 临床模板服务 -->
+    <dubbo:service ref="pfClinicTemplateFacade" interface="com.sm.open.core.facade.pf.biz.clinic.PfClinicTemplateFacade"/>
+
+
 </beans>
