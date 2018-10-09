@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.clinic.PfClinicTemplateDao">
+    <insert id="addClassify" useGeneratedKeys="true" keyProperty="idDemoCa">
+        INSERT INTO bas_demo_ca
+        (
+            name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <insert id="addTemplate" useGeneratedKeys="true" keyProperty="idDemo">
+        INSERT INTO bas_demo
+        (
+            name,
+            id_demo_ca,
+            fg_active,
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            #{idDemoCa},
+            #{fgActive},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <insert id="saveTag" useGeneratedKeys="true" keyProperty="idTag">
+        INSERT INTO bas_demo_tag
+        (
+            name,
+            id_demo,
+            sd_tag,
+            fg_show_exec,
+            fg_active,
+            <if test="sort!=null">
+                sort,
+            </if>
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            #{idDemo},
+            #{sdTag},
+            #{fgShowExec},
+            #{fgActive},
+            <if test="sort!=null">
+                #{sort},
+            </if>
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <update id="editClassify">
+        UPDATE bas_demo_ca
+        SET
+                name = #{name},
+            <if test="idPar != null">
+                id_par = #{idPar},
+            </if>
+            <if test="fgActive != null and fgActive != ''">
+                fg_active = #{fgActive},
+            </if>
+                operator = #{operator},
+                gmt_modify = now()
+        WHERE
+            id_demo_ca = #{idDemoCa}
+    </update>
+    <update id="editTemplate">
+        UPDATE bas_demo
+        SET
+            name = #{name},
+            id_demo_ca = #{idDemoCa},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_demo = #{idDemo}
+    </update>
+    <update id="editTag">
+        UPDATE bas_demo_tag
+        SET
+            name = #{name},
+            id_demo = #{idDemo},
+            sd_tag = #{sdTag},
+            fg_show_exec = #{fgShowExec},
+            fg_active = #{fgActive},
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_tag = #{idTag}
+    </update>
+    <update id="delClassify">
+        UPDATE bas_demo_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_demo_ca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delTemplate">
+        UPDATE bas_demo
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+          id_demo in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+
+    </update>
+    <update id="delTag">
+        UPDATE bas_demo_tag
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+          id_tag in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+
+    <select id="listClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_demo_ca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            bas_demo_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+    <select id="countTemplate" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_demo
+        WHERE
+            fg_valid = '0'
+        AND id_demo_ca = #{idDemoCa}
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="listTemplate" resultType="com.sm.open.core.model.entity.BasDemo">
+        SELECT
+            bd.id_demo, bd.name, bd.id_demo_ca, bd.fg_active, bd.fg_valid, 
+            bd.creator, bd.gmt_create, bd.operator, bd.gmt_modify,
+            bdc.name as idDemoCaText
+        FROM
+            bas_demo bd left join bas_demo_ca bdc on bd.id_demo_ca = bdc.id_demo_ca
+        WHERE
+            bd.fg_valid = '0'
+        AND bd.id_demo_ca =  #{idDemoCa}
+        <if test="name != null and name != '' ">
+            AND bd.name like concat('%',#{name},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listTag" resultType="com.sm.open.core.model.entity.BasDemoTag">
+        select
+	        id_tag, name, id_demo, sd_tag, fg_show_exec, fg_active,
+	        fg_valid, sort, creator, gmt_create, operator, gmt_modify
+        from
+            bas_demo_tag
+        where
+            fg_valid = '0'
+        and id_demo = #{idDemo}
+        order by sort
+    </select>
+</mapper>
