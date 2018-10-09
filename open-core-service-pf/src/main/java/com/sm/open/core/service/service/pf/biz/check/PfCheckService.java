@@ -1,12 +1,10 @@
 package com.sm.open.core.service.service.pf.biz.check;
 
-import com.sm.open.core.facade.model.result.pf.biz.check.BasBodyResultResult;
 import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.BasBody;
 import com.sm.open.core.model.entity.BasBodyCa;
 import com.sm.open.core.model.entity.BasBodyResult;
-import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 
 import java.util.List;

@@ -108,7 +108,9 @@
             <if test="idPar != null and idPar!=''">
             id_par = #{idPar},
             </if>
+            <if test="fgActive != null and fgActive != ''">
             fg_active = #{fgActive},
+            </if>
             operator = #{operator},
             gmt_modify = now()
         WHERE
