@@ -1,9 +1,9 @@
 package com.sm.open.core.dal.pf.biz.casehistory;
 
 import com.sm.open.core.model.dto.pf.biz.casehistory.PfCaseHistoryDto;
-import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.entity.*;
+import com.sm.open.core.model.entity.FaqMedicalrec;
+import com.sm.open.core.model.entity.FaqMedicalrecCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import org.springframework.stereotype.Repository;
