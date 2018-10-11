@@ -34,4 +34,11 @@ public class PfClinicTemplateConstant {
 
     public static final String DEL_TAG_ERROR                               = "delTagFailed";
     public static final String DEL_TAG_ERROR_MSG                           = "删除标签失败";
+
+    public static final String LIST_ALL_BAS_DEMO_ERROR                     = "listAllBasDemoFailed";
+    public static final String LIST_ALL_BAS_DEMO_ERROR_MSG                 = "获取所有模板失败";
+
+
+    public static final String LIST_TAG_BY_IDDEMO_ERROR                    = "listTagByIdDemoFailed";
+    public static final String LIST_TAG_BY_IDDEMO_ERROR_MSG                = "根据idDemo查询模板标签是啊比";
 }

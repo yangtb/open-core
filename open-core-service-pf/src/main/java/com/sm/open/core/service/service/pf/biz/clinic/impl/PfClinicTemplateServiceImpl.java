@@ -84,4 +84,9 @@ public class PfClinicTemplateServiceImpl implements PfClinicTemplateService {
         }
         return num == 1 ? dto.getIdTag() : null;
     }
+
+    @Override
+    public List<BasDemo> listAllBasDemo() {
+        return pfClinicTemplateDao.listAllBasDemo();
+    }
 }

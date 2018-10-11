@@ -9,7 +9,6 @@ import com.sm.open.core.facade.model.param.pf.biz.clinic.BasDemoTagParam;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.PfClinicTemplateParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
-import com.sm.open.core.facade.model.result.pf.biz.check.BasBodyCheckResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoTagResult;
 import com.sm.open.core.facade.model.rpc.*;
@@ -165,7 +164,7 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
         } catch (Exception e) {
             LOGGER.error("【PfClinicTemplateFacadeImpl-delTemplate】删除模板失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
-                    PfClinicTemplateConstant.DEL_TAG_ERROR, PfClinicTemplateConstant.DEL_TAG_ERROR_MSG));
+                    PfClinicTemplateConstant.DEL_TEMPLATE_ERROR, PfClinicTemplateConstant.DEL_TEMPLATE_ERROR_MSG));
         }
     }
 
@@ -214,6 +213,32 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
             LOGGER.error("【PfClinicTemplateFacadeImpl-saveTag】保存标签失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.SAVE_TAG_ERROR, PfClinicTemplateConstant.SAVE_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<BasDemoResult>> listAllBasDemo() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicTemplateService.listAllBasDemo(), BasDemoResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listAllBasDemo】获取所有模板失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_BAS_DEMO_ERROR, PfClinicTemplateConstant.LIST_ALL_BAS_DEMO_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<BasDemoTagResult>> listTagByIdDemo(Long idDemo) {
+        try {
+            PfClinicTemplateDto dto = new PfClinicTemplateDto();
+            dto.setIdDemo(idDemo);
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicTemplateService.listTag(dto), BasDemoTagResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listTagByIdDemo-error】根据idDemo查询模板标签，idDemo:{}", idDemo, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_TAG_BY_IDDEMO_ERROR, PfClinicTemplateConstant.LIST_TAG_BY_IDDEMO_ERROR_MSG));
         }
     }
 }

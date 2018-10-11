@@ -1,5 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.clinic;
 
+import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoResult;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.BasDemo;
@@ -111,4 +112,11 @@ public interface PfClinicTemplateService {
      * @return
      */
     Long saveTag(BasDemoTag dto);
+
+    /**
+     * 获取所有病历模板
+     *
+     * @return
+     */
+    List<BasDemo> listAllBasDemo();
 }

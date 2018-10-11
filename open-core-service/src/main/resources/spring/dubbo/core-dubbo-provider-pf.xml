@@ -62,5 +62,7 @@
     <!-- 临床模板服务 -->
     <dubbo:service ref="pfClinicTemplateFacade" interface="com.sm.open.core.facade.pf.biz.clinic.PfClinicTemplateFacade"/>
 
+    <!-- 病历库服务 -->
+    <dubbo:service ref="pfCaseHistoryFacade" interface="com.sm.open.core.facade.pf.biz.casehistory.PfCaseHistoryFacade"/>
 
 </beans>

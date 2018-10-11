@@ -212,4 +212,12 @@
         and id_demo = #{idDemo}
         order by sort
     </select>
+    <select id="listAllBasDemo" resultType="com.sm.open.core.model.entity.BasDemo">
+        SELECT
+            bd.id_demo, bd.name
+        FROM
+            bas_demo bd
+        WHERE
+            bd.fg_valid = '0'
+    </select>
 </mapper>

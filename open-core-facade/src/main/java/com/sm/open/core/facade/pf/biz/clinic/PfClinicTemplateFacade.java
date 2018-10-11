@@ -6,6 +6,8 @@ import com.sm.open.core.facade.model.param.pf.biz.clinic.BasDemoTagParam;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.PfClinicTemplateParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoTagResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PageResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -106,4 +108,19 @@ public interface PfClinicTemplateFacade {
      * @return
      */
     CommonResult<Long> saveTag(BasDemoTagParam param);
+
+    /**
+     * 查询病历所有模板
+     *
+     * @return
+     */
+    CommonResult<List<BasDemoResult>> listAllBasDemo();
+
+    /**
+     * 根据idDemo查询模板标签
+     *
+     * @param idDemo 模板id
+     * @return
+     */
+    CommonResult<List<BasDemoTagResult>> listTagByIdDemo(Long idDemo);
 }

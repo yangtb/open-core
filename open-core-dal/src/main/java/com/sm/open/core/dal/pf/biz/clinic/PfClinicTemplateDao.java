@@ -121,4 +121,10 @@ public interface PfClinicTemplateDao {
      * @return
      */
     Integer editTag(BasDemoTag dto);
+
+    /**
+     * 获取所有病历模板
+     * @return
+     */
+    List<BasDemo> listAllBasDemo();
 }
