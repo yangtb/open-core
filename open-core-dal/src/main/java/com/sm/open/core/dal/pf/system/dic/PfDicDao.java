@@ -11,6 +11,14 @@ import java.util.List;
 public interface PfDicDao {
 
     /**
+     * 字典分组总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countDicGroup(PfDicDto dto);
+
+    /**
      * 查询才单分组
      *
      * @param dto

@@ -17,6 +17,11 @@ public class PfDicServiceImpl implements PfDicService {
     private PfDicDao pfDicDao;
 
     @Override
+    public Long countDicGroup(PfDicDto dto) {
+        return pfDicDao.countDicGroup(dto);
+    }
+
+    @Override
     public List<SysDictionary> listDicGroups(PfDicDto dto) {
         return pfDicDao.listDicGroups(dto);
     }

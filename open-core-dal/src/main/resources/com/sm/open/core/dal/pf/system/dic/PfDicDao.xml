@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sm.open.core.dal.pf.system.dic.PfDicDao">
 
+    <select id="countDicGroup" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            sys_dictionary
+        WHERE
+            status = 'enabled'
+        AND group_code = 'DICTIONARY_GROUP'
+        <if test="dicName != null and dicName != ''">
+            AND dict_name LIKE concat(#{dicName},'%')
+        </if>
+    </select>
+
     <!-- 查询字典分组 -->
     <select id="listDicGroups" resultType="com.sm.open.core.model.entity.SysDictionary">
         SELECT
@@ -15,11 +28,12 @@
             sys_dictionary
         WHERE
             status = 'enabled'
+        AND group_code = 'DICTIONARY_GROUP'
         <if test="dicName != null and dicName != ''">
         AND dict_name LIKE concat(#{dicName},'%')
         </if>
-        AND group_code = 'DICTIONARY_GROUP'
         ORDER BY id
+        limit #{offset}, #{limit}
     </select>
 
     <!-- 获取字典枚举 -->
