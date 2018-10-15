@@ -246,6 +246,7 @@
         <if test="name != null and name != '' ">
             and name like concat('%',#{name},'%')
         </if>
+        limit #{offset}, #{limit}
     </select>
     <select id="countSheet" resultType="java.lang.Long">
         SELECT
@@ -270,6 +271,7 @@
         <if test="name != null and name != '' ">
             and name like concat('%',#{name},'%')
         </if>
+        limit #{offset}, #{limit}
     </select>
     <select id="countAlgorithm" resultType="java.lang.Long">
         SELECT
@@ -293,5 +295,34 @@
         <if test="name != null and name != '' ">
             and name like concat('%',#{name},'%')
         </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listAllPart" resultType="com.sm.open.core.model.entity.BasMedAsse">
+        SELECT
+            id_med_asse, cd_med_asse, name, descript, sd_med_asse, script,
+            fg_active, fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_med_asse
+        WHERE
+            fg_valid = '0'
+    </select>
+    <select id="listAllSheet" resultType="com.sm.open.core.model.entity.BasEvaAsse">
+        SELECT
+            id_eva_asse, cd_eva_asse, name, descript, sd_eva_asse, script,
+            fg_group, score_upper, score_lower, score_default, fg_active,
+            fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_eva_asse
+        WHERE
+            fg_valid = '0'
+    </select>
+    <select id="listAllAlgorithm" resultType="com.sm.open.core.model.entity.BasAlgorithm">
+        SELECT
+            id_algorithm, name, descript, sd_asses, script, fg_active,
+            fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_algorithm
+        WHERE
+            fg_valid = '0'
     </select>
 </mapper>

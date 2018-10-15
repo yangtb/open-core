@@ -92,4 +92,19 @@ public class PfClinicPartsServiceImpl implements PfClinicPartsService {
     public boolean delAlgorithm(PfBachChangeStatusDto dto) {
         return pfClinicPartsDao.delAlgorithm(dto) >= 1 ? true : false;
     }
+
+    @Override
+    public List<BasMedAsse> listAllPart() {
+        return pfClinicPartsDao.listAllPart();
+    }
+
+    @Override
+    public List<BasEvaAsse> listAllSheet() {
+        return pfClinicPartsDao.listAllSheet();
+    }
+
+    @Override
+    public List<BasAlgorithm> listAllAlgorithm() {
+        return pfClinicPartsDao.listAllAlgorithm();
+    }
 }

@@ -5,8 +5,13 @@ import com.sm.open.core.facade.model.param.pf.biz.clinic.parts.BasEvaAsseParam;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.parts.BasMedAsseParam;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.parts.PfClinicPartsParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.parts.BasAlgorithmResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.parts.BasEvaAsseResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.parts.BasMedAsseResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
+
+import java.util.List;
 
 /**
  * @ClassName: PfClinicPartsService
@@ -111,4 +116,25 @@ public interface PfClinicPartsFacade {
      * @return
      */
     CommonResult<Boolean> delAlgorithm(PfBachChangeStatusParam param);
+
+    /**
+     * all所有组件
+     *
+     * @return
+     */
+    CommonResult<List<BasMedAsseResult>> listAllPart();
+
+    /**
+     * all评估表列表
+     *
+     * @return
+     */
+    CommonResult<List<BasEvaAsseResult>> listAllSheet();
+
+    /**
+     * all算法
+     *
+     * @return
+     */
+    CommonResult<List<BasAlgorithmResult>> listAllAlgorithm();
 }

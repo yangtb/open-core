@@ -136,4 +136,25 @@ public interface PfClinicPartsDao {
      * @return
      */
     Integer delAlgorithm(PfBachChangeStatusDto dto);
+
+    /**
+     * all所有组件
+     *
+     * @return
+     */
+    List<BasMedAsse> listAllPart();
+
+    /**
+     * all评估表列表
+     *
+     * @return
+     */
+    List<BasEvaAsse> listAllSheet();
+
+    /**
+     * all算法
+     *
+     * @return
+     */
+    List<BasAlgorithm> listAllAlgorithm();
 }

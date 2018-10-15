@@ -26,6 +26,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Component("pfClinicPartsFacade")
 public class PfClinicPartsFacadeImpl implements PfClinicPartsFacade {
@@ -218,6 +219,42 @@ public class PfClinicPartsFacadeImpl implements PfClinicPartsFacade {
             LOGGER.error("【PfClinicPartsFacadeImpl-delAlgorithm】删除算法失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.DEL_ALGORITHM_ERROR, PfClinicTemplateConstant.DEL_ALGORITHM_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<BasMedAsseResult>> listAllPart() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicPartsService.listAllPart(), BasMedAsseResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicPartsFacadeImpl-listAllPart】查询所有组件失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_PART_ERROR, PfClinicTemplateConstant.LIST_ALL_PART_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<BasEvaAsseResult>> listAllSheet() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicPartsService.listAllSheet(), BasEvaAsseResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicPartsFacadeImpl-listAllSheet】查询所有评估表失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_SHEET_ERROR, PfClinicTemplateConstant.LIST_ALL_SHEET_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<BasAlgorithmResult>> listAllAlgorithm() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicPartsService.listAllAlgorithm(), BasAlgorithmResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicPartsFacadeImpl-listAlgorithm】查询所有算法失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_ALGORITHM_ERROR, PfClinicTemplateConstant.LIST_ALL_ALGORITHM_ERROR_MSG));
         }
     }
 }
