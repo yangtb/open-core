@@ -29,5 +29,9 @@ public class PfCommonZtreeVo implements Serializable {
      * 节点打开状态
      */
     private boolean     open;
+    /**
+     * 扩展字段
+     */
+    private String ext;
 
 }
