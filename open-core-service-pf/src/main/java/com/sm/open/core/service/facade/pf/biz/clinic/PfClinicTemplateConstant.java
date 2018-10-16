@@ -53,6 +53,9 @@ public class PfClinicTemplateConstant {
     public static final String PAGE_PART_LIST_ERROR                        = "pagePartListError";
     public static final String PAGE_PART_LIST_ERROR_MSG                    = "分页查询组件列表失败";
 
+    public static final String EXIST_PART_CODE_ERROR                       = "isExistPartCode";
+    public static final String EXIST_PART_CODE_ERROR_MSG                   = "该组件编码已使用";
+
     public static final String ADD_PART_ERROR                              = "addPartFailed";
     public static final String ADD_PART_ERROR_MSG                          = "新增组件失败";
 
@@ -64,6 +67,9 @@ public class PfClinicTemplateConstant {
 
     public static final String PAGE_SHEET_LIST_ERROR                       = "pageSheetListError";
     public static final String PAGE_SHEET_LIST_ERROR_MSG                   = "分页查询评估表列表失败";
+
+    public static final String EXIST_SHEET_CODE_ERROR                      = "isExistSheetCode";
+    public static final String EXIST_SHEET_CODE_ERROR_MSG                  = "该组件编码已使用";
 
     public static final String ADD_SHEET_ERROR                             = "addSheetFailed";
     public static final String ADD_SHEET_ERROR_MSG                         = "新增评估表失败";

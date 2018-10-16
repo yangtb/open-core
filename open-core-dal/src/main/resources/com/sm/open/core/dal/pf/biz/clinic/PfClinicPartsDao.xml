@@ -325,4 +325,10 @@
         WHERE
             fg_valid = '0'
     </select>
+    <select id="isExistPart" resultType="java.lang.Integer">
+        select count(1) from bas_med_asse where cd_med_asse = #{cdMedAsse}
+    </select>
+    <select id="isExistSheet" resultType="java.lang.Integer">
+        select count(1) from bas_eva_asse where cd_eva_asse = #{cdEvaAsse}
+    </select>
 </mapper>

@@ -29,6 +29,11 @@ public class PfClinicPartsServiceImpl implements PfClinicPartsService {
     }
 
     @Override
+    public boolean isExistPart(String cdMedAsse) {
+        return pfClinicPartsDao.isExistPart(cdMedAsse) >= 1 ? true : false;
+    }
+
+    @Override
     public boolean addPart(BasMedAsse dto) {
         return pfClinicPartsDao.addPart(dto) == 1 ? true : false;
     }
@@ -51,6 +56,11 @@ public class PfClinicPartsServiceImpl implements PfClinicPartsService {
     @Override
     public List<BasEvaAsse> listSheet(PfClinicPartsDto dto) {
         return pfClinicPartsDao.listSheet(dto);
+    }
+
+    @Override
+    public boolean isExistSheet(String cdEvaAsse) {
+        return pfClinicPartsDao.isExistSheet(cdEvaAsse) >= 1 ? true : false;
     }
 
     @Override

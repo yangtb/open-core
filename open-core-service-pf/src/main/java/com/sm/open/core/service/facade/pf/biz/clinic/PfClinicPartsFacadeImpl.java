@@ -53,6 +53,9 @@ public class PfClinicPartsFacadeImpl implements PfClinicPartsFacade {
     @Override
     public CommonResult<Boolean> addPart(BasMedAsseParam param) {
         try {
+            if (pfClinicPartsService.isExistPart(param.getCdMedAsse())) {
+                throw new BizRuntimeException(PfClinicTemplateConstant.EXIST_PART_CODE_ERROR, PfClinicTemplateConstant.EXIST_PART_CODE_ERROR_MSG);
+            }
             Assert.isTrue(StringUtils.isNotBlank(param.getName()), "name");
             return ResultFactory.initCommonResultWithSuccess(
                     pfClinicPartsService.addPart(BeanUtil.convert(param, BasMedAsse.class)));
@@ -115,6 +118,9 @@ public class PfClinicPartsFacadeImpl implements PfClinicPartsFacade {
     @Override
     public CommonResult<Boolean> addSheet(BasEvaAsseParam param) {
         try {
+            if (pfClinicPartsService.isExistPart(param.getCdEvaAsse())) {
+                throw new BizRuntimeException(PfClinicTemplateConstant.EXIST_SHEET_CODE_ERROR, PfClinicTemplateConstant.EXIST_SHEET_CODE_ERROR_MSG);
+            }
             Assert.isTrue(StringUtils.isNotBlank(param.getName()), "name");
             return ResultFactory.initCommonResultWithSuccess(
                     pfClinicPartsService.addSheet(BeanUtil.convert(param, BasEvaAsse.class)));

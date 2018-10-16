@@ -5,6 +5,7 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.BasAlgorithm;
 import com.sm.open.core.model.entity.BasEvaAsse;
 import com.sm.open.core.model.entity.BasMedAsse;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -157,4 +158,20 @@ public interface PfClinicPartsDao {
      * @return
      */
     List<BasAlgorithm> listAllAlgorithm();
+
+    /**
+     * 是否存在该组件
+     *
+     * @param cdMedAsse 组件编码
+     * @return
+     */
+    Integer isExistPart(@Param("cdMedAsse") String cdMedAsse);
+
+    /**
+     * 是否存在该评估表
+     *
+     * @param cdEvaAsse 组件编码
+     * @return
+     */
+    Integer isExistSheet(@Param("cdEvaAsse") String cdEvaAsse);
 }

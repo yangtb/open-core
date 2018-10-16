@@ -33,6 +33,14 @@ public interface PfClinicPartsService {
     List<BasMedAsse> listParts(PfClinicPartsDto dto);
 
     /**
+     * 是否存在该组件
+     *
+     * @param cdMedAsse 组件编码
+     * @return
+     */
+    boolean isExistPart(String cdMedAsse);
+
+    /**
      * 新增组件定义
      *
      * @param dto
@@ -71,6 +79,14 @@ public interface PfClinicPartsService {
      * @return
      */
     List<BasEvaAsse> listSheet(PfClinicPartsDto dto);
+
+    /**
+     * 是否存在该评估表
+     *
+     * @param cdEvaAsse 组件编码
+     * @return
+     */
+    boolean isExistSheet(String cdEvaAsse);
 
     /**
      * 新增评估表定义
