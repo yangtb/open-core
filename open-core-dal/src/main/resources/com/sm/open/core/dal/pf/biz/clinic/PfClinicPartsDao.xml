@@ -305,6 +305,7 @@
             bas_med_asse
         WHERE
             fg_valid = '0'
+        and fg_active = '1'
     </select>
     <select id="listAllSheet" resultType="com.sm.open.core.model.entity.BasEvaAsse">
         SELECT
