@@ -2,10 +2,11 @@ package com.sm.open.core.dal.pf.biz.clinic;
 
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.entity.BasDemo;
-import com.sm.open.core.model.entity.BasDemoCa;
-import com.sm.open.core.model.entity.BasDemoTag;
+import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.BasEvaTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -91,12 +92,44 @@ public interface PfClinicTemplateDao {
     Integer delTemplate(PfBachChangeStatusDto dto);
 
     /**
+     * 病历标签列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasMedicalTagVo> listCaseHistoryTag(PfClinicTemplateDto dto);
+
+    /**
+     * 删除病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    Integer delCaseHistoryTag(PfBachChangeStatusDto dto);
+
+    /**
+     * 保存病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    Long saveCaseHistoryTag(BasMedicalTag dto);
+
+    /**
+     * 编辑病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    Long editCaseHistoryTag(BasMedicalTag dto);
+
+    /**
      * 标签列表
      *
      * @param dto
      * @return
      */
-    List<BasDemoTag> listTag(PfClinicTemplateDto dto);
+    List<BasEvaTagVo> listSheetTag(PfClinicTemplateDto dto);
 
     /**
      * 删除标签信息
@@ -104,7 +137,7 @@ public interface PfClinicTemplateDao {
      * @param dto
      * @return
      */
-    Integer delTag(PfBachChangeStatusDto dto);
+    Integer delSheetTag(PfBachChangeStatusDto dto);
 
     /**
      * 保存标签信息
@@ -112,7 +145,7 @@ public interface PfClinicTemplateDao {
      * @param dto
      * @return
      */
-    Integer saveTag(BasDemoTag dto);
+    Integer saveSheetTag(BasEvaTag dto);
 
     /**
      * 编辑标签信息
@@ -120,11 +153,50 @@ public interface PfClinicTemplateDao {
      * @param dto
      * @return
      */
-    Integer editTag(BasDemoTag dto);
+    Integer editSheetTag(BasEvaTag dto);
 
     /**
      * 获取所有病历模板
      * @return
      */
     List<BasDemo> listAllBasDemo();
+
+    /**
+     * 评价维度分类tree
+     *
+     * @return
+     */
+    List<PfCommonZtreeVo> listDimensionTree();
+
+    /**
+     * 删除评估维度
+     *
+     * @param dto
+     * @return
+     */
+    Integer delDimensionTag(PfBachChangeStatusDto dto);
+
+    /**
+     * 保存评估维度
+     *
+     * @param dto
+     * @return
+     */
+    Long saveDimensionTag(BasDemoAsses dto);
+
+    /**
+     * 编辑评估维度
+     *
+     * @param dto
+     * @return
+     */
+    Long editDimensionTag(BasDemoAsses dto);
+
+    /**
+     * 查询评估维度信息
+     *
+     * @param idDimemsion
+     * @return
+     */
+    BasDemoAsses selectDimensionTagInfo(@Param("idDimemsion") Long idDimemsion);
 }

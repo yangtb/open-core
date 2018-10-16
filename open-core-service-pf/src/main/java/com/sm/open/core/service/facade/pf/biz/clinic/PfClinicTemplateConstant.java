@@ -26,14 +26,23 @@ public class PfClinicTemplateConstant {
     public static final String DEL_TEMPLATE_ERROR                          = "delTemplateFailed";
     public static final String DEL_TEMPLATE_ERROR_MSG                      = "删除模板失败";
 
-    public static final String PAGE_TAG_LIST_ERROR                         = "pageTagListError";
-    public static final String PAGE_TAG_LIST_ERROR_MSG                     = "查询模板标签列表失败";
+    public static final String PAGE_CASE_HISTORY_TAG_LIST_ERROR            = "pageCaseHistoryTagListError";
+    public static final String PAGE_CASE_HISTORY_TAG_LIST_ERROR_MSG        = "查询病历标签列表失败";
 
-    public static final String SAVE_TAG_ERROR                              = "saveTagFailed";
-    public static final String SAVE_TAG_ERROR_MSG                          = "保存标签失败";
+    public static final String SAVE_CASE_HISTORY_TAG_ERROR                 = "saveCaseHistoryTagFailed";
+    public static final String SAVE_CASE_HISTORY_TAG_ERROR_MSG             = "保存病历标签失败";
 
-    public static final String DEL_TAG_ERROR                               = "delTagFailed";
-    public static final String DEL_TAG_ERROR_MSG                           = "删除标签失败";
+    public static final String DEL_CASE_HISTORY_TAG_ERROR                  = "delCaseHistoryTagFailed";
+    public static final String DEL_CASE_HISTORY_TAG_ERROR_MSG              = "删除病历标签失败";
+
+    public static final String PAGE_SHEET_TAG_LIST_ERROR                   = "pageSheetTagListError";
+    public static final String PAGE_SHEET_TAG_LIST_ERROR_MSG               = "查询评估标签列表失败";
+
+    public static final String SAVE_SHEET_TAG_ERROR                        = "saveSheetTagFailed";
+    public static final String SAVE_SHEET_TAG_ERROR_MSG                    = "保存评估标签失败";
+
+    public static final String DEL_SHEET_TAG_ERROR                         = "delSheetTagFailed";
+    public static final String DEL_SHEET_TAG_ERROR_MSG                     = "删除评估标签失败";
 
     public static final String LIST_ALL_BAS_DEMO_ERROR                     = "listAllBasDemoFailed";
     public static final String LIST_ALL_BAS_DEMO_ERROR_MSG                 = "获取所有模板失败";
@@ -76,4 +85,26 @@ public class PfClinicTemplateConstant {
 
     public static final String DEL_ALGORITHM_ERROR                         = "delAlgorithmFailed";
     public static final String DEL_ALGORITHM_ERROR_MSG                     = "删除算法失败";
+
+    public static final String LIST_ALL_PART_ERROR                         = "listAllPartFailed";
+    public static final String LIST_ALL_PART_ERROR_MSG                     = "查询所有组件失败";
+
+    public static final String LIST_ALL_SHEET_ERROR                        = "listAllSheetFailed";
+    public static final String LIST_ALL_SHEET_ERROR_MSG                    = "查询所有评估表失败";
+
+    public static final String LIST_ALL_ALGORITHM_ERROR                    = "listAllAlgorithmFailed";
+    public static final String LIST_ALL_ALGORITHM_ERROR_MSG                = "查询所有算法失败";
+
+    public static final String LIST_DIMENSION_CLASSIFY_TREE_ERROR          = "listDimensionClassifyTreeFailed";
+    public static final String LIST_DIMENSION_CLASSIFY_TREE_ERROR_MSG      = "查询评价维度分类树失败";
+
+    public static final String SAVE_DIMENSION_ERROR                        = "saveDimensionFailed";
+    public static final String SAVE_DIMENSION_ERROR_MSG                    = "保存评估维度失败";
+
+    public static final String DEL_DIMENSION_ERROR                         = "delDimensionFailed";
+    public static final String DEL_DIMENSION_ERROR_MSG                     = "删除评估维度失败";
+
+    public static final String SELECT_DIMENSION_ERROR                      = "selectDimensionTagInfoFailed";
+    public static final String SELECT_DIMENSION_ERROR_MSG                  = "查询评估维度信息失败";
+
 }

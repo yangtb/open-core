@@ -1,12 +1,11 @@
 package com.sm.open.core.service.service.pf.biz.clinic;
 
-import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoResult;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.entity.BasDemo;
-import com.sm.open.core.model.entity.BasDemoCa;
-import com.sm.open.core.model.entity.BasDemoTag;
+import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.BasEvaTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo;
 
 import java.util.List;
 
@@ -90,12 +89,36 @@ public interface PfClinicTemplateService {
     boolean delTemplate(PfBachChangeStatusDto dto);
 
     /**
+     * 病历标签列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasMedicalTagVo> listCaseHistoryTag(PfClinicTemplateDto dto);
+
+    /**
+     * 删除病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    boolean delCaseHistoryTag(PfBachChangeStatusDto dto);
+
+    /**
+     * 保存病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    Long saveCaseHistoryTag(BasMedicalTag dto);
+
+    /**
      * 标签列表
      *
      * @param dto
      * @return
      */
-    List<BasDemoTag> listTag(PfClinicTemplateDto dto);
+    List<BasEvaTagVo> listSheetTag(PfClinicTemplateDto dto);
 
     /**
      * 删除标签信息
@@ -103,7 +126,7 @@ public interface PfClinicTemplateService {
      * @param dto
      * @return
      */
-    boolean delTag(PfBachChangeStatusDto dto);
+    boolean delSheetTag(PfBachChangeStatusDto dto);
 
     /**
      * 保存标签信息
@@ -111,7 +134,7 @@ public interface PfClinicTemplateService {
      * @param dto
      * @return
      */
-    Long saveTag(BasDemoTag dto);
+    Long saveSheetTag(BasEvaTag dto);
 
     /**
      * 获取所有病历模板
@@ -119,4 +142,35 @@ public interface PfClinicTemplateService {
      * @return
      */
     List<BasDemo> listAllBasDemo();
+
+    /**
+     * 评价维度分类tree
+     *
+     * @return
+     */
+    List<PfCommonZtreeVo> listDimensionTree();
+
+    /**
+     * 删除评估维度
+     *
+     * @param dto
+     * @return
+     */
+    boolean delDimensionTag(PfBachChangeStatusDto dto);
+
+    /**
+     * 保存评估维度
+     *
+     * @param dto
+     * @return
+     */
+    Long saveDimensionTag(BasDemoAsses dto);
+
+    /**
+     * 查询评估维度信息
+     *
+     * @param idDimemsion
+     * @return
+     */
+    BasDemoAsses selectDimensionTagInfo(Long idDimemsion);
 }

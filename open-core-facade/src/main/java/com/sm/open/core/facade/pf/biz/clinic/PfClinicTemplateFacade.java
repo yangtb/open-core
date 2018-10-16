@@ -1,11 +1,9 @@
 package com.sm.open.core.facade.pf.biz.clinic;
 
-import com.sm.open.core.facade.model.param.pf.biz.clinic.BasDemoCaParam;
-import com.sm.open.core.facade.model.param.pf.biz.clinic.BasDemoParam;
-import com.sm.open.core.facade.model.param.pf.biz.clinic.BasDemoTagParam;
-import com.sm.open.core.facade.model.param.pf.biz.clinic.PfClinicTemplateParam;
+import com.sm.open.core.facade.model.param.pf.biz.clinic.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoAssesResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoTagResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
@@ -86,28 +84,52 @@ public interface PfClinicTemplateFacade {
     CommonResult<Boolean> delTemplate(PfBachChangeStatusParam param);
 
     /**
-     * 标签列表
+     * 病历标签列表
      *
      * @param param
      * @return
      */
-    PfPageResult listTag(PfClinicTemplateParam param);
+    PfPageResult listCaseHistoryTag(PfClinicTemplateParam param);
 
     /**
-     * 删除标签信息
+     * 删除病历标签
      *
      * @param param
      * @return
      */
-    CommonResult<Boolean> delTag(PfBachChangeStatusParam param);
+    CommonResult<Boolean> delCaseHistoryTag(PfBachChangeStatusParam param);
 
     /**
-     * 保存标签信息
+     * 保存病历标签
      *
      * @param param
      * @return
      */
-    CommonResult<Long> saveTag(BasDemoTagParam param);
+    CommonResult<Long> saveCaseHistoryTag(BasMedicalTagParam param);
+
+    /**
+     * 标签评估列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listSheetTag(PfClinicTemplateParam param);
+
+    /**
+     * 删除评估标签信息
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delSheetTag(PfBachChangeStatusParam param);
+
+    /**
+     * 保存评估标签信息
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveSheetTag(BasEvaTagParam param);
 
     /**
      * 查询病历所有模板
@@ -123,4 +145,35 @@ public interface PfClinicTemplateFacade {
      * @return
      */
     CommonResult<List<BasDemoTagResult>> listTagByIdDemo(Long idDemo);
+
+    /**
+     * 评价维度分类tree
+     *
+     * @return
+     */
+    CommonResult<List<PfCommonZtreeResult>> listDimensionTree();
+
+    /**
+     * 删除评估维度
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delDimensionTag(PfBachChangeStatusParam param);
+
+    /**
+     * 保存评估维度
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveDimensionTag(BasDemoAssesParam param);
+
+    /**
+     * 根据id查询评估维度信息
+     *
+     * @param idDimemsion
+     * @return
+     */
+    CommonResult<BasDemoAssesResult> selectDimensionTagInfo(Long idDimemsion);
 }
