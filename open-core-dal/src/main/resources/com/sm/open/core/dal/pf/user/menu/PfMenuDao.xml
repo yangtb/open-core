@@ -49,6 +49,9 @@
             sys_function sf
         WHERE
             1 = 1
+        <if test="parentCode != null and parentCode != ''">
+            AND sf.parent_code = #{parentCode}
+        </if>
         <if test="name != null and name != ''">
             AND sf.name LIKE concat('%', #{name},'%')
         </if>
@@ -70,6 +73,9 @@
             sys_function sf
         WHERE
             1 = 1
+        <if test="parentCode != null and parentCode != ''">
+            AND sf.parent_code = #{parentCode}
+        </if>
         <if test="name != null and name != ''">
             AND sf.name LIKE concat('%', #{name},'%')
         </if>
