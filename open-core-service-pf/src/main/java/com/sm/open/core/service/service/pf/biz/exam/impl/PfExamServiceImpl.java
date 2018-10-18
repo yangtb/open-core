@@ -64,7 +64,6 @@ public class PfExamServiceImpl implements PfExamService {
 
     @Override
     public boolean delQuestion(PfBachChangeStatusDto dto) {
-        dto.setStatus(YesOrNoNum.YES.getCode());
         return pfExamDao.delQuestion(dto) >= 1 ? true : false;
     }
 

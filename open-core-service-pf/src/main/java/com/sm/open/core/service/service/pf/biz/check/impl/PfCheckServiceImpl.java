@@ -64,7 +64,6 @@ public class PfCheckServiceImpl implements PfCheckService {
 
     @Override
     public boolean delQuestion(PfBachChangeStatusDto dto) {
-        dto.setStatus(YesOrNoNum.YES.getCode());
         return pfCheckDao.delQuestion(dto) >= 1 ? true : false;
     }
 

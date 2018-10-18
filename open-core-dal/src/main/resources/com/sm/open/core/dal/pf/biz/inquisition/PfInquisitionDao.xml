@@ -141,7 +141,14 @@
     <update id="delQuestion">
         UPDATE bas_inques
         SET
-            fg_valid = #{status},
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+            </otherwise>
+        </choose>
             operator = #{operator},
             gmt_modify = now()
         WHERE

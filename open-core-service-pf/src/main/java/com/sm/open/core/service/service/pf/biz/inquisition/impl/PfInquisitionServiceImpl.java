@@ -64,7 +64,6 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
 
     @Override
     public boolean delQuestion(PfBachChangeStatusDto dto) {
-        dto.setStatus(YesOrNoNum.YES.getCode());
         return pfInquisitionDao.delQuestion(dto) >= 1 ? true : false;
     }
 
