@@ -1,6 +1,6 @@
-package com.sm.open.core.facade.model.param.pf.biz.casehistory;
+package com.sm.open.core.model.dto.pf.biz.kb.casehistory;
 
-import com.sm.open.core.facade.model.rpc.PfPageParam;
+import com.sm.open.core.model.param.PageParam;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -10,15 +10,15 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class PfCaseHistoryParam extends PfPageParam implements Serializable {
+public class PfCaseHistoryDto extends PageParam implements Serializable {
 
     /**
-     * 病历id
+     * 病例id
      */
     private Long idMedicalrec;
 
     /**
-     * 病历名称
+     * 病例名称
      */
     private String name;
 

@@ -1,4 +1,4 @@
-package com.sm.open.core.facade.model.result.pf.biz.casehistory;
+package com.sm.open.core.facade.model.result.pf.biz.kb.casehistory;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 知识库_病历分类
+ * 知识库_病例分类
  *
  * @author author
  */

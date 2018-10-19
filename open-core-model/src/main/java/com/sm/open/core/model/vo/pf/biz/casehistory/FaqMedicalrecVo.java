@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * 知识库_病历
+ * 知识库_病例
  *
  * @author author
  */
@@ -26,7 +26,7 @@ public class FaqMedicalrecVo extends FaqMedicalrec implements Serializable {
     private String idMedicalrecCaText;
 
     /**
-     * 病历模板名称
+     * 病例模板名称
      */
     private String chtName;
 

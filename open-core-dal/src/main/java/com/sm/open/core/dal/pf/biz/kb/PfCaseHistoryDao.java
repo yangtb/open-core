@@ -1,6 +1,6 @@
-package com.sm.open.core.dal.pf.biz.casehistory;
+package com.sm.open.core.dal.pf.biz.kb;
 
-import com.sm.open.core.model.dto.pf.biz.casehistory.PfCaseHistoryDto;
+import com.sm.open.core.model.dto.pf.biz.kb.casehistory.PfCaseHistoryDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.FaqMedicalrec;
 import com.sm.open.core.model.entity.FaqMedicalrecCa;
@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @ClassName: PfCaseHistoryDao
- * @Description: 病历库dao
+ * @Description: 病例库dao
  * @Author yangtongbin
  * @Date 2018/10/10
  */

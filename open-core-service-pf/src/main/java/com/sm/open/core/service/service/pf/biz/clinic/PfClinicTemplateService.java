@@ -89,7 +89,7 @@ public interface PfClinicTemplateService {
     boolean delTemplate(PfBachChangeStatusDto dto);
 
     /**
-     * 病历标签列表
+     * 病例标签列表
      *
      * @param dto
      * @return
@@ -97,7 +97,7 @@ public interface PfClinicTemplateService {
     List<BasMedicalTagVo> listCaseHistoryTag(PfClinicTemplateDto dto);
 
     /**
-     * 删除病历标签信息
+     * 删除病例标签信息
      *
      * @param dto
      * @return
@@ -105,7 +105,7 @@ public interface PfClinicTemplateService {
     boolean delCaseHistoryTag(PfBachChangeStatusDto dto);
 
     /**
-     * 保存病历标签信息
+     * 保存病例标签信息
      *
      * @param dto
      * @return
@@ -137,7 +137,7 @@ public interface PfClinicTemplateService {
     Long saveSheetTag(BasEvaTag dto);
 
     /**
-     * 获取所有病历模板
+     * 获取所有病例模板
      *
      * @return
      */

@@ -84,7 +84,7 @@ public interface PfClinicTemplateFacade {
     CommonResult<Boolean> delTemplate(PfBachChangeStatusParam param);
 
     /**
-     * 病历标签列表
+     * 病例标签列表
      *
      * @param param
      * @return
@@ -92,7 +92,7 @@ public interface PfClinicTemplateFacade {
     PfPageResult listCaseHistoryTag(PfClinicTemplateParam param);
 
     /**
-     * 删除病历标签
+     * 删除病例标签
      *
      * @param param
      * @return
@@ -100,7 +100,7 @@ public interface PfClinicTemplateFacade {
     CommonResult<Boolean> delCaseHistoryTag(PfBachChangeStatusParam param);
 
     /**
-     * 保存病历标签
+     * 保存病例标签
      *
      * @param param
      * @return
@@ -132,7 +132,7 @@ public interface PfClinicTemplateFacade {
     CommonResult<Long> saveSheetTag(BasEvaTagParam param);
 
     /**
-     * 查询病历所有模板
+     * 查询病例所有模板
      *
      * @return
      */

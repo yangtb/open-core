@@ -1,6 +1,6 @@
-package com.sm.open.core.service.service.pf.biz.casehistory;
+package com.sm.open.core.service.service.pf.biz.kb;
 
-import com.sm.open.core.model.dto.pf.biz.casehistory.PfCaseHistoryDto;
+import com.sm.open.core.model.dto.pf.biz.kb.casehistory.PfCaseHistoryDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.FaqMedicalrec;
 import com.sm.open.core.model.entity.FaqMedicalrecCa;
@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @ClassName: PfCaseHistoryService
- * @Description: 病历service
+ * @Description: 病例service
  * @Author yangtongbin
  * @Date 2018/10/10
  */

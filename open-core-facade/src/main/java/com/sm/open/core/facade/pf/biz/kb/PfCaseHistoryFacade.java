@@ -1,8 +1,8 @@
-package com.sm.open.core.facade.pf.biz.casehistory;
+package com.sm.open.core.facade.pf.biz.kb;
 
-import com.sm.open.core.facade.model.param.pf.biz.casehistory.FaqMedicalrecCaParam;
-import com.sm.open.core.facade.model.param.pf.biz.casehistory.FaqMedicalrecParam;
-import com.sm.open.core.facade.model.param.pf.biz.casehistory.PfCaseHistoryParam;
+import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecCaParam;
+import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecParam;
+import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.PfCaseHistoryParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
@@ -12,7 +12,7 @@ import java.util.List;
 
 /**
  * @ClassName: PfCaseHistoryFacade
- * @Description: 病历facade服务
+ * @Description: 病例facade服务
  * @Author yangtongbin
  * @Date 2018/10/10
  */

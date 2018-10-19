@@ -27,13 +27,13 @@ public class PfClinicTemplateConstant {
     public static final String DEL_TEMPLATE_ERROR_MSG                      = "删除模板失败";
 
     public static final String PAGE_CASE_HISTORY_TAG_LIST_ERROR            = "pageCaseHistoryTagListError";
-    public static final String PAGE_CASE_HISTORY_TAG_LIST_ERROR_MSG        = "查询病历标签列表失败";
+    public static final String PAGE_CASE_HISTORY_TAG_LIST_ERROR_MSG        = "查询病例标签列表失败";
 
     public static final String SAVE_CASE_HISTORY_TAG_ERROR                 = "saveCaseHistoryTagFailed";
-    public static final String SAVE_CASE_HISTORY_TAG_ERROR_MSG             = "保存病历标签失败";
+    public static final String SAVE_CASE_HISTORY_TAG_ERROR_MSG             = "保存病例标签失败";
 
     public static final String DEL_CASE_HISTORY_TAG_ERROR                  = "delCaseHistoryTagFailed";
-    public static final String DEL_CASE_HISTORY_TAG_ERROR_MSG              = "删除病历标签失败";
+    public static final String DEL_CASE_HISTORY_TAG_ERROR_MSG              = "删除病例标签失败";
 
     public static final String PAGE_SHEET_TAG_LIST_ERROR                   = "pageSheetTagListError";
     public static final String PAGE_SHEET_TAG_LIST_ERROR_MSG               = "查询评估标签列表失败";

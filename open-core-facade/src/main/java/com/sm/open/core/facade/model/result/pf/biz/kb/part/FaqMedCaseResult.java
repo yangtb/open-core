@@ -1,4 +1,4 @@
-package com.sm.open.core.facade.model.param.pf.biz.clinic.parts;
+package com.sm.open.core.facade.model.result.pf.biz.kb.part;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,37 +8,37 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 基础_病例_组件定义
+ * 知识库_病例_组件案例
  *
- * @author author
+ * @author yangtongbin
  */
 @Setter
 @Getter
 @ToString
-public class BasMedAsseParam implements Serializable {
+public class FaqMedCaseResult implements Serializable {
 
-    private static final long serialVersionUID = 1539331892017L;
+    private static final long serialVersionUID = 1539746308210L;
 
     /**
      * 主键
-     * 病例组件id
+     * 病例组件案例id
      */
-    private Long idMedAsse;
+    private Long idMedCase;
+
+    /**
+     * 案例名称
+     */
+    private String name;
+
+    /**
+     * 案例描述
+     */
+    private String descript;
 
     /**
      * 病例组件编码
      */
     private String cdMedAsse;
-
-    /**
-     * 病例组件名称
-     */
-    private String name;
-
-    /**
-     * 病例组件描述
-     */
-    private String descript;
 
     /**
      * 1x 正常代码中写死 11. 普通 2x 页面嵌入 21. 页签嵌入
@@ -49,6 +49,21 @@ public class BasMedAsseParam implements Serializable {
      * 病例组件嵌入代码
      */
     private String script;
+
+    /**
+     * 组件归属
+     */
+    private Long idOrg;
+
+    /**
+     * 机构名称
+     */
+    private String orgName;
+
+    /**
+     * 使用次数
+     */
+    private Integer count;
 
     /**
      * 0 未激活 1 已激活
@@ -79,5 +94,10 @@ public class BasMedAsseParam implements Serializable {
      * 修改时间
      */
     private Date gmtModify;
+
+    /**
+     * 平台属性
+     */
+    private String fgPlat;
 
 }

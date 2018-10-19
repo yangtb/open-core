@@ -170,7 +170,7 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
             return PfResultFactory.initPagePfResultWithSuccess(0L,
                     BeanUtil.convertList(pfClinicTemplateService.listCaseHistoryTag(dto), BasMedicalTagVoResult.class));
         } catch (Exception e) {
-            LOGGER.error("【PfClinicTemplateFacadeImpl-listCaseHistoryTag-error】获取病历标签列表失败，param:{}", param.toString(), e);
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listCaseHistoryTag-error】获取病例标签列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
                     PfClinicTemplateConstant.PAGE_CASE_HISTORY_TAG_LIST_ERROR, PfClinicTemplateConstant.PAGE_CASE_HISTORY_TAG_LIST_ERROR_MSG);
         }
@@ -186,7 +186,7 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
             LOGGER.warn("【PfClinicTemplateFacadeImpl-delCaseHistoryTag】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfClinicTemplateFacadeImpl-delCaseHistoryTag】删除病历标签失败, param:" + param.toString(), e);
+            LOGGER.error("【PfClinicTemplateFacadeImpl-delCaseHistoryTag】删除病例标签失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.DEL_CASE_HISTORY_TAG_ERROR, PfClinicTemplateConstant.DEL_CASE_HISTORY_TAG_ERROR_MSG));
         }
@@ -204,7 +204,7 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
             LOGGER.warn("【PfClinicTemplateFacadeImpl-saveCaseHistoryTag】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfClinicTemplateFacadeImpl-saveCaseHistoryTag】保存病历标签失败, param:" + param.toString(), e);
+            LOGGER.error("【PfClinicTemplateFacadeImpl-saveCaseHistoryTag】保存病例标签失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.SAVE_CASE_HISTORY_TAG_ERROR, PfClinicTemplateConstant.SAVE_CASE_HISTORY_TAG_ERROR_MSG));
         }

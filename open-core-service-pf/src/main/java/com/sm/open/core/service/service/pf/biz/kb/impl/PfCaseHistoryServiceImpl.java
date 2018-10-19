@@ -1,13 +1,13 @@
-package com.sm.open.core.service.service.pf.biz.casehistory.impl;
+package com.sm.open.core.service.service.pf.biz.kb.impl;
 
-import com.sm.open.core.dal.pf.biz.casehistory.PfCaseHistoryDao;
-import com.sm.open.core.model.dto.pf.biz.casehistory.PfCaseHistoryDto;
+import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
+import com.sm.open.core.model.dto.pf.biz.kb.casehistory.PfCaseHistoryDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.FaqMedicalrec;
 import com.sm.open.core.model.entity.FaqMedicalrecCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
-import com.sm.open.core.service.service.pf.biz.casehistory.PfCaseHistoryService;
+import com.sm.open.core.service.service.pf.biz.kb.PfCaseHistoryService;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;

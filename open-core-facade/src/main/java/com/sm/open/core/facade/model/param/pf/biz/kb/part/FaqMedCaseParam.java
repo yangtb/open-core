@@ -1,4 +1,4 @@
-package com.sm.open.core.facade.model.param.pf.biz.clinic;
+package com.sm.open.core.facade.model.param.pf.biz.kb.part;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -8,38 +8,32 @@ import java.io.Serializable;
 import java.util.Date;
 
 /**
- * 基础_模板_评估标签
+ * 知识库_病例_组件案例
  *
  * @author yangtongbin
  */
 @Setter
 @Getter
 @ToString
-public class BasMedicalTagParam implements Serializable {
+public class FaqMedCaseParam implements Serializable {
 
-    private static final long serialVersionUID = 1539572667645L;
-
+    private static final long serialVersionUID = 1539746308210L;
 
     /**
      * 主键
-     * 标签id
+     * 病例组件案例id
      */
-    private Long idTag;
+    private Long idMedCase;
 
     /**
-     * 标签名称
+     * 案例名称
      */
     private String name;
 
     /**
-     * 标签logo
+     * 案例描述
      */
-    private Long idMedia;
-
-    /**
-     * 所属模板
-     */
-    private Long idDemo;
+    private String descript;
 
     /**
      * 病例组件编码
@@ -47,14 +41,24 @@ public class BasMedicalTagParam implements Serializable {
     private String cdMedAsse;
 
     /**
-     * 制作病例时是否显示
+     * 1x 正常代码中写死 11. 普通 2x 页面嵌入 21. 页签嵌入
      */
-    private String fgShowMake;
+    private String sdMedAsse;
 
     /**
-     * 执行时是否显示
+     * 病例组件嵌入代码
      */
-    private String fgShowExec;
+    private String script;
+
+    /**
+     * 组件归属
+     */
+    private Long idOrg;
+
+    /**
+     * 使用次数
+     */
+    private Integer count;
 
     /**
      * 0 未激活 1 已激活
@@ -65,11 +69,6 @@ public class BasMedicalTagParam implements Serializable {
      * 0 正常，1 删除
      */
     private String fgValid;
-
-    /**
-     * 排序
-     */
-    private Integer sort;
 
     /**
      * 创建人员

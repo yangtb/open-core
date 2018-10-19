@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.kb.PfKbPartDao">
+
+    <insert id="addKbPart" useGeneratedKeys="true" keyProperty="idMedCase">
+        INSERT INTO faq_med_case
+        (
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                cd_med_asse,
+                id_org,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+                #{cdMedAsse},
+                #{idOrg},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <update id="editKbPart">
+        UPDATE faq_med_case
+        SET
+            name = #{name},
+            descript = #{descript},
+            cd_med_asse = #{cdMedAsse},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_med_case = #{idMedCase}
+    </update>
+    <update id="delKbPart">
+        UPDATE faq_med_case
+        SET
+            <choose>
+                <when test="operationType == 'updateStatus'">
+                    fg_active = #{status},
+                </when>
+                <otherwise>
+                    fg_valid = #{status},
+                </otherwise>
+            </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_med_case in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+
+    <select id="countKbPart" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case fmc
+        LEFT JOIN sys_org so on fmc.id_org = so.id_org
+        WHERE
+            fmc.fg_valid = '0'
+        <if test="cdMedAsse != null and cdMedAsse != '' ">
+            AND fmc.cd_med_asse = #{cdMedAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fmc.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fmc.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+    </select>
+
+    <select id="listKbPart" resultType="com.sm.open.core.model.entity.FaqMedCase">
+        SELECT
+            fmc.id_med_case,fmc.name, fmc.descript, fmc.cd_med_asse,
+            fmc.id_org, fmc.count, fmc.fg_active, fmc.fg_valid, fmc.creator, fmc.gmt_create,
+            fmc.operator, fmc.gmt_modify, so.name as orgName, so.fg_plat
+        FROM
+            faq_med_case fmc
+        LEFT JOIN sys_org so on fmc.id_org = so.id_org
+        WHERE
+            fmc.fg_valid = '0'
+        <if test="cdMedAsse != null and cdMedAsse != '' ">
+            AND fmc.cd_med_asse = #{cdMedAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fmc.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fmc.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="countFaqMedCaseInques" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_inques_list
+        WHERE
+	        id_med_case = #{idMedCase}
+    </select>
+    <select id="listFaqMedCaseInques" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            id_med_case, id_inques_ca, id_inques, des_inques, id_answer, des_answer, 
+            id_media, fg_reason, fg_back, des_expert, fg_carried
+        FROM
+            faq_med_case_inques_list
+        WHERE
+            id_med_case = #{idMedCase}
+        limit #{offset}, #{limit}
+    </select>
+
+</mapper>
