@@ -4,10 +4,12 @@ import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.biz.inquisition.PfInquisitionDao;
 import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
 import com.sm.open.core.service.service.pf.biz.inquisition.PfInquisitionService;
 import org.springframework.stereotype.Service;
 
@@ -86,5 +88,15 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
             num = pfInquisitionDao.editAnswer(dto);
         }
         return num == 1 ? dto.getIdAnswer() : null;
+    }
+
+    @Override
+    public Long countSearchQuestion(PfCommonSearchDto dto) {
+        return pfInquisitionDao.countSearchQuestion(dto);
+    }
+
+    @Override
+    public List<BasInquesSearchVo> searchQuestion(PfCommonSearchDto dto) {
+        return pfInquisitionDao.searchQuestion(dto);
     }
 }

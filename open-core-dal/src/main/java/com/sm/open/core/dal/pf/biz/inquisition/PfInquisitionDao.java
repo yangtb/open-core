@@ -2,10 +2,12 @@ package com.sm.open.core.dal.pf.biz.inquisition;
 
 import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -115,4 +117,20 @@ public interface PfInquisitionDao {
      * @return
      */
     Integer editAnswer(BasInquesAnswer dto);
+
+    /**
+     * 问诊问题列表搜索总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countSearchQuestion(PfCommonSearchDto dto);
+
+    /**
+     * 问诊问题列表搜索
+     *
+     * @param dto
+     * @return
+     */
+    List<BasInquesSearchVo> searchQuestion(PfCommonSearchDto dto);
 }

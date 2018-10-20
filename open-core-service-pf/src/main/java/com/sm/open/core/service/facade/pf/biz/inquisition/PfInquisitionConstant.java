@@ -34,4 +34,7 @@ public class PfInquisitionConstant {
 
     public static final String DEL_ANSWER_ERROR                            = "delAnswerFailed";
     public static final String DEL_ANSWER_ERROR_MSG                        = "删除答案失败";
+
+    public static final String SEARCH_QUESTION_LIST_ERROR                  = "searchQuestionListError";
+    public static final String SEARCH_QUESTION_LIST_ERROR_MSG              = "搜索问题列表失败";
 }

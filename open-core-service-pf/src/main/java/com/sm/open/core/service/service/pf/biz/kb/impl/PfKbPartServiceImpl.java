@@ -4,8 +4,7 @@ import com.sm.open.core.dal.pf.biz.kb.PfKbPartDao;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.entity.FaqMedCase;
-import com.sm.open.core.model.entity.FaqMedCaseInquesList;
+import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
 import org.springframework.stereotype.Service;
 
@@ -51,5 +50,51 @@ public class PfKbPartServiceImpl implements PfKbPartService {
     @Override
     public List<FaqMedCaseInquesList> listFaqMedCaseInques(PfPartCommonDto dto) {
         return pfKbPartDao.listFaqMedCaseInques(dto);
+    }
+
+    @Override
+    public Long saveFaqMedCaseInques(FaqMedCaseInquesList dto) {
+        Integer num;
+        if (dto.getIdMedCaseList() == null) {
+            num = pfKbPartDao.saveFaqMedCaseInques(dto);
+        } else {
+            num = pfKbPartDao.editFaqMedCaseInques(dto);
+        }
+        return num == 1 ? dto.getIdMedCaseList() : null;
+    }
+
+    @Override
+    public boolean delFaqMedCaseInques(PfBachChangeStatusDto dto) {
+        return pfKbPartDao.delFaqMedCaseInques(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public boolean saveKbText(FaqMedCaseText dto) {
+        return pfKbPartDao.saveKbText(dto) == 1 ? true : false;
+    }
+
+    @Override
+    public FaqMedCaseText selectKbText(Long idMedCase) {
+        return pfKbPartDao.selectKbText(idMedCase);
+    }
+
+    @Override
+    public boolean saveKbPic(FaqMedCasePic dto) {
+        return pfKbPartDao.saveKbPic(dto) == 1 ? true : false;
+    }
+
+    @Override
+    public FaqMedCasePic selectKbPic(Long idMedCase) {
+        return pfKbPartDao.selectKbPic(idMedCase);
+    }
+
+    @Override
+    public boolean saveKbPat(FaqMedCasePatient dto) {
+        return pfKbPartDao.saveKbPat(dto) == 1 ? true : false;
+    }
+
+    @Override
+    public FaqMedCasePatient selectKbPat(Long idMedCase) {
+        return pfKbPartDao.selectKbPat(idMedCase);
     }
 }

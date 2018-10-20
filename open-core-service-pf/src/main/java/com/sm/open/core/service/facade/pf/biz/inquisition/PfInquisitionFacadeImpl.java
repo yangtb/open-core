@@ -8,13 +8,16 @@ import com.sm.open.core.facade.model.param.pf.biz.inquisition.BasInquesCaParam;
 import com.sm.open.core.facade.model.param.pf.biz.inquisition.BasInquesParam;
 import com.sm.open.core.facade.model.param.pf.biz.inquisition.PfInquisitionQuestionParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonSearchParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import com.sm.open.core.facade.model.result.pf.biz.inquisition.BasInquesAnswerResult;
 import com.sm.open.core.facade.model.result.pf.biz.inquisition.BasInquesResult;
+import com.sm.open.core.facade.model.result.pf.biz.inquisition.BasInquesSearchResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.inquisition.PfInquisitionFacade;
 import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
@@ -213,6 +216,20 @@ public class PfInquisitionFacadeImpl implements PfInquisitionFacade {
             LOGGER.error("【PfInquisitionFacadeImpl-saveAnswer】保存答案失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfInquisitionConstant.SAVE_ANSWER_ERROR, PfInquisitionConstant.SAVE_ANSWER_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult<BasInquesSearchResult> searchQuestion(PfCommonSearchParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfCommonSearchDto dto = BeanUtil.convert(param, PfCommonSearchDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(pfInquisitionService.countSearchQuestion(dto),
+                    PfInquisitionBeanUtil.convertList(pfInquisitionService.searchQuestion(dto)));
+        } catch (Exception e) {
+            LOGGER.error("【PfInquisitionFacadeImpl-searchQuestion-error】搜索问题列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfInquisitionConstant.SEARCH_QUESTION_LIST_ERROR, PfInquisitionConstant.SEARCH_QUESTION_LIST_ERROR_MSG);
         }
     }
 }

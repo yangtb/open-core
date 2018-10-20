@@ -115,6 +115,7 @@
         UPDATE bas_inques_ca
         SET
             fg_valid = #{status},
+            fg_active = '0',
             operator = #{operator},
             gmt_modify = now()
         WHERE
@@ -147,6 +148,7 @@
             </when>
             <otherwise>
                 fg_valid = #{status},
+                fg_active = '0',
             </otherwise>
         </choose>
             operator = #{operator},
@@ -182,6 +184,7 @@
         UPDATE bas_inques_answer
         SET
             fg_valid = #{status},
+            fg_active = '0',
             operator = #{operator},
             gmt_modify = now()
         WHERE
@@ -242,6 +245,53 @@
         where
             bia.fg_valid = '0'
         and bia.id_inques = #{idInques}
+    </select>
+    <select id="countSearchQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_inques bi
+        LEFT JOIN bas_inques_answer bia ON bi.id_inques = bia.id_inques
+        LEFT JOIN bas_inques_ca bic ON bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.fg_active = '1'
+        AND bia.fg_active = '1'
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bia.des_answer like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+
+    <resultMap type="com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo" id="inquesResult">
+        <id property="idInques" column="id_inques" />
+        <result column="id_inques_ca" property="idInquesCa" />
+        <result column="id_inques" property="idInques" />
+        <result column="des_inques" property="desInques" />
+        <result column="idInquesCaText" property="idInquesCaText" />
+        <collection property="answerList" ofType="com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchAnswerVo">
+            <result column="id_answer" property="idAnswer" />
+            <result column="des_answer" property="desAnswer" />
+        </collection>
+    </resultMap>
+
+    <select id="searchQuestion" resultMap="inquesResult">
+        SELECT
+            bic.id_inques_ca,
+            bic.name AS idInquesCaText ,
+            bi.id_inques ,
+            bi.des_inques ,
+            bia.id_answer ,
+            bia.des_answer
+        FROM
+            bas_inques bi
+        LEFT JOIN bas_inques_answer bia ON bi.id_inques = bia.id_inques
+        LEFT JOIN bas_inques_ca bic ON bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.fg_active = '1'
+        AND bia.fg_active = '1'
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bi.des_inques like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
     </select>
 
 </mapper>
