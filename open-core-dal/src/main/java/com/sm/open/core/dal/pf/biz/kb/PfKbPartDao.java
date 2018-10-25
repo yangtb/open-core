@@ -99,6 +99,14 @@ public interface PfKbPartDao {
     Integer delFaqMedCaseInques(PfBachChangeStatusDto dto);
 
     /**
+     * 根据id查询
+     *
+     * @param dto
+     * @return
+     */
+    FaqMedCaseInquesList selectConsById(FaqMedCaseInquesList dto);
+
+    /**
      * 组件 - add文本
      *
      * @param dto
@@ -145,4 +153,100 @@ public interface PfKbPartDao {
      * @return
      */
     FaqMedCasePatient selectKbPat(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 检验列表
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseInspectList> listExams(PfPartCommonDto dto);
+
+    /**
+     * 保存检验问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer addExam(FaqMedCaseInspectList dto);
+
+    /**
+     * 保存检验问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer editExam(FaqMedCaseInspectList dto);
+
+    /**
+     * 删除检验项目
+     *
+     * @param dto
+     * @return
+     */
+    Integer delKbExam(PfBachChangeStatusDto dto);
+
+    /**
+     * 根据id查询
+     *
+     * @param dto
+     * @return
+     */
+    FaqMedCaseInspectList selectExamById(FaqMedCaseInspectList dto);
+
+    /**
+     * 检查列表
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseBodyList> listChecks(PfPartCommonDto dto);
+
+    /**
+     * 保存检查
+     *
+     * @param dto
+     * @return
+     */
+    Integer addCheck(FaqMedCaseBodyList dto);
+
+    /**
+     * 修改检查
+     *
+     * @param dto
+     * @return
+     */
+    Integer editCheck(FaqMedCaseBodyList dto);
+
+    /**
+     * 删除检查
+     *
+     * @param dto
+     * @return
+     */
+    Integer delKbCheck(PfBachChangeStatusDto dto);
+
+    /**
+     * 重载检查
+     *
+     * @param dto
+     * @return
+     */
+    FaqMedCaseBodyList selectCheckById(FaqMedCaseBodyList dto);
+
+    /**
+     * 保存检查图片
+     *
+     * @param dto
+     * @return
+     */
+    Integer saveFaqMedCaseBody(FaqMedCaseBody dto);
+
+    /**
+     * 查询检查图片
+     *
+     * @param idMedCase
+     * @return
+     */
+    FaqMedCaseBody selectFaqMedCaseBody(Long idMedCase);
 }

@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.kb.PfKbAssessDao">
+
+    <insert id="addKbAssess" useGeneratedKeys="true" keyProperty="idEvaCase">
+        INSERT INTO faq_eva_case
+        (
+                cd_eva_asse,
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                fg_group,
+                score_upper,
+                score_lower,
+                score_default,
+                id_org,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        SELECT
+            #{cdEvaAsse},
+            #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+            #{fgGroup},
+            score_upper ,
+            score_lower ,
+            score_default,
+            #{idOrg},
+            #{fgActive},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        FROM
+            bas_eva_asse
+        WHERE
+            cd_eva_asse =#{cdEvaAsse}
+    </insert>
+    <update id="editKbAssess">
+        UPDATE faq_eva_case
+        SET
+                cd_eva_asse = #{cdEvaAsse},
+                name = #{name},
+                descript = #{descript},
+                fg_group = #{fgGroup},
+                score_upper = #{scoreUpper},
+                score_lower = #{scoreLower},
+                score_default = #{scoreDefault},
+            <if test="count != null">
+                count = #{count},
+            </if>
+                fg_active = #{fgActive},
+                operator = #{operator},
+                gmt_modify = now()
+        WHERE
+            id_eva_case = #{idEvaCase}
+    </update>
+    <update id="delKbAssess">
+        UPDATE faq_eva_case
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_eva_case in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+
+    <select id="countKbAssess" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_eva_case fec
+        LEFT JOIN sys_org so on fec.id_org = so.id_org
+        WHERE
+            fec.fg_valid = '0'
+        <if test="cdEvaAsse != null and cdEvaAsse != '' ">
+            AND fec.cd_eva_asse = #{cdEvaAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fec.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fec.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+    </select>
+    <select id="listKbAssess" resultType="com.sm.open.core.model.entity.FaqEvaCase">
+        SELECT
+            fec.id_eva_case, fec.cd_eva_asse, fec.name, fec.descript, fec.fg_group, fec.score_upper,
+            fec.score_lower, fec.score_default, fec.id_org, fec.count, fec.fg_active, fec.fg_valid,
+            fec.creator, fec.gmt_create, fec.operator, fec.gmt_modify, so.name as orgName, so.fg_plat
+        FROM
+            faq_eva_case fec
+        LEFT JOIN sys_org so on fec.id_org = so.id_org
+        WHERE
+            fec.fg_valid = '0'
+        <if test="cdEvaAsse != null and cdEvaAsse != '' ">
+            AND fec.cd_eva_asse = #{cdEvaAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fec.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fec.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+</mapper>

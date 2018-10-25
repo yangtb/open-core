@@ -172,6 +172,7 @@
             </when>
             <otherwise>
                 fg_valid = #{status},
+                fg_active = '0',
             </otherwise>
         </choose>
             operator = #{operator},
@@ -192,6 +193,7 @@
             </when>
             <otherwise>
                 fg_valid = #{status},
+                fg_active = '0',
             </otherwise>
         </choose>
             operator = #{operator},
@@ -212,6 +214,7 @@
             </when>
             <otherwise>
                 fg_valid = #{status},
+                fg_active = '0',
             </otherwise>
         </choose>
             operator = #{operator},
@@ -304,8 +307,7 @@
         FROM
             bas_med_asse
         WHERE
-            fg_valid = '0'
-        and fg_active = '1'
+            fg_active = '1'
     </select>
     <select id="listAllSheet" resultType="com.sm.open.core.model.entity.BasEvaAsse">
         SELECT
@@ -315,7 +317,7 @@
         FROM
             bas_eva_asse
         WHERE
-            fg_valid = '0'
+            fg_active = '1'
     </select>
     <select id="listAllAlgorithm" resultType="com.sm.open.core.model.entity.BasAlgorithm">
         SELECT
@@ -324,7 +326,7 @@
         FROM
             bas_algorithm
         WHERE
-            fg_valid = '0'
+            fg_active = '1'
     </select>
     <select id="isExistPart" resultType="java.lang.Integer">
         select count(1) from bas_med_asse where cd_med_asse = #{cdMedAsse}

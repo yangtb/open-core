@@ -133,4 +133,20 @@ public interface PfInquisitionDao {
      * @return
      */
     List<BasInquesSearchVo> searchQuestion(PfCommonSearchDto dto);
+
+    /**
+     * 根据id查询问题
+     *
+     * @param idInques
+     * @return
+     */
+    BasInques selectBasInquesById(Long idInques);
+
+    /**
+     * 根据id查询问题答案
+     *
+     * @param idAnswer
+     * @return
+     */
+    BasInquesAnswer selectBasInquesAnswerById(Long idAnswer);
 }

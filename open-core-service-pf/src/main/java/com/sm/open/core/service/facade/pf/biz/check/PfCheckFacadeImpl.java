@@ -8,17 +8,20 @@ import com.sm.open.core.facade.model.param.pf.biz.check.BasBodyParam;
 import com.sm.open.core.facade.model.param.pf.biz.check.BasBodyResultParam;
 import com.sm.open.core.facade.model.param.pf.biz.check.PfCheckQuestionParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonSearchParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import com.sm.open.core.facade.model.result.pf.biz.check.BasBodyCheckResult;
 import com.sm.open.core.facade.model.result.pf.biz.check.BasBodyResultResult;
-import com.sm.open.core.facade.model.result.pf.biz.inquisition.BasInquesResult;
+import com.sm.open.core.facade.model.result.pf.biz.check.BasCheckSearchResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.check.PfCheckFacade;
 import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasBody;
 import com.sm.open.core.model.entity.BasBodyCa;
 import com.sm.open.core.model.entity.BasBodyResult;
+import com.sm.open.core.service.facade.pf.biz.exam.PfExamConstant;
 import com.sm.open.core.service.service.pf.biz.check.PfCheckService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -216,4 +219,19 @@ public class PfCheckFacadeImpl implements PfCheckFacade {
                     PfCheckConstant.SAVE_ANSWER_ERROR, PfCheckConstant.SAVE_ANSWER_ERROR_MSG));
         }
     }
+
+    @Override
+    public PfPageResult<BasCheckSearchResult> searchCheck(PfCommonSearchParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfCommonSearchDto dto = BeanUtil.convert(param, PfCommonSearchDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(pfCheckService.countSearchCheck(dto),
+                    PfCheckBeanUtil.convertList(pfCheckService.searchCheck(dto)));
+        } catch (Exception e) {
+            LOGGER.error("【PfExamFacadeImpl-searchCheck-error】搜索检查部位描述列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfExamConstant.SEARCH_CHECK_LIST_ERROR, PfExamConstant.SEARCH_CHECK_LIST_ERROR_MSG);
+        }
+    }
+
 }

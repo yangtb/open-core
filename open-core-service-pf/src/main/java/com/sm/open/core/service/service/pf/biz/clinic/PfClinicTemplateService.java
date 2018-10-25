@@ -1,11 +1,14 @@
 package com.sm.open.core.service.service.pf.biz.clinic;
 
+import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.BasEvaTagVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo;
 
 import java.util.List;
 
@@ -173,4 +176,20 @@ public interface PfClinicTemplateService {
      * @return
      */
     BasDemoAsses selectDimensionTagInfo(Long idDimemsion);
+
+    /**
+     * all病例标签
+     *
+     * @param idDemo
+     * @return
+     */
+    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo);
+
+    /**
+     * all评估表标签
+     *
+     * @param idDemo
+     * @return
+     */
+    List<PfAssessTagVo> listAllAssessTag(Long idDemo);
 }

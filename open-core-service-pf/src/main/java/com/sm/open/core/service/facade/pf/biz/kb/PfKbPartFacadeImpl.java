@@ -144,6 +144,27 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     }
 
     @Override
+    public CommonResult<FaqMedCaseInquesListResult> resetKbCons(FaqMedCaseInquesListParam param) {
+        try {
+            Assert.isTrue(param.getIdMedCaseList() != null, "idMedCaseList");
+            Assert.isTrue(param.getIdInques() != null, "idInques");
+            Assert.isTrue(param.getIdAnswer() != null, "idAnswer");
+
+            FaqMedCaseInquesList dto = BeanUtil.convert(param, FaqMedCaseInquesList.class);
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfKbPartService.resetKbCons(dto), FaqMedCaseInquesListResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-resetKbCons】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-resetKbCons】重载咨询问题失败,  param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.RESET_KB_CONS_ERROR, PfKbPartConstant.RESET_KB_CONS_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<Boolean> saveKbText(FaqMedCaseTextParam param) {
         try {
             Assert.isTrue(param.getIdMedCase() != null, "idMedCase");
@@ -243,6 +264,175 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
             LOGGER.error("【PfKbPartFacadeImpl-selectKbPat】查询患者信息失败, idMedCase:" + idMedCase, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfKbPartConstant.SELECT_KB_PAT_ERROR, PfKbPartConstant.SELECT_KB_PAT_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult<FaqMedCaseInspectListResult> listExams(PfPartCommonParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfKbPartService.listExams(dto), FaqMedCaseInspectListResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listExams-error】获取检验定义列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfKbPartConstant.LIST_EXAM_ERROR, PfKbPartConstant.LIST_EXAM_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveExam(FaqMedCaseInspectListParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.saveExam(BeanUtil.convert(param, FaqMedCaseInspectList.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-saveExam】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-saveExam】保存检验定义失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.SAVE_KB_EXAM_ERROR, PfKbPartConstant.SAVE_KB_EXAM_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delKbExam(PfBachChangeStatusParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (StringUtils.isBlank(param.getStatus())) {
+                param.setStatus(YesOrNoNum.YES.getCode());
+            }
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.delKbExam(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-delKbExam】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-delKbExam】删除检验项目失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.DEL_KB_EXAM_ERROR, PfKbPartConstant.DEL_KB_EXAM_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<FaqMedCaseInspectListResult> resetKbExam(FaqMedCaseInspectListParam param) {
+        try {
+            Assert.isTrue(param.getIdMedCaseList() != null, "idMedCaseList");
+            Assert.isTrue(param.getIdInspectItem() != null, "idInspectItem");
+            Assert.isTrue(param.getIdResult() != null, "idResult");
+
+            FaqMedCaseInspectList dto = BeanUtil.convert(param, FaqMedCaseInspectList.class);
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfKbPartService.resetKbExam(dto), FaqMedCaseInspectListResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-resetKbExam】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-resetKbExam】重载检验项目失败,  param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.RESET_KB_EXAM_ERROR, PfKbPartConstant.RESET_KB_EXAM_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listChecks(PfPartCommonParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfKbPartService.listChecks(dto), FaqMedCaseBodyListResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listChecks-error】获取检查列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfKbPartConstant.LIST_FAQ_MED_CASE_INQUES_ERROR, PfKbPartConstant.LIST_FAQ_MED_CASE_INQUES_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveCheck(FaqMedCaseBodyListparam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.saveCheck(BeanUtil.convert(param, FaqMedCaseBodyList.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-saveCheck】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-saveCheck】保存检查定义失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.SAVE_CHECK_ERROR, PfKbPartConstant.SAVE_CHECK_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delKbCheck(PfBachChangeStatusParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (StringUtils.isBlank(param.getStatus())) {
+                param.setStatus(YesOrNoNum.YES.getCode());
+            }
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.delKbCheck(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-delKbCheck】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-delKbCheck】删除检查失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.DEL_KB_CHECK_ERROR, PfKbPartConstant.DEL_KB_CHECK_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<FaqMedCaseBodyListResult> resetKbCheck(FaqMedCaseBodyListparam param) {
+        try {
+            Assert.isTrue(param.getIdMedCaseList() != null, "idMedCaseList");
+            Assert.isTrue(param.getIdMedCase() != null, "idMedCase");
+            Assert.isTrue(param.getIdBody() != null, "idBody");
+
+            FaqMedCaseBodyList dto = BeanUtil.convert(param, FaqMedCaseBodyList.class);
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfKbPartService.resetKbCheck(dto), FaqMedCaseBodyListResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-resetKbCheck】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-resetKbCheck】重载检查定义失败,  param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.RESET_KB_CHECK_ERROR, PfKbPartConstant.RESET_KB_CHECK_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> saveFaqMedCaseBody(FaqMedCaseBodyParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.saveFaqMedCaseBody(BeanUtil.convert(param, FaqMedCaseBody.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-saveFaqMedCaseBody】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-saveFaqMedCaseBody】保存检查定义图片失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.SAVE_FAQ_MED_CASE_BODY_ERROR, PfKbPartConstant.SAVE_FAQ_MED_CASE_BODY_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<FaqMedCaseBodyResult> selectFaqMedCaseBody(Long idMedCase) {
+        try {
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfKbPartService.selectFaqMedCaseBody(idMedCase), FaqMedCaseBodyResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-selectFaqMedCaseBody】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-selectFaqMedCaseBody】查询检查定义图片失败, idMedCase:" + idMedCase, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.SELECT_FAQ_MED_CASE_BODY_ERROR, PfKbPartConstant.SELECT_FAQ_MED_CASE_BODY_ERROR_MSG));
         }
     }
 }

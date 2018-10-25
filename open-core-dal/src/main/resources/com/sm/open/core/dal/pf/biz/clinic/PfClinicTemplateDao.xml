@@ -418,4 +418,45 @@
         WHERE
             id_dimemsion = #{idDimemsion}
     </select>
+    <select id="listAllCaseHistoryTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo">
+        SELECT
+            bmt.id_tag ,
+            bmt.fg_show_make,
+            bmt.fg_show_exec,
+            bmt.name ,
+            bmt.cd_med_asse ,
+            bm.path ,
+            bma.script
+        FROM
+            bas_medical_tag bmt
+        LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media
+        LEFT JOIN bas_med_asse bma ON bmt.cd_med_asse = bma.cd_med_asse
+        WHERE
+            bmt.fg_valid = '0'
+        AND bmt.fg_active = '1'
+        AND bmt.id_demo = #{idDemo}
+        ORDER BY
+            bmt.sort
+    </select>
+
+    <select id="listAllAssessTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo">
+        SELECT
+            bet.id_tag ,
+            bet.fg_show_make,
+            bet.fg_show_exec,
+            bet.name ,
+            bet.cd_eva_asse ,
+            bm.path ,
+            bea.script
+        FROM
+            bas_eva_tag bet
+        LEFT JOIN bas_media bm ON bet.id_media = bm.id_media
+        LEFT JOIN bas_eva_asse bea ON bea.cd_eva_asse = bet.cd_eva_asse
+        WHERE
+            bet.fg_valid = '0'
+        AND bet.fg_active = '1'
+        AND bet.id_demo = 1
+        ORDER BY
+            bet.sort
+    </select>
 </mapper>

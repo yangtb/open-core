@@ -2,10 +2,12 @@ package com.sm.open.core.dal.pf.biz.exam;
 
 import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -115,4 +117,36 @@ public interface PfExamDao {
      * @return
      */
     Integer editAnswer(BasItemResult dto);
+
+    /**
+     * 检验项目总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countSearchExam(PfCommonSearchDto dto);
+
+    /**
+     * 检验项目列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasExamSearchVo> searchExam(PfCommonSearchDto dto);
+
+    /**
+     * 根据id查询检验项目
+     *
+     * @param idInspectItem
+     * @return
+     */
+    BasInspectItem selectInspectItemById(Long idInspectItem);
+
+    /**
+     * 根据id查询检验结果
+     *
+     * @param idResult
+     * @return
+     */
+    BasItemResult selectItemResultById(Long idResult);
 }

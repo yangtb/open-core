@@ -2,9 +2,7 @@ package com.sm.open.core.facade.pf.biz.kb;
 
 import com.sm.open.core.facade.model.param.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
-import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCasePatientResult;
-import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCasePicResult;
-import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseTextResult;
+import com.sm.open.core.facade.model.result.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
@@ -63,7 +61,7 @@ public interface PfKbPartFacade {
      * @param param
      * @return
      */
-    CommonResult<Long>  saveFaqMedCaseInques(FaqMedCaseInquesListParam param);
+    CommonResult<Long> saveFaqMedCaseInques(FaqMedCaseInquesListParam param);
 
     /**
      * 删除问诊问题
@@ -72,6 +70,14 @@ public interface PfKbPartFacade {
      * @return
      */
     CommonResult<Boolean> delFaqMedCaseInques(PfBachChangeStatusParam param);
+
+    /**
+     * 重载咨询问题
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<FaqMedCaseInquesListResult> resetKbCons(FaqMedCaseInquesListParam param);
 
     /**
      * 组件 - add文本
@@ -121,4 +127,83 @@ public interface PfKbPartFacade {
      */
     CommonResult<FaqMedCasePatientResult> selectKbPat(Long idMedCase);
 
+    /**
+     * 检验列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult<FaqMedCaseInspectListResult> listExams(PfPartCommonParam param);
+
+    /**
+     * 保存检验
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveExam(FaqMedCaseInspectListParam param);
+
+    /**
+     * 删除检验组件用例
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delKbExam(PfBachChangeStatusParam param);
+
+    /**
+     * 重载检验项目
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<FaqMedCaseInspectListResult> resetKbExam(FaqMedCaseInspectListParam param);
+
+    /**
+     * 检查列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listChecks(PfPartCommonParam param);
+
+    /**
+     * 保存检查
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveCheck(FaqMedCaseBodyListparam param);
+
+    /**
+     * 删除检查
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delKbCheck(PfBachChangeStatusParam param);
+
+    /**
+     * 重载检查
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<FaqMedCaseBodyListResult> resetKbCheck(FaqMedCaseBodyListparam param);
+
+    /**
+     * 保存检查图片
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> saveFaqMedCaseBody(FaqMedCaseBodyParam param);
+
+    /**
+     * 查询检查图片
+     *
+     * @param idMedCase
+     * @return
+     */
+    CommonResult<FaqMedCaseBodyResult> selectFaqMedCaseBody(Long idMedCase);
 }

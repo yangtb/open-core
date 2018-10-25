@@ -7,6 +7,8 @@ import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.BasEvaTagVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo;
 import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -136,5 +138,15 @@ public class PfClinicTemplateServiceImpl implements PfClinicTemplateService {
     @Override
     public BasDemoAsses selectDimensionTagInfo(Long idDimemsion) {
         return pfClinicTemplateDao.selectDimensionTagInfo(idDimemsion);
+    }
+
+    @Override
+    public List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo) {
+        return pfClinicTemplateDao.listAllCaseHistoryTag(idDemo);
+    }
+
+    @Override
+    public List<PfAssessTagVo> listAllAssessTag(Long idDemo) {
+        return pfClinicTemplateDao.listAllAssessTag(idDemo);
     }
 }

@@ -268,5 +268,95 @@
             bir.fg_valid = '0'
         and bir.id_inspect_item = #{idInspectItem}
     </select>
+    <select id="countSearchExam" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+        (
+            SELECT
+                count(1)
+            FROM
+                bas_inspect_item bii
+            LEFT JOIN bas_item_result bir ON bii.id_inspect_item = bir.id_inspect_item
+            LEFT JOIN bas_inspect_ca bic ON bii.id_inspect = bic.id_inspect
+            WHERE
+                bii.fg_active = '1'
+            AND (bir.fg_active = '1' or bir.fg_active is null)
+            <if test="keywords != null and keywords != '' ">
+                AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+            </if>
+            group by bii.id_inspect_item
+        ) a
+    </select>
+    
+    <resultMap type="com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo" id="examResult">
+        <id property="idInspectItem" column="id_inspect_item" />
+        <result column="id_inspect_item" property="idInspectItem" />
+        <result column="na_item" property="naItem" />
+        <result column="id_inspect" property="idInspect" />
+        <result column="des_stand" property="desStand" />
+        <result column="na_short" property="naShort" />
+        <result column="idInspectText" property="idInspectText" />
+        <collection property="examList" ofType="com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchItemVo">
+            <result column="id_result" property="idResult" />
+            <result column="val_result" property="valResult"/>
+            <result column="des_result" property="desResult" />
+            <result column="id_media" property="idMedia" />
+            <result column="sd_type" property="sdType"/>
+            <result column="path" property="path" />
+            <result column="cost_money" property="costMoney" />
+            <result column="cost_time" property="costTime" />
+            <result column="fg_show" property="fgShow" />
+            <result column="fg_reason" property="fgReason" />
+            <result column="fg_back" property="fgBack" />
+            <result column="des_expert" property="desExpert" />
+        </collection>
+    </resultMap>
+    
+    <select id="searchExam" resultMap="examResult">
+        SELECT
+            bic.name AS idInspectText , bii.id_inspect_item ,
+            bii.na_item , bii.id_inspect , bii.na_short , bii.des_stand ,
+            bir.id_result , bir.val_result, bir.des_result , bir.id_media , bir.cost_money , bir.cost_time ,
+            bir.fg_show , bir.fg_reason , bir.fg_back , bir.des_expert,
+            bm.sd_type, bm.path
+        FROM
+            bas_inspect_item bii
+        LEFT JOIN bas_item_result bir ON bii.id_inspect_item = bir.id_inspect_item
+        LEFT JOIN bas_inspect_ca bic ON bii.id_inspect = bic.id_inspect
+        left join bas_media bm on bir.id_media = bm.id_media
+        WHERE
+            bii.fg_active = '1'
+        AND (bir.fg_active = '1' or bir.fg_active is null)
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectInspectItemById" resultType="com.sm.open.core.model.entity.BasInspectItem">
+        SELECT
+            bii.id_inspect_item, bii.na_item, bii.id_inspect, bii.na_short, bii.des_stand,
+            bii.fg_active, bii.fg_valid, bii.creator, bii.gmt_create, bii.operator, bii.gmt_modify
+        FROM
+            bas_inspect_item bii
+        WHERE
+            bii.fg_valid = '0'
+        AND bii.id_inspect_item = #{idInspectItem}
+    </select>
+
+    <select id="selectItemResultById" resultType="com.sm.open.core.model.entity.BasItemResult">
+        select
+            bir.id_result, bir.val_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money,
+            bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.
+            fg_tag, bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_item_result bir left join bas_media bm on bir.id_media = bm.id_media
+        where
+            bir.fg_valid = '0'
+        and bir.id_result = #{idResult}
+    </select>
+
 
 </mapper>

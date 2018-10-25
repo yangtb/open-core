@@ -350,4 +350,28 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
                     PfClinicTemplateConstant.SELECT_DIMENSION_ERROR, PfClinicTemplateConstant.SELECT_DIMENSION_ERROR_MSG));
         }
     }
+
+    @Override
+    public CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicTemplateService.listAllCaseHistoryTag(idDemo), PfCaseHistoryTagResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listAllCaseHistoryTag-error】获取所有病例标签失败，idDemo:{}", idDemo, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_CASE_HISTORY_TAG_ERROR, PfClinicTemplateConstant.LIST_ALL_CASE_HISTORY_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfClinicTemplateService.listAllAssessTag(idDemo), PfAssessTagResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listAllAssessTag-error】获取所有评估表标签失败，idDemo:{}", idDemo, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR, PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR_MSG));
+        }
+    }
 }

@@ -71,4 +71,6 @@
     <!-- 临床组件服务 -->
     <dubbo:service ref="pfClinicPartsFacade" interface="com.sm.open.core.facade.pf.biz.clinic.PfClinicPartsFacade"/>
 
+    <!-- 评估组件服务 -->
+    <dubbo:service ref="pfKbAssessFacade" interface="com.sm.open.core.facade.pf.biz.kb.PfKbAssessFacade"/>
 </beans>

@@ -113,4 +113,9 @@ public class PfClinicTemplateConstant {
     public static final String SELECT_DIMENSION_ERROR                      = "selectDimensionTagInfoFailed";
     public static final String SELECT_DIMENSION_ERROR_MSG                  = "查询评估维度信息失败";
 
+    public static final String LIST_ALL_CASE_HISTORY_TAG_ERROR             = "listAllCaseHistoryTagFailed";
+    public static final String LIST_ALL_CASE_HISTORY_TAG_ERROR_MSG         = "获取全部病例标签失败";
+
+    public static final String LIST_ALL_ASSESS_TAG_ERROR                   = "listAllAssessTagFailed";
+    public static final String LIST_ALL_ASSESS_TAG_ERROR_MSG               = "获取全部评估表标签失败";
 }

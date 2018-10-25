@@ -8,13 +8,16 @@ import com.sm.open.core.facade.model.param.pf.biz.exam.BasInspectItemParam;
 import com.sm.open.core.facade.model.param.pf.biz.exam.BasItemResultParam;
 import com.sm.open.core.facade.model.param.pf.biz.exam.PfExamQuestionParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonSearchParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.exam.BasExamSearchResult;
 import com.sm.open.core.facade.model.result.pf.biz.exam.BasInspectItemResult;
 import com.sm.open.core.facade.model.result.pf.biz.exam.BasItemResultResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.exam.PfExamFacade;
 import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
@@ -215,4 +218,20 @@ public class PfExamFacadeImpl implements PfExamFacade {
                     PfExamConstant.SAVE_ANSWER_ERROR, PfExamConstant.SAVE_ANSWER_ERROR_MSG));
         }
     }
+
+    @Override
+    public PfPageResult<BasExamSearchResult> searchExam(PfCommonSearchParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfCommonSearchDto dto = BeanUtil.convert(param, PfCommonSearchDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(pfExamService.countSearchExam(dto),
+                    PfExamBeanUtil.convertList(pfExamService.searchExam(dto)));
+        } catch (Exception e) {
+            LOGGER.error("【PfExamFacadeImpl-searchExam-error】搜索检验项目列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfExamConstant.SEARCH_EXAM_LIST_ERROR, PfExamConstant.SEARCH_EXAM_LIST_ERROR_MSG);
+        }
+    }
+
+
 }

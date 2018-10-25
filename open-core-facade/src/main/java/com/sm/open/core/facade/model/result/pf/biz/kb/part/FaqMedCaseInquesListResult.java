@@ -1,5 +1,6 @@
 package com.sm.open.core.facade.model.result.pf.biz.kb.part;
 
+import com.sm.open.core.facade.model.result.pf.common.media.BasMediaResult;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class FaqMedCaseInquesListResult implements Serializable {
+public class FaqMedCaseInquesListResult extends BasMediaResult implements Serializable {
 
     private static final long serialVersionUID = 1539933191243L;
 

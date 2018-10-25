@@ -3,9 +3,7 @@ package com.sm.open.core.facade.pf.biz.clinic;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
-import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoAssesResult;
-import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoResult;
-import com.sm.open.core.facade.model.result.pf.biz.clinic.BasDemoTagResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.*;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PageResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -176,4 +174,19 @@ public interface PfClinicTemplateFacade {
      * @return
      */
     CommonResult<BasDemoAssesResult> selectDimensionTagInfo(Long idDimemsion);
+
+    /**
+     * 获取病例标签列表
+     *
+     * @param idDemo
+     * @return
+     */
+    CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo);
+
+    /**
+     * 获取评估表标签列表
+     * @param idDemo
+     * @return
+     */
+    CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo);
 }

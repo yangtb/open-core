@@ -154,6 +154,7 @@
             </when>
             <otherwise>
                 fg_valid = #{status},
+                fg_active = '0',
             </otherwise>
         </choose>
             operator = #{operator},
@@ -191,6 +192,7 @@
         UPDATE bas_body_result
         SET
             fg_valid = #{status},
+            fg_active = '0',
             operator = #{operator},
             gmt_modify = now()
         WHERE
@@ -252,6 +254,88 @@
         where
             bbr.fg_valid = '0'
         and bbr.id_body = #{idBody}
+    </select>
+    <select id="selectBasBodyById" resultType="com.sm.open.core.model.entity.BasBody">
+        SELECT
+            bb.id_body, bb.des_body, bb.sd_body, bb.id_body_ca,
+            bb.cd_check, bb.fg_active,
+            bb.fg_valid, bb.creator, bb.gmt_create, bb.operator, bb.gmt_modify
+        FROM
+            bas_body bb
+        WHERE
+            bb.fg_valid = '0'
+        AND bb.id_body = #{idBody}
+    </select>
+    <select id="selectBasBodyResultById" resultType="com.sm.open.core.model.entity.BasBodyResult">
+         select
+            bbr.id_result, bbr.des_result, bbr.id_body, bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert,
+            bbr.fg_tag, bbr.fg_active, bbr.fg_valid, bbr.creator, bbr.gmt_create, bbr.operator, bbr.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_body_result bbr left join bas_media bm on bbr.id_media = bm.id_media
+        where
+            bbr.fg_valid = '0'
+        and bbr.id_result = #{idResult}
+    </select>
+    <select id="countSearchCheck" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+        (
+            SELECT
+                count(1)
+            FROM
+                bas_body bb
+            LEFT JOIN bas_body_result bbr ON bb.id_body = bbr.id_body
+            LEFT JOIN bas_body_ca bbc ON bb.id_body_ca = bbc.id_body_ca
+            WHERE
+                bb.fg_active = '1'
+            AND (bbr.fg_active = '1' or bbr.fg_active is null)
+            <if test="keywords != null and keywords != '' ">
+                AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+            </if>
+            group by bb.id_body
+        ) a
+    </select>
+
+    <resultMap type="com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo" id="checkResult">
+        <id property="idBody" column="id_body" />
+        <result column="id_body_ca" property="idBodyCa" />
+        <result column="id_body" property="idBody" />
+        <result column="des_body" property="desBody" />
+        <result column="sd_body" property="sdBody" />
+        <result column="cd_check" property="cdCheck" />
+        <result column="idBodyText" property="idBodyText" />
+        <collection property="checkList" ofType="com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchItemVo">
+            <result column="id_result" property="idResult" />
+            <result column="des_result" property="desResult" />
+            <result column="id_media" property="idMedia" />
+            <result column="sd_type" property="sdType"/>
+            <result column="path" property="path" />
+            <result column="fg_reason" property="fgReason" />
+            <result column="fg_back" property="fgBack" />
+            <result column="des_expert" property="desExpert" />
+        </collection>
+    </resultMap>
+
+    <select id="searchCheck" resultMap="checkResult">
+        SELECT
+            bbc.name AS idBodyText, bb.id_body_ca, bb.id_body,
+            bb.des_body, bb.sd_body, bb.cd_check, bbr.id_result, bbr.des_result,
+            bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert,
+            bm.sd_type, bm.path
+        FROM
+            bas_body bb
+        LEFT JOIN bas_body_result bbr ON bb.id_body = bbr.id_body
+        LEFT JOIN bas_body_ca bbc ON bb.id_body_ca = bbc.id_body_ca
+        left join bas_media bm on bbr.id_media = bm.id_media
+        WHERE
+            bb.fg_active = '1'
+        AND (bbr.fg_active = '1' or bbr.fg_active is null)
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
     </select>
 
 </mapper>

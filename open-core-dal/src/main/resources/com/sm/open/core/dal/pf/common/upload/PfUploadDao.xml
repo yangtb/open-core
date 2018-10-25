@@ -34,5 +34,17 @@
                 now()
         )
     </insert>
+    <select id="selectBasæMediaByIds" resultType="com.sm.open.core.model.entity.BasMedia">
+        select
+            id_media, sd_type, name, format, size, path
+        from
+            bas_media
+        WHERE
+            id_media in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
 
 </mapper>

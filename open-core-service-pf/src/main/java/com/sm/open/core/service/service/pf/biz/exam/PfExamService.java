@@ -3,8 +3,10 @@ package com.sm.open.core.service.service.pf.biz.exam;
 import com.sm.open.core.facade.model.result.pf.biz.exam.BasInspectItemResult;
 import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 
 import java.util.List;
 
@@ -111,4 +113,20 @@ public interface PfExamService {
      * @return
      */
     Long saveAnswer(BasItemResult dto);
+
+    /**
+     * 检验项目总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countSearchExam(PfCommonSearchDto dto);
+
+    /**
+     * 检验项目列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasExamSearchVo> searchExam(PfCommonSearchDto dto);
 }

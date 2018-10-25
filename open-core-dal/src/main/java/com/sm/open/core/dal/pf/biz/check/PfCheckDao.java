@@ -2,10 +2,13 @@ package com.sm.open.core.dal.pf.biz.check;
 
 import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasBody;
 import com.sm.open.core.model.entity.BasBodyCa;
 import com.sm.open.core.model.entity.BasBodyResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -115,4 +118,36 @@ public interface PfCheckDao {
      * @return
      */
     Integer editAnswer(BasBodyResult dto);
+
+    /**
+     * 根据ID查询体检部位
+     *
+     * @param idBody
+     * @return
+     */
+    BasBody selectBasBodyById(@Param("idBody") Long idBody);
+
+    /**
+     * 根据ID查询体检结果
+     *
+     * @param idResult
+     * @return
+     */
+    BasBodyResult selectBasBodyResultById(@Param("idResult") Long idResult);
+
+    /**
+     * 检查项目总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countSearchCheck(PfCommonSearchDto dto);
+
+    /**
+     * 检查项目列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasCheckSearchVo> searchCheck(PfCommonSearchDto dto);
 }

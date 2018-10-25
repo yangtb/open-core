@@ -4,15 +4,11 @@ import com.sm.open.core.facade.model.param.pf.biz.exam.BasInspectCaParam;
 import com.sm.open.core.facade.model.param.pf.biz.exam.BasInspectItemParam;
 import com.sm.open.core.facade.model.param.pf.biz.exam.BasItemResultParam;
 import com.sm.open.core.facade.model.param.pf.biz.exam.PfExamQuestionParam;
-import com.sm.open.core.facade.model.param.pf.biz.inquisition.BasInquesAnswerParam;
-import com.sm.open.core.facade.model.param.pf.biz.inquisition.BasInquesCaParam;
-import com.sm.open.core.facade.model.param.pf.biz.inquisition.BasInquesParam;
-import com.sm.open.core.facade.model.param.pf.biz.inquisition.PfInquisitionQuestionParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonSearchParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
-import com.sm.open.core.facade.model.result.pf.biz.exam.BasInspectItemResult;
+import com.sm.open.core.facade.model.result.pf.biz.exam.BasExamSearchResult;
 import com.sm.open.core.facade.model.result.pf.biz.exam.BasItemResultResult;
-import com.sm.open.core.facade.model.result.pf.biz.inquisition.BasInquesAnswerResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
@@ -112,5 +108,13 @@ public interface PfExamFacade {
      * @return
      */
     CommonResult<Long> saveAnswer(BasItemResultParam param);
+
+    /**
+     * 检验项目列表搜索
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult<BasExamSearchResult> searchExam(PfCommonSearchParam param);
 
 }

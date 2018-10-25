@@ -34,4 +34,12 @@ public class PfExamConstant {
 
     public static final String DEL_ANSWER_ERROR                            = "delAnswerFailed";
     public static final String DEL_ANSWER_ERROR_MSG                        = "删除答案失败";
+
+    public static final String SEARCH_EXAM_LIST_ERROR                      = "searchExamListError";
+    public static final String SEARCH_EXAM_LIST_ERROR_MSG                  = "搜索检验项目列表失败";
+
+    public static final String SEARCH_CHECK_LIST_ERROR                     = "searchCheckListError";
+    public static final String SEARCH_CHECK_LIST_ERROR_MSG                 = "搜索检查部位描述列表失败";
+
+
 }

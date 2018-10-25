@@ -28,4 +28,34 @@ public class BasInquesSearchAnswerVo implements Serializable {
      */
     private String desAnswer;
 
+    /**
+     * 多媒体ID
+     */
+    private Long idMedia;
+
+    /**
+     * 多媒体类型
+     */
+    private String sdType;
+
+    /**
+     * 多媒体地址
+     */
+    private String path;
+
+    /**
+     * 是否需要说明理由
+     */
+    private String fgReason;
+
+    /**
+     * 是否根据病人回答反馈
+     */
+    private String fgBack;
+
+    /**
+     * 专家解读
+     */
+    private String desExpert;
+
 }

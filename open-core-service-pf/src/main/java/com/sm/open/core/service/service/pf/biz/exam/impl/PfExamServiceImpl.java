@@ -4,10 +4,12 @@ import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.biz.exam.PfExamDao;
 import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 import com.sm.open.core.service.service.pf.biz.exam.PfExamService;
 import org.springframework.stereotype.Service;
 
@@ -86,5 +88,15 @@ public class PfExamServiceImpl implements PfExamService {
             num = pfExamDao.editAnswer(dto);
         }
         return num == 1 ? dto.getIdResult() : null;
+    }
+
+    @Override
+    public Long countSearchExam(PfCommonSearchDto dto) {
+        return pfExamDao.countSearchExam(dto);
+    }
+
+    @Override
+    public List<BasExamSearchVo> searchExam(PfCommonSearchDto dto) {
+        return pfExamDao.searchExam(dto);
     }
 }

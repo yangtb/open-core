@@ -6,6 +6,8 @@ import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.BasEvaTagVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -199,4 +201,20 @@ public interface PfClinicTemplateDao {
      * @return
      */
     BasDemoAsses selectDimensionTagInfo(@Param("idDimemsion") Long idDimemsion);
+
+    /**
+     * all病例标签
+     *
+     * @param idDemo
+     * @return
+     */
+    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(@Param("idDemo") Long idDemo);
+
+    /**
+     * all评估表标签
+     *
+     * @param idDemo
+     * @return
+     */
+    List<PfAssessTagVo> listAllAssessTag(@Param("idDemo") Long idDemo);
 }
