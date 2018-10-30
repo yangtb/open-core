@@ -30,4 +30,8 @@ public class PfDiseaseInfoDto extends PageParam implements Serializable {
      * 拼音助记符
      */
     private String pinyin;
+    /**
+     * 搜索关键字
+     */
+    private String keywords;
 }

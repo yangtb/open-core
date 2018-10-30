@@ -163,6 +163,11 @@
         <if test="pinyin != null and pinyin != '' ">
             AND pinyin like concat('%',#{pinyin},'%')
         </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (name like concat('%',#{keywords},'%')
+            or   icd like concat('%',#{keywords},'%')
+            or   pinyin like concat('%',#{keywords},'%'))
+        </if>
     </select>
 
     <select id="listDiseaseInfo" resultType="com.sm.open.core.model.entity.BasDie">
@@ -185,6 +190,11 @@
         </if>
         <if test="pinyin != null and pinyin != '' ">
             AND bd.pinyin like concat('%',#{pinyin},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bd.name like concat('%',#{keywords},'%')
+            or   bd.icd like concat('%',#{keywords},'%')
+            or   bd.pinyin like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
     </select>

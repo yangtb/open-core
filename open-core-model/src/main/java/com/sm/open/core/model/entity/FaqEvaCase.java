@@ -31,6 +31,11 @@ public class FaqEvaCase implements Serializable {
     private String cdEvaAsse;
 
     /**
+     * 组件嵌入代码
+     */
+    private String script;
+
+    /**
      * 案例名称
      */
     private String name;

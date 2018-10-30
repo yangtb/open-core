@@ -27,4 +27,9 @@ public class PfInquisitionQuestionParam extends PfPageParam implements Serializa
      * 问题内容
      */
     private String desInques;
+
+    /**
+     * 搜索关键字
+     */
+    private String keywords;
 }

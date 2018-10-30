@@ -128,13 +128,9 @@
         UPDATE bas_eva_asse
         SET
             name = #{name},
-            <if test="descript != null and descript!=''">
-                descript = #{descript},
-            </if>
+            descript = #{descript},
             sd_eva_asse = #{sdEvaAsse},
-            <if test="script != null and script!=''">
-                script = #{script},
-            </if>
+            script = #{script},
             fg_group = #{fgGroup},
             score_upper = #{scoreUpper},
             score_lower = #{scoreLower},

@@ -461,10 +461,11 @@
         SELECT
             fmc.id_med_case,fmc.name, fmc.descript, fmc.cd_med_asse,
             fmc.id_org, fmc.count, fmc.fg_active, fmc.fg_valid, fmc.creator, fmc.gmt_create,
-            fmc.operator, fmc.gmt_modify, so.name as orgName, so.fg_plat
+            fmc.operator, fmc.gmt_modify, so.name as orgName, so.fg_plat, bma.script
         FROM
             faq_med_case fmc
         LEFT JOIN sys_org so on fmc.id_org = so.id_org
+        left join bas_med_asse bma on fmc.cd_med_asse = bma.cd_med_asse and bma.fg_valid='0'
         WHERE
             fmc.fg_valid = '0'
         <if test="cdMedAsse != null and cdMedAsse != '' ">

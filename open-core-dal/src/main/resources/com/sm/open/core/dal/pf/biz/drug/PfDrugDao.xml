@@ -153,6 +153,9 @@
         <if test="pinyin != null and pinyin != '' ">
             AND pinyin like concat('%',#{pinyin},'%')
         </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (name like concat('%',#{keywords},'%') or pinyin like concat('%',#{keywords},'%'))
+        </if>
     </select>
 
     <select id="listDrugInfo" resultType="com.sm.open.core.model.entity.BasDrugs">
@@ -171,6 +174,9 @@
         </if>
         <if test="pinyin != null and pinyin != '' ">
             AND pinyin like concat('%',#{pinyin},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (name like concat('%',#{keywords},'%') or pinyin like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
     </select>

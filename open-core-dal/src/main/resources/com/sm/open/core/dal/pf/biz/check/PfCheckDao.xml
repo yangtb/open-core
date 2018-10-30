@@ -219,12 +219,17 @@
         SELECT
             count(1)
         FROM
-            bas_body
+            bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
         WHERE
-            fg_valid = '0'
-        AND id_body_ca = #{idBodyCa}
+            bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
         <if test="desBody != null and desBody != '' ">
-            AND des_body like concat('%',#{desBody},'%')
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
         </if>
     </select>
 
@@ -237,9 +242,14 @@
             bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
         WHERE
             bb.fg_valid = '0'
-        AND bb.id_body_ca = #{idBodyCa}
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
         <if test="desBody != null and desBody != '' ">
             AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
     </select>

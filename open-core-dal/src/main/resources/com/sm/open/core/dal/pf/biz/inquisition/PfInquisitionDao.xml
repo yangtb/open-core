@@ -211,12 +211,17 @@
         SELECT
             count(1)
         FROM
-            bas_inques
+            bas_inques bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
         WHERE
-            fg_valid = '0'
-        AND id_inques_ca = #{idInquesCa}
+            bi.fg_valid = '0'
+        <if test="idInquesCa != null and idInquesCa != ''">
+            AND bi.id_inques_ca = #{idInquesCa}
+        </if>
         <if test="desInques != null and desInques != '' ">
-            AND des_inques like concat('%',#{desInques},'%')
+            AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
         </if>
     </select>
 
@@ -228,9 +233,14 @@
             bas_inques bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
         WHERE
             bi.fg_valid = '0'
-        AND bi.id_inques_ca = #{idInquesCa}
+        <if test="idInquesCa != null and idInquesCa != ''">
+            AND bi.id_inques_ca = #{idInquesCa}
+        </if>
         <if test="desInques != null and desInques != '' ">
             AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
     </select>

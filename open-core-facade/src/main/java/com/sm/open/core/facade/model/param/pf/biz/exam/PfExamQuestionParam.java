@@ -29,4 +29,8 @@ public class PfExamQuestionParam extends PfPageParam implements Serializable {
      */
     private String naItem;
 
+    /**
+     * 搜索关键字
+     */
+    private String keywords;
 }

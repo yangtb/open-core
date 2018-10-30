@@ -27,4 +27,9 @@ public class PfDrugInfoParam extends PfPageParam implements Serializable {
      * 拼音助记符
      */
     private String pinyin;
+
+    /**
+     * 搜索关键字
+     */
+    private String keywords;
 }

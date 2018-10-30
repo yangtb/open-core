@@ -231,12 +231,17 @@
         SELECT
             count(1)
         FROM
-            bas_inspect_item
+            bas_inspect_item bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
         WHERE
-            fg_valid = '0'
-        AND id_inspect = #{idInspect}
+            bii.fg_valid = '0'
+        <if test="idInspect != null and idInspect != ''">
+            AND bii.id_inspect = #{idInspect}
+        </if>
         <if test="naItem != null and naItem != '' ">
-            AND na_item like concat('%',#{naItem},'%')
+            AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
         </if>
     </select>
 
@@ -249,9 +254,14 @@
             bas_inspect_item bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
         WHERE
             bii.fg_valid = '0'
-        AND bii.id_inspect = #{idInspect}
+        <if test="idInspect != null and idInspect != ''">
+            AND bii.id_inspect = #{idInspect}
+        </if>
         <if test="naItem != null and naItem != '' ">
             AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
     </select>
