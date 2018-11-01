@@ -82,11 +82,17 @@ public class PfTestPaperServiceImpl implements PfTestPaperService {
     @Override
     public boolean addPaperItem(PfAddCaseDto dto) {
         List<Long> list = dto.getList();
+        List<ExmTestpaperMedicalrec> oldPapers = pfTestPaperDao.listAllPaperItem(dto.getIdTestpaper());
         pfTestPaperDao.delAllPaperItem(dto.getIdTestpaper());
         for (Long id : list) {
             ExmTestpaperMedicalrec paperItem = new ExmTestpaperMedicalrec();
             paperItem.setIdTestpaper(dto.getIdTestpaper());
             paperItem.setIdMedicalrec(id);
+            for (ExmTestpaperMedicalrec oldPaper : oldPapers) {
+                if (oldPaper.getIdMedicalrec().equals(id)) {
+                    paperItem.setSort(oldPaper.getSort());
+                }
+            }
             pfTestPaperDao.addPaperItem(paperItem);
         }
         return true;

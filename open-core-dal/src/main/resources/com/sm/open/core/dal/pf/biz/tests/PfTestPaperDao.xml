@@ -246,4 +246,12 @@
         WHERE
             fg_active = '1'
     </select>
+    <select id="listAllPaperItem" resultType="com.sm.open.core.model.entity.ExmTestpaperMedicalrec">
+        SELECT
+            id_testpaper_medicalrec, id_testpaper, id_medicalrec, sort
+        FROM
+            exm_testpaper_medicalrec
+        WHERE
+            id_testpaper = #{idTestpaper}
+    </select>
 </mapper>

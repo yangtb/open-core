@@ -104,6 +104,14 @@ public interface PfTestPaperDao {
     List<ExmTestpaperMedicalrec> listPaperItem(PfTestPaperDto dto);
 
     /**
+     * 获取以保存清单
+     *
+     * @param idTestpaper
+     * @return
+     */
+    List<ExmTestpaperMedicalrec> listAllPaperItem(@Param("idTestpaper") Long idTestpaper);
+
+    /**
      * 清空试卷
      *
      * @param idTestpaper
