@@ -28,4 +28,9 @@ public class PfCatalogueTreeParam implements Serializable  {
      * 操作id
      */
     private Long id;
+
+    /**
+     * 机构id
+     */
+    private String idOrg;
 }

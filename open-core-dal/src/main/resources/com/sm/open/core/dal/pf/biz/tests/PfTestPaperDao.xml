@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.tests.PfTestPaperDao">
+    <insert id="addPaperClassify" useGeneratedKeys="true" keyProperty="idTestpaperca">
+        INSERT INTO exm_testpaper_ca
+        (
+                name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+                id_org,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+                #{idOrg},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="addPaper" useGeneratedKeys="true" keyProperty="idTestpaper">
+        INSERT INTO exm_testpaper
+        (
+                na_testpaper,
+            <if test="idTestpaperca!=null">
+                id_testpaperca,
+            </if>
+            <if test="desTestpaper!=null">
+                des_testpaper,
+            </if>
+                id_org,
+                count,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{naTestpaper},
+            <if test="idTestpaperca!=null">
+                #{idTestpaperca},
+            </if>
+            <if test="desTestpaper!=null">
+                #{desTestpaper},
+            </if>
+                #{idOrg},
+                0,
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="addPaperItem"  useGeneratedKeys="true" keyProperty="idTestpaperMedicalrec">
+        INSERT INTO exm_testpaper_medicalrec
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestpaper!=null">
+                id_testpaper,
+            </if>
+            <if test="idMedicalrec!=null">
+                id_medicalrec,
+            </if>
+            <if test="sort!=null">
+                sort,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestpaper!=null">
+                #{idTestpaper},
+            </if>
+            <if test="idMedicalrec!=null">
+                #{idMedicalrec},
+            </if>
+            <if test="sort!=null">
+                #{sort},
+            </if>
+        </trim>
+        )
+    </insert>
+    <update id="editPaperClassify">
+        UPDATE exm_testpaper_ca
+        SET
+                name = #{name},
+            <if test="idPar != null">
+                id_par = #{idPar},
+            </if>
+                operator = #{operator},
+                gmt_modify = now()
+        WHERE
+            id_testpaperca = #{idTestpaperca}
+    </update>
+    <update id="editPaper">
+        UPDATE exm_testpaper
+        SET
+            na_testpaper = #{naTestpaper},
+            id_testpaperca = #{idTestpaperca},
+            des_testpaper = #{desTestpaper},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testpaper = #{idTestpaper}
+    </update>
+
+    <update id="updatePaperItemSort">
+        update
+            exm_testpaper_medicalrec
+        set
+            sort = #{sort}
+        WHERE
+            id_testpaper_medicalrec = #{idTestpaperMedicalrec}
+    </update>
+    <delete id="delPaperClassify">
+        UPDATE exm_testpaper_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testpaperca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delPaper">
+        UPDATE exm_testpaper
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testpaper in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delPaperItem">
+        delete from exm_testpaper_medicalrec
+        WHERE
+            id_testpaper_medicalrec in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delAllPaperItem">
+        delete from exm_testpaper_medicalrec where id_testpaper = #{idTestpaper}
+    </delete>
+
+
+    <select id="listPaperClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_testpaperca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            exm_testpaper_ca
+        WHERE
+            fg_valid = '0'
+        AND id_org = #{idOrg}
+    </select>
+    <select id="countPaper" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            exm_testpaper a left join exm_testpaper_ca b on a.id_testpaperca = b.id_testpaperca
+        WHERE
+            a.fg_valid = '0'
+        <if test="idTestpaperca != null and idTestpaperca != ''">
+            AND a.id_testpaperca = #{idTestpaperca}
+        </if>
+        <if test="naTestpaper != null and naTestpaper != '' ">
+            AND a.na_testpaper like concat('%',#{naTestpaper},'%')
+        </if>
+    </select>
+    <select id="listPaper" resultType="com.sm.open.core.model.entity.ExmTestpaper">
+        SELECT
+            a.id_testpaper, a.na_testpaper, a.id_testpaperca, a.des_testpaper, a.id_org, a.count,
+            a.fg_active, a.fg_valid, a.creator, a.gmt_create, a.operator, a.gmt_modify, 
+            b.name as idTestpapercaText, so.name as orgName
+        FROM
+            exm_testpaper a
+        left join exm_testpaper_ca b on a.id_testpaperca = b.id_testpaperca
+        left join sys_org so on a.id_org = so.id_org
+        WHERE
+            a.fg_valid = '0'
+        <if test="idTestpaperca != null and idTestpaperca != ''">
+            AND a.id_testpaperca = #{idTestpaperca}
+        </if>
+        <if test="naTestpaper != null and naTestpaper != '' ">
+            AND a.na_testpaper like concat('%',#{naTestpaper},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listPaperItem" resultType="com.sm.open.core.model.entity.ExmTestpaperMedicalrec">
+        SELECT
+            a.id_testpaper_medicalrec, a.id_testpaper, a.id_medicalrec, a.sort,
+            fm.name, fm.id_demo, fm.id_medicalrec_ca, fm.id_org, fm.sd_level, fm.sd_use,
+            fm.count, fm.fg_active, fm.fg_valid, fm.creator, fm.gmt_create, fm.operator, fm.gmt_modify,
+            so.name as orgName
+        FROM
+            exm_testpaper_medicalrec a
+        LEFT JOIN faq_medicalrec fm ON a.id_medicalrec = fm.id_medicalrec
+        LEFT JOIN sys_org so on fm.id_org = so.id_org
+        WHERE
+            id_testpaper = #{idTestpaper}
+        ORDER BY a.sort
+    </select>
+
+    <select id="listCaseTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            CONCAT('case-' , a.id_medicalrec) AS id ,
+            a.id_medicalrec_ca AS pId ,
+            a. NAME ,
+            1 AS open ,
+            IF(b.id_testpaper_medicalrec is null,0,1) checked
+        FROM
+            faq_medicalrec a
+        LEFT JOIN exm_testpaper_medicalrec b ON a.id_medicalrec = b.id_medicalrec
+        WHERE
+            fg_active = '1'
+    </select>
+</mapper>

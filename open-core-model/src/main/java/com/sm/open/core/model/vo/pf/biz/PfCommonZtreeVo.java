@@ -16,19 +16,27 @@ public class PfCommonZtreeVo implements Serializable {
     /**
      * 目录编码
      */
-    private String      id;
+    private String id;
     /**
      * 上级编码
      */
-    private String      pId;
+    private String pId;
     /**
      * 疾病目录名称
      */
-    private String      name;
+    private String name;
     /**
      * 节点打开状态
      */
-    private boolean     open;
+    private boolean open;
+    /**
+     * 不显示复选框
+     */
+    private boolean nocheck;
+    /**
+     * 是否选中
+     */
+    private boolean checked;
     /**
      * 扩展字段
      */
