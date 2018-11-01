@@ -242,7 +242,8 @@
             IF(b.id_testpaper_medicalrec is null,0,1) checked
         FROM
             faq_medicalrec a
-        LEFT JOIN exm_testpaper_medicalrec b ON a.id_medicalrec = b.id_medicalrec
+        LEFT JOIN exm_testpaper_medicalrec b
+        ON a.id_medicalrec = b.id_medicalrec AND b.id_testpaper = #{extId}
         WHERE
             fg_active = '1'
     </select>
