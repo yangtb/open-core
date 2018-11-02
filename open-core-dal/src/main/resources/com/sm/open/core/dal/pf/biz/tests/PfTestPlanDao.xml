@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao">
+    <insert id="addPlan">
+        INSERT INTO exm_testplan
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplan!=null">
+                id_testplan,
+            </if>
+            <if test="naTestplan!=null">
+                na_testplan,
+            </if>
+            <if test="desTestplan!=null">
+                des_testplan,
+            </if>
+            <if test="idTestpaper!=null">
+                id_testpaper,
+            </if>
+            <if test="idOrg!=null">
+                id_org,
+            </if>
+            <if test="sdTestplan!=null">
+                sd_testplan,
+            </if>
+            <if test="fgActive!=null">
+                fg_active,
+            </if>
+            <if test="fgValid!=null">
+                fg_valid,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplan!=null">
+                #{idTestplan},
+            </if>
+            <if test="naTestplan!=null">
+                #{naTestplan},
+            </if>
+            <if test="desTestplan!=null">
+                #{desTestplan},
+            </if>
+            <if test="idTestpaper!=null">
+                #{idTestpaper},
+            </if>
+            <if test="idOrg!=null">
+                #{idOrg},
+            </if>
+            <if test="sdTestplan!=null">
+                #{sdTestplan},
+            </if>
+            <if test="fgActive!=null">
+                #{fgActive},
+            </if>
+            <if test="fgValid!=null">
+                #{fgValid},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now(),
+        </trim>
+        )
+    </insert>
+    <update id="editPlan">
+        UPDATE exm_testplan
+        SET
+            na_testplan = #{naTestplan},
+            des_testplan = #{desTestplan},
+            id_testpaper = #{idTestpaper},
+        <if test="sdTestplan!=null">
+            sd_testplan = #{sdTestplan},
+        </if>
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testplan = #{idTestplan}
+    </update>
+    <update id="delPlan">
+        UPDATE exm_testplan
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testplan in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="countPlans" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            exm_testplan a
+        WHERE
+            a.fg_valid = '0'
+        <if test="naTestplan != null and naTestplan != ''">
+            AND a.na_testplan like concat('%',#{naTestplan},'%')
+        </if>
+    </select>
+    <select id="listPlans" resultType="com.sm.open.core.model.entity.ExmTestplan">
+        SELECT
+            a.id_testplan,a.na_testplan, a.des_testplan, a.id_testpaper, a.id_org,
+            a.sd_testplan, a.fg_active, a.fg_valid,
+            a.creator, a.gmt_create, a.operator, a.gmt_modify,
+            so.name as orgName, ifnull(b.na_testpaper, '自定义') as idTestpaperText
+        FROM
+            exm_testplan a
+        left join sys_org so on a.id_org = so.id_org
+        left join exm_testpaper b on a.id_testpaper = b.id_testpaper
+        WHERE
+            a.fg_valid = '0'
+        <if test="naTestplan != null and naTestplan != ''">
+            AND a.na_testplan like concat('%',#{naTestplan},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+</mapper>

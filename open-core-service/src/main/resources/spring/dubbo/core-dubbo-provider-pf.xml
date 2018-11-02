@@ -77,5 +77,7 @@
     <!-- 试卷定义服务 -->
     <dubbo:service ref="pfTestPaperFacade" interface="com.sm.open.core.facade.pf.biz.tests.PfTestPaperFacade"/>
 
+    <!-- 测试计划服务 -->
+    <dubbo:service ref="pfTestPlanFacade" interface="com.sm.open.core.facade.pf.biz.tests.PfTestPlanFacade"/>
 
 </beans>
