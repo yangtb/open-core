@@ -47,6 +47,16 @@ public interface PfTestPlanDao {
     Integer editPlan(ExmTestplan dto);
 
     /**
+     * 默认试题
+     *
+     * @param idTestplan  测试计划ID
+     * @param idTestpaper 试题id
+     * @return
+     */
+    boolean defaultPlamItem(@Param("idTestplan") Long idTestplan,
+                            @Param("idTestpaper") Long idTestpaper);
+
+    /**
      * 删除计划
      *
      * @param dto

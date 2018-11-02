@@ -5,7 +5,6 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfAddCaseDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
-import com.sm.open.core.model.entity.ExmTestpaperMedicalrec;
 import com.sm.open.core.model.entity.ExmTestplan;
 import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
@@ -33,6 +32,7 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
         return pfTestPlanDao.listPlans(dto);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long savePlan(ExmTestplan dto) {
         Integer num;
@@ -41,6 +41,9 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
                 dto.setSdTestplan("0");
             }
             num = pfTestPlanDao.addPlan(dto);
+            if (!dto.getIdTestpaper().equals(-1)) {
+                pfTestPlanDao.defaultPlamItem(dto.getIdTestplan(), dto.getIdTestpaper());
+            }
         } else {
             num = pfTestPlanDao.editPlan(dto);
         }

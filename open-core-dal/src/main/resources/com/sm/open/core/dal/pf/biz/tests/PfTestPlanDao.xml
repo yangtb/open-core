@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao">
-    <insert id="addPlan">
+    <insert id="addPlan" useGeneratedKeys="true" keyProperty="idTestplan">
         INSERT INTO exm_testplan
         (
         <trim suffixOverrides=",">
@@ -70,20 +70,20 @@
         )
     </insert>
     <insert id="addPlanItem" useGeneratedKeys="true" keyProperty="idTestplanMedicalrec">
-        INSERT INTO `exm_testplan_medicalrec`
+        INSERT INTO exm_testplan_medicalrec
         (
         <trim suffixOverrides=",">
             <if test="idTestplanMedicalrec!=null">
-                `id_testplan_medicalrec`,
+                id_testplan_medicalrec,
             </if>
             <if test="idTestplan!=null">
-                `id_testplan`,
+                id_testplan,
             </if>
             <if test="idMedicalrec!=null">
-                `id_medicalrec`,
+                id_medicalrec,
             </if>
             <if test="sort!=null">
-                `sort`,
+                sort,
             </if>
         </trim>
         )
@@ -104,6 +104,21 @@
             </if>
         </trim>
         )
+    </insert>
+    <insert id="defaultPlamItem">
+        INSERT INTO exm_testplan_medicalrec(
+            id_testplan ,
+            id_medicalrec ,
+            sort
+        ) 
+        SELECT
+            #{idTestplan} ,
+            id_medicalrec ,
+            sort
+        FROM
+            exm_testpaper_medicalrec
+        WHERE
+            id_testpaper = #{idTestpaper}
     </insert>
     <update id="editPlan">
         UPDATE exm_testplan
