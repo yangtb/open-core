@@ -32,7 +32,20 @@ public class PfTestPaperConstant {
     public static final String UPDATE_PAPER_ITEM_SORT_ERROR             = "updatePaperItemSortFailed";
     public static final String UPDATE_PAPER_ITEM_SORT_ERROR_MSG         = "修改试卷清单排序失败";
 
-    public static final String LIST_CASE_CLASSIFY_TREE_ERROR                           = "listCaseClassifyTreeFailed";
-    public static final String LIST_CASE_CLASSIFY_TREE_ERROR_MSG                       = "查询病例树失败";
+    public static final String LIST_CASE_CLASSIFY_TREE_ERROR            = "listCaseClassifyTreeFailed";
+    public static final String LIST_CASE_CLASSIFY_TREE_ERROR_MSG        = "查询病例树失败";
+
+    public static final String PAGE_PLAN_LIST_ERROR                     = "pagePlanListError";
+    public static final String PAGE_PLAN_LIST_ERROR_MSG                 = "分页查询测试计划列表失败";
+
+    public static final String SAVE_PLAN_ERROR                          = "savePlanFailed";
+    public static final String SAVE_PLAN_ERROR_MSG                      = "新增测试计划失败";
+
+    public static final String DEL_PLAN_ERROR                           = "delPlanFailed";
+    public static final String DEL_PLAN_ERROR_MSG                       = "删除测试计划失败";
+
+    public static final String LIST_ALL_PAPER_ERROR                     = "listAllPaperFailed";
+    public static final String LIST_ALL_PAPER_ERROR_MSG                 = "获取所有试卷失败";
+
     
 }

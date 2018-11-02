@@ -44,6 +44,13 @@ public interface PfTestPaperService {
     boolean delPaperClassify(PfBachChangeStatusDto dto);
 
     /**
+     * 获取所有测试试卷
+     * @param dto
+     * @return
+     */
+    List<ExmTestpaper> listAllPaper(PfTestPaperDto dto);
+
+    /**
      * 试卷总数
      *
      * @param dto

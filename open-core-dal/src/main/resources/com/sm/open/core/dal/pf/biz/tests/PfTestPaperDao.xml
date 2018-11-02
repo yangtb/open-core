@@ -255,4 +255,14 @@
         WHERE
             id_testpaper = #{idTestpaper}
     </select>
+    <select id="listAllPaper" resultType="com.sm.open.core.model.entity.ExmTestpaper">
+        SELECT
+            a.id_testpaper, a.na_testpaper, a.id_testpaperca, a.des_testpaper, a.id_org, a.count
+        FROM
+            exm_testpaper a
+        WHERE
+            a.id_org = #{idOrg}
+        AND a.fg_active = '1'
+        order by a.gmt_create desc
+    </select>
 </mapper>

@@ -94,6 +94,20 @@ public class PfTestPaperFacadeImpl implements PfTestPaperFacade {
     }
 
     @Override
+    public CommonResult<List<ExmTestpaperResult>> listAllPaper(PfTestPaperParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(
+                            pfTestPaperService.listAllPaper(BeanUtil.convert(param, PfTestPaperDto.class)),
+                                    ExmTestpaperResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPaperFacadeImpl-listAllPaper】获取所有书卷失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_ALL_PAPER_ERROR, PfTestPaperConstant.LIST_ALL_PAPER_ERROR_MSG));
+        }
+    }
+
+    @Override
     public PfPageResult listPaper(PfTestPaperParam param) {
         try {
             PfPageParam.initPageDto(param);

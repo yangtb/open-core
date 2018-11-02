@@ -43,6 +43,11 @@ public class PfTestPaperServiceImpl implements PfTestPaperService {
     }
 
     @Override
+    public List<ExmTestpaper> listAllPaper(PfTestPaperDto dto) {
+        return pfTestPaperDao.listAllPaper(dto);
+    }
+
+    @Override
     public Long countPaper(PfTestPaperDto dto) {
         return pfTestPaperDao.countPaper(dto);
     }

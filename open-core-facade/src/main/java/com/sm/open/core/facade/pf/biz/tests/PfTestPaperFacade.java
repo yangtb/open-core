@@ -4,6 +4,7 @@ import com.sm.open.core.facade.model.param.pf.biz.tests.paper.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCatalogueTreeParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.paper.ExmTestpaperResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
@@ -40,6 +41,14 @@ public interface PfTestPaperFacade {
      * @return
      */
     CommonResult<Boolean> delPaperClassify(PfBachChangeStatusParam param);
+
+    /**
+     * 获取所有测试试卷
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<ExmTestpaperResult>> listAllPaper(PfTestPaperParam param);
 
     /**
      * 试卷列表
