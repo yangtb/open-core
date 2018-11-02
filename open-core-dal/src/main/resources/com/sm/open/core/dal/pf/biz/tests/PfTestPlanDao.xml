@@ -69,6 +69,42 @@
         </trim>
         )
     </insert>
+    <insert id="addPlanItem" useGeneratedKeys="true" keyProperty="idTestplanMedicalrec">
+        INSERT INTO `exm_testplan_medicalrec`
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanMedicalrec!=null">
+                `id_testplan_medicalrec`,
+            </if>
+            <if test="idTestplan!=null">
+                `id_testplan`,
+            </if>
+            <if test="idMedicalrec!=null">
+                `id_medicalrec`,
+            </if>
+            <if test="sort!=null">
+                `sort`,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanMedicalrec!=null">
+                #{idTestplanMedicalrec},
+            </if>
+            <if test="idTestplan!=null">
+                #{idTestplan},
+            </if>
+            <if test="idMedicalrec!=null">
+                #{idMedicalrec},
+            </if>
+            <if test="sort!=null">
+                #{sort},
+            </if>
+        </trim>
+        )
+    </insert>
     <update id="editPlan">
         UPDATE exm_testplan
         SET
@@ -105,6 +141,26 @@
         </foreach>
         )
     </update>
+    <update id="updatePlanItemSort">
+         update
+            exm_testplan_medicalrec
+        set
+            sort = #{sort}
+        WHERE
+            id_testplan_medicalrec = #{idTestplanMedicalrec}
+    </update>
+    <delete id="delAllPlanItem">
+        delete from exm_testplan_medicalrec where id_testplan = #{idTestplan}
+    </delete>
+    <delete id="delPlanItem">
+        delete from exm_testplan_medicalrec
+        WHERE
+            id_testplan_medicalrec in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
 
     <select id="countPlans" resultType="java.lang.Long">
         SELECT
@@ -133,5 +189,41 @@
             AND a.na_testplan like concat('%',#{naTestplan},'%')
         </if>
         limit #{offset}, #{limit}
+    </select>
+    <select id="listCaseTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            CONCAT('case-' , a.id_medicalrec) AS id ,
+            a.id_medicalrec_ca AS pId ,
+            a. NAME ,
+            1 AS open ,
+            IF(b.id_testplan_medicalrec is null,0,1) checked
+        FROM
+            faq_medicalrec a
+        LEFT JOIN exm_testplan_medicalrec b
+        ON a.id_medicalrec = b.id_medicalrec AND b.id_testplan = #{extId}
+        WHERE
+            fg_active = '1'
+    </select>
+    <select id="listPlanItem" resultType="com.sm.open.core.model.entity.ExmTestplanMedicalrec">
+        SELECT
+            a.id_testplan_medicalrec, a.id_testplan, a.id_medicalrec, a.sort,
+            fm.name, fm.id_demo, fm.id_medicalrec_ca, fm.id_org, fm.sd_level, fm.sd_use,
+            fm.count, fm.fg_active, fm.fg_valid, fm.creator, fm.gmt_create, fm.operator, fm.gmt_modify,
+            so.name as orgName
+        FROM
+            exm_testplan_medicalrec a
+        LEFT JOIN faq_medicalrec fm ON a.id_medicalrec = fm.id_medicalrec
+        LEFT JOIN sys_org so on fm.id_org = so.id_org
+        WHERE
+            id_testplan = #{idTestplan}
+        ORDER BY a.sort
+    </select>
+    <select id="listAllPlanItem" resultType="com.sm.open.core.model.entity.ExmTestplanMedicalrec">
+        SELECT
+            id_testplan_medicalrec, id_testplan, id_medicalrec, sort
+        FROM
+            exm_testplan_medicalrec
+        WHERE
+            id_testplan = #{idTestplan}
     </select>
 </mapper>

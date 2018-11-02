@@ -1,8 +1,14 @@
 package com.sm.open.core.service.service.pf.biz.tests;
 
+import com.sm.open.core.model.dto.pf.biz.tests.PfAddCaseDto;
+import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
+import com.sm.open.core.model.entity.ExmTestpaperMedicalrec;
 import com.sm.open.core.model.entity.ExmTestplan;
+import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
+import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 
 import java.util.List;
 
@@ -45,5 +51,44 @@ public interface PfTestPlanService {
      * @return
      */
     boolean delPlan(PfBachChangeStatusDto dto);
+
+    /**
+     * 病例树
+     *
+     * @return
+     */
+    List<PfCommonZtreeVo> listCaseTree(PfCatalogueTreeDto dto);
+
+    /**
+     * 试题清单列表
+     *
+     * @param dto
+     * @return
+     */
+    List<ExmTestplanMedicalrec> listPlanItem(PfTestPlanDto dto);
+
+    /**
+     * 添加试题清单
+     *
+     * @param dto
+     * @return
+     */
+    boolean addPlanItem(PfAddCaseDto dto);
+
+    /**
+     * 删除试题清单
+     *
+     * @param dto
+     * @return
+     */
+    boolean delPlanItem(PfBachChangeStatusDto dto);
+
+    /**
+     * 修改试题清单排序
+     *
+     * @param dto
+     * @return
+     */
+    boolean updatePlanItemSort(ExmTestplanMedicalrec dto);
 
 }

@@ -28,4 +28,9 @@ public class PfAddCaseParam implements Serializable {
      * 试卷ID
      */
     private Long idTestpaper;
+
+    /**
+     * 测试计划ID
+     */
+    private Long idTestplan;
 }
