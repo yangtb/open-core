@@ -113,6 +113,10 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
         List<ExmTestplanStudent> testplanStudents = pfTestPlanDao.listPlanStudent(dto);
         testplanStudents.forEach(exmTestplanStudent -> {
             String planStatusStr = exmTestplanStudent.getPlanStatusStr();
+            if (StringUtils.isBlank(planStatusStr)) {
+                exmTestplanStudent.setPlanStatus("0");
+                return;
+            }
             if (planStatusStr.contains("1")){
                 exmTestplanStudent.setPlanStatus("1");
             } else if(!planStatusStr.contains("0") && !planStatusStr.contains("1")){

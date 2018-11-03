@@ -319,7 +319,7 @@
         FROM
             id_class_memo a
         LEFT JOIN user_info c ON a.id_user = c.user_id
-        LEFT JOIN exm_testplan_student b ON a.id_user = b.id_student
+        LEFT JOIN exm_testplan_student b ON a.id_user = b.id_student AND b.id_testplan = #{extId}
         WHERE
             c.id_org = #{idOrg}
     </select>
@@ -331,7 +331,7 @@
         from
             exm_testplan_student a
         left join user_info b on a.id_student = b.user_id
-        LEFT JOIN exm_testplan_detail e ON e.id_student = a.id_student
+        LEFT JOIN exm_testplan_detail e ON e.id_student = a.id_student and e.id_testplan = #{idTestplan}
         where
             a.id_testplan = #{idTestplan}
         GROUP BY
