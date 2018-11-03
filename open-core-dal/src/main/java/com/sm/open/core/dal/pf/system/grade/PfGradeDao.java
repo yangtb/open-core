@@ -1,7 +1,6 @@
 package com.sm.open.core.dal.pf.system.grade;
 
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.dto.pf.system.grade.PfGradeDto;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.entity.IdClassMemo;
