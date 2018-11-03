@@ -320,8 +320,10 @@
             id_class_memo a
         LEFT JOIN user_info c ON a.id_user = c.user_id
         LEFT JOIN exm_testplan_student b ON a.id_user = b.id_student AND b.id_testplan = #{extId}
+        LEFT JOIN sys_class d on a.id_class = d.id_class
         WHERE
             c.id_org = #{idOrg}
+        and d.fg_active = '1'
     </select>
     <select id="listPlanStudent" resultType="com.sm.open.core.model.entity.ExmTestplanStudent">
         select
