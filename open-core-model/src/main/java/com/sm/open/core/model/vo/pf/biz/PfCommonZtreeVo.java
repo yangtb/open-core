@@ -22,7 +22,7 @@ public class PfCommonZtreeVo implements Serializable {
      */
     private String pId;
     /**
-     * 疾病目录名称
+     * 目录名称
      */
     private String name;
     /**
