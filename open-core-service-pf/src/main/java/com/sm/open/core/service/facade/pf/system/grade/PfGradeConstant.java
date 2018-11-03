@@ -6,6 +6,9 @@ public class PfGradeConstant {
     public static final String SELECT_PAGE_GRADE_LIST_ERROR             = "selectPageGradeListError";
     public static final String SELECT_PAGE_GRADE_LIST_ERROR_MSG         = "分页查询班级列表失败";
 
+    public static final String LIST_ALL_GRADES_ERROR                    = "listAllGradesError";
+    public static final String LIST_ALL_GRADES_ERROR_MSG                = "查询全部班级失败";
+
     public static final String SAVE_GRADE_ERROR                         = "saveGradeFailed";
     public static final String SAVE_GRADE_ERROR_MSG                     = "保存班级失败";
 

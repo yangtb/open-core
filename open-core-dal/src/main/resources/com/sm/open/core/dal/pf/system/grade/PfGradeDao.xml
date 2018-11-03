@@ -223,4 +223,13 @@
         ORDER BY gmt_create desc
         limit #{offset}, #{limit}
     </select>
+    <select id="listAllGrades" resultType="com.sm.open.core.model.entity.SysClass">
+        select
+            id_class, name, id_par, id_org, sort
+        from
+            sys_class
+        where
+            fg_active = '1'
+        and id_org = #{idOrg}
+    </select>
 </mapper>

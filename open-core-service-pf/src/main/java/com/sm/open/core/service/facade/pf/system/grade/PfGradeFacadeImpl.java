@@ -17,13 +17,13 @@ import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.dto.pf.system.grade.PfGradeDto;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.entity.SysClass;
-import com.sm.open.core.service.facade.pf.user.login.PfUserConstant;
 import com.sm.open.core.service.service.pf.system.grade.PfGradeService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Component("pfGradeFacade")
 public class PfGradeFacadeImpl implements PfGradeFacade {
@@ -44,6 +44,22 @@ public class PfGradeFacadeImpl implements PfGradeFacade {
             LOGGER.error("【PfGradeFacadeImpl-listGrades-error】分页查询班级列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
                     PfGradeConstant.SELECT_PAGE_GRADE_LIST_ERROR, PfGradeConstant.SELECT_PAGE_GRADE_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<List<SysClassResult>> listAllGrades(PfGradeParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfGradeService.listAllGrades(BeanUtil.convert(param, PfGradeDto.class)),
+                            SysClassResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfGradeFacadeImpl-listAllGrades】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfGradeFacadeImpl-listAllGrades-error】保存班级失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfGradeConstant.LIST_ALL_GRADES_ERROR, PfGradeConstant.LIST_ALL_GRADES_ERROR_MSG));
         }
     }
 

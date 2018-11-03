@@ -26,6 +26,11 @@ public class PfGradeServiceImpl implements PfGradeService {
     }
 
     @Override
+    public List<SysClass> listAllGrades(PfGradeDto dto) {
+        return pfGradeDao.listAllGrades(dto);
+    }
+
+    @Override
     public List<SysClass> listGrades(PfGradeDto dto) {
         return pfGradeDao.listGrades(dto);
     }

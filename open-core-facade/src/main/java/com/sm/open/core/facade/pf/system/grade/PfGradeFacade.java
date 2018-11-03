@@ -6,6 +6,7 @@ import com.sm.open.core.facade.model.param.pf.system.grade.PfGradeParam;
 import com.sm.open.core.facade.model.param.pf.system.grade.SysClassParam;
 import com.sm.open.core.facade.model.param.pf.system.org.*;
 import com.sm.open.core.facade.model.param.pf.user.PfUserParam;
+import com.sm.open.core.facade.model.result.pf.system.grade.SysClassResult;
 import com.sm.open.core.facade.model.result.pf.system.org.SysOrgResult;
 import com.sm.open.core.facade.model.result.pf.user.login.PfUsersResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
@@ -28,6 +29,14 @@ public interface PfGradeFacade {
      * @return
      */
     PfPageResult listGrades(PfGradeParam param);
+
+    /**
+     * 查询所有班级
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<SysClassResult>> listAllGrades(PfGradeParam param);
 
     /**
      * 新增班级

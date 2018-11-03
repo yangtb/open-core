@@ -24,6 +24,14 @@ public interface PfGradeDao {
     Long countGrades(PfGradeDto dto);
 
     /**
+     * 查询全部班级
+     *
+     * @param dto
+     * @return
+     */
+    List<SysClass> listAllGrades(PfGradeDto dto);
+
+    /**
      * 班级列表
      *
      * @param dto
