@@ -1,6 +1,5 @@
 package com.sm.open.core.facade.pf.biz.tests;
 
-import com.sm.open.core.facade.model.param.pf.biz.tests.paper.ExmTestpaperMedicalrecParam;
 import com.sm.open.core.facade.model.param.pf.biz.tests.paper.PfAddCaseParam;
 import com.sm.open.core.facade.model.param.pf.biz.tests.plan.ExmTestplanMedicalrecParam;
 import com.sm.open.core.facade.model.param.pf.biz.tests.plan.ExmTestplanParam;
@@ -84,5 +83,36 @@ public interface PfTestPlanFacade {
      * @return
      */
     CommonResult<Boolean> updatePlanItemSort(ExmTestplanMedicalrecParam param);
-    
+
+    /**
+     * 班级-学生tree
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfCommonZtreeResult>> listStudentTree(PfCatalogueTreeParam param);
+
+    /**
+     * 计划学生列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listPlanStudent(PfTestPlanParam param);
+
+    /**
+     * 添加计划学生
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> addPlanStudent(PfAddCaseParam param);
+
+    /**
+     * 删除计划学生
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delPlanStudent(PfBachChangeStatusParam param);
 }

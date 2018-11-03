@@ -1,12 +1,14 @@
 package com.sm.open.core.service.service.pf.biz.tests.impl;
 
 import com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao;
+import com.sm.open.core.dal.pf.system.grade.PfGradeDao;
 import com.sm.open.core.model.dto.pf.biz.tests.PfAddCaseDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.entity.ExmTestplan;
 import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
+import com.sm.open.core.model.entity.ExmTestplanStudent;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.service.service.pf.biz.tests.PfTestPlanService;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +23,9 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
 
     @Resource
     private PfTestPlanDao pfTestPlanDao;
+
+    @Resource
+    private PfGradeDao pfGradeDao;
 
     @Override
     public Long countPlans(PfTestPlanDto dto) {
@@ -93,5 +98,29 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
     @Override
     public boolean updatePlanItemSort(ExmTestplanMedicalrec dto) {
         return pfTestPlanDao.updatePlanItemSort(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public List<PfCommonZtreeVo> listStudentTree(PfCatalogueTreeDto dto) {
+        List<PfCommonZtreeVo> classTree = pfGradeDao.listGradeTree(dto.getIdOrg());
+        classTree.addAll(pfTestPlanDao.listStudentTree(dto));
+        return classTree;
+    }
+
+    @Override
+    public List<ExmTestplanStudent> listPlanStudent(PfTestPlanDto dto) {
+        return pfTestPlanDao.listPlanStudent(dto);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean addPlanStudent(PfAddCaseDto dto) {
+        pfTestPlanDao.delAllPlanStudent(dto.getIdTestplan());
+        return pfTestPlanDao.addPlanStudent(dto.getList(), dto.getIdTestplan()) >= 1 ? true : false;
+    }
+
+    @Override
+    public boolean delPlanStudent(PfBachChangeStatusDto dto) {
+        return pfTestPlanDao.delPlanStudent(dto) >= 1 ? true : false;
     }
 }

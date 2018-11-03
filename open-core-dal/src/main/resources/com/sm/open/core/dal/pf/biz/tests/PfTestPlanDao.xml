@@ -120,6 +120,14 @@
         WHERE
             id_testpaper = #{idTestpaper}
     </insert>
+    <insert id="addPlanStudent">
+        INSERT INTO exm_testplan_student
+        (id_testplan, id_student)
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{idTestplan}, #{item})
+        </foreach>
+    </insert>
     <update id="editPlan">
         UPDATE exm_testplan
         SET
@@ -175,6 +183,18 @@
             #{item}
         </foreach>
         )
+    </delete>
+    <delete id="delPlanStudent">
+        delete from exm_testplan_student
+        WHERE
+            id_testplan_student in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delAllPlanStudent">
+        delete from exm_testplan_student where id_testplan = #{idTestplan}
     </delete>
 
     <select id="countPlans" resultType="java.lang.Long">
@@ -240,5 +260,29 @@
             exm_testplan_medicalrec
         WHERE
             id_testplan = #{idTestplan}
+    </select>
+    <select id="listStudentTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+         SELECT
+            CONCAT('user-' , a.id_user) AS id ,
+            a.id_class AS pId ,
+            c.real_name as name,
+            1 AS open ,
+            IF(b.id_testplan_student is null,0,1) checked
+        FROM
+            id_class_memo a
+        LEFT JOIN user_info c ON a.id_user = c.user_id
+        LEFT JOIN exm_testplan_student b ON a.id_user = b.id_student
+        WHERE
+            c.id_org = #{idOrg}
+    </select>
+    <select id="listPlanStudent" resultType="com.sm.open.core.model.entity.ExmTestplanStudent">
+        select
+            a.id_testplan_student,  a.id_student,  a.id_testplan,
+            b.real_name as studentName, b.phone_no, 0 as planStatus
+        from
+            exm_testplan_student a
+        left join user_info b on a.id_student = b.user_id
+        where
+            a.id_testplan = #{idTestplan}
     </select>
 </mapper>

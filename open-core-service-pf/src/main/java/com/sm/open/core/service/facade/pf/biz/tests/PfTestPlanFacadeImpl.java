@@ -13,6 +13,7 @@ import com.sm.open.core.facade.model.param.pf.common.PfCatalogueTreeParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanMedicalrecResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanStudentResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.tests.PfTestPlanFacade;
 import com.sm.open.core.model.dto.pf.biz.tests.PfAddCaseDto;
@@ -179,6 +180,74 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.error("【PfTestPlanFacadeImpl-updatePaperItemSort】修改试卷清单排序失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.UPDATE_PAPER_ITEM_SORT_ERROR, PfTestPaperConstant.UPDATE_PAPER_ITEM_SORT_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfCommonZtreeResult>> listStudentTree(PfCatalogueTreeParam param) {
+        try {
+            List<PfCommonZtreeVo> planStudentList = pfTestPlanService.listStudentTree(BeanUtil.convert(param, PfCatalogueTreeDto.class));
+
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(planStudentList, PfCommonZtreeResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestPlanFacadeImpl-listStudentTree】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-listStudentTree】查询学生树失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_STUDENT_CLASSIFY_TREE_ERROR,
+                    PfTestPaperConstant.LIST_STUDENT_CLASSIFY_TREE_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listPlanStudent(PfTestPlanParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfTestPlanDto dto = BeanUtil.convert(param, PfTestPlanDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestPlanService.listPlanStudent(dto), ExmTestplanStudentResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-listPlanStudent-error】分页查询计划学生列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfTestPaperConstant.PAGE_STUDENT_ITEM_LIST_ERROR, PfTestPaperConstant.PAGE_STUDENT_ITEM_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> addPlanStudent(PfAddCaseParam param) {
+        try {
+            Assert.isTrue(param.getIdTestplan() != null, "idTestplan");
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "list");
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestPlanService.addPlanStudent(BeanUtil.convert(param, PfAddCaseDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestPlanFacadeImpl-addPlanStudent】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-addPlanStudent】新增计划学生失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_STUDENT_ITEM_ERROR, PfTestPaperConstant.SAVE_STUDENT_ITEM_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delPlanStudent(PfBachChangeStatusParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (StringUtils.isBlank(param.getStatus())) {
+                param.setStatus(YesOrNoNum.YES.getCode());
+            }
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestPlanService.delPlanStudent(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestPlanFacadeImpl-delPlanStudent】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-delPlanStudent】删除试卷清单失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.DEL_STUDENT_ITEM_ERROR, PfTestPaperConstant.DEL_STUDENT_ITEM_ERROR_MSG));
         }
     }
 }

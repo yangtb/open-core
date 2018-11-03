@@ -30,8 +30,22 @@ public class ExmTestplanStudentResult implements Serializable {
     private Long idStudent;
 
     /**
+     * 学生姓名
+     */
+    private String studentName;
+
+    /**
      * 测试计划ID
      */
     private Long idTestplan;
 
+    /**
+     * 计划状态
+     */
+    private String planStatus;
+
+    /**
+     * 联系方式
+     */
+    private String phoneNo;
 }

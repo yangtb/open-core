@@ -47,5 +47,17 @@ public class PfTestPaperConstant {
     public static final String LIST_ALL_PAPER_ERROR                     = "listAllPaperFailed";
     public static final String LIST_ALL_PAPER_ERROR_MSG                 = "获取所有试卷失败";
 
+    public static final String PAGE_STUDENT_ITEM_LIST_ERROR             = "pageStudentError";
+    public static final String PAGE_STUDENT_ITEM_LIST_ERROR_MSG         = "分页查询计划学生列表失败";
+
+    public static final String SAVE_STUDENT_ITEM_ERROR                  = "saveStudentFailed";
+    public static final String SAVE_STUDENT_ITEM_ERROR_MSG              = "新增计划学生失败";
+
+    public static final String DEL_STUDENT_ITEM_ERROR                   = "delStudentFailed";
+    public static final String DEL_STUDENT_ITEM_ERROR_MSG               = "删除计划学生失败";
+
+    public static final String LIST_STUDENT_CLASSIFY_TREE_ERROR         = "listStudentClassifyTreeFailed";
+    public static final String LIST_STUDENT_CLASSIFY_TREE_ERROR_MSG     = "查询学生树失败";
+
     
 }

@@ -5,6 +5,7 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.entity.ExmTestplan;
 import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
+import com.sm.open.core.model.entity.ExmTestplanStudent;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -67,6 +68,7 @@ public interface PfTestPlanDao {
     /**
      * 病例树
      *
+     * @param dto
      * @return
      */
     List<PfCommonZtreeVo> listCaseTree(PfCatalogueTreeDto dto);
@@ -118,4 +120,46 @@ public interface PfTestPlanDao {
      * @return
      */
     Integer updatePlanItemSort(ExmTestplanMedicalrec dto);
+
+    /**
+     * 班级-学生tree
+     *
+     * @param dto
+     * @return
+     */
+    List<PfCommonZtreeVo> listStudentTree(PfCatalogueTreeDto dto);
+
+    /**
+     * 计划学生列表
+     *
+     * @param dto
+     * @return
+     */
+    List<ExmTestplanStudent> listPlanStudent(PfTestPlanDto dto);
+
+    /**
+     * 清空计划学生
+     *
+     * @param idTestplan
+     * @return
+     */
+    Integer delAllPlanStudent(@Param("idTestplan") Long idTestplan);
+
+    /**
+     * 添加计划学生
+     *
+     * @param list       学生id列表
+     * @param idTestplan 测试计划id
+     * @return
+     */
+    Integer addPlanStudent(@Param("list") List<Long> list,
+                           @Param("idTestplan") Long idTestplan);
+
+    /**
+     * 删除计划学生
+     *
+     * @param dto
+     * @return
+     */
+    Integer delPlanStudent(PfBachChangeStatusDto dto);
 }
