@@ -5,6 +5,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.entity.ExmTestplan;
+import com.sm.open.core.model.entity.ExmTestplanDetail;
 import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
 import com.sm.open.core.model.entity.ExmTestplanStudent;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
@@ -121,4 +122,20 @@ public interface PfTestPlanService {
      * @return
      */
     boolean delPlanStudent(PfBachChangeStatusDto dto);
+
+    /**
+     * 计划明细列表
+     *
+     * @param dto
+     * @return
+     */
+    List<ExmTestplanDetail> listPlanDetail(PfTestPlanDto dto);
+
+    /**
+     * 生成计划
+     *
+     * @param idTestplan 计划id
+     * @return
+     */
+    boolean generatePlan(Long idTestplan);
 }

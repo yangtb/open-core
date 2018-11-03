@@ -11,6 +11,7 @@ import com.sm.open.core.facade.model.param.pf.biz.tests.plan.PfTestPlanParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCatalogueTreeParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanDetailResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanMedicalrecResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.plan.ExmTestplanStudentResult;
@@ -69,7 +70,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-savePlan】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-savePlan】新增计划失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-savePlan】新增计划失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_PLAN_ERROR, PfTestPaperConstant.SAVE_PLAN_ERROR_MSG));
         }
@@ -88,7 +89,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-delPlan】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-delPlan】删除测试计划失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-delPlan】删除测试计划失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.DEL_PLAN_ERROR, PfTestPaperConstant.DEL_PLAN_ERROR_MSG));
         }
@@ -140,7 +141,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-addPlanItem】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-addPlanItem】新增试卷清单失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-addPlanItem】新增试卷清单失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_PAPER_ITEM_ERROR, PfTestPaperConstant.SAVE_PAPER_ITEM_ERROR_MSG));
         }
@@ -159,7 +160,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-delPlanItem】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-delPlanItem】删除试卷清单失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-delPlanItem】删除试卷清单失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.DEL_PAPER_ITEM_ERROR, PfTestPaperConstant.DEL_PAPER_ITEM_ERROR_MSG));
         }
@@ -177,7 +178,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-updatePaperItemSort】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-updatePaperItemSort】修改试卷清单排序失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-updatePaperItemSort】修改试卷清单排序失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.UPDATE_PAPER_ITEM_SORT_ERROR, PfTestPaperConstant.UPDATE_PAPER_ITEM_SORT_ERROR_MSG));
         }
@@ -194,7 +195,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-listStudentTree】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-listStudentTree】查询学生树失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-listStudentTree】查询学生树失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_STUDENT_CLASSIFY_TREE_ERROR,
                     PfTestPaperConstant.LIST_STUDENT_CLASSIFY_TREE_ERROR_MSG));
@@ -226,7 +227,7 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-addPlanStudent】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-addPlanStudent】新增计划学生失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-addPlanStudent】新增计划学生失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_STUDENT_ITEM_ERROR, PfTestPaperConstant.SAVE_STUDENT_ITEM_ERROR_MSG));
         }
@@ -245,9 +246,38 @@ public class PfTestPlanFacadeImpl implements PfTestPlanFacade {
             LOGGER.warn("【PfTestPlanFacadeImpl-delPlanStudent】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestPlanFacadeImpl-delPlanStudent】删除试卷清单失败, param:" + param.toString(), e);
+            LOGGER.error("【PfTestPlanFacadeImpl-delPlanStudent】删除试卷清单失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.DEL_STUDENT_ITEM_ERROR, PfTestPaperConstant.DEL_STUDENT_ITEM_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listPlanDetail(PfTestPlanParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfTestPlanDto dto = BeanUtil.convert(param, PfTestPlanDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestPlanService.listPlanDetail(dto), ExmTestplanDetailResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-listPlanDetail-error】获取计划明细失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfTestPaperConstant.LIST_ALL_DETAIL_ERROR, PfTestPaperConstant.LIST_ALL_DETAIL_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> generatePlan(Long idTestplan) {
+        try {
+            Assert.isTrue(idTestplan != null, "idTestplan");
+            return ResultFactory.initCommonResultWithSuccess(pfTestPlanService.generatePlan(idTestplan));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestPlanFacadeImpl-generatePlan】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-generatePlan】生成计划明细失败, idTestplan:{}", idTestplan, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.GENERATE_PLAN_DETAIL_ERROR, PfTestPaperConstant.GENERATE_PLAN_DETAIL_ERROR_MSG));
         }
     }
 }

@@ -128,6 +128,54 @@
             (#{idTestplan}, #{item})
         </foreach>
     </insert>
+    <insert id="addPlanDetail" useGeneratedKeys="true" keyProperty="idTestplanDetail">
+        INSERT INTO `exm_testplan_detail`
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanDetail!=null">
+                `id_testplan_detail`,
+            </if>
+            <if test="idTestplan!=null">
+                `id_testplan`,
+            </if>
+            <if test="idStudent!=null">
+                `id_student`,
+            </if>
+            <if test="idMedicalrec!=null">
+                `id_medicalrec`,
+            </if>
+            <if test="sort!=null">
+                `sort`,
+            </if>
+            <if test="sdTestplanDetail!=null">
+                `sd_testplan_detail`,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanDetail!=null">
+                #{idTestplanDetail},
+            </if>
+            <if test="idTestplan!=null">
+                #{idTestplan},
+            </if>
+            <if test="idStudent!=null">
+                #{idStudent},
+            </if>
+            <if test="idMedicalrec!=null">
+                #{idMedicalrec},
+            </if>
+            <if test="sort!=null">
+                #{sort},
+            </if>
+            <if test="sdTestplanDetail!=null">
+                #{sdTestplanDetail},
+            </if>
+        </trim>
+        )
+    </insert>
     <update id="editPlan">
         UPDATE exm_testplan
         SET
@@ -278,11 +326,48 @@
     <select id="listPlanStudent" resultType="com.sm.open.core.model.entity.ExmTestplanStudent">
         select
             a.id_testplan_student,  a.id_student,  a.id_testplan,
-            b.real_name as studentName, b.phone_no, 0 as planStatus
+            b.real_name as studentName, b.phone_no,
+            group_concat(e.sd_testplan_detail) AS planStatusStr
         from
             exm_testplan_student a
         left join user_info b on a.id_student = b.user_id
+        LEFT JOIN exm_testplan_detail e ON e.id_student = a.id_student
         where
             a.id_testplan = #{idTestplan}
+        GROUP BY
+            a.id_testplan_student ,
+            a.id_student ,
+            a.id_testplan
+    </select>
+    <select id="listPlanDetail" resultType="com.sm.open.core.model.entity.ExmTestplanDetail">
+        SELECT
+            b.real_name ,
+            b.phone_no ,
+            c.name AS caseName ,
+            c.sd_level ,
+            a.sort ,
+            a.sd_testplan_detail
+        FROM
+            exm_testplan_detail a
+        LEFT JOIN user_info b ON a.id_student = b.user_id
+        LEFT JOIN faq_medicalrec c ON a.id_medicalrec = c.id_medicalrec
+        WHERE
+            id_testplan = #{idTestplan}
+        order by
+            a.id_student, a.sort
+    </select>
+    <select id="selectPlanDetail" resultType="com.sm.open.core.model.entity.ExmTestplanDetail">
+        SELECT
+            a.id_testplan, a.id_student, b.id_medicalrec, b.sort, '0' as sd_testplan_detail
+        FROM
+            exm_testplan_student a
+        CROSS JOIN exm_testplan_medicalrec b
+        WHERE
+            a.id_testplan = #{idTestplan}
+        AND b.id_testplan = #{idTestplan}
+    </select>
+    <select id="isExistPlanDetail" resultType="java.lang.Boolean">
+        select count(1) from exm_testplan_detail
+        where id_testplan = #{idTestplan} and id_student = #{idStudent} and id_medicalrec = #{idMedicalrec}
     </select>
 </mapper>

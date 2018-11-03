@@ -7,6 +7,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.entity.ExmTestplan;
+import com.sm.open.core.model.entity.ExmTestplanDetail;
 import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
 import com.sm.open.core.model.entity.ExmTestplanStudent;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
@@ -109,7 +110,18 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
 
     @Override
     public List<ExmTestplanStudent> listPlanStudent(PfTestPlanDto dto) {
-        return pfTestPlanDao.listPlanStudent(dto);
+        List<ExmTestplanStudent> testplanStudents = pfTestPlanDao.listPlanStudent(dto);
+        testplanStudents.forEach(exmTestplanStudent -> {
+            String planStatusStr = exmTestplanStudent.getPlanStatusStr();
+            if (planStatusStr.contains("1")){
+                exmTestplanStudent.setPlanStatus("1");
+            } else if(!planStatusStr.contains("0") && !planStatusStr.contains("1")){
+                exmTestplanStudent.setPlanStatus("2");
+            } else {
+                exmTestplanStudent.setPlanStatus("0");
+            }
+        });
+        return testplanStudents;
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -122,5 +134,22 @@ public class PfTestPlanServiceImpl implements PfTestPlanService {
     @Override
     public boolean delPlanStudent(PfBachChangeStatusDto dto) {
         return pfTestPlanDao.delPlanStudent(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public List<ExmTestplanDetail> listPlanDetail(PfTestPlanDto dto) {
+        return pfTestPlanDao.listPlanDetail(dto);
+    }
+
+    @Override
+    public boolean generatePlan(Long idTestplan) {
+        List<ExmTestplanDetail> details = pfTestPlanDao.selectPlanDetail(idTestplan);
+        for (ExmTestplanDetail detail : details) {
+            if (pfTestPlanDao.isExistPlanDetail(detail)) {
+                continue;
+            }
+            pfTestPlanDao.addPlanDetail(detail);
+        }
+        return true;
     }
 }

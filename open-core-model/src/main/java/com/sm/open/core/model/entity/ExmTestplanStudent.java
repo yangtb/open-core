@@ -45,6 +45,11 @@ public class ExmTestplanStudent implements Serializable {
     private String planStatus;
 
     /**
+     * 计划状态字符串
+     */
+    private String planStatusStr;
+
+    /**
      * 联系方式
      */
     private String phoneNo;

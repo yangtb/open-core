@@ -59,5 +59,11 @@ public class PfTestPaperConstant {
     public static final String LIST_STUDENT_CLASSIFY_TREE_ERROR         = "listStudentClassifyTreeFailed";
     public static final String LIST_STUDENT_CLASSIFY_TREE_ERROR_MSG     = "查询学生树失败";
 
+    public static final String LIST_ALL_DETAIL_ERROR                    = "listAllDetailFailed";
+    public static final String LIST_ALL_DETAIL_ERROR_MSG                = "获取计划明细失败";
+
+    public static final String GENERATE_PLAN_DETAIL_ERROR               = "generatePlanFailed";
+    public static final String GENERATE_PLAN_DETAIL_ERROR_MSG           = "生成计划明细失败";
+
     
 }

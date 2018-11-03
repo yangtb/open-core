@@ -4,6 +4,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestPlanDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.entity.ExmTestplan;
+import com.sm.open.core.model.entity.ExmTestplanDetail;
 import com.sm.open.core.model.entity.ExmTestplanMedicalrec;
 import com.sm.open.core.model.entity.ExmTestplanStudent;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
@@ -162,4 +163,36 @@ public interface PfTestPlanDao {
      * @return
      */
     Integer delPlanStudent(PfBachChangeStatusDto dto);
+
+    /**
+     * 计划明细列表
+     *
+     * @param dto
+     * @return
+     */
+    List<ExmTestplanDetail> listPlanDetail(PfTestPlanDto dto);
+
+    /**
+     * 获取计划明细
+     *
+     * @param idTestplan 计划id
+     * @return
+     */
+    List<ExmTestplanDetail> selectPlanDetail(@Param("idTestplan") Long idTestplan);
+
+    /**
+     * 插入计划明细
+     *
+     * @param dto
+     * @return
+     */
+    Integer addPlanDetail(ExmTestplanDetail dto);
+
+    /**
+     * 是否存在计划明细判断
+     *
+     * @param dto
+     * @return
+     */
+    boolean isExistPlanDetail(ExmTestplanDetail dto);
 }

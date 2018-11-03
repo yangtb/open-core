@@ -115,4 +115,20 @@ public interface PfTestPlanFacade {
      * @return
      */
     CommonResult<Boolean> delPlanStudent(PfBachChangeStatusParam param);
+
+    /**
+     * 计划明细列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listPlanDetail(PfTestPlanParam param);
+
+    /**
+     * 生成计划
+     *
+     * @param idTestplan 计划id
+     * @return
+     */
+    CommonResult<Boolean> generatePlan(Long idTestplan);
 }

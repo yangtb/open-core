@@ -49,5 +49,25 @@ public class ExmTestplanDetail implements Serializable {
      */
     private String sdTestplanDetail;
 
+    /**
+     * 病例名称
+     */
+    private String caseName;
+
+    /**
+     * 病例级别
+     */
+    private String sdLevel;
+
+    /**
+     * 联系电话
+     */
+    private String phoneNo;
+
+    /**
+     * 真实姓名
+     */
+    private String realName;
+
 
 }
