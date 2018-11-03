@@ -6,6 +6,7 @@ import com.sm.open.core.model.dto.pf.system.grade.PfGradeDto;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.entity.IdClassMemo;
 import com.sm.open.core.model.entity.SysClass;
+import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.user.login.PfUsersVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -112,4 +113,12 @@ public interface PfGradeDao {
      * @return
      */
     Long countUsStudents(PfUserDto dto);
+
+    /**
+     * 班级tree
+     *
+     * @param idOrg
+     * @return
+     */
+    List<PfCommonZtreeVo> listGradeTree(@Param("idOrg") Long idOrg);
 }

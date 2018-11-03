@@ -232,4 +232,18 @@
             fg_active = '1'
         and id_org = #{idOrg}
     </select>
+    <select id="listGradeTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+         SELECT
+            a.id_class AS id ,
+            null AS pId ,
+            a.name ,
+            1 AS open
+        FROM
+            sys_class a
+        WHERE
+            a.fg_active = '1'
+        <if test="idOrg != null">
+            and a.id_org = #{idOrg}
+        </if>
+    </select>
 </mapper>
