@@ -80,4 +80,7 @@
     <!-- 测试计划服务 -->
     <dubbo:service ref="pfTestPlanFacade" interface="com.sm.open.core.facade.pf.biz.tests.PfTestPlanFacade"/>
 
+    <!-- 班级服务 -->
+    <dubbo:service ref="pfGradeFacade" interface="com.sm.open.core.facade.pf.system.grade.PfGradeFacade"/>
+
 </beans>

@@ -28,4 +28,9 @@ public class PfCommonListDto implements Serializable {
      * 平台或超级管理员用户
      */
     private boolean platOrSuper;
+
+    /**
+     * 扩展id
+     */
+    private Long extId;
 }

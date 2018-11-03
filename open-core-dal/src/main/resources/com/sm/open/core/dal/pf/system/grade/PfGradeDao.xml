@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.system.grade.PfGradeDao">
+    <insert id="addGrade" useGeneratedKeys="true" keyProperty="idClass">
+        INSERT INTO sys_class
+        (
+        <trim suffixOverrides=",">
+            <if test="idClass!=null">
+                id_class,
+            </if>
+            <if test="name!=null">
+                name,
+            </if>
+            <if test="idPar!=null">
+                id_par,
+            </if>
+            <if test="idOrg!=null">
+                id_org,
+            </if>
+            <if test="fgActive!=null">
+                fg_active,
+            </if>
+            <if test="fgValid!=null">
+                fg_valid,
+            </if>
+            <if test="sort!=null">
+                sort,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idClass!=null">
+                #{idClass},
+            </if>
+            <if test="name!=null">
+                #{name},
+            </if>
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+            <if test="idOrg!=null">
+                #{idOrg},
+            </if>
+            <if test="fgActive!=null">
+                #{fgActive},
+            </if>
+            <if test="fgValid!=null">
+                #{fgValid},
+            </if>
+            <if test="sort!=null">
+                #{sort},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="addStudent">
+        INSERT INTO id_class_memo
+        (id_class, id_user, sd_user)
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{idClass}, #{item}, '2')
+        </foreach>
+
+    </insert>
+    <update id="editGrade">
+        UPDATE sys_class
+        SET
+        <trim suffixOverrides=",">
+            <if test="name != null and name!=''">
+                name = #{name},
+            </if>
+            <if test="idPar != null">
+                id_par = #{idPar},
+            </if>
+            <if test="idOrg != null">
+                id_org = #{idOrg},
+            </if>
+            <if test="fgActive != null and fgActive!=''">
+                fg_active = #{fgActive},
+            </if>
+            <if test="fgValid != null and fgValid!=''">
+                fg_valid = #{fgValid},
+            </if>
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+                operator = #{operator},
+                gmt_modify = now(),
+        </trim>
+        WHERE
+            id_class = #{idClass}
+    </update>
+    <delete id="delGrade">
+        UPDATE sys_class
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_class in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delStudent">
+        delete from id_class_memo
+        where
+            id_memo in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+
+    <select id="countGrades" resultType="java.lang.Long">
+        select
+            count(1)
+        from
+            sys_class
+        where fg_valid = '0'
+        and id_org = #{idOrg}
+        <if test="className != null and className != ''">
+            AND name like concat('%',#{className},'%')
+        </if>
+    </select>
+    <select id="listGrades" resultType="com.sm.open.core.model.entity.SysClass">
+        select
+            id_class, name, id_par, id_org, fg_active, fg_valid,
+            sort, creator, gmt_create, operator, gmt_modify
+        from sys_class
+        where fg_valid = '0'
+        and id_org = #{idOrg}
+        <if test="className != null and className != ''">
+            AND name like concat('%',#{className},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countStudents" resultType="java.lang.Long">
+        select
+            count(1)
+        from
+            id_class_memo a
+        left join user_info b on a.id_user = b.user_id
+        <where>
+            <if test="idClass != null">
+                a.id_class = #{idClass}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                AND b.real_name like concat('%',#{studentName},'%')
+            </if>
+        </where>
+    </select>
+    <select id="listStudents" resultType="com.sm.open.core.model.entity.IdClassMemo">
+        select 
+            a.id_memo, a.id_class, a.id_user, a.sd_user,
+            b.username, b.email, b.sex, b.phone_no, b.real_name, c.name as className
+        from
+            id_class_memo a
+        left join user_info b on a.id_user = b.user_id
+        left join sys_class c on a.id_class = c.id_class
+        <where>
+            <if test="idClass != null">
+                a.id_class = #{idClass}
+            </if>
+            <if test="studentName != null and studentName != ''">
+                AND b.real_name like concat('%',#{studentName},'%')
+            </if>
+        </where>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countUsStudents" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            user_info a
+        left join id_class_memo b on a.user_id = b.id_user
+        WHERE is_deleted = 'N'
+        and b.id_user is null
+        <if test="idOrg != null">
+            and id_org = #{idOrg}
+        </if>
+        <if test="conditionValue != null and conditionValue != '' ">
+            AND a.real_name like concat('%',#{conditionValue},'%')
+        </if>
+        and username != 'super'
+    </select>
+    <select id="listUsStudents" resultType="com.sm.open.core.model.vo.pf.user.login.PfUsersVo">
+        SELECT
+            user_id , username , email , sex , phone_no , enabled ,
+            real_name , gmt_create , gmt_modify, operator, id_org
+        FROM
+            user_info a
+        left join id_class_memo b on a.user_id = b.id_user
+        WHERE is_deleted = 'N'
+        and b.id_user is null
+        <if test="idOrg != null">
+            and id_org = #{idOrg}
+        </if>
+        <if test="conditionValue != null and conditionValue != '' ">
+            AND a.real_name like concat('%',#{conditionValue},'%')
+        </if>
+        and username != 'super'
+        ORDER BY gmt_create desc
+        limit #{offset}, #{limit}
+    </select>
+</mapper>
