@@ -60,7 +60,8 @@
     <dubbo:service ref="pfExamFacade" interface="com.sm.open.core.facade.pf.biz.exam.PfExamFacade"/>
 
     <!-- 临床模板服务 -->
-    <dubbo:service ref="pfClinicTemplateFacade" interface="com.sm.open.core.facade.pf.biz.clinic.PfClinicTemplateFacade"/>
+    <dubbo:service ref="pfClinicTemplateFacade"
+                   interface="com.sm.open.core.facade.pf.biz.clinic.PfClinicTemplateFacade"/>
 
     <!-- 病历组件用例服务 -->
     <dubbo:service ref="pfKbPartFacade" interface="com.sm.open.core.facade.pf.biz.kb.PfKbPartFacade"/>
@@ -82,5 +83,10 @@
 
     <!-- 班级服务 -->
     <dubbo:service ref="pfGradeFacade" interface="com.sm.open.core.facade.pf.system.grade.PfGradeFacade"/>
+
+    <!-- 模拟就诊服务 -->
+    <dubbo:service ref="pfTestWaitingRoomFacade"
+                   interface="com.sm.open.core.facade.pf.biz.tests.PfTestWaitingRoomFacade"/>
+
 
 </beans>

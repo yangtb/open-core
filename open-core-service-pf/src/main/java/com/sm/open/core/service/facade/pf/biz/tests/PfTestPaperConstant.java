@@ -65,5 +65,10 @@ public class PfTestPaperConstant {
     public static final String GENERATE_PLAN_DETAIL_ERROR               = "generatePlanFailed";
     public static final String GENERATE_PLAN_DETAIL_ERROR_MSG           = "生成计划明细失败";
 
+    public static final String PAGE_WAITING_ROOM_LIST_ERROR             = "listWaitingRoomError";
+    public static final String PAGE_WAITING_ROOM_LIST_ERROR_MSG         = "分页查询候诊室列表失败";
+
+    public static final String PAGE_RECEIVE_PAT_LIST_ERROR              = "listReceivePatError";
+    public static final String PAGE_RECEIVE_PAT_LIST_ERROR_MSG          = "分页查询接诊列表失败";
     
 }
