@@ -1,10 +1,14 @@
 package com.sm.open.core.facade.pf.biz.kb;
 
+import com.sm.open.core.facade.model.param.pf.biz.clinic.FaqEvaTagParam;
+import com.sm.open.core.facade.model.param.pf.biz.clinic.FaqMedTagParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecCaParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.PfCaseHistoryParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.PfAssessTagResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
@@ -81,5 +85,35 @@ public interface PfCaseHistoryFacade {
      */
     CommonResult<Boolean> delTemplate(PfBachChangeStatusParam param);
 
+    /**
+     * 保存病例标签
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveMedTag(FaqMedTagParam param);
+
+    /**
+     * 保存评估标签
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveEvaTag(FaqEvaTagParam param);
+
+    /**
+     * 获取病例标签列表
+     *
+     * @param idDemo
+     * @return
+     */
+    CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo);
+
+    /**
+     * 获取评估表标签列表
+     * @param idDemo
+     * @return
+     */
+    CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo);
 
 }

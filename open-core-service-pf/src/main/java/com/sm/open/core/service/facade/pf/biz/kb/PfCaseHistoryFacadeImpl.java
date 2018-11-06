@@ -4,18 +4,25 @@ import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.core.facade.model.param.pf.biz.clinic.FaqEvaTagParam;
+import com.sm.open.core.facade.model.param.pf.biz.clinic.FaqMedTagParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecCaParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.PfCaseHistoryParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.PfAssessTagResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.casehistory.FaqMedicalrecResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.kb.PfCaseHistoryFacade;
 import com.sm.open.core.model.dto.pf.biz.kb.casehistory.PfCaseHistoryDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.entity.FaqEvaTag;
+import com.sm.open.core.model.entity.FaqMedTag;
 import com.sm.open.core.model.entity.FaqMedicalrec;
 import com.sm.open.core.model.entity.FaqMedicalrecCa;
+import com.sm.open.core.service.facade.pf.biz.clinic.PfClinicTemplateConstant;
 import com.sm.open.core.service.service.pf.biz.kb.PfCaseHistoryService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -169,6 +176,60 @@ public class PfCaseHistoryFacadeImpl implements PfCaseHistoryFacade {
             LOGGER.error("【PfCaseHistoryFacadeImpl-delTemplate】删除模板失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfCaseHistoryConstant.DEL_CASEHISTORY_TEMPLATE_ERROR, PfCaseHistoryConstant.DEL_CASEHISTORY_TEMPLATE_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveMedTag(FaqMedTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfCaseHistoryService.saveMedTag(BeanUtil.convert(param, FaqMedTag.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfCaseHistoryFacadeImpl-saveMedTag】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfCaseHistoryFacadeImpl-saveMedTag】新增病例标签失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfCaseHistoryConstant.SAVE_MED_TAG_ERROR, PfCaseHistoryConstant.SAVE_MED_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveEvaTag(FaqEvaTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfCaseHistoryService.saveEvaTag(BeanUtil.convert(param, FaqEvaTag.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfCaseHistoryFacadeImpl-saveEvaTag】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfCaseHistoryFacadeImpl-saveEvaTag】新增评估标签失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfCaseHistoryConstant.SAVE_EVA_TAG_ERROR, PfCaseHistoryConstant.SAVE_EVA_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfCaseHistoryService.listAllCaseHistoryTag(idDemo), PfCaseHistoryTagResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listAllCaseHistoryTag-error】获取所有病例标签失败，idDemo:{}", idDemo, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_CASE_HISTORY_TAG_ERROR, PfClinicTemplateConstant.LIST_ALL_CASE_HISTORY_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfCaseHistoryService.listAllAssessTag(idDemo), PfAssessTagResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listAllAssessTag-error】获取所有评估表标签失败，idDemo:{}", idDemo, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR, PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR_MSG));
         }
     }
 }

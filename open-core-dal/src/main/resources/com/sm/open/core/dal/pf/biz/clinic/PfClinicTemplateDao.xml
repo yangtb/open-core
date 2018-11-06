@@ -455,7 +455,7 @@
         WHERE
             bet.fg_valid = '0'
         AND bet.fg_active = '1'
-        AND bet.id_demo = 1
+        AND bet.id_demo = #{idDemo}
         ORDER BY
             bet.sort
     </select>

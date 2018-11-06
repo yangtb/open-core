@@ -57,6 +57,18 @@
             now()
         )
     </insert>
+    <insert id="saveMedTag" useGeneratedKeys="true" keyProperty="idMedTag">
+        INSERT INTO faq_med_tag(id_med_tag ,id_medicalrec,  id_tag, id_med_case)
+        VALUES
+            (#{idMedTag}, #{idMedicalrec}, #{idTag}, #{idMedCase})
+        ON DUPLICATE KEY UPDATE id_med_case = #{idMedCase}
+    </insert>
+    <insert id="saveEvaTag" useGeneratedKeys="true" keyProperty="idEvaTag">
+        INSERT INTO faq_eva_tag(id_eva_tag ,id_medicalrec,  id_tag, id_eva_case)
+        VALUES
+            (#{idEvaTag}, #{idMedicalrec}, #{idTag}, #{idEvaCase})
+        ON DUPLICATE KEY UPDATE id_eva_case = #{idEvaCase}
+    </insert>
     <update id="editClassify">
         UPDATE faq_medicalrec_ca
         SET
@@ -138,7 +150,9 @@
             faq_medicalrec
         WHERE
             fg_valid = '0'
-        AND id_medicalrec_ca = #{idMedicalrecCa}
+        <if test="idMedicalrecCa != null">
+            AND fm.id_medicalrec_ca = #{idMedicalrecCa}
+        </if>
         <if test="name != null and name != '' ">
             AND name like concat('%',#{name},'%')
         </if>
@@ -155,11 +169,59 @@
         left join sys_org so on fm.id_org = so.id_org
         WHERE
             fm.fg_valid = '0'
+        <if test="idMedicalrecCa != null">
         AND fm.id_medicalrec_ca = #{idMedicalrecCa}
+        </if>
         <if test="name != null and name != '' ">
             AND fm.name like concat('%',#{name},'%')
         </if>
         limit #{offset}, #{limit}
+    </select>
+
+    <select id="listAllCaseHistoryTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo">
+        SELECT
+            bmt.id_tag ,
+            bmt.fg_show_make,
+            bmt.fg_show_exec,
+            bmt.name ,
+            bmt.cd_med_asse ,
+            bm.path ,
+            bma.script,
+            d.id_med_tag, d.id_med_case
+        FROM
+            bas_medical_tag bmt
+        LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media
+        LEFT JOIN bas_med_asse bma ON bmt.cd_med_asse = bma.cd_med_asse
+        left join faq_med_tag d on d.id_tag = bmt.id_tag
+        WHERE
+            bmt.fg_valid = '0'
+        AND bmt.fg_active = '1'
+        AND bmt.id_demo = #{idDemo}
+        ORDER BY
+            bmt.sort
+    </select>
+
+    <select id="listAllAssessTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo">
+        SELECT
+            bet.id_tag ,
+            bet.fg_show_make,
+            bet.fg_show_exec,
+            bet.name ,
+            bet.cd_eva_asse ,
+            bm.path ,
+            bea.script,
+            d.id_eva_tag, d.id_eva_case
+        FROM
+            bas_eva_tag bet
+        LEFT JOIN bas_media bm ON bet.id_media = bm.id_media
+        LEFT JOIN bas_eva_asse bea ON bea.cd_eva_asse = bet.cd_eva_asse
+        left join faq_eva_tag d on d.id_tag = bet.id_tag
+        WHERE
+            bet.fg_valid = '0'
+        AND bet.fg_active = '1'
+        AND bet.id_demo = #{idDemo}
+        ORDER BY
+            bet.sort
     </select>
 
 </mapper>

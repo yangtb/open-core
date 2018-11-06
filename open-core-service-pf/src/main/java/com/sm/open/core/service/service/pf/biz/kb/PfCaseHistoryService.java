@@ -2,10 +2,14 @@ package com.sm.open.core.service.service.pf.biz.kb;
 
 import com.sm.open.core.model.dto.pf.biz.kb.casehistory.PfCaseHistoryDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.entity.FaqEvaTag;
+import com.sm.open.core.model.entity.FaqMedTag;
 import com.sm.open.core.model.entity.FaqMedicalrec;
 import com.sm.open.core.model.entity.FaqMedicalrecCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo;
+import com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo;
 
 import java.util.List;
 
@@ -88,5 +92,37 @@ public interface PfCaseHistoryService {
      */
     boolean delTemplate(PfBachChangeStatusDto dto);
 
+    /**
+     * 保存病例标签
+     *
+     * @param dto
+     * @return
+     */
+    Long saveMedTag(FaqMedTag dto);
+
+
+    /**
+     * 保存评估标签
+     *
+     * @param dto
+     * @return
+     */
+    Long saveEvaTag(FaqEvaTag dto);
+
+    /**
+     * all病例标签
+     *
+     * @param idDemo
+     * @return
+     */
+    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo);
+
+    /**
+     * all评估表标签
+     *
+     * @param idDemo
+     * @return
+     */
+    List<PfAssessTagVo> listAllAssessTag(Long idDemo);
 
 }

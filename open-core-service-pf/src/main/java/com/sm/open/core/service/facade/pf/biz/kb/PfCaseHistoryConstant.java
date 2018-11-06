@@ -25,4 +25,11 @@ public class PfCaseHistoryConstant {
 
     public static final String DEL_CASEHISTORY_TEMPLATE_ERROR                          = "delCaseHistoryTemplateFailed";
     public static final String DEL_CASEHISTORY_TEMPLATE_ERROR_MSG                      = "删除病例模板失败";
+
+    public static final String SAVE_MED_TAG_ERROR                                      = "saveMedTagFailed";
+    public static final String SAVE_MED_TAG_ERROR_MSG                                  = "新增病例标签失败";
+
+    public static final String SAVE_EVA_TAG_ERROR                                      = "saveEvaTagFailed";
+    public static final String SAVE_EVA_TAG_ERROR_MSG                                  = "新增评估标签失败";
+
 }

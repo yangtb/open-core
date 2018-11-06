@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class PfAssessTagResult implements Serializable {
+public class PfAssessTagResult extends FaqEvaTagResult implements Serializable {
 
     private static final long serialVersionUID = -4057393469549135787L;
 
