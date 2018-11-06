@@ -523,4 +523,23 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
         }
     }
 
+    @Override
+    public CommonResult<Boolean> delCommonAssess(PfBachChangeStatusParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (StringUtils.isBlank(param.getStatus())) {
+                param.setStatus(YesOrNoNum.YES.getCode());
+            }
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbAssessService.delCommonAssess(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbAssessFacadeImpl-delCommonAssess】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbAssessFacadeImpl-delCommonAssess】删除评估阶段失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbAssessConstant.DEL_COMMON_ASSESS_ERROR, PfKbAssessConstant.DEL_COMMON_ASSESS_ERROR_MSG));
+        }
+    }
+
 }

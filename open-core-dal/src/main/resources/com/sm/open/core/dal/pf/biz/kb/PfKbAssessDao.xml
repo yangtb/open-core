@@ -552,6 +552,17 @@
         </foreach>
         )
     </delete>
+    <delete id="delCommonAssess">
+        DELETE
+        FROM
+            faq_eva_case_item
+        WHERE
+            id_eva_case_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
 
 
     <select id="countKbAssess" resultType="java.lang.Long">

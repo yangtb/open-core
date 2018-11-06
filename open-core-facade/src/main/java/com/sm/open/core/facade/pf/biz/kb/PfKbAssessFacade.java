@@ -258,4 +258,11 @@ public interface PfKbAssessFacade {
      */
     CommonResult<Long> saveOrder(PfAssessOrderParam param);
 
+    /**
+     * 删除
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delCommonAssess(PfBachChangeStatusParam param);
 }

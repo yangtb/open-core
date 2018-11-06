@@ -323,4 +323,10 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
         }
         return dto.getIdEvaCaseItem();
     }
+
+    @Override
+    public boolean delCommonAssess(PfBachChangeStatusDto dto) {
+        pfKbAssessDao.delCommonAssess(dto);
+        return true;
+    }
 }

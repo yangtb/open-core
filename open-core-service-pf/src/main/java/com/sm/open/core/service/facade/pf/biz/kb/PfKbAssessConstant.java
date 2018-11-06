@@ -94,4 +94,8 @@ public class PfKbAssessConstant {
 
     public static final String DEL_ORDER_ERROR                            = "delOrderError";
     public static final String DEL_ORDER_ERROR_MSG                        = "删除临时医嘱用药列表失败";
+
+    public static final String DEL_COMMON_ASSESS_ERROR                    = "delCommonAssessError";
+    public static final String DEL_COMMON_ASSESS_ERROR_MSG                = "删除评估阶段失败";
+
 }

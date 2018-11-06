@@ -264,4 +264,11 @@ public interface PfKbAssessService {
      */
     Long saveOrder(PfAssessOrderDto dto);
 
+    /**
+     * 删除
+     * @param dto
+     * @return
+     */
+    boolean delCommonAssess(PfBachChangeStatusDto dto);
+
 }

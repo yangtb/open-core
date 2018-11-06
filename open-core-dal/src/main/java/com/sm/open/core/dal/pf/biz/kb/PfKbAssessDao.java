@@ -355,4 +355,13 @@ public interface PfKbAssessDao {
      * @return
      */
     Long editOrder(FaqEvaCaseItemOrder dto);
+
+    /**
+     * 删除评估项目
+     *
+     * @param dto
+     * @return
+     */
+    Integer delCommonAssess(PfBachChangeStatusDto dto);
+
 }
