@@ -381,6 +381,7 @@
             bas_demo bd
         WHERE
             bd.fg_valid = '0'
+        AND bd.fg_active = '1'
     </select>
     <select id="listCaseHistoryTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo">
         select

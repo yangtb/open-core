@@ -18,7 +18,6 @@ public class FaqMedTagResult implements Serializable {
 
     private static final long serialVersionUID = 1541404303662L;
 
-
     /**
      * 主键
      * 病历标签id
@@ -29,6 +28,11 @@ public class FaqMedTagResult implements Serializable {
      * 所属病历
      */
     private Long idMedicalrec;
+
+    /**
+     * 所属病历名称
+     */
+    private String caseName;
 
     /**
      * 标签id
