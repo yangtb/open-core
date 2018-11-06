@@ -51,6 +51,11 @@ public class BasEvaAsseResult implements Serializable {
     private String script;
 
     /**
+     * 嵌入代码_病例执行
+     */
+    private String scriptExec;
+
+    /**
      * 等效评估标志
      */
     private String fgGroup;

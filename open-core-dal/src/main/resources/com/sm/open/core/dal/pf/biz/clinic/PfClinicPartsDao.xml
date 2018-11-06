@@ -9,6 +9,7 @@
             <if test="descript!=null">
                 descript,
             </if>
+                script_exec,
                 sd_med_asse,
                 script,
                 fg_active,
@@ -24,6 +25,7 @@
             <if test="descript!=null">
                 #{descript},
             </if>
+                #{scriptExec},
                 #{sdMedAsse},
                 #{script},
                 #{fgActive},
@@ -45,6 +47,9 @@
             <if test="script!=null">
                 script,
             </if>
+            <if test="scriptExec!=null">
+                script_exec,
+            </if>
                 fg_group,
                 score_upper,
                 score_lower,
@@ -65,6 +70,9 @@
                 #{sdEvaAsse},
             <if test="script!=null">
                 #{script},
+            </if>
+            <if test="scriptExec!=null">
+                #{scriptExec},
             </if>
                 #{fgGroup},
                 #{scoreUpper},
@@ -116,6 +124,7 @@
         SET
             name = #{name},
             descript = #{descript},
+            script_exec = #{scriptExec},
             sd_med_asse = #{sdMedAsse},
             script = #{script},
             fg_active = #{fgActive},
@@ -131,6 +140,7 @@
             descript = #{descript},
             sd_eva_asse = #{sdEvaAsse},
             script = #{script},
+            script_exec = #{scriptExec},
             fg_group = #{fgGroup},
             score_upper = #{scoreUpper},
             score_lower = #{scoreLower},
@@ -236,7 +246,7 @@
     </select>
     <select id="listParts" resultType="com.sm.open.core.model.entity.BasMedAsse">
         SELECT
-            id_med_asse, cd_med_asse, name, descript, sd_med_asse, script,
+            id_med_asse, cd_med_asse, name, descript, script_exec, sd_med_asse, script,
             fg_active, fg_valid, creator, gmt_create, operator, gmt_modify
         FROM
             bas_med_asse
@@ -260,7 +270,7 @@
     </select>
     <select id="listSheet" resultType="com.sm.open.core.model.entity.BasEvaAsse">
         SELECT
-            id_eva_asse, cd_eva_asse, name, descript, sd_eva_asse, script, 
+            id_eva_asse, cd_eva_asse, name, descript, script_exec, sd_eva_asse, script,
             fg_group, score_upper, score_lower, score_default, fg_active, 
             fg_valid, creator, gmt_create, operator, gmt_modify
         FROM
