@@ -9,6 +9,7 @@ import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
 import com.sm.open.core.model.entity.UserInfo;
+import com.sm.open.core.model.vo.pf.user.login.PfStudentVo;
 import com.sm.open.core.model.vo.pf.user.login.PfUsersVo;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -126,6 +127,11 @@ public class PfUserServiceImpl implements PfUserService {
     public boolean matchPassword(String rawPwd, String salt, String encriptPwd) {
         PasswordEncoder passwordEncoder = new StandardPasswordEncoder(salt);
         return passwordEncoder.matches(rawPwd, encriptPwd);
+    }
+
+    @Override
+    public PfStudentVo selectStudentInfo(Long idStudent) {
+        return pfUserDao.selectStudentInfo(idStudent);
     }
 
     @Override

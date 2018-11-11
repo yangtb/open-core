@@ -188,7 +188,7 @@
             bas_medical_tag bmt
         LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media
         LEFT JOIN bas_med_asse bma ON bmt.cd_med_asse = bma.cd_med_asse
-        left join faq_med_tag d on d.id_tag = bmt.id_tag
+        left join faq_med_tag d on d.id_tag = bmt.id_tag and d.id_medicalrec = #{idMedicalrec}
         left join faq_med_case e on d.id_med_case = e.id_med_case
         WHERE
             bmt.fg_valid = '0'
@@ -209,7 +209,7 @@
             bas_eva_tag bet
         LEFT JOIN bas_media bm ON bet.id_media = bm.id_media
         LEFT JOIN bas_eva_asse bea ON bea.cd_eva_asse = bet.cd_eva_asse
-        left join faq_eva_tag d on d.id_tag = bet.id_tag
+        left join faq_eva_tag d on d.id_tag = bet.id_tag and d.id_medicalrec = #{idMedicalrec}
         left join faq_eva_case e on d.id_eva_case = e.id_eva_case
         WHERE
             bet.fg_valid = '0'
@@ -218,6 +218,14 @@
         AND bet.id_demo = #{idDemo}
         ORDER BY
             bet.sort
+    </select>
+    <select id="selectCaseInfoById" resultType="com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo">
+        SELECT
+            fm.id_medicalrec, fm.name, fm.id_demo, fm.id_medicalrec_ca, fm.id_org, fm.sd_level, fm.sd_use,
+            fm.count, fm.fg_active, fm.fg_valid, fm.creator, fm.gmt_create, fm.operator, fm.gmt_modify
+        FROM
+            faq_medicalrec fm
+        where fm.id_medicalrec = #{idMedicalrec}
     </select>
 
 </mapper>

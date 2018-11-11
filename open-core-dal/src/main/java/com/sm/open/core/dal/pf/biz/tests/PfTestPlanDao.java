@@ -195,4 +195,12 @@ public interface PfTestPlanDao {
      * @return
      */
     boolean isExistPlanDetail(ExmTestplanDetail dto);
+
+    /**
+     * 根据id查询测试计划
+     *
+     * @param idTestplan 测试计划id
+     * @return
+     */
+    ExmTestplan selectPlanById(@Param("idTestplan") Long idTestplan);
 }

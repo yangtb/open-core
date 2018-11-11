@@ -6,6 +6,7 @@ import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
 import com.sm.open.core.model.entity.UserInfo;
+import com.sm.open.core.model.vo.pf.user.login.PfStudentVo;
 import com.sm.open.core.model.vo.pf.user.login.PfUsersVo;
 
 import java.util.List;
@@ -114,5 +115,12 @@ public interface PfUserService {
      */
     boolean matchPassword(String rawPwd, String salt, String encriptPwd);
 
+    /**
+     * 查询学生信息
+     *
+     * @param idStudent 学生id
+     * @return
+     */
+    PfStudentVo selectStudentInfo(Long idStudent);
 
 }

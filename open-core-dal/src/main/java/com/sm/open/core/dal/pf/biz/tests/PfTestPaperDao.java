@@ -49,6 +49,7 @@ public interface PfTestPaperDao {
 
     /**
      * 获取所有测试试卷
+     *
      * @param dto
      * @return
      */
@@ -149,4 +150,12 @@ public interface PfTestPaperDao {
      * @return
      */
     Integer updatePaperItemSort(ExmTestpaperMedicalrec dto);
+
+    /**
+     * 根据id查询试卷信息
+     *
+     * @param idTestpaper 试卷id
+     * @return
+     */
+    ExmTestpaper selectTestPaperById(@Param("idTestpaper") Long idTestpaper);
 }

@@ -202,7 +202,6 @@
         <if test="conditionValue != null and conditionValue != '' ">
             AND a.real_name like concat('%',#{conditionValue},'%')
         </if>
-        and username != 'super'
     </select>
     <select id="listUsStudents" resultType="com.sm.open.core.model.vo.pf.user.login.PfUsersVo">
         SELECT
@@ -219,7 +218,6 @@
         <if test="conditionValue != null and conditionValue != '' ">
             AND a.real_name like concat('%',#{conditionValue},'%')
         </if>
-        and username != 'super'
         ORDER BY gmt_create desc
         limit #{offset}, #{limit}
     </select>

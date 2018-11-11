@@ -486,15 +486,6 @@
         limit #{offset}, #{limit}
     </select>
 
-    <select id="countFaqMedCaseInques" resultType="java.lang.Long">
-        SELECT
-            count(1)
-        FROM
-            faq_med_case_inques_list
-        WHERE
-	        id_med_case = #{idMedCase}
-	    AND fg_valid = '0'
-    </select>
     <select id="listFaqMedCaseInques" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
         SELECT
             fmci.id_med_case_list, fmci.id_med_case, fmci.id_inques_ca, fmci.id_inques, fmci.des_inques, fmci.id_answer,
@@ -506,7 +497,6 @@
         WHERE
             fmci.id_med_case = #{idMedCase}
         AND fmci.fg_valid = '0'
-        limit #{offset}, #{limit}
     </select>
     <select id="selectKbText" resultType="com.sm.open.core.model.entity.FaqMedCaseText">
         select

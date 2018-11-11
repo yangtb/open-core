@@ -411,6 +411,7 @@
             bas_demo_asses
         WHERE
             fg_valid = '0'
+        and id_demo = #{idDemo}
         order by sort
     </select>
     <select id="selectDimensionTagInfo" resultType="com.sm.open.core.model.entity.BasDemoAsses">
@@ -431,7 +432,8 @@
             bmt.name ,
             bmt.cd_med_asse ,
             bm.path ,
-            bma.script
+            bma.script,
+            bma.script_exec
         FROM
             bas_medical_tag bmt
         LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media

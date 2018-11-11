@@ -159,6 +159,7 @@ public interface PfClinicTemplateDao {
 
     /**
      * 获取所有病例模板
+     *
      * @return
      */
     List<BasDemo> listAllBasDemo();
@@ -166,9 +167,10 @@ public interface PfClinicTemplateDao {
     /**
      * 评价维度分类tree
      *
+     * @param idDemo
      * @return
      */
-    List<PfCommonZtreeVo> listDimensionTree();
+    List<PfCommonZtreeVo> listDimensionTree(@Param("idDemo") Long idDemo);
 
     /**
      * 删除评估维度

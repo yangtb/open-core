@@ -116,16 +116,28 @@ public interface PfCaseHistoryDao {
      * all病例标签
      *
      * @param idDemo
+     * @param idMedicalrec
      * @return
      */
-    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(@Param("idDemo") Long idDemo);
+    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(@Param("idDemo") Long idDemo,
+                                                   @Param("idMedicalrec") Long idMedicalrec);
 
     /**
      * all评估表标签
      *
      * @param idDemo
+     * @param idMedicalrec
      * @return
      */
-    List<PfAssessTagVo> listAllAssessTag(@Param("idDemo") Long idDemo);
+    List<PfAssessTagVo> listAllAssessTag(@Param("idDemo") Long idDemo,
+                                         @Param("idMedicalrec") Long idMedicalrec);
+
+    /**
+     * 根据病历id查询病历信息
+     *
+     * @param idMedicalrec 病例id
+     * @return
+     */
+    FaqMedicalrecVo selectCaseInfoById(@Param("idMedicalrec") Long idMedicalrec);
 
 }

@@ -27,7 +27,7 @@ public class PfTestWatingRoomDto extends PageParam implements Serializable {
     /**
      * 试卷名称
      */
-    private String na_testpaper;
+    private String naTestpaper;
 
     /**
      * 机构ID

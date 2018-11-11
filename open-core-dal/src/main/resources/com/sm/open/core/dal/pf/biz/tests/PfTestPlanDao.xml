@@ -372,4 +372,16 @@
         select count(1) from exm_testplan_detail
         where id_testplan = #{idTestplan} and id_student = #{idStudent} and id_medicalrec = #{idMedicalrec}
     </select>
+    <select id="selectPlanById" resultType="com.sm.open.core.model.entity.ExmTestplan">
+        SELECT
+            a.id_testplan,a.na_testplan, a.des_testplan, a.id_testpaper, a.id_org,
+            a.sd_testplan, a.fg_active, a.fg_valid,
+            a.creator, a.gmt_create, a.operator, a.gmt_modify,
+            so.name as orgName
+        FROM
+            exm_testplan a
+        LEFT JOIN sys_org so on a.id_org = so.id_org
+        WHERE
+            a.id_testplan = #{idTestplan}
+    </select>
 </mapper>

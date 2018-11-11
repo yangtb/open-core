@@ -212,4 +212,18 @@
          SELECT COUNT(1) FROM user_info WHERE username = #{userName} and is_deleted = 'N'
     </select>
 
+    <!-- 查询学生信息 -->
+    <select id="selectStudentInfo" resultType="com.sm.open.core.model.vo.pf.user.login.PfStudentVo">
+        SELECT
+            a.user_id as studentId, a.real_name, a.sex, a.email, a.phone_no, 
+            b.name as orgName, d.name as className
+        FROM
+            user_info a
+        LEFT JOIN sys_org b on a.id_org = b.id_org
+        LEFT JOIN id_class_memo c ON a.user_id = c.id_user
+        LEFT JOIN sys_class d on c.id_class = d.id_class
+        WHERE
+            a.user_id = #{idStudent}
+    </select>
+
 </mapper>

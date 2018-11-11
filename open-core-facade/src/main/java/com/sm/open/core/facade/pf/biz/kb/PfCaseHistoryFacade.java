@@ -105,15 +105,18 @@ public interface PfCaseHistoryFacade {
      * 获取病例标签列表
      *
      * @param idDemo
+     * @param idMedicalrec
      * @return
      */
-    CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo);
+    CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo, Long idMedicalrec);
 
     /**
      * 获取评估表标签列表
+     *
      * @param idDemo
+     * @param idMedicalrec
      * @return
      */
-    CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo);
+    CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo, Long idMedicalrec);
 
 }

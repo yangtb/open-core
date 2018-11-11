@@ -34,7 +34,7 @@
                 now()
         )
     </insert>
-    <select id="selectBasæMediaByIds" resultType="com.sm.open.core.model.entity.BasMedia">
+    <select id="selectBaseMediaByIds" resultType="com.sm.open.core.model.entity.BasMedia">
         select
             id_media, sd_type, name, format, size, path
         from

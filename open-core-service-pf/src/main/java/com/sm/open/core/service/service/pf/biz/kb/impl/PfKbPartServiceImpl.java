@@ -63,11 +63,6 @@ public class PfKbPartServiceImpl implements PfKbPartService {
     }
 
     @Override
-    public Long countFaqMedCaseInques(PfPartCommonDto dto) {
-        return pfKbPartDao.countFaqMedCaseInques(dto);
-    }
-
-    @Override
     public List<FaqMedCaseInquesList> listFaqMedCaseInques(PfPartCommonDto dto) {
         return pfKbPartDao.listFaqMedCaseInques(dto);
     }
@@ -216,7 +211,7 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         if (CollectionUtils.isEmpty(list)) {
             return faqMedCaseBody;
         }
-        List<BasMedia> mediaList = pfUploadDao.selectBasæMediaByIds(list);
+        List<BasMedia> mediaList = pfUploadDao.selectBaseMediaByIds(list);
         for (BasMedia basMedia : mediaList) {
             if (basMedia.getIdMedia().equals(faqMedCaseBody.getIdMediaFront())) {
                 faqMedCaseBody.setFrontPath(basMedia.getPath());

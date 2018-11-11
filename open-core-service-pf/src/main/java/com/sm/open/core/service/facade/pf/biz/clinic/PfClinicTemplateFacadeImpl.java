@@ -285,15 +285,15 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
     }
 
     @Override
-    public CommonResult<List<PfCommonZtreeResult>> listDimensionTree() {
+    public CommonResult<List<PfCommonZtreeResult>> listDimensionTree(Long idDemo) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfClinicTemplateService.listDimensionTree(), PfCommonZtreeResult.class));
+                    BeanUtil.convertList(pfClinicTemplateService.listDimensionTree(idDemo), PfCommonZtreeResult.class));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfClinicTemplateFacadeImpl-listDimensionTree】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfClinicTemplateFacadeImpl-listDimensionTree】查询评价维度分类tree失败", e);
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listDimensionTree】查询评价维度分类tree失败,idDemo={}", idDemo, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.LIST_DIMENSION_CLASSIFY_TREE_ERROR,
                     PfClinicTemplateConstant.LIST_DIMENSION_CLASSIFY_TREE_ERROR_MSG));

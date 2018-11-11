@@ -80,4 +80,9 @@ public class FaqMedCaseInquesListResult extends BasMediaResult implements Serial
      */
     private String fgCarried;
 
+    /**
+     * 扩展字段
+     */
+    private boolean extQa;
+
 }

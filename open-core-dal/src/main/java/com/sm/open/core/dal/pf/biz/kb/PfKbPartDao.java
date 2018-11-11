@@ -59,14 +59,6 @@ public interface PfKbPartDao {
     Integer delKbPart(PfBachChangeStatusDto dto);
 
     /**
-     * 问诊_问题明细count
-     *
-     * @param dto
-     * @return
-     */
-    Long countFaqMedCaseInques(PfPartCommonDto dto);
-
-    /**
      * 问诊_问题明细
      *
      * @param dto

@@ -147,9 +147,10 @@ public interface PfClinicTemplateFacade {
     /**
      * 评价维度分类tree
      *
+     * @param idDemo
      * @return
      */
-    CommonResult<List<PfCommonZtreeResult>> listDimensionTree();
+    CommonResult<List<PfCommonZtreeResult>> listDimensionTree(Long idDemo);
 
     /**
      * 删除评估维度
@@ -185,6 +186,7 @@ public interface PfClinicTemplateFacade {
 
     /**
      * 获取评估表标签列表
+     *
      * @param idDemo
      * @return
      */

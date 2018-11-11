@@ -115,8 +115,8 @@ public class PfClinicTemplateServiceImpl implements PfClinicTemplateService {
     }
 
     @Override
-    public List<PfCommonZtreeVo> listDimensionTree() {
-        return pfClinicTemplateDao.listDimensionTree();
+    public List<PfCommonZtreeVo> listDimensionTree(Long idDemo) {
+        return pfClinicTemplateDao.listDimensionTree(idDemo);
     }
 
     @Override

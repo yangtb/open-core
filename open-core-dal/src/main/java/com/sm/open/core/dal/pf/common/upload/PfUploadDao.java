@@ -23,5 +23,5 @@ public interface PfUploadDao {
      * @param list
      * @return
      */
-    List<BasMedia> selectBasæMediaByIds(@Param("list") List<Long> list);
+    List<BasMedia> selectBaseMediaByIds(@Param("list") List<Long> list);
 }

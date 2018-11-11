@@ -80,12 +80,12 @@ public class PfCaseHistoryServiceImpl implements PfCaseHistoryService {
     }
 
     @Override
-    public List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo) {
-        return pfCaseHistoryDao.listAllCaseHistoryTag(idDemo);
+    public List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo, Long idMedicalrec) {
+        return pfCaseHistoryDao.listAllCaseHistoryTag(idDemo, idMedicalrec);
     }
 
     @Override
-    public List<PfAssessTagVo> listAllAssessTag(Long idDemo) {
-        return pfCaseHistoryDao.listAllAssessTag(idDemo);
+    public List<PfAssessTagVo> listAllAssessTag(Long idDemo, Long idMedicalrec) {
+        return pfCaseHistoryDao.listAllAssessTag(idDemo, idMedicalrec);
     }
 }

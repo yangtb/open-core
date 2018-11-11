@@ -210,10 +210,10 @@ public class PfCaseHistoryFacadeImpl implements PfCaseHistoryFacade {
     }
 
     @Override
-    public CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo) {
+    public CommonResult<List<PfCaseHistoryTagResult>> listAllCaseHistoryTag(Long idDemo, Long idMedicalrec) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfCaseHistoryService.listAllCaseHistoryTag(idDemo), PfCaseHistoryTagResult.class));
+                    BeanUtil.convertList(pfCaseHistoryService.listAllCaseHistoryTag(idDemo, idMedicalrec), PfCaseHistoryTagResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfClinicTemplateFacadeImpl-listAllCaseHistoryTag-error】获取所有病例标签失败，idDemo:{}", idDemo, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
@@ -222,10 +222,10 @@ public class PfCaseHistoryFacadeImpl implements PfCaseHistoryFacade {
     }
 
     @Override
-    public CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo) {
+    public CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo, Long idMedicalrec) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfCaseHistoryService.listAllAssessTag(idDemo), PfAssessTagResult.class));
+                    BeanUtil.convertList(pfCaseHistoryService.listAllAssessTag(idDemo, idMedicalrec), PfAssessTagResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfClinicTemplateFacadeImpl-listAllAssessTag-error】获取所有评估表标签失败，idDemo:{}", idDemo, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(

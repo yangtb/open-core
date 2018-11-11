@@ -115,7 +115,7 @@ public interface PfCaseHistoryService {
      * @param idDemo
      * @return
      */
-    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo);
+    List<PfCaseHistoryTagVo> listAllCaseHistoryTag(Long idDemo, Long idMedicalrec);
 
     /**
      * all评估表标签
@@ -123,6 +123,6 @@ public interface PfCaseHistoryService {
      * @param idDemo
      * @return
      */
-    List<PfAssessTagVo> listAllAssessTag(Long idDemo);
+    List<PfAssessTagVo> listAllAssessTag(Long idDemo, Long idMedicalrec);
 
 }

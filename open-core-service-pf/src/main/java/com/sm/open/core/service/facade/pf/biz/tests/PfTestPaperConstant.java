@@ -70,5 +70,31 @@ public class PfTestPaperConstant {
 
     public static final String PAGE_RECEIVE_PAT_LIST_ERROR              = "listReceivePatError";
     public static final String PAGE_RECEIVE_PAT_LIST_ERROR_MSG          = "分页查询接诊列表失败";
-    
+
+    public static final String SELECT_TEST_PAPER_INFO_ERROR             = "selectTestPaperInfoError";
+    public static final String SELECT_TEST_PAPER_INFO_ERROR_MSG         = "查询试卷信息出错";
+
+    public static final String START_EXAM_ERROR                         = "startExamError";
+    public static final String START_EXAM_ERROR_MSG                     = "开始答题出错";
+
+    public static final String END_EXAM_ERROR                           = "endExamError";
+    public static final String END_EXAM_ERROR_MSG                       = "提交试卷出错";
+
+    public static final String SELECT_PAT_INFO_ERROR                    = "selectPatInfoError";
+    public static final String SELECT_PAT_INFO_ERROR_MSG                = "查询患者信息出错";
+
+    public static final String LIST_TEST_CONS_ERROR                     = "listTestConsError";
+    public static final String LIST_TEST_CONS_ERROR_MSG                 = "查询问诊列表出错";
+
+    public static final String UPDATE_CONS_STATUS_ERROR                 = "updateConsStatusError";
+    public static final String UPDATE_CONS_STATUS_ERROR_MSG             = "修改问诊状态出错";
+
+    public static final String SAVE_CONS_QA_ERROR                       = "saveConsQaError";
+    public static final String SAVE_CONS_QA_ERROR_MSG                   = "保存问诊出错";
+
+    public static final String LIST_CONS_QA_ERROR                       = "listConsQaError";
+    public static final String LIST_CONS_QA_ERROR_MSG                   = "查询问诊出错";
+
+
+
 }
