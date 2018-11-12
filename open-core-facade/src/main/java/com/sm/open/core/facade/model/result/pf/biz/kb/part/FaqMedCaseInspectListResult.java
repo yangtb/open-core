@@ -111,5 +111,9 @@ public class FaqMedCaseInspectListResult extends BasMediaResult implements Seria
      */
     private String fgCarried;
 
+    /**
+     * 扩展字段
+     */
+    private boolean extQa;
 
 }

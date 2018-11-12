@@ -139,6 +139,80 @@
         </trim>
         )
     </insert>
+    <insert id="saveCheckQa"  useGeneratedKeys="true" keyProperty="idTestexecResultBody">
+        INSERT INTO `exm_med_result_body`
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultBody!=null">
+                `id_testexec_result_body`,
+            </if>
+            <if test="idTestexecResult!=null">
+                `id_testexec_result`,
+            </if>
+            <if test="idBody!=null">
+                `id_body`,
+            </if>
+            <if test="idMedCaseList!=null">
+                `id_med_case_list`,
+            </if>
+                `fg_clue`,
+                `gmt_create`,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultBody!=null">
+                #{idTestexecResultBody},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="idMedCaseList!=null">
+                #{idMedCaseList},
+            </if>
+                '0',
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="saveExamQa" useGeneratedKeys="true" keyProperty="idTestexecResultInspect">
+        INSERT INTO `exm_med_result_inspect`
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultInspect!=null">
+                `id_testexec_result_inspect`,
+            </if>
+            <if test="idTestexecResult!=null">
+                `id_testexec_result`,
+            </if>
+            <if test="idMedCaseList!=null">
+                `id_med_case_list`,
+            </if>
+                `fg_clue`,
+                `gmt_create`,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultInspect!=null">
+                #{idTestexecResultInspect},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="idMedCaseList!=null">
+                #{idMedCaseList},
+            </if>
+                '0',
+                now(),
+        </trim>
+        )
+    </insert>
     <update id="endExam">
         update
             exm_testexec
@@ -161,9 +235,39 @@
         </foreach>
         )
     </update>
+    <update id="updateCheckStatus">
+        update
+            exm_med_result_body
+        set
+            fg_clue=#{status}
+        where
+            id_testexec_result_body  in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="updateExamStatus">
+        update
+            exm_med_result_inspect
+        set
+            fg_clue=#{status}
+        where
+            id_testexec_result_inspect  in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
     <update id="delConsQa">
         update exm_med_result_inques set fg_valid=#{fgValid} where id_testexec_result_inques = #{idTestexecResultInques}
     </update>
+    <delete id="delCheckQa">
+        update exm_med_result_body set fg_valid=#{fgValid} where id_testexec_result_body = #{idTestexecResultBody}
+    </delete>
+    <delete id="delExamQa">
+        update exm_med_result_inspect set fg_valid=#{fgValid} where id_testexec_result_inspect = #{idTestexecResultInspect}
+    </delete>
 
 
     <select id="countWaitingRoom" resultType="java.lang.Long">
@@ -293,4 +397,105 @@
             id_testexec_result = #{idTestexecResult}
         and id_med_case_list = #{idMedCaseList}
     </select>
+
+    <select id="selectPic" resultType="java.lang.Long">
+        SELECT
+           a.id_med_case
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        WHERE
+             a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        limit 1
+    </select>
+
+    <select id="listTestCheck" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
+        SELECT
+            c.id_med_case_list ,
+            c.des_body ,
+            c.id_body ,
+            c.cd_check ,
+            e.name AS cdCheckText ,
+            IF(d.id_med_case_list IS NULL , 0 , 1) AS extQa
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_body_list c ON c.id_med_case = a.id_med_case AND c.fg_valid = '0'
+        LEFT JOIN bas_body_ca e ON c.id_body_ca = e.id_body_ca
+        LEFT JOIN exm_med_result_body d ON c.id_med_case_list = d.id_med_case_list AND d.fg_valid = '0'
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        <if test="sdBody != null and sdBody != ''">
+            AND c.sd_body = #{sdBody}
+        </if>
+        ORDER BY
+            c.id_med_case_list
+    </select>
+    <select id="isExistCheckQa" resultType="java.lang.Long">
+        select
+            id_testexec_result_body
+        from
+            exm_med_result_body
+        where
+            id_testexec_result = #{idTestexecResult}
+        and id_med_case_list = #{idMedCaseList}
+    </select>
+    <select id="listTestExam" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
+        SELECT
+            c.id_med_case_list ,
+	        c.na_item,
+            IF(d.id_med_case_list is null,0,1) as extQa
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inspect d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        order by
+            c.id_med_case_list
+    </select>
+    <select id="isExistExamQa" resultType="java.lang.Long">
+        select
+            id_testexec_result_inspect
+        from
+            exm_med_result_inspect
+        where
+            id_testexec_result = #{idTestexecResult}
+        and id_med_case_list = #{idMedCaseList}
+    </select>
+    <select id="listCheckQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomCheckVo">
+        SELECT
+            a.id_testexec_result_body , a.fg_clue ,
+            b.des_body , b.id_result , b.des_result , b.des_expert ,
+            c.sd_type, c.path
+        FROM
+            exm_med_result_body a
+        LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
+        LEFT JOIN bas_media c on b.id_media = c.id_media
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        and a.fg_valid = '0'
+        order by
+            b.id_med_case_list
+    </select>
+    <select id="listExamQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomExamVo">
+        SELECT
+            a.id_testexec_result_inspect , a.fg_clue ,
+            b.na_item , b.id_result , b.val_result , b.des_expert ,
+            c.sd_type, c.path
+        FROM
+            exm_med_result_inspect a
+        LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
+        LEFT JOIN bas_media c on b.id_media = c.id_media
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        and a.fg_valid = '0'
+        order by
+            b.id_med_case_list
+    </select>
+
 </mapper>

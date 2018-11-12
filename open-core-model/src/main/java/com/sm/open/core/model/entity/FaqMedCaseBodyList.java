@@ -55,6 +55,8 @@ public class FaqMedCaseBodyList extends BasMediaVo implements Serializable {
      */
     private String cdCheck;
 
+    private String cdCheckText;
+
     /**
      * 结果id
      */
@@ -94,5 +96,10 @@ public class FaqMedCaseBodyList extends BasMediaVo implements Serializable {
      * 删除标识：0=正常 1=删除
      */
     private String fgValid;
+
+    /**
+     * 扩展字段
+     */
+    private boolean extQa;
 
 }

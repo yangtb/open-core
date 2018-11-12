@@ -146,4 +146,63 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     public List<PfWaitingRoomConsVo> listConsQa(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listConsQa(dto);
     }
+
+    @Override
+    public Long selectPic(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.selectPic(dto);
+    }
+
+    @Override
+    public List<FaqMedCaseBodyList> listTestCheck(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.listTestCheck(dto);
+    }
+
+    @Override
+    public Long saveCheckQa(ExmMedResultBody dto) {
+        Long idTestexecResultBody = pfTestWaitingRoomDao.isExistCheckQa(dto);
+        if (idTestexecResultBody == null) {
+            pfTestWaitingRoomDao.saveCheckQa(dto);
+        } else {
+            pfTestWaitingRoomDao.delCheckQa(idTestexecResultBody, dto.getFgValid());
+            dto.setIdTestexecResultBody(idTestexecResultBody);
+        }
+        return dto.getIdTestexecResultBody();
+    }
+
+    @Override
+    public boolean updateCheckStatus(PfBachChangeStatusDto dto) {
+        return pfTestWaitingRoomDao.updateCheckStatus(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public List<PfWaitingRoomCheckVo> listCheckQa(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.listCheckQa(dto);
+    }
+
+    @Override
+    public List<FaqMedCaseInspectList> listTestExam(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.listTestExam(dto);
+    }
+
+    @Override
+    public Long saveExamQa(ExmMedResultInspect dto) {
+        Long idTestexecResultInspect = pfTestWaitingRoomDao.isExistExamQa(dto);
+        if (idTestexecResultInspect == null) {
+            pfTestWaitingRoomDao.saveExamQa(dto);
+        } else {
+            pfTestWaitingRoomDao.delExamQa(idTestexecResultInspect, dto.getFgValid());
+            dto.setIdTestexecResultInspect(idTestexecResultInspect);
+        }
+        return dto.getIdTestexecResultInspect();
+    }
+
+    @Override
+    public boolean updateExamStatus(PfBachChangeStatusDto dto) {
+        return pfTestWaitingRoomDao.updateExamStatus(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public List<PfWaitingRoomExamVo> listExamQa(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.listExamQa(dto);
+    }
 }

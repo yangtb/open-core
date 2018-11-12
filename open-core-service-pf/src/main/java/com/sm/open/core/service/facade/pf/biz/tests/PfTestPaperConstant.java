@@ -95,6 +95,28 @@ public class PfTestPaperConstant {
     public static final String LIST_CONS_QA_ERROR                       = "listConsQaError";
     public static final String LIST_CONS_QA_ERROR_MSG                   = "查询问诊出错";
 
+    public static final String LIST_TEST_CHECK_ERROR                    = "listTestCheckError";
+    public static final String LIST_TEST_CHECK_ERROR_MSG                = "查询检查列表出错";
 
+    public static final String UPDATE_CHECK_STATUS_ERROR                = "updateCheckStatusError";
+    public static final String UPDATE_CHECK_STATUS_ERROR_MSG            = "修改检查状态出错";
+
+    public static final String SAVE_CHECK_QA_ERROR                      = "saveCheckQaError";
+    public static final String SAVE_CHECK_QA_ERROR_MSG                  = "保存检查出错";
+
+    public static final String LIST_CHECK_QA_ERROR                      = "listCheckQaError";
+    public static final String LIST_CHECK_QA_ERROR_MSG                  = "查询检查出错";
+
+    public static final String LIST_TEST_EXAM_ERROR                     = "listTestExamError";
+    public static final String LIST_TEST_EXAM_ERROR_MSG                 = "查询检验列表出错";
+
+    public static final String UPDATE_EXAM_STATUS_ERROR                 = "updateExamStatusError";
+    public static final String UPDATE_EXAM_STATUS_ERROR_MSG             = "修改检验状态出错";
+
+    public static final String SAVE_EXAM_QA_ERROR                       = "saveExamQaError";
+    public static final String SAVE_EXAM_QA_ERROR_MSG                   = "保存检验出错";
+
+    public static final String LIST_EXAM_QA_ERROR                       = "listExamQaError";
+    public static final String LIST_EXAM_QA_ERROR_MSG                   = "查询检验出错";
 
 }

@@ -111,5 +111,9 @@ public class FaqMedCaseInspectList extends BasMediaVo implements Serializable {
      */
     private String fgCarried;
 
+    /**
+     * 扩展字段
+     */
+    private boolean extQa;
 
 }

@@ -1,16 +1,13 @@
 package com.sm.open.core.service.service.pf.biz.tests;
 
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.PfWaitingRoomStartResult;
+import com.sm.open.core.facade.model.param.pf.biz.tests.room.PfTestExamTagParam;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.entity.ExmMedResultInques;
-import com.sm.open.core.model.entity.ExmTestexec;
-import com.sm.open.core.model.entity.FaqMedCaseInquesList;
+import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
-import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperVo;
 
 import java.util.List;
 
@@ -117,5 +114,77 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     List<PfWaitingRoomConsVo> listConsQa(PfTestExamTagDto dto);
+
+    /**
+     * 查询图片
+     *
+     * @param dto
+     * @return
+     */
+    Long selectPic(PfTestExamTagDto dto);
+
+    /**
+     * 检查 - 列表
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseBodyList> listTestCheck(PfTestExamTagDto dto);
+
+    /**
+     * 检查 - 保存问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Long saveCheckQa(ExmMedResultBody dto);
+
+    /**
+     * 检查 - 线索标志
+     *
+     * @param dto
+     * @return
+     */
+    boolean updateCheckStatus(PfBachChangeStatusDto dto);
+
+    /**
+     * 检查 - qa列表
+     *
+     * @param dto
+     * @return
+     */
+    List<PfWaitingRoomCheckVo> listCheckQa(PfTestExamTagDto dto);
+
+    /**
+     * 检验 - 列表
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseInspectList> listTestExam(PfTestExamTagDto dto);
+
+    /**
+     * 检验 - 保存问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Long saveExamQa(ExmMedResultInspect dto);
+
+    /**
+     * 检验 - 线索标志
+     *
+     * @param dto
+     * @return
+     */
+    boolean updateExamStatus(PfBachChangeStatusDto dto);
+
+    /**
+     * 检验 - qa列表
+     *
+     * @param dto
+     * @return
+     */
+    List<PfWaitingRoomExamVo> listExamQa(PfTestExamTagDto dto);
 
 }

@@ -2,9 +2,8 @@ package com.sm.open.core.facade.pf.biz.tests;
 
 import com.sm.open.core.facade.model.param.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.PfWaitingRoomConsResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.PfWaitingRoomPatResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.PfWaitingRoomStartResult;
+import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -99,4 +98,78 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<List<PfWaitingRoomConsResult>> listConsQa(PfTestExamTagParam param);
+
+    /**
+     * 查询检查图片
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<FaqMedCaseBodyResult> selectPic(PfTestExamTagParam param);
+
+    /**
+     * 检查 - 列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listTestCheck(PfTestExamTagParam param);
+
+    /**
+     * 检查 - 保存问答问题
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveCheckQa(ExmMedResultBodyParam param);
+
+    /**
+     * 检查 - 线索标志
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> updateCheckStatus(PfBachChangeStatusParam param);
+
+    /**
+     * 检查 - qa列表
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfWaitingRoomCheckResult>> listCheckQa(PfTestExamTagParam param);
+
+
+    /**
+     * 检验 - 列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listTestExam(PfTestExamTagParam param);
+
+
+    /**
+     * 检验 - 保存
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveExamQa(ExmMedResultInspectParam param);
+
+    /**
+     * 检验 - 线索标志
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> updateExamStatus(PfBachChangeStatusParam param);
+
+    /**
+     * 检验 - qa列表
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfWaitingRoomExamResult>> listExamQa(PfTestExamTagParam param);
 }

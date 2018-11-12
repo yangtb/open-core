@@ -4,10 +4,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
-import com.sm.open.core.model.vo.pf.biz.test.PfTestReceivePatVo;
-import com.sm.open.core.model.vo.pf.biz.test.PfTestWaitingRoomVo;
-import com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomConsVo;
-import com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo;
+import com.sm.open.core.model.vo.pf.biz.test.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -148,4 +145,113 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfWaitingRoomConsVo> listConsQa(PfTestExamTagDto dto);
+
+    /**
+     * 查询图片id
+     *
+     * @param dto
+     * @return
+     */
+    Long selectPic(PfTestExamTagDto dto);
+
+    /**
+     * 检查 - 信息
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseBodyList> listTestCheck(PfTestExamTagDto dto);
+
+    /**
+     * 检查 - 保存问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer saveCheckQa(ExmMedResultBody dto);
+
+    /**
+     * 检查 - 是否存在
+     *
+     * @param dto
+     * @return
+     */
+    Long isExistCheckQa(ExmMedResultBody dto);
+
+    /**
+     * 检查 - 删除
+     *
+     * @param idTestexecResultBody 主键
+     * @param fgValid              删除标识
+     * @return
+     */
+    Integer delCheckQa(@Param("idTestexecResultBody") Long idTestexecResultBody,
+                       @Param("fgValid") String fgValid);
+
+    /**
+     * 检查 - 线索标志
+     *
+     * @param dto
+     * @return
+     */
+    Integer updateCheckStatus(PfBachChangeStatusDto dto);
+
+    /**
+     * 检查 - qa列表
+     *
+     * @param dto
+     * @return
+     */
+    List<PfWaitingRoomCheckVo> listCheckQa(PfTestExamTagDto dto);
+
+
+    /**
+     * 检验 - 信息
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseInspectList> listTestExam(PfTestExamTagDto dto);
+
+    /**
+     * 检验 - 保存问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer saveExamQa(ExmMedResultInspect dto);
+
+    /**
+     * 检验 - 是否存在
+     *
+     * @param dto
+     * @return
+     */
+    Long isExistExamQa(ExmMedResultInspect dto);
+
+    /**
+     * 检验 - 删除
+     *
+     * @param idTestexecResultInspect 主键
+     * @param fgValid                 删除标识
+     * @return
+     */
+    Integer delExamQa(@Param("idTestexecResultInspect") Long idTestexecResultInspect,
+                      @Param("fgValid") String fgValid);
+
+    /**
+     * 检验 - 线索标志
+     *
+     * @param dto
+     * @return
+     */
+    Integer updateExamStatus(PfBachChangeStatusDto dto);
+
+    /**
+     * 检验 - qa列表
+     *
+     * @param dto
+     * @return
+     */
+    List<PfWaitingRoomExamVo> listExamQa(PfTestExamTagDto dto);
 }
