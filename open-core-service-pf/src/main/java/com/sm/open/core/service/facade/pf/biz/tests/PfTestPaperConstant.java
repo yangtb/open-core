@@ -119,4 +119,10 @@ public class PfTestPaperConstant {
     public static final String LIST_EXAM_QA_ERROR                       = "listExamQaError";
     public static final String LIST_EXAM_QA_ERROR_MSG                   = "查询检验出错";
 
+    public static final String SAVE_REFERRAL_ERROR                      = "saveReferralError";
+    public static final String SAVE_REFERRAL_ERROR_MSG                  = "保存拟诊出错";
+
+    public static final String LIST_REFERRAL_ERROR                      = "listReferralError";
+    public static final String LIST_REFERRAL_ERROR_MSG                  = "查询拟诊出错";
+
 }

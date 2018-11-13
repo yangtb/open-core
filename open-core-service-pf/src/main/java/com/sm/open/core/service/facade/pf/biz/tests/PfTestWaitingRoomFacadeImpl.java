@@ -361,5 +361,36 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
         }
     }
 
+    @Override
+    public CommonResult<Long> saveReferral(ExmMedResultReferralParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveReferral(BeanUtil.convert(param, ExmMedResultReferral.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveReferral】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveReferral-error】保存检验出错, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_REFERRAL_ERROR, PfTestPaperConstant.SAVE_REFERRAL_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<ExmMedResultReferralResult>> listReferral(PfTestExamTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listReferral(BeanUtil.convert(param, PfTestExamTagDto.class)),
+                            ExmMedResultReferralResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listReferral】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listReferral-error】查询拟诊出错, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_REFERRAL_ERROR, PfTestPaperConstant.LIST_REFERRAL_ERROR_MSG));
+        }
+    }
+
 
 }

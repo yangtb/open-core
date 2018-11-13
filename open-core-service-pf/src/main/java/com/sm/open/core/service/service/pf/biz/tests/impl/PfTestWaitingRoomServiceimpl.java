@@ -205,4 +205,20 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     public List<PfWaitingRoomExamVo> listExamQa(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listExamQa(dto);
     }
+
+    @Override
+    public Long saveReferral(ExmMedResultReferral dto) {
+        if (dto.getIdTestexecResultReferral() == null) {
+            pfTestWaitingRoomDao.saveReferral(dto);
+        } else {
+            pfTestWaitingRoomDao.outReferral(dto);
+        }
+        return dto.getIdTestexecResultReferral();
+    }
+
+    @Override
+    public List<ExmMedResultReferral> listReferral(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.listReferral(dto);
+    }
+
 }

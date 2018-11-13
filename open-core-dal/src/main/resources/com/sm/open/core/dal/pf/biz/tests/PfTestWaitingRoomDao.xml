@@ -140,23 +140,23 @@
         )
     </insert>
     <insert id="saveCheckQa"  useGeneratedKeys="true" keyProperty="idTestexecResultBody">
-        INSERT INTO `exm_med_result_body`
+        INSERT INTO exm_med_result_body
         (
         <trim suffixOverrides=",">
             <if test="idTestexecResultBody!=null">
-                `id_testexec_result_body`,
+                id_testexec_result_body,
             </if>
             <if test="idTestexecResult!=null">
-                `id_testexec_result`,
+                id_testexec_result,
             </if>
             <if test="idBody!=null">
-                `id_body`,
+                id_body,
             </if>
             <if test="idMedCaseList!=null">
-                `id_med_case_list`,
+                id_med_case_list,
             </if>
-                `fg_clue`,
-                `gmt_create`,
+                fg_clue,
+                gmt_create,
         </trim>
         )
         VALUES
@@ -180,20 +180,20 @@
         )
     </insert>
     <insert id="saveExamQa" useGeneratedKeys="true" keyProperty="idTestexecResultInspect">
-        INSERT INTO `exm_med_result_inspect`
+        INSERT INTO exm_med_result_inspect
         (
         <trim suffixOverrides=",">
             <if test="idTestexecResultInspect!=null">
-                `id_testexec_result_inspect`,
+                id_testexec_result_inspect,
             </if>
             <if test="idTestexecResult!=null">
-                `id_testexec_result`,
+                id_testexec_result,
             </if>
             <if test="idMedCaseList!=null">
-                `id_med_case_list`,
+                id_med_case_list,
             </if>
-                `fg_clue`,
-                `gmt_create`,
+                fg_clue,
+                gmt_create,
         </trim>
         )
         VALUES
@@ -207,6 +207,52 @@
             </if>
             <if test="idMedCaseList!=null">
                 #{idMedCaseList},
+            </if>
+                '0',
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="saveReferral" useGeneratedKeys="true" keyProperty="idTestexecResultReferral">
+        INSERT INTO exm_med_result_referral
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultReferral!=null">
+                id_testexec_result_referral,
+            </if>
+            <if test="idTestexecResult!=null">
+                id_testexec_result,
+            </if>
+            <if test="sdEvaReferral!=null">
+                sd_eva_referral,
+            </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
+            <if test="reasonIn!=null">
+                reason_in,
+            </if>
+                fg_exclude,
+                gmt_create,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultReferral!=null">
+                #{idTestexecResultReferral},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="sdEvaReferral!=null">
+                #{sdEvaReferral},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
+            </if>
+            <if test="reasonIn!=null">
+                #{reasonIn},
             </if>
                 '0',
                 now(),
@@ -261,6 +307,14 @@
     </update>
     <update id="delConsQa">
         update exm_med_result_inques set fg_valid=#{fgValid} where id_testexec_result_inques = #{idTestexecResultInques}
+    </update>
+    <update id="outReferral">
+        update
+            exm_med_result_referral
+        set
+            fg_exclude = '1', reason_out = #{reasonOut}, gmt_modify = now()
+        where
+            id_testexec_result_referral = #{idTestexecResultReferral}
     </update>
     <delete id="delCheckQa">
         update exm_med_result_body set fg_valid=#{fgValid} where id_testexec_result_body = #{idTestexecResultBody}
@@ -496,6 +550,18 @@
         and a.fg_valid = '0'
         order by
             b.id_med_case_list
+    </select>
+    <select id="listReferral" resultType="com.sm.open.core.model.entity.ExmMedResultReferral">
+        SELECT
+            a.id_testexec_result_referral, a.id_testexec_result, a.sd_eva_referral, 
+            a.id_die, a.reason_in, a.fg_exclude, a.reason_out, a.fg_valid, a.gmt_create, a.gmt_modify,
+            b.name as idDieText
+        FROM
+            exm_med_result_referral a
+        LEFT JOIN bas_die b ON a.id_die = b.id_die
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        and a.fg_valid = '0'
     </select>
 
 </mapper>

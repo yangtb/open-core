@@ -172,4 +172,20 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<List<PfWaitingRoomExamResult>> listExamQa(PfTestExamTagParam param);
+
+    /**
+     * 拟诊 - 保存
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveReferral(ExmMedResultReferralParam param);
+
+    /**
+     * 已添加拟诊
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<ExmMedResultReferralResult>> listReferral(PfTestExamTagParam param);
 }

@@ -254,4 +254,28 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfWaitingRoomExamVo> listExamQa(PfTestExamTagDto dto);
+
+    /**
+     * 拟诊 - 保存
+     *
+     * @param dto
+     * @return
+     */
+    Integer saveReferral(ExmMedResultReferral dto);
+
+    /**
+     * 拟诊 - 排除
+     *
+     * @param dto
+     * @return
+     */
+    Integer outReferral(ExmMedResultReferral dto);
+
+    /**
+     * 已添加拟诊
+     *
+     * @param dto
+     * @return
+     */
+    List<ExmMedResultReferral> listReferral(PfTestExamTagDto dto);
 }
