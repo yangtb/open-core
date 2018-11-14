@@ -238,4 +238,67 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<Boolean> delDrugs(String type, Long id);
+
+    /**
+     * 保存诊断
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveDiagnosis(ExmMedResultDiagnosisParam param);
+
+    /**
+     * 删除诊断
+     *
+     * @param idTestexecResultDiagnosis 主键
+     * @return
+     */
+    CommonResult<Boolean> delDiagnosis(Long idTestexecResultDiagnosis);
+
+    /**
+     * 保存诊断小结
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveSummary(ExmMedResultSummaryParam param);
+
+    /**
+     * 保存确诊理由
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> saveDieReason(List<ExmMedResultDieReasonParam> param);
+
+    /**
+     * 删除确诊理由
+     *
+     * @param idDieReason 主键
+     * @return
+     */
+    CommonResult<Boolean> delDieReason(Long idDieReason);
+
+    /**
+     * 查询诊断、诊断小结
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult);
+
+    /**
+     * 查询已做问诊、检查、检验
+     *
+     * @return
+     */
+    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult);
+
+    /**
+     * 查询确诊理由
+     *
+     * @param idTestexecResultDiagnosis
+     * @return
+     */
+    PfPageResult listDieReason(Long idTestexecResultDiagnosis);
 }

@@ -140,7 +140,32 @@ public class PfTestPaperConstant {
     public static final String LIST_SHORT_DRUGS_ERROR                   = "listShortDrugsError";
     public static final String LIST_SHORT_DRUGS_ERROR_MSG               = "查询临时用药列表出错";
 
-    public static final String DEL_DRUGS_ERROR                         = "delDrugsError";
-    public static final String DEL_DRUGS_ERROR_MSG                     = "删除用药出错";
+    public static final String DEL_DRUGS_ERROR                          = "delDrugsError";
+    public static final String DEL_DRUGS_ERROR_MSG                      = "删除用药出错";
+
+    public static final String SAVE_DIAGNOSIS_ERROR                     = "saveDiagnosisError";
+    public static final String SAVE_DIAGNOSIS_ERROR_MSG                 = "保存诊断出错";
+
+    public static final String SAVE_SUMMARY_ERROR                       = "saveSummaryError";
+    public static final String SAVE_SUMMARY_ERROR_MSG                   = "保存诊断小结出错";
+
+    public static final String SAVE_DIE_REASON_ERROR                    = "saveDieReasonError";
+    public static final String SAVE_DIE_REASON_ERROR_MSG                = "保存确诊理由出错";
+
+    public static final String DEL_DIAGNOSIS_ERROR                      = "delDiagnosisError";
+    public static final String DEL_DIAGNOSIS_ERROR_MSG                  = "删除诊断出错";
+
+    public static final String DEL_DIE_REASON_ERROR                     = "delDieReasonError";
+    public static final String DEL_DIE_REASON_ERROR_MSG                 = "删除确诊理由出错";
+
+    public static final String LIST_DIE_REASON_ERROR                    = "listDieReasonError";
+    public static final String LIST_DIE_REASON_ERROR_MSG                = "查询确诊理由列表出错";
+
+    public static final String SELECT_DIAGNOSIS_ERROR                   = "selectDiagnosisError";
+    public static final String SELECT_DIAGNOSIS_ERROR_MSG               = "查询诊断出错";
+
+    public static final String SELECT_READY_DIE_REASON_ERROR            = "listReadyDieReasonError";
+    public static final String SELECT_READY_DIE_REASON_ERROR_MSG        = "查询确诊理由字典出错";
+
 
 }

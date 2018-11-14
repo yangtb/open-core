@@ -286,7 +286,7 @@ public interface PfTestWaitingRoomDao {
      * @param idTestexecResult 执行结果id
      * @return
      */
-    ExmMedResultOrder selectOrders(Long idTestexecResult);
+    ExmMedResultOrder selectOrders(@Param("idTestexecResult") Long idTestexecResult);
 
     /**
      * 医嘱 - 保存
@@ -326,7 +326,7 @@ public interface PfTestWaitingRoomDao {
      * @param idTestexecResultOrder 执行结果id
      * @return
      */
-    List<ExmMedResultOrderLogDrugs> listLongDrugs(Long idTestexecResultOrder);
+    List<ExmMedResultOrderLogDrugs> listLongDrugs(@Param("idTestexecResultOrder") Long idTestexecResultOrder);
 
     /**
      * 医嘱 - 短期用药列表
@@ -334,7 +334,7 @@ public interface PfTestWaitingRoomDao {
      * @param idTestexecResultOrder 执行结果id
      * @return
      */
-    List<ExmMedResultOrderShortDrugs> listShortDrugs(Long idTestexecResultOrder);
+    List<ExmMedResultOrderShortDrugs> listShortDrugs(@Param("idTestexecResultOrder") Long idTestexecResultOrder);
 
     /**
      * 删除长期用药
@@ -351,4 +351,99 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer delShortDrugs(@Param("id") Long id);
+
+    /**
+     * 保存诊断
+     *
+     * @param dto
+     * @return
+     */
+    Long addDiagnosis(ExmMedResultDiagnosis dto);
+
+    /**
+     * 编辑诊断
+     *
+     * @param dto
+     * @return
+     */
+    Integer editDiagnosis(ExmMedResultDiagnosis dto);
+
+    /**
+     * 删除诊断
+     *
+     * @param idTestexecResultDiagnosis 主键
+     * @return
+     */
+    Integer delDiagnosis(@Param("idTestexecResultDiagnosis") Long idTestexecResultDiagnosis);
+
+    /**
+     * 保存诊断小结
+     *
+     * @param dto
+     * @return
+     */
+    Integer addSummary(ExmMedResultSummary dto);
+
+    /**
+     * edit诊断小结
+     *
+     * @param dto
+     * @return
+     */
+    Integer editSummary(ExmMedResultSummary dto);
+
+    /**
+     * 保存确诊理由
+     *
+     * @param list
+     * @return
+     */
+    Integer saveDieReason(@Param("list") List<ExmMedResultDieReason> list);
+
+    /**
+     * 删除确诊理由
+     *
+     * @param idDieReason 主键
+     * @return
+     */
+    Integer delDieReason(@Param("idDieReason") Long idDieReason);
+
+    /**
+     * 删除确诊理由
+     *
+     * @param idTestexecResultDiagnosis 主键
+     * @return
+     */
+    Integer delDieReasonByResultId(@Param("idTestexecResultDiagnosis") Long idTestexecResultDiagnosis);
+
+    /**
+     * 查询诊断
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    ExmMedResultDiagnosis selectDiagnosis(Long idTestexecResult);
+
+    /**
+     * 查询诊断小结
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    ExmMedResultSummary selectSummary(Long idTestexecResult);
+
+    /**
+     * 查询已做问诊、检查、检验
+     *
+     * @return
+     */
+    List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult);
+
+    /**
+     * 查询确诊理由
+     *
+     * @param idTestexecResultDiagnosis
+     * @return
+     */
+    List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis);
 }

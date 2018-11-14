@@ -267,4 +267,70 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return true;
     }
 
+    @Override
+    public Long saveDiagnosis(ExmMedResultDiagnosis dto) {
+        if (dto.getIdTestexecResultDiagnosis() == null) {
+            pfTestWaitingRoomDao.addDiagnosis(dto);
+        } else {
+            pfTestWaitingRoomDao.editDiagnosis(dto);
+        }
+        return dto.getIdTestexecResultDiagnosis();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean delDiagnosis(Long idTestexecResultDiagnosis) {
+        pfTestWaitingRoomDao.delDiagnosis(idTestexecResultDiagnosis);
+        pfTestWaitingRoomDao.delDieReasonByResultId(idTestexecResultDiagnosis);
+        return true;
+    }
+
+    @Override
+    public Long saveSummary(ExmMedResultSummary dto) {
+        if (dto.getIdTestexecResultSumary() == null) {
+            pfTestWaitingRoomDao.addSummary(dto);
+        } else {
+            pfTestWaitingRoomDao.editSummary(dto);
+        }
+        return dto.getIdTestexecResultSumary();
+    }
+
+    @Override
+    public boolean saveDieReason(List<ExmMedResultDieReason> dto) {
+        return pfTestWaitingRoomDao.saveDieReason(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public boolean delDieReason(Long idDieReason) {
+        return pfTestWaitingRoomDao.delDieReason(idDieReason) == 1 ? true : false;
+    }
+
+    @Override
+    public PfWaitingRoomDiagnosisVo selectDiagnosis(Long idTestexecResult) {
+        PfWaitingRoomDiagnosisVo diagnosisVo = new PfWaitingRoomDiagnosisVo();
+        ExmMedResultDiagnosis diagnosis = pfTestWaitingRoomDao.selectDiagnosis(idTestexecResult);
+        ExmMedResultSummary summary = pfTestWaitingRoomDao.selectSummary(idTestexecResult);
+        if (diagnosis != null) {
+            diagnosisVo.setIdTestexecResultDiagnosis(diagnosis.getIdTestexecResultDiagnosis());
+            diagnosisVo.setIdTestexecResult(idTestexecResult);
+            diagnosisVo.setIdDie(diagnosis.getIdDie());
+            diagnosisVo.setIdDieText(diagnosis.getIdDieText());
+        }
+        if (summary != null) {
+            diagnosisVo.setIdTestexecResultSumary(summary.getIdTestexecResultSumary());
+            diagnosisVo.setDieSumary(summary.getDieSumary());
+        }
+        return diagnosisVo;
+    }
+
+    @Override
+    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult);
+    }
+
+    @Override
+    public List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis) {
+        return pfTestWaitingRoomDao.listDieReason(idTestexecResultDiagnosis);
+    }
+
 }

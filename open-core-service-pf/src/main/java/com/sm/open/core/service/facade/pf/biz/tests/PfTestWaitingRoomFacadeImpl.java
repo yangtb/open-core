@@ -104,7 +104,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectTestPaperInfo】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectTestPaperInfo】查询试卷信息出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectTestPaperInfo】查询试卷信息出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SELECT_TEST_PAPER_INFO_ERROR, PfTestPaperConstant.SELECT_TEST_PAPER_INFO_ERROR_MSG));
         }
@@ -121,7 +121,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-startExam】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-startExam】开始答题出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-startExam】开始答题出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.START_EXAM_ERROR, PfTestPaperConstant.START_EXAM_ERROR_MSG));
         }
@@ -136,7 +136,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-endExam】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-endExam】提交试卷出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-endExam】提交试卷出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.END_EXAM_ERROR, PfTestPaperConstant.END_EXAM_ERROR_MSG));
         }
@@ -163,7 +163,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectPatInfo】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectPatInfo】查询患者信息出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectPatInfo】查询患者信息出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SELECT_PAT_INFO_ERROR, PfTestPaperConstant.SELECT_PAT_INFO_ERROR_MSG));
         }
@@ -191,7 +191,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveConsQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveConsQa】保存问诊出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveConsQa】保存问诊出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_CONS_QA_ERROR, PfTestPaperConstant.SAVE_CONS_QA_ERROR_MSG));
         }
@@ -206,7 +206,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-updateConsStatus】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateConsStatus】修改问诊状态出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateConsStatus】修改问诊状态出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.UPDATE_CONS_STATUS_ERROR, PfTestPaperConstant.UPDATE_CONS_STATUS_ERROR_MSG));
         }
@@ -222,7 +222,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listConsQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listConsQa】查询问诊出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listConsQa】查询问诊出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_CONS_QA_ERROR, PfTestPaperConstant.LIST_CONS_QA_ERROR_MSG));
         }
@@ -267,7 +267,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveCheckQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveCheckQa】保存检查出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveCheckQa】保存检查出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_CHECK_QA_ERROR, PfTestPaperConstant.SAVE_CHECK_QA_ERROR_MSG));
         }
@@ -282,7 +282,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-updateCheckStatus】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateCheckStatus】修改检查状态出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateCheckStatus】修改检查状态出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.UPDATE_CHECK_STATUS_ERROR, PfTestPaperConstant.UPDATE_CHECK_STATUS_ERROR_MSG));
         }
@@ -298,7 +298,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listCheckQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listCheckQa】查询检查出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listCheckQa】查询检查出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_CHECK_QA_ERROR, PfTestPaperConstant.LIST_CHECK_QA_ERROR_MSG));
         }
@@ -326,7 +326,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveExamQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveExamQa】保存检验出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveExamQa】保存检验出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_EXAM_QA_ERROR, PfTestPaperConstant.SAVE_EXAM_QA_ERROR_MSG));
         }
@@ -341,7 +341,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-updateExamStatus】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateExamStatus】修改检验状态出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateExamStatus】修改检验状态出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.UPDATE_EXAM_STATUS_ERROR, PfTestPaperConstant.UPDATE_EXAM_STATUS_ERROR_MSG));
         }
@@ -357,7 +357,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listExamQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listExamQa】查询检验出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listExamQa】查询检验出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_EXAM_QA_ERROR, PfTestPaperConstant.LIST_EXAM_QA_ERROR_MSG));
         }
@@ -372,7 +372,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveReferral】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveReferral-error】保存检验出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveReferral-error】保存检验出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_REFERRAL_ERROR, PfTestPaperConstant.SAVE_REFERRAL_ERROR_MSG));
         }
@@ -388,7 +388,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listReferral】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listReferral-error】查询拟诊出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listReferral-error】查询拟诊出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_REFERRAL_ERROR, PfTestPaperConstant.LIST_REFERRAL_ERROR_MSG));
         }
@@ -418,7 +418,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveOrder】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveOrder-error】保存医嘱出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveOrder-error】保存医嘱出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_ORDERS_ERROR, PfTestPaperConstant.SAVE_ORDERS_ERROR_MSG));
         }
@@ -433,7 +433,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveDrugs】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveDrugs-error】保存医嘱用药出错, param:" + param.toString(), e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveDrugs-error】保存医嘱用药出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_DRUGS_ERROR, PfTestPaperConstant.SAVE_DRUGS_ERROR_MSG));
         }
@@ -474,6 +474,121 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-delDrugs】删除用药出错, type:{}, id:{}", type, id, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.DEL_DRUGS_ERROR, PfTestPaperConstant.DEL_DRUGS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveDiagnosis(ExmMedResultDiagnosisParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveDiagnosis(BeanUtil.convert(param, ExmMedResultDiagnosis.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveDiagnosis-error】保存诊断出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR, PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delDiagnosis(Long idTestexecResultDiagnosis) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.delDiagnosis(idTestexecResultDiagnosis));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-delDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-delDiagnosis-error】删除诊断出错, idTestexecResultDiagnosis:{}", idTestexecResultDiagnosis, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.DEL_DIAGNOSIS_ERROR, PfTestPaperConstant.DEL_DIAGNOSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveSummary(ExmMedResultSummaryParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveSummary(BeanUtil.convert(param, ExmMedResultSummary.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveSummary】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveSummary-error】保存诊断小结出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_SUMMARY_ERROR, PfTestPaperConstant.SAVE_SUMMARY_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> saveDieReason(List<ExmMedResultDieReasonParam> param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveDieReason(BeanUtil.convertList(param, ExmMedResultDieReason.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveDieReason】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveDieReason-error】保存确诊理由出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DIE_REASON_ERROR, PfTestPaperConstant.SAVE_DIE_REASON_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delDieReason(Long idDieReason) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.delDieReason(idDieReason));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-delDieReason】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-delDieReason-error】删除确诊理由出错, idDieReason:{}", idDieReason, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.DEL_DIE_REASON_ERROR, PfTestPaperConstant.DEL_DIE_REASON_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfTestWaitingRoomService.selectDiagnosis(idTestexecResult), PfWaitingRoomDiagnosisResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectDiagnosis-error】查询诊断出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR, PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listReadyDieReason(idTestexecResult), PfWaitingRoomDieReasonResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listReadyDieReason】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listReadyDieReason-error】查询确诊理由字典出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_READY_DIE_REASON_ERROR, PfTestPaperConstant.SELECT_READY_DIE_REASON_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listDieReason(Long idTestexecResultDiagnosis) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestWaitingRoomService.listDieReason(idTestexecResultDiagnosis), PfWaitingRoomDieReasonResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listDieReason-error】查询确诊理由列表出错，idTestexecResultDiagnosis:{}", idTestexecResultDiagnosis, e);
+            return PfResultFactory.initPageResultWithError(
+                    PfTestPaperConstant.LIST_DIE_REASON_ERROR, PfTestPaperConstant.LIST_DIE_REASON_ERROR_MSG);
         }
     }
 

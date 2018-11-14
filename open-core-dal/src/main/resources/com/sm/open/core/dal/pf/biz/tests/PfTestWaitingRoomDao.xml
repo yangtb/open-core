@@ -349,6 +349,88 @@
             (#{extId}, #{item})
         </foreach>
     </insert>
+    <insert id="addDiagnosis"  useGeneratedKeys="true" keyProperty="idTestexecResultDiagnosis">
+        INSERT INTO exm_med_result_diagnosis
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultDiagnosis!=null">
+                id_testexec_result_diagnosis,
+            </if>
+            <if test="idTestexecResult!=null">
+                id_testexec_result,
+            </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
+                gmt_create,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultDiagnosis!=null">
+                #{idTestexecResultDiagnosis},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
+            </if>
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="addSummary" useGeneratedKeys="true" keyProperty="idTestexecResultSumary">
+        INSERT INTO exm_med_result_summary
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultSumary!=null">
+                id_testexec_result_sumary,
+            </if>
+            <if test="idTestexecResult!=null">
+                id_testexec_result,
+            </if>
+            <if test="dieSumary!=null">
+                die_sumary,
+            </if>
+                gmt_create,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultSumary!=null">
+                #{idTestexecResultSumary},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="dieSumary!=null">
+                #{dieSumary},
+            </if>
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="saveDieReason">
+        INSERT INTO exm_med_result_die_reason
+        (
+            id_testexec_result_diagnosis,
+            sd_eva_effciency,
+            id_med_case_list,
+            gmt_create
+        )
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+            (
+                #{item.idTestexecResultDiagnosis},
+                #{item.sdEvaEffciency},
+                #{item.idMedCaseList},
+                now()
+            )
+        </foreach>
+    </insert>
     <update id="endExam">
         update
             exm_testexec
@@ -418,6 +500,20 @@
         WHERE
             id_testexec_result_order = #{idTestexecResultOrder}
     </update>
+    <update id="editDiagnosis">
+        UPDATE exm_med_result_diagnosis
+        SET
+            id_die = #{idDie}
+        WHERE
+            id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
+    </update>
+    <update id="editSummary">
+        UPDATE exm_med_result_summary
+        SET
+            die_sumary = #{dieSumary}
+        WHERE
+            id_testexec_result_sumary = #{idTestexecResultSumary}
+    </update>
     <delete id="delCheckQa">
         update exm_med_result_body set fg_valid=#{fgValid} where id_testexec_result_body = #{idTestexecResultBody}
     </delete>
@@ -430,7 +526,15 @@
     <delete id="delShortDrugs">
         update exm_med_result_order_short_drugs set fg_valid = '1' where id_order_short_drugs = #{id}
     </delete>
-
+    <delete id="delDiagnosis">
+        update exm_med_result_diagnosis set fg_valid = '1' where id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
+    </delete>
+    <delete id="delDieReason">
+        update exm_med_result_die_reason set fg_valid = '1' where id_die_reason = #{idDieReason}
+    </delete>
+    <delete id="delDieReasonByResultId">
+        update exm_med_result_die_reason set fg_valid = '1' where id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
+    </delete>
 
     <select id="countWaitingRoom" resultType="java.lang.Long">
         SELECT
@@ -529,6 +633,7 @@
         LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
         LEFT JOIN faq_med_case_inques_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
         LEFT JOIN exm_med_result_inques d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
@@ -586,6 +691,7 @@
         LEFT JOIN faq_med_case_body_list c ON c.id_med_case = a.id_med_case AND c.fg_valid = '0'
         LEFT JOIN bas_body_ca e ON c.id_body_ca = e.id_body_ca
         LEFT JOIN exm_med_result_body d ON c.id_med_case_list = d.id_med_case_list AND d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
@@ -614,6 +720,7 @@
         LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
         LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
         LEFT JOIN exm_med_result_inspect d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
@@ -687,6 +794,7 @@
             exm_med_result_order
         WHERE
             fg_valid = '0'
+        and id_testexec_result = #{idTestexecResult}
         LIMIT 1
     </select>
     <select id="listLongDrugs" resultType="com.sm.open.core.model.entity.ExmMedResultOrderLogDrugs">
@@ -708,6 +816,84 @@
         WHERE
             a.fg_valid = '0'
         and a.id_testexec_result_order = #{idTestexecResultOrder}
+    </select>
+    <select id="selectDiagnosis" resultType="com.sm.open.core.model.entity.ExmMedResultDiagnosis">
+        select   
+            a.id_testexec_result_diagnosis,
+            a.id_testexec_result,
+            a.id_die,
+            a.fg_valid,
+            a.gmt_create, b.name as idDieText
+        from exm_med_result_diagnosis a
+        left join bas_die b on a.id_die = b.id_die
+        where
+            a.id_testexec_result = #{idTestexecResult}
+        and a.fg_valid = '0'
+        limit 1
+    </select>
+    <select id="selectSummary" resultType="com.sm.open.core.model.entity.ExmMedResultSummary">
+        select
+            id_testexec_result_sumary,
+            id_testexec_result,
+            die_sumary,
+            fg_valid,
+            gmt_create
+        from
+            exm_med_result_summary
+        where
+            id_testexec_result = #{idTestexecResult}
+        and fg_valid = '0'
+        limit 1
+    </select>
+    <select id="listDieReason" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomDieReasonVo">
+        SELECT
+            a.id_die_reason, a.id_testexec_result_diagnosis, a.sd_eva_effciency,a.id_med_case_list as id,
+            case a.sd_eva_effciency when '1' then b.des_inques when '2' then c.des_body when '3' then c.des_body else '' end as idText
+        FROM
+            exm_med_result_die_reason a
+        LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
+        AND a.sd_eva_effciency = 1
+        LEFT JOIN faq_med_case_body_list c ON a.id_med_case_list = c.id_med_case_list
+        AND a.sd_eva_effciency = 2
+        LEFT JOIN faq_med_case_inspect_list d ON a.id_med_case_list = d.id_med_case_list
+        AND a.sd_eva_effciency = 3
+        where a.id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
+        and a.fg_valid = '0'
+    </select>
+    <select id="listReadyDieReason"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomDieReasonVo">
+        SELECT
+            '1' AS sdEvaEffciency ,
+            a.id_med_case_list AS id ,
+            b.des_inques AS idText
+        FROM
+            exm_med_result_inques a
+        LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+        UNION ALL
+        SELECT
+            '2' AS sdEvaEffciency ,
+            a.id_med_case_list AS id ,
+            b.des_body AS idText
+        FROM
+            exm_med_result_body a
+        LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+        UNION ALL
+        SELECT
+            '3' AS sdEvaEffciency ,
+            a.id_med_case_list AS id ,
+            b.na_item AS idText
+        FROM
+            exm_med_result_inspect a
+        LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
     </select>
 
 </mapper>
