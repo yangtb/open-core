@@ -5,6 +5,7 @@ import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyListResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
@@ -20,6 +21,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo;
 import com.sm.open.core.service.facade.pf.biz.kb.PfKbPartConstant;
@@ -389,6 +391,89 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-listReferral-error】查询拟诊出错, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_REFERRAL_ERROR, PfTestPaperConstant.LIST_REFERRAL_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<ExmMedResultOrderResult> selectOrders(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfTestWaitingRoomService.selectOrders(idTestexecResult), ExmMedResultOrderResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectOrders】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectOrders-error】查询医嘱出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_ORDERS_ERROR, PfTestPaperConstant.SELECT_ORDERS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveOrder(ExmMedResultOrderParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveOrder(BeanUtil.convert(param, ExmMedResultOrder.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveOrder】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveOrder-error】保存医嘱出错, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_ORDERS_ERROR, PfTestPaperConstant.SAVE_ORDERS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> saveDrugs(PfCommonListParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveDrugs(BeanUtil.convert(param, PfCommonListDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveDrugs】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveDrugs-error】保存医嘱用药出错, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DRUGS_ERROR, PfTestPaperConstant.SAVE_DRUGS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listLongDrugs(Long idTestexecResultOrder) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestWaitingRoomService.listLongDrugs(idTestexecResultOrder), ExmMedResultOrderLogDrugsResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listLongDrugs-error】查询长期用药列表出错，idTestexecResultOrder:{}", idTestexecResultOrder, e);
+            return PfResultFactory.initPageResultWithError(
+                    PfTestPaperConstant.LIST_LONG_DRUGS_ERROR, PfTestPaperConstant.LIST_LONG_DRUGS_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public PfPageResult listShortDrugs(Long idTestexecResultOrder) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestWaitingRoomService.listShortDrugs(idTestexecResultOrder), ExmMedResultOrderShortDrugsResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listShortDrugs-error】查询临时用药列表出错，idTestexecResultOrder:{}", idTestexecResultOrder, e);
+            return PfResultFactory.initPageResultWithError(
+                    PfTestPaperConstant.LIST_SHORT_DRUGS_ERROR, PfTestPaperConstant.LIST_SHORT_DRUGS_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delDrugs(String type, Long id) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.delDrugs(type, id));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-delDrugs】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-delDrugs】删除用药出错, type:{}, id:{}", type, id, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.DEL_DRUGS_ERROR, PfTestPaperConstant.DEL_DRUGS_ERROR_MSG));
         }
     }
 

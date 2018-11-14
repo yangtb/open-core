@@ -259,6 +259,96 @@
         </trim>
         )
     </insert>
+    <insert id="saveOrder" useGeneratedKeys="true" keyProperty="idTestexecResultOrder">
+        INSERT INTO exm_med_result_order
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultOrder!=null">
+                id_testexec_result_order,
+            </if>
+            <if test="idTestexecResult!=null">
+                id_testexec_result,
+            </if>
+            <if test="desCheck!=null and desCheck != ''">
+                des_check,
+            </if>
+            <if test="sdNursRout!=null and sdNursRout != ''">
+                sd_nurs_rout,
+            </if>
+            <if test="cdNursLevel!=null and cdNursLevel != ''">
+                cd_nurs_level,
+            </if>
+            <if test="sdDiet!=null and sdDiet != ''">
+                sd_diet,
+            </if>
+            <if test="sdPosition!=null and sdPosition != ''">
+                sd_position,
+            </if>
+            <if test="desSpecial!=null and desSpecial != ''">
+                des_special,
+            </if>
+            <if test="fgValid!=null and  fgValid!= ''">
+                fg_valid,
+            </if>
+                gmt_create,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultOrder!=null">
+                #{idTestexecResultOrder},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="desCheck!=null">
+                #{desCheck},
+            </if>
+            <if test="sdNursRout!=null">
+                #{sdNursRout},
+            </if>
+            <if test="cdNursLevel!=null">
+                #{cdNursLevel},
+            </if>
+            <if test="sdDiet!=null">
+                #{sdDiet},
+            </if>
+            <if test="sdPosition!=null">
+                #{sdPosition},
+            </if>
+            <if test="desSpecial!=null">
+                #{desSpecial},
+            </if>
+            <if test="fgValid!=null">
+                #{fgValid},
+            </if>
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="saveLongDrugs" useGeneratedKeys="true" keyProperty="idOrderLongDrugs">
+        INSERT INTO exm_med_result_order_log_drugs
+        (
+            id_testexec_result_order,
+            id_long_drugs
+        )
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+                (#{extId}, #{item})
+        </foreach>
+    </insert>
+    <insert id="saveShortDrugs">
+        INSERT INTO exm_med_result_order_short_drugs
+        (
+            id_testexec_result_order,
+            id_short_drugs
+        )
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{extId}, #{item})
+        </foreach>
+    </insert>
     <update id="endExam">
         update
             exm_testexec
@@ -316,11 +406,29 @@
         where
             id_testexec_result_referral = #{idTestexecResultReferral}
     </update>
+    <update id="editOrder">
+        UPDATE exm_med_result_order
+        SET
+            des_check = #{desCheck},
+            sd_nurs_rout = #{sdNursRout},
+            cd_nurs_level = #{cdNursLevel},
+            sd_diet = #{sdDiet},
+            sd_position = #{sdPosition},
+            des_special = #{desSpecial}
+        WHERE
+            id_testexec_result_order = #{idTestexecResultOrder}
+    </update>
     <delete id="delCheckQa">
         update exm_med_result_body set fg_valid=#{fgValid} where id_testexec_result_body = #{idTestexecResultBody}
     </delete>
     <delete id="delExamQa">
         update exm_med_result_inspect set fg_valid=#{fgValid} where id_testexec_result_inspect = #{idTestexecResultInspect}
+    </delete>
+    <delete id="delLongDrugs">
+        update exm_med_result_order_log_drugs set fg_valid = '1' where id_order_long_drugs = #{id}
+    </delete>
+    <delete id="delShortDrugs">
+        update exm_med_result_order_short_drugs set fg_valid = '1' where id_order_short_drugs = #{id}
     </delete>
 
 
@@ -562,6 +670,44 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
+    </select>
+    <select id="selectOrders" resultType="com.sm.open.core.model.entity.ExmMedResultOrder">
+        SELECT
+            id_testexec_result_order ,
+            id_testexec_result ,
+            des_check ,
+            sd_nurs_rout ,
+            cd_nurs_level ,
+            sd_diet ,
+            sd_position ,
+            des_special ,
+            fg_valid ,
+            gmt_create
+        FROM
+            exm_med_result_order
+        WHERE
+            fg_valid = '0'
+        LIMIT 1
+    </select>
+    <select id="listLongDrugs" resultType="com.sm.open.core.model.entity.ExmMedResultOrderLogDrugs">
+        SELECT
+            a.id_order_long_drugs, a.id_testexec_result_order, a.id_long_drugs, a.fg_valid, b.name as idLongDrugsText
+        FROM
+            exm_med_result_order_log_drugs a
+        LEFT JOIN bas_drugs b on a.id_long_drugs = b.id_drugs
+        WHERE
+            a.fg_valid = '0'
+        and a.id_testexec_result_order = #{idTestexecResultOrder}
+    </select>
+    <select id="listShortDrugs" resultType="com.sm.open.core.model.entity.ExmMedResultOrderShortDrugs">
+        SELECT
+            a.id_order_short_drugs, a.id_testexec_result_order, a.id_short_drugs, a.fg_valid, b.name as idShortDrugsText
+        FROM
+            exm_med_result_order_short_drugs a
+        LEFT JOIN bas_drugs b on a.id_short_drugs = b.id_drugs
+        WHERE
+            a.fg_valid = '0'
+        and a.id_testexec_result_order = #{idTestexecResultOrder}
     </select>
 
 </mapper>

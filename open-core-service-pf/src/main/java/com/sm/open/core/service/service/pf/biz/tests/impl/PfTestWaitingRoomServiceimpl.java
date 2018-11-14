@@ -9,6 +9,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
@@ -219,6 +220,51 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public List<ExmMedResultReferral> listReferral(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listReferral(dto);
+    }
+
+    @Override
+    public ExmMedResultOrder selectOrders(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.selectOrders(idTestexecResult);
+    }
+
+    @Override
+    public Long saveOrder(ExmMedResultOrder dto) {
+        if (dto.getIdTestexecResultOrder() == null) {
+            pfTestWaitingRoomDao.saveOrder(dto);
+        } else {
+            pfTestWaitingRoomDao.editOrder(dto);
+        }
+        return dto.getIdTestexecResultOrder();
+    }
+
+    @Override
+    public boolean saveDrugs(PfCommonListDto dto) {
+        if (dto.getExtType().equals("long")) {
+            pfTestWaitingRoomDao.saveLongDrugs(dto);
+        } else {
+            pfTestWaitingRoomDao.saveShortDrugs(dto);
+        }
+        return true;
+    }
+
+    @Override
+    public List<ExmMedResultOrderLogDrugs> listLongDrugs(Long idTestexecResultOrder) {
+        return pfTestWaitingRoomDao.listLongDrugs(idTestexecResultOrder);
+    }
+
+    @Override
+    public List<ExmMedResultOrderShortDrugs> listShortDrugs(Long idTestexecResultOrder) {
+        return pfTestWaitingRoomDao.listShortDrugs(idTestexecResultOrder);
+    }
+
+    @Override
+    public boolean delDrugs(String type, Long id) {
+        if (type.equals("long")) {
+            pfTestWaitingRoomDao.delLongDrugs(id);
+        } else {
+            pfTestWaitingRoomDao.delShortDrugs(id);
+        }
+        return true;
     }
 
 }

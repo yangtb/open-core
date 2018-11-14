@@ -125,4 +125,22 @@ public class PfTestPaperConstant {
     public static final String LIST_REFERRAL_ERROR                      = "listReferralError";
     public static final String LIST_REFERRAL_ERROR_MSG                  = "查询拟诊出错";
 
+    public static final String SAVE_ORDERS_ERROR                        = "saveOrderError";
+    public static final String SAVE_ORDERS_ERROR_MSG                    = "保存医嘱出错";
+
+    public static final String SAVE_DRUGS_ERROR                         = "saveDrugsError";
+    public static final String SAVE_DRUGS_ERROR_MSG                     = "保存医嘱用药出错";
+
+    public static final String SELECT_ORDERS_ERROR                      = "selectOrdersError";
+    public static final String SELECT_ORDERS_ERROR_MSG                  = "查询医嘱出错";
+
+    public static final String LIST_LONG_DRUGS_ERROR                    = "listLongDrugsError";
+    public static final String LIST_LONG_DRUGS_ERROR_MSG                = "查询长期用药列表出错";
+
+    public static final String LIST_SHORT_DRUGS_ERROR                   = "listShortDrugsError";
+    public static final String LIST_SHORT_DRUGS_ERROR_MSG               = "查询临时用药列表出错";
+
+    public static final String DEL_DRUGS_ERROR                         = "delDrugsError";
+    public static final String DEL_DRUGS_ERROR_MSG                     = "删除用药出错";
+
 }

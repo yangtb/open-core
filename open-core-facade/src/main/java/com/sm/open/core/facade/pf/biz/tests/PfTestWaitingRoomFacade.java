@@ -2,6 +2,7 @@ package com.sm.open.core.facade.pf.biz.tests;
 
 import com.sm.open.core.facade.model.param.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
@@ -188,4 +189,53 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<List<ExmMedResultReferralResult>> listReferral(PfTestExamTagParam param);
+
+    /**
+     * 医嘱 - 查询
+     *
+     * @param idTestexecResult 执行结果id
+     * @return
+     */
+    CommonResult<ExmMedResultOrderResult> selectOrders(Long idTestexecResult);
+
+    /**
+     * 医嘱 - 保存
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveOrder(ExmMedResultOrderParam param);
+
+    /**
+     * 医嘱 - 保存药品
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> saveDrugs(PfCommonListParam param);
+
+    /**
+     * 医嘱 - 长期用药列表
+     *
+     * @param idTestexecResultOrder 执行结果id
+     * @return
+     */
+    PfPageResult listLongDrugs(Long idTestexecResultOrder);
+
+    /**
+     * 医嘱 - 短期用药列表
+     *
+     * @param idTestexecResultOrder 执行结果id
+     * @return
+     */
+    PfPageResult listShortDrugs(Long idTestexecResultOrder);
+
+    /**
+     * 删除用药
+     *
+     * @param type 类型
+     * @param id   主键
+     * @return
+     */
+    CommonResult<Boolean> delDrugs(String type, Long id);
 }

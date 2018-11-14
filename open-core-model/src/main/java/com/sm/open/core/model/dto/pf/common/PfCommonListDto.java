@@ -33,4 +33,9 @@ public class PfCommonListDto implements Serializable {
      * 扩展id
      */
     private Long extId;
+
+    /**
+     * 扩展type
+     */
+    private String extType;
 }

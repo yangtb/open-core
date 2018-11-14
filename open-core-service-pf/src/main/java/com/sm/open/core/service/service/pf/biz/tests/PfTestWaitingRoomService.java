@@ -5,6 +5,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
@@ -202,5 +203,54 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     List<ExmMedResultReferral> listReferral(PfTestExamTagDto dto);
+
+    /**
+     * 医嘱 - 查询
+     *
+     * @param idTestexecResult 执行结果id
+     * @return
+     */
+    ExmMedResultOrder selectOrders(Long idTestexecResult);
+
+    /**
+     * 医嘱 - 保存
+     *
+     * @param dto
+     * @return
+     */
+    Long saveOrder(ExmMedResultOrder dto);
+
+    /**
+     * 医嘱 - 保存药品
+     *
+     * @param dto
+     * @return
+     */
+    boolean saveDrugs(PfCommonListDto dto);
+
+    /**
+     * 医嘱 - 长期用药列表
+     *
+     * @param idTestexecResultOrder 执行结果id
+     * @return
+     */
+    List<ExmMedResultOrderLogDrugs> listLongDrugs(Long idTestexecResultOrder);
+
+    /**
+     * 医嘱 - 短期用药列表
+     *
+     * @param idTestexecResultOrder 执行结果id
+     * @return
+     */
+    List<ExmMedResultOrderShortDrugs> listShortDrugs(Long idTestexecResultOrder);
+
+    /**
+     * 删除用药
+     *
+     * @param type 类型
+     * @param id   主键
+     * @return
+     */
+    boolean delDrugs(String type, Long id);
 
 }
