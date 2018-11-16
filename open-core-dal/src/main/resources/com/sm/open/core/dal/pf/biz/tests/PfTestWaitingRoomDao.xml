@@ -192,6 +192,9 @@
             <if test="idMedCaseList!=null">
                 id_med_case_list,
             </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
                 fg_clue,
                 gmt_create,
         </trim>
@@ -207,6 +210,9 @@
             </if>
             <if test="idMedCaseList!=null">
                 #{idMedCaseList},
+            </if>
+            <if test="idInspectItem!=null">
+                #{idInspectItem},
             </if>
                 '0',
                 now(),
@@ -419,6 +425,15 @@
             id_testexec_result_diagnosis,
             sd_eva_effciency,
             id_med_case_list,
+            <if test="idInques!=null">
+                id_inques,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
             gmt_create
         )
         VALUES
@@ -427,6 +442,15 @@
                 #{item.idTestexecResultDiagnosis},
                 #{item.sdEvaEffciency},
                 #{item.idMedCaseList},
+                <if test="idInques!=null">
+                    #{idInques},
+                </if>
+                <if test="idBody!=null">
+                    #{idBody},
+                </if>
+                <if test="idInspectItem!=null">
+                    #{idInspectItem},
+                </if>
                 now()
             )
         </foreach>
@@ -547,10 +571,20 @@
         LEFT JOIN user_info e ON a.id_student = e.user_id
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
+        LEFT JOIN faq_medicalrec k ON a.id_medicalrec = k.id_medicalrec
         WHERE
             a.sd_testplan_detail IN('0' , '1')
         AND f.id_org = #{idOrg}
         AND d.id_med_case IS NOT NULL
+        <if test="medicalrecName != null and medicalrecName != ''">
+            and k.name like concat(#{medicalrecName},'%')
+        </if>
+        <if test="naTestplan != null and naTestplan != ''">
+            and f.na_testplan like concat(#{naTestplan},'%')
+        </if>
+        <if test="naTestpaper != null and naTestpaper != ''">
+            and g.na_testpaper like concat(#{naTestpaper},'%')
+        </if>
     </select>
     <select id="listWaitingRoom" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestWaitingRoomVo">
         SELECT
@@ -574,17 +608,81 @@
         LEFT JOIN user_info e ON a.id_student = e.user_id
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
+        LEFT JOIN faq_medicalrec k ON a.id_medicalrec = k.id_medicalrec
         WHERE
             a.sd_testplan_detail IN('0' , '1')
         AND f.id_org = #{idOrg}
         AND d.id_med_case IS NOT NULL
+        <if test="medicalrecName != null and medicalrecName != ''">
+            and k.name like concat(#{medicalrecName},'%')
+        </if>
+        <if test="naTestplan != null and naTestplan != ''">
+            and f.na_testplan like concat(#{naTestplan},'%')
+        </if>
+        <if test="naTestpaper != null and naTestpaper != ''">
+            and g.na_testpaper like concat(#{naTestpaper},'%')
+        </if>
         limit #{offset}, #{limit}
     </select>
     <select id="countReceivePat" resultType="java.lang.Long">
-
+        SELECT
+            count(1)
+        FROM
+            exm_testexec m
+        LEFT JOIN exm_testplan_detail a ON m.id_testplan_detail = a.id_testplan_detail
+        LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
+        LEFT JOIN faq_medicalrec k ON b.id_medicalrec = k.id_medicalrec
+        LEFT JOIN bas_medical_tag c ON b.id_tag = c.id_tag AND c.cd_med_asse = '003'
+        LEFT JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case
+        LEFT JOIN user_info e ON a.id_student = e.user_id
+        LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
+        LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
+        LEFT JOIN exm_med_result o ON o.id_testexec = m.id_testexec
+        LEFT JOIN exm_eva_result p ON o.id_testexec_result = p.id_testexec_result
+        WHERE
+            a.sd_testplan_detail = '2'
+        AND f.id_org = #{idOrg}
+        AND d.id_med_case IS NOT NULL
     </select>
     <select id="listReceivePat" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestReceivePatVo">
-
+        SELECT
+            a.id_testplan_detail ,
+            a.sd_testplan_detail AS status ,
+            a.id_testplan ,
+            a.id_student ,
+            m.dt_exec_begin AS receiveDate ,
+            m.duration AS receiveConsumingTime ,
+            b.id_medicalrec ,
+            c.id_demo ,
+            d. NAME AS patName ,
+            d.sex AS patSex ,
+            d.age ,
+            k.name AS receiveDoc ,
+            e.real_name AS medicalrecName ,
+            f.na_testplan ,
+            f.id_testpaper ,
+            g.na_testpaper ,
+            p.score_weight AS score ,
+            p.sd_title AS ch ,
+            '' AssessTeacher ,
+            '' AssessDate
+        FROM
+            exm_testexec m
+        LEFT JOIN exm_testplan_detail a ON m.id_testplan_detail = a.id_testplan_detail
+        LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
+        LEFT JOIN faq_medicalrec k ON b.id_medicalrec = k.id_medicalrec
+        LEFT JOIN bas_medical_tag c ON b.id_tag = c.id_tag AND c.cd_med_asse = '003'
+        LEFT JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case
+        LEFT JOIN user_info e ON a.id_student = e.user_id
+        LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
+        LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
+        LEFT JOIN exm_med_result o ON o.id_testexec = m.id_testexec
+        LEFT JOIN exm_eva_result p ON o.id_testexec_result = p.id_testexec_result
+        WHERE
+            a.sd_testplan_detail = '2'
+        AND f.id_org = #{idOrg}
+        AND d.id_med_case IS NOT NULL
+        limit #{offset}, #{limit}
     </select>
 
     <select id="selectTestPaperInfo"
@@ -714,6 +812,7 @@
         SELECT
             c.id_med_case_list ,
 	        c.na_item,
+	        c.id_inspect_item,
             IF(d.id_med_case_list is null,0,1) as extQa
         FROM
             faq_med_tag a
@@ -848,8 +947,7 @@
     <select id="listDieReason" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomDieReasonVo">
         SELECT
             a.id_die_reason, a.id_testexec_result_diagnosis, a.sd_eva_effciency,a.id_med_case_list as id,
-            case a.sd_eva_effciency when '1' then b.des_inques when '2' then c.des_body when '3' then c.des_body else '' end as idText
-        FROM
+            case a.sd_eva_effciency when '1' then b.des_inques when '2' then c.des_body when '3' then d.na_item else '' end as idText        FROM
             exm_med_result_die_reason a
         LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
         AND a.sd_eva_effciency = 1
@@ -865,7 +963,8 @@
         SELECT
             '1' AS sdEvaEffciency ,
             a.id_med_case_list AS id ,
-            b.des_inques AS idText
+            b.des_inques AS idText,
+            b.id_inques as extId
         FROM
             exm_med_result_inques a
         LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
@@ -876,7 +975,8 @@
         SELECT
             '2' AS sdEvaEffciency ,
             a.id_med_case_list AS id ,
-            b.des_body AS idText
+            b.des_body AS idText,
+            b.id_body as extId
         FROM
             exm_med_result_body a
         LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
@@ -887,7 +987,8 @@
         SELECT
             '3' AS sdEvaEffciency ,
             a.id_med_case_list AS id ,
-            b.na_item AS idText
+            b.na_item AS idText,
+            b.id_inspect_item as extId
         FROM
             exm_med_result_inspect a
         LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list

@@ -40,6 +40,26 @@ public class ExmMedResultDieReason implements Serializable {
     private Long idMedCaseList;
 
     /**
+     * 对应问诊、检查、检验ID
+     */
+    private Long extId;
+
+    /**
+     * 问题ID
+     */
+    private Long idInques;
+
+    /**
+     * 部位ID
+     */
+    private Long idBody;
+
+    /**
+     * 项目ID
+     */
+    private Long idInspectItem;
+
+    /**
      * 明细text
      */
     private String idMedCaseListText;

@@ -296,8 +296,17 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public boolean saveDieReason(List<ExmMedResultDieReason> dto) {
-        return pfTestWaitingRoomDao.saveDieReason(dto) >= 1 ? true : false;
+    public boolean saveDieReason(List<ExmMedResultDieReason> list) {
+        for (ExmMedResultDieReason dieReason : list) {
+            if (dieReason.getSdEvaEffciency().equals("1")) {
+                dieReason.setIdInques(dieReason.getExtId());
+            } else if (dieReason.getSdEvaEffciency().equals("2")) {
+                dieReason.setIdBody(dieReason.getExtId());
+            }else if (dieReason.getSdEvaEffciency().equals("3")) {
+                dieReason.setIdInspectItem(dieReason.getExtId());
+            }
+        }
+        return pfTestWaitingRoomDao.saveDieReason(list) >= 1 ? true : false;
     }
 
     @Override

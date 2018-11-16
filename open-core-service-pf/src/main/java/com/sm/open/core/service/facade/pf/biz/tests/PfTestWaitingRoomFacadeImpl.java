@@ -75,7 +75,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             PfPageParam.initPageDto(param);
             PfTestWatingRoomDto dto = BeanUtil.convert(param, PfTestWatingRoomDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countReceivePat(dto),
-                    BeanUtil.convertList(pfTestWaitingRoomService.listReceivePat(dto), PfTestWaitingRoomResult.class));
+                    BeanUtil.convertList(pfTestWaitingRoomService.listReceivePat(dto), PfTestReceivePatResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-listReceivePat-error】分页查询接诊列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(

@@ -5,6 +5,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.Date;
 
 @Setter
 @Getter
@@ -21,7 +22,7 @@ public class PfTestReceivePatResult implements Serializable {
     /**
      * 接诊时间
      */
-    private String receiveDate;
+    private Date receiveDate;
 
     /**
      * 接诊耗时(m)
@@ -38,9 +39,9 @@ public class PfTestReceivePatResult implements Serializable {
     private String patSex;
 
     /**
-     * 出生日期
+     * 年龄
      */
-    private String birthday;
+    private Integer age;
 
     /**
      * 病例
@@ -80,7 +81,7 @@ public class PfTestReceivePatResult implements Serializable {
     /**
      * 评估日期
      */
-    private String AssessDate;
+    private Date AssessDate;
 
 
 }
