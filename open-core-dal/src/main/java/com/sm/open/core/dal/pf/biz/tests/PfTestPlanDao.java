@@ -203,4 +203,14 @@ public interface PfTestPlanDao {
      * @return
      */
     ExmTestplan selectPlanById(@Param("idTestplan") Long idTestplan);
+
+    /**
+     * 修改计划明细标识
+     *
+     * @param idTestplanDetail 计划明细ID
+     * @param status           计划状态
+     * @return
+     */
+    Integer updatePlanStatus(@Param("idTestplanDetail") Long idTestplanDetail,
+                             @Param("status") String status);
 }

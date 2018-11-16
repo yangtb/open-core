@@ -11,6 +11,7 @@ import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
+import com.sm.open.core.model.enums.TestPlanStatusEnum;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
@@ -100,17 +101,25 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             // 序号，暂时写死
             exmMedResult.setSerial(1);
             exmMedResult.setFgFinalResult(YesOrNoNum.YES.getCode());
-            exmMedResult.setFgAsses(YesOrNoNum.YES.getCode());
+            exmMedResult.setFgAsses(YesOrNoNum.NO.getCode());
             pfTestWaitingRoomDao.insertExmMedResult(exmMedResult);
             pfWaitingRoomStartVo.setIdTestexecResult(exmMedResult.getIdTestexecResult());
+
+            // 修改计划明细状态
+            pfTestPlanDao.updatePlanStatus(dto.getIdTestplanDetail(), TestPlanStatusEnum.EXEC.getCode());
         }
         pfWaitingRoomStartVo.setIdTestexec(dto.getIdTestexec());
         return pfWaitingRoomStartVo;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean endExam(ExmTestexec dto) {
-        return pfTestWaitingRoomDao.endExam(dto) == 1 ? true : false;
+        if (pfTestWaitingRoomDao.endExam(dto) == 1) {
+            // 修改计划明细状态
+            pfTestPlanDao.updatePlanStatus(dto.getIdTestplanDetail(), TestPlanStatusEnum.FINISH.getCode());
+        }
+        return true;
     }
 
     @Override
@@ -302,7 +311,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
                 dieReason.setIdInques(dieReason.getExtId());
             } else if (dieReason.getSdEvaEffciency().equals("2")) {
                 dieReason.setIdBody(dieReason.getExtId());
-            }else if (dieReason.getSdEvaEffciency().equals("3")) {
+            } else if (dieReason.getSdEvaEffciency().equals("3")) {
                 dieReason.setIdInspectItem(dieReason.getExtId());
             }
         }

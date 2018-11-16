@@ -213,12 +213,20 @@
         )
     </update>
     <update id="updatePlanItemSort">
-         update
+        update
             exm_testplan_medicalrec
         set
             sort = #{sort}
         WHERE
             id_testplan_medicalrec = #{idTestplanMedicalrec}
+    </update>
+    <update id="updatePlanStatus">
+        update
+            exm_testplan_detail
+        set
+            sd_testplan_detail = #{status}
+        WHERE
+            id_testplan_detail = #{idTestplanDetail}
     </update>
     <delete id="delAllPlanItem">
         delete from exm_testplan_medicalrec where id_testplan = #{idTestplan}
