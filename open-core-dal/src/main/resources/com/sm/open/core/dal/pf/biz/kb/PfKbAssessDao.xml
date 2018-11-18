@@ -226,6 +226,9 @@
             <if test="idInspectItem!=null">
                 id_inspect_item,
             </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
         </trim>
         )
         VALUES
@@ -248,6 +251,9 @@
             </if>
             <if test="idInspectItem!=null">
                 #{idInspectItem},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
             </if>
         </trim>
         )
@@ -449,6 +455,7 @@
         SET
             id_eva_case_item = #{idEvaCaseItem},
             sd_eva_must = #{sdEvaMust},
+            id_die = #{idDie},
             id_inques = #{idInques},
             id_body = #{idBody},
             id_inspect_item = #{idInspectItem}
@@ -669,10 +676,11 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_cover AS sdEva
+            b.sd_eva_cover AS sdEva, b.id_die, c.name as idDieText
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_cover b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
         WHERE
              a.id_eva_case = #{idEvaCase}
         AND a.cd_eva_asse = #{cdEvaAsse}
@@ -686,10 +694,11 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_must AS sdEva
+            b.sd_eva_must AS sdEva, b.id_die, c.name as idDieText
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_must b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
         WHERE
              a.id_eva_case = #{idEvaCase}
         AND a.cd_eva_asse = #{cdEvaAsse}
@@ -792,7 +801,7 @@
             a.id_eva_case_item_list ,
             a.id_eva_case_item ,
             a.sd_eva_cover ,
-            a.id_inques, a.id_body, a.id_inspect_item,
+            a.id_inques, a.id_body, a.id_inspect_item, a.id_die, c.name as idDieText,
         <if test='sdType == "1"'>
             b.des_inques AS desText
         </if>
@@ -813,6 +822,7 @@
         <if test='sdType == "3"'>
             LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
         </if>
+        left join bas_die c on c.id_die = a.id_die
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
     </select>

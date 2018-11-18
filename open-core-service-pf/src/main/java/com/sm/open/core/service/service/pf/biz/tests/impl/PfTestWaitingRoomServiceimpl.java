@@ -173,10 +173,15 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         if (idTestexecResultBody == null) {
             pfTestWaitingRoomDao.saveCheckQa(dto);
         } else {
-            pfTestWaitingRoomDao.delCheckQa(idTestexecResultBody, dto.getFgValid());
+            pfTestWaitingRoomDao.delCheckQa(idTestexecResultBody, dto.getIdDie(), dto.getFgValid());
             dto.setIdTestexecResultBody(idTestexecResultBody);
         }
         return dto.getIdTestexecResultBody();
+    }
+
+    @Override
+    public boolean editCheckQa(ExmMedResultBody dto) {
+        return pfTestWaitingRoomDao.editCheckQa(dto) == 1 ? true : false;
     }
 
     @Override
@@ -200,10 +205,15 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         if (idTestexecResultInspect == null) {
             pfTestWaitingRoomDao.saveExamQa(dto);
         } else {
-            pfTestWaitingRoomDao.delExamQa(idTestexecResultInspect, dto.getFgValid());
+            pfTestWaitingRoomDao.delExamQa(idTestexecResultInspect, dto.getIdDie(), dto.getFgValid());
             dto.setIdTestexecResultInspect(idTestexecResultInspect);
         }
         return dto.getIdTestexecResultInspect();
+    }
+
+    @Override
+    public boolean editExamQa(ExmMedResultInspect dto) {
+        return pfTestWaitingRoomDao.editExamQa(dto) == 1 ? true : false;
     }
 
     @Override

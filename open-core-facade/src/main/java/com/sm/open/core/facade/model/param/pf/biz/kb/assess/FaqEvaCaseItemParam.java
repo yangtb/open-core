@@ -50,4 +50,9 @@ public class FaqEvaCaseItemParam implements Serializable {
      */
     private String sdEva;
 
+    /**
+     * 拟诊id
+     */
+    private Long idDie;
+
 }

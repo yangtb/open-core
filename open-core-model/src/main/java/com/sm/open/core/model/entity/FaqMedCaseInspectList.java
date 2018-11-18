@@ -116,4 +116,14 @@ public class FaqMedCaseInspectList extends BasMediaVo implements Serializable {
      */
     private boolean extQa;
 
+    /**
+     * 疾病id
+     */
+    private Long idDie;
+
+    /**
+     * 疾病名称
+     */
+    private String idDieText;
+
 }

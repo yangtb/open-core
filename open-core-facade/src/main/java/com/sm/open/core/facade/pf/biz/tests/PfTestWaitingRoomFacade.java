@@ -125,6 +125,14 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<Long> saveCheckQa(ExmMedResultBodyParam param);
 
     /**
+     * 检查 - 编辑问答问题
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> editCheckQa(ExmMedResultBodyParam param);
+
+    /**
      * 检查 - 线索标志
      *
      * @param param
@@ -157,6 +165,14 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<Long> saveExamQa(ExmMedResultInspectParam param);
+
+    /**
+     * 检验 - 编辑
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> editExamQa(ExmMedResultInspectParam param);
 
     /**
      * 检验 - 线索标志

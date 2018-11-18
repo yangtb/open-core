@@ -102,4 +102,14 @@ public class FaqMedCaseBodyListResult extends BasMediaResult implements Serializ
      */
     private boolean extQa;
 
+    /**
+     * 疾病id
+     */
+    private Long idDie;
+
+    /**
+     * 疾病名称
+     */
+    private String idDieText;
+
 }

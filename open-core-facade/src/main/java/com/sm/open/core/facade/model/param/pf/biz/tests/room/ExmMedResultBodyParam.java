@@ -37,6 +37,11 @@ public class ExmMedResultBodyParam implements Serializable {
     private Long idBody;
 
     /**
+     * 拟诊id
+     */
+    private Long idDie;
+
+    /**
      * 检查明细ID
      */
     private Long idMedCaseList;

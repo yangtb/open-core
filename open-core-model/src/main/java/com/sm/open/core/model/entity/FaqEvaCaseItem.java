@@ -51,6 +51,16 @@ public class FaqEvaCaseItem implements Serializable {
     private String sdEva;
 
     /**
+     * 拟诊id
+     */
+    private Long idDie;
+
+    /**
+     * 疾病text
+     */
+    private String idDieText;
+
+    /**
      * 数量上限
      */
     private Integer quaUpper;

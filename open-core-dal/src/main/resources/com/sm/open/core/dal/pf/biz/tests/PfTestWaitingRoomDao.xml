@@ -195,6 +195,9 @@
             <if test="idInspectItem!=null">
                 id_inspect_item,
             </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
                 fg_clue,
                 gmt_create,
         </trim>
@@ -213,6 +216,9 @@
             </if>
             <if test="idInspectItem!=null">
                 #{idInspectItem},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
             </if>
                 '0',
                 now(),
@@ -538,11 +544,43 @@
         WHERE
             id_testexec_result_sumary = #{idTestexecResultSumary}
     </update>
+    <update id="editExamQa">
+        update
+            exm_med_result_inspect
+        set
+            id_die = #{idDie}
+        where
+            id_testexec_result = #{idTestexecResult}
+        and id_med_case_list = #{idMedCaseList}
+        and fg_valid = '0'
+    </update>
+    <update id="editCheckQa">
+        update
+            exm_med_result_body
+        set
+            id_die = #{idDie}
+        where
+            id_testexec_result = #{idTestexecResult}
+        and id_med_case_list = #{idMedCaseList}
+        and fg_valid = '0'
+    </update>
     <delete id="delCheckQa">
-        update exm_med_result_body set fg_valid=#{fgValid} where id_testexec_result_body = #{idTestexecResultBody}
+        update exm_med_result_body
+        set
+            <if test="idDie != null">
+                id_die = #{idDie},
+            </if>
+            fg_valid=#{fgValid}
+        where id_testexec_result_body = #{idTestexecResultBody}
     </delete>
     <delete id="delExamQa">
-        update exm_med_result_inspect set fg_valid=#{fgValid} where id_testexec_result_inspect = #{idTestexecResultInspect}
+        update exm_med_result_inspect
+        set
+            <if test="idDie != null">
+                id_die = #{idDie},
+            </if>
+            fg_valid=#{fgValid}
+        where id_testexec_result_inspect = #{idTestexecResultInspect}
     </delete>
     <delete id="delLongDrugs">
         update exm_med_result_order_log_drugs set fg_valid = '1' where id_order_long_drugs = #{id}
@@ -781,7 +819,7 @@
             c.des_body ,
             c.id_body ,
             c.cd_check ,
-            e.name AS cdCheckText ,
+            e.name AS cdCheckText , d.id_die, f.name as idDieText,
             IF(d.id_med_case_list IS NULL , 0 , 1) AS extQa
         FROM
             faq_med_tag a
@@ -790,6 +828,7 @@
         LEFT JOIN bas_body_ca e ON c.id_body_ca = e.id_body_ca
         LEFT JOIN exm_med_result_body d ON c.id_med_case_list = d.id_med_case_list AND d.fg_valid = '0'
         and d.id_testexec_result = #{idTestexecResult}
+        left join bas_die f on d.id_die = f.id_die
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
@@ -812,7 +851,7 @@
         SELECT
             c.id_med_case_list ,
 	        c.na_item,
-	        c.id_inspect_item,
+	        c.id_inspect_item, d.id_die, e.name as idDieText,
             IF(d.id_med_case_list is null,0,1) as extQa
         FROM
             faq_med_tag a
@@ -820,6 +859,7 @@
         LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
         LEFT JOIN exm_med_result_inspect d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
         and d.id_testexec_result = #{idTestexecResult}
+        left join bas_die e on d.id_die = e.id_die
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}

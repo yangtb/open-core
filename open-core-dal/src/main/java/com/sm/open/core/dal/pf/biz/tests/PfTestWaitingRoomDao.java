@@ -172,6 +172,14 @@ public interface PfTestWaitingRoomDao {
     Integer saveCheckQa(ExmMedResultBody dto);
 
     /**
+     * 检查 - 编辑问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer editCheckQa(ExmMedResultBody dto);
+
+    /**
      * 检查 - 是否存在
      *
      * @param dto
@@ -187,6 +195,7 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer delCheckQa(@Param("idTestexecResultBody") Long idTestexecResultBody,
+                       @Param("idDie") Long idDie,
                        @Param("fgValid") String fgValid);
 
     /**
@@ -223,6 +232,14 @@ public interface PfTestWaitingRoomDao {
     Integer saveExamQa(ExmMedResultInspect dto);
 
     /**
+     * 检验 - 编辑问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer editExamQa(ExmMedResultInspect dto);
+
+    /**
      * 检验 - 是否存在
      *
      * @param dto
@@ -234,10 +251,12 @@ public interface PfTestWaitingRoomDao {
      * 检验 - 删除
      *
      * @param idTestexecResultInspect 主键
+     * @param idDie                   疾病id
      * @param fgValid                 删除标识
      * @return
      */
     Integer delExamQa(@Param("idTestexecResultInspect") Long idTestexecResultInspect,
+                      @Param("idDie") Long idDie,
                       @Param("fgValid") String fgValid);
 
     /**

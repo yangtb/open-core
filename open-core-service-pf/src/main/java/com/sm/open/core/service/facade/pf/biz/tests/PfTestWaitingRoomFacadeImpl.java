@@ -274,6 +274,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<Boolean> editCheckQa(ExmMedResultBodyParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.editCheckQa(BeanUtil.convert(param, ExmMedResultBody.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-editCheckQa】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-editCheckQa】编辑检查出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_CHECK_QA_ERROR, PfTestPaperConstant.SAVE_CHECK_QA_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<Boolean> updateCheckStatus(PfBachChangeStatusParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
@@ -327,6 +342,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveExamQa】保存检验出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_EXAM_QA_ERROR, PfTestPaperConstant.SAVE_EXAM_QA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> editExamQa(ExmMedResultInspectParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.editExamQa(BeanUtil.convert(param, ExmMedResultInspect.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-editExamQa】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-editExamQa】编辑检验出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_EXAM_QA_ERROR, PfTestPaperConstant.SAVE_EXAM_QA_ERROR_MSG));
         }

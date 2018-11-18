@@ -201,6 +201,7 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
 
             for (FaqEvaCaseItemCover faqEvaCaseItemCover : list) {
                 faqEvaCaseItemCover.setSdEvaCover(dto.getSdEva());
+                faqEvaCaseItemCover.setIdDie(dto.getIdDie());
                 faqEvaCaseItemCover.setIdEvaCaseItem(dto.getIdEvaCaseItem());
                 if (faqEvaCaseItemCover.getIdEvaCaseItemList() == null) {
                     pfKbAssessDao.saveCover(faqEvaCaseItemCover);
@@ -243,6 +244,7 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
 
             for (FaqEvaCaseItemMust faqEvaCaseItemMust : list) {
                 faqEvaCaseItemMust.setSdEvaMust(dto.getSdEva());
+                faqEvaCaseItemMust.setIdDie(dto.getIdDie());
                 faqEvaCaseItemMust.setIdEvaCaseItem(dto.getIdEvaCaseItem());
                 if (faqEvaCaseItemMust.getIdEvaCaseItemList() == null) {
                     pfKbAssessDao.saveMust(faqEvaCaseItemMust);

@@ -141,6 +141,14 @@ public interface PfTestWaitingRoomService {
     Long saveCheckQa(ExmMedResultBody dto);
 
     /**
+     * 检查 - 编辑问答问题
+     *
+     * @param dto
+     * @return
+     */
+    boolean editCheckQa(ExmMedResultBody dto);
+
+    /**
      * 检查 - 线索标志
      *
      * @param dto
@@ -171,6 +179,14 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     Long saveExamQa(ExmMedResultInspect dto);
+
+    /**
+     * 检验 - 编辑问答问题
+     *
+     * @param dto
+     * @return
+     */
+    boolean editExamQa(ExmMedResultInspect dto);
 
     /**
      * 检验 - 线索标志
