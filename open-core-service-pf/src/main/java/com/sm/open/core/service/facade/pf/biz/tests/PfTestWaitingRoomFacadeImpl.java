@@ -12,11 +12,16 @@ import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseInquesListResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseInspectListResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaLogResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaResultResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfEvaExecResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfExecLogResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperInfoResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperStudentResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.tests.PfTestWaitingRoomFacade;
+import com.sm.open.core.model.dto.pf.biz.tests.PfTestEvaDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
@@ -99,6 +104,31 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
                             BeanUtil.convert(param, PfTestExamDto.class)), PfTestPaperInfoResult.class));
             pfTestPaperResult.setTags(BeanUtil.convertList(pfClinicTemplateService.listAllCaseHistoryTag(param.getIdDemo()), PfCaseHistoryTagResult.class));
 
+            return ResultFactory.initCommonResultWithSuccess(pfTestPaperResult);
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectTestPaperInfo】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectTestPaperInfo】查询试卷信息出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_TEST_PAPER_INFO_ERROR, PfTestPaperConstant.SELECT_TEST_PAPER_INFO_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<PfTestPaperResult> selectTestPaper(PfTestExamParam param) {
+        try {
+            Assert.isTrue(param.getIdDemo() != null, "idDemo");
+            Assert.isTrue(param.getIdStudent() != null, "idStudent");
+            Assert.isTrue(param.getIdTestplanDetail() != null, "idTestplanDetail");
+            Assert.isTrue(param.getIdTestpaper() != null, "idTestpaper");
+            Assert.isTrue(param.getIdMedicalrec() != null, "idMedicalrec");
+
+            PfTestPaperResult pfTestPaperResult = new PfTestPaperResult();
+            pfTestPaperResult.setStudentInfo(BeanUtil.convert(pfUserService.selectStudentInfo(param.getIdStudent()), PfTestPaperStudentResult.class));
+            pfTestPaperResult.setPaperInfo(BeanUtil.convert(
+                    pfTestWaitingRoomService.selectTestPaperInto(
+                            BeanUtil.convert(param, PfTestExamDto.class)), PfTestPaperInfoResult.class));
             return ResultFactory.initCommonResultWithSuccess(pfTestPaperResult);
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectTestPaperInfo】, 校验警告:{}", e.getMessage());
@@ -619,6 +649,111 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfKbPartFacadeImpl-listDieReason-error】查询确诊理由列表出错，idTestexecResultDiagnosis:{}", idTestexecResultDiagnosis, e);
             return PfResultFactory.initPageResultWithError(
                     PfTestPaperConstant.LIST_DIE_REASON_ERROR, PfTestPaperConstant.LIST_DIE_REASON_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.selectScore(idTestexecResult), PfEvaExecResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectScore】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectScore-error】查询评估得分出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_EVA_ERROR, PfTestPaperConstant.LIST_EVA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfEvaExecResult>> listEva(PfTestEvaParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listEva(BeanUtil.convert(param, PfTestEvaDto.class)), PfEvaExecResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listEva】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listEva-error】查询评估列表出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_EVA_ERROR, PfTestPaperConstant.LIST_EVA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<ExmEvaLogResult>> listEvaLog(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listEvaLog(idTestexecResult), ExmEvaLogResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listEvaLog】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listEvaLog-error】查询评估日志出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_EVA_ERROR, PfTestPaperConstant.LIST_EVA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> medEva(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.medEva(idTestexecResult));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-medEva】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-medEva-error】病历评估出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.MED_EVA_ERROR, PfTestPaperConstant.MED_EVA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> editEva(ExmEvaDimensionParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.editEva(BeanUtil.convert(param, ExmEvaDimension.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-editEva】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-editEva-error】编辑得分出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.EDIT_EVA_ERROR, PfTestPaperConstant.EDIT_EVA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfExecLogResult>> listExecLog(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listExecLog(idTestexecResult), PfExecLogResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listExecLog】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listExecLog-error】查询病例执行日志出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_EXEC_LOG_ERROR, PfTestPaperConstant.LIST_EXEC_LOG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<ExmEvaResultResult> selectEvaResult(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfTestWaitingRoomService.selectEvaResult(idTestexecResult), ExmEvaResultResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectEvaResult】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectEvaResult-error】查询病例执行结果出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_EVA_RESULT_ERROR, PfTestPaperConstant.SELECT_EVA_RESULT_ERROR_MSG));
         }
     }
 

@@ -5,6 +5,10 @@ import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaLogResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaResultResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfEvaExecResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfExecLogResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -42,6 +46,14 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<PfTestPaperResult> selectTestPaperInfo(PfTestExamParam param);
+
+    /**
+     * 获取试卷信息
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<PfTestPaperResult> selectTestPaper(PfTestExamParam param);
 
     /**
      * 开始考试
@@ -317,4 +329,61 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     PfPageResult listDieReason(Long idTestexecResultDiagnosis);
+
+    /**
+     * 查询病历评估得分
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult);
+
+    /**
+     * 查询病历评估
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfEvaExecResult>> listEva(PfTestEvaParam param);
+
+    /**
+     * 查询评估日志
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    CommonResult<List<ExmEvaLogResult>> listEvaLog(Long idTestexecResult);
+
+    /**
+     * 病历评估
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    CommonResult<Boolean> medEva(Long idTestexecResult);
+
+    /**
+     * 修改得分
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> editEva(ExmEvaDimensionParam param);
+
+    /**
+     * 查询病例执行日志
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    CommonResult<List<PfExecLogResult>> listExecLog(Long idTestexecResult);
+
+    /**
+     * 评估结果
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    CommonResult<ExmEvaResultResult> selectEvaResult(Long idTestexecResult);
+
 }

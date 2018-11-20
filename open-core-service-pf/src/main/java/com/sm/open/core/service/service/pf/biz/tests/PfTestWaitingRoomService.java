@@ -1,6 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.tests;
 
-import com.sm.open.core.facade.model.param.pf.biz.tests.room.PfTestExamTagParam;
+import com.sm.open.core.model.dto.pf.biz.tests.PfTestEvaDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
@@ -8,6 +8,8 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 
 import java.util.List;
@@ -331,5 +333,61 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis);
+
+    /**
+     * 查询病历评估得分
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfEvaExecVo> selectScore(Long idTestexecResult);
+
+    /**
+     * 查询病历评估
+     *
+     * @param dto
+     * @return
+     */
+    List<PfEvaExecVo> listEva(PfTestEvaDto dto);
+
+    /**
+     * 查询评估日志
+     *
+     * @param idTestexecResultDimension
+     * @return
+     */
+    List<ExmEvaLog> listEvaLog(Long idTestexecResultDimension);
+
+    /**
+     * 病历评估
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    boolean medEva(Long idTestexecResult);
+
+    /**
+     * 修改得分
+     *
+     * @param dto
+     * @return
+     */
+    boolean editEva(ExmEvaDimension dto);
+
+    /**
+     * 查询病例执行日志
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfExecLogVo> listExecLog(Long idTestexecResult);
+
+    /**
+     * 评估结果
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    ExmEvaResult selectEvaResult(Long idTestexecResult);
 
 }

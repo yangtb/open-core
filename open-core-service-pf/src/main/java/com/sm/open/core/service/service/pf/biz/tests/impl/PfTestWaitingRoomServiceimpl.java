@@ -1,19 +1,20 @@
 package com.sm.open.core.service.service.pf.biz.tests.impl;
 
 import com.sm.open.care.core.enums.YesOrNoNum;
+import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPaperDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestWaitingRoomDao;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
+import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.enums.TestPlanStatusEnum;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -60,7 +62,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public PfTestPaperInfoVo selectTestPaperInto(PfTestExamDto dto) {
-        PfTestPaperInfoVo pfTestPaperInfoVo = pfTestWaitingRoomDao.selectTestPaperInfo(dto.getIdTestplanDetail(), dto.getIdStudent());
+        PfTestPaperInfoVo pfTestPaperInfoVo = pfTestWaitingRoomDao.selectTestPaperInfo(dto);
         if (pfTestPaperInfoVo == null) {
             pfTestPaperInfoVo = new PfTestPaperInfoVo();
         }
@@ -359,6 +361,112 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis) {
         return pfTestWaitingRoomDao.listDieReason(idTestexecResultDiagnosis);
+    }
+
+    @Override
+    public List<PfEvaExecVo> selectScore(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.getScore(idTestexecResult);
+    }
+
+    @Override
+    public List<PfEvaExecVo> listEva(PfTestEvaDto dto) {
+        return pfTestWaitingRoomDao.listEva(dto);
+    }
+
+    @Override
+    public List<ExmEvaLog> listEvaLog(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.listEvaLog(idTestexecResult);
+    }
+
+    @Override
+    public boolean medEva(Long idTestexecResult) {
+        PfEvaExecDto dto = new PfEvaExecDto();
+        dto.setIdTestexecResult(idTestexecResult);
+        pfTestWaitingRoomDao.medEva(dto);
+        if (dto.getParCode() != 0) {
+            throw new BizRuntimeException(String.valueOf(dto.getParCode()), dto.getParMsg());
+        }
+        return true;
+    }
+
+    @Override
+    public boolean editEva(ExmEvaDimension dto) {
+        return pfTestWaitingRoomDao.editEva(dto) == 1 ? true : false;
+
+    }
+
+    @Override
+    public List<PfExecLogVo> listExecLog(Long idTestexecResult) {
+        List<PfExecLogVo> inquesLog = pfTestWaitingRoomDao.listExecLogInques(idTestexecResult);
+        List<PfExecLogVo> bodyLog = pfTestWaitingRoomDao.listExecLogBody(idTestexecResult);
+        inquesLog.addAll(bodyLog);
+        List<PfExecLogVo> inspectLog = pfTestWaitingRoomDao.listExecLogInspect(idTestexecResult);
+        inquesLog.addAll(inspectLog);
+        List<PfExecLogVo> diagnosisLog = pfTestWaitingRoomDao.listExecLogDiagnosis(idTestexecResult);
+        for (PfExecLogVo pfExecLogVo : diagnosisLog) {
+            inquesLog.add(pfExecLogVo);
+            List<PfExecLogVo> diagnosisReasonLog = pfTestWaitingRoomDao.listExecLogDiagnosisReason(pfExecLogVo.getExtId());
+            inquesLog.addAll(diagnosisReasonLog);
+        }
+        ExmMedResultOrder selectOrders = pfTestWaitingRoomDao.selectOrders(idTestexecResult);
+        if (selectOrders != null) {
+            inquesLog.addAll(buildOrdersLog(selectOrders));
+        }
+        return inquesLog;
+    }
+
+    public List<PfExecLogVo> buildOrdersLog(ExmMedResultOrder selectOrders) {
+        List<PfExecLogVo> ordersLog = new ArrayList<>();
+        PfExecLogVo pfExecLogVo;
+
+        if (StringUtils.isNotBlank(selectOrders.getSdNursRout())) {
+            pfExecLogVo = new PfExecLogVo();
+            pfExecLogVo.setStage("医嘱");
+            pfExecLogVo.setLogDate(selectOrders.getGmtCreate());
+            pfExecLogVo.setOperation("添加护理常规");
+            ordersLog.add(pfExecLogVo);
+        }
+        if (StringUtils.isNotBlank(selectOrders.getCdNursLevel())) {
+            pfExecLogVo = new PfExecLogVo();
+            pfExecLogVo.setStage("医嘱");
+            pfExecLogVo.setLogDate(selectOrders.getGmtCreate());
+            pfExecLogVo.setOperation("添加护理级别");
+            ordersLog.add(pfExecLogVo);
+        }
+        if (StringUtils.isNotBlank(selectOrders.getSdDiet())) {
+            pfExecLogVo = new PfExecLogVo();
+            pfExecLogVo.setStage("医嘱");
+            pfExecLogVo.setLogDate(selectOrders.getGmtCreate());
+            pfExecLogVo.setOperation("添加饮食分类");
+            ordersLog.add(pfExecLogVo);
+        }
+        if (StringUtils.isNotBlank(selectOrders.getSdPosition())) {
+            pfExecLogVo = new PfExecLogVo();
+            pfExecLogVo.setStage("医嘱");
+            pfExecLogVo.setLogDate(selectOrders.getGmtCreate());
+            pfExecLogVo.setOperation("添加体位");
+            ordersLog.add(pfExecLogVo);
+        }
+        if (StringUtils.isNotBlank(selectOrders.getDesCheck())) {
+            pfExecLogVo = new PfExecLogVo();
+            pfExecLogVo.setStage("医嘱");
+            pfExecLogVo.setLogDate(selectOrders.getGmtCreate());
+            pfExecLogVo.setOperation("添加(一次性)检查或处置");
+            ordersLog.add(pfExecLogVo);
+        }
+        if (StringUtils.isNotBlank(selectOrders.getDesSpecial())) {
+            pfExecLogVo = new PfExecLogVo();
+            pfExecLogVo.setStage("医嘱");
+            pfExecLogVo.setLogDate(selectOrders.getGmtCreate());
+            pfExecLogVo.setOperation("添加特殊处理");
+            ordersLog.add(pfExecLogVo);
+        }
+        return ordersLog;
+    }
+
+    @Override
+    public ExmEvaResult selectEvaResult(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.selectEvaResult(idTestexecResult);
     }
 
 }

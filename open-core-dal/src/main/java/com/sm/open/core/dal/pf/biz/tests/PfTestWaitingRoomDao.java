@@ -1,11 +1,12 @@
 package com.sm.open.core.dal.pf.biz.tests;
 
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
+import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -50,12 +51,10 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询试卷信息
      *
-     * @param idTestplanDetail 计划明细id
-     * @param idStudent        学生id
+     * @param dto
      * @return
      */
-    PfTestPaperInfoVo selectTestPaperInfo(@Param("idTestplanDetail") Long idTestplanDetail,
-                                          @Param("idStudent") Long idStudent);
+    PfTestPaperInfoVo selectTestPaperInfo(PfTestExamDto dto);
 
     /**
      * 开始考试
@@ -465,4 +464,100 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis);
+
+    /**
+     * 查询病历评估
+     *
+     * @param dto
+     * @return
+     */
+    List<PfEvaExecVo> listEva(PfTestEvaDto dto);
+
+    /**
+     * 获取得分
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfEvaExecVo> getScore(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
+     * 查询评估日志
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<ExmEvaLog> listEvaLog(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
+     * 病历评估
+     *
+     * @param dto
+     * @return
+     */
+    void medEva(PfEvaExecDto dto);
+
+    /**
+     * 修改得分
+     *
+     * @param dto
+     * @return
+     */
+    Integer editEva(ExmEvaDimension dto);
+
+    /**
+     * 评估结果
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    ExmEvaResult selectEvaResult(Long idTestexecResult);
+
+    /**
+     * 查询病例执行日志 - 问诊
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfExecLogVo> listExecLogInques(Long idTestexecResult);
+
+    /**
+     * 查询病例执行日志 - 检查
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfExecLogVo> listExecLogBody(Long idTestexecResult);
+
+    /**
+     * 查询病例执行日志 - 检验
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfExecLogVo> listExecLogInspect(Long idTestexecResult);
+
+    /**
+     * 查询病例执行日志 - 诊断
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfExecLogVo> listExecLogDiagnosis(Long idTestexecResult);
+
+    /**
+     * 查询病例执行日志 - 诊断理由
+     *
+     * @param idTestexecResultDiagnosis
+     * @return
+     */
+    List<PfExecLogVo> listExecLogDiagnosisReason(Long idTestexecResultDiagnosis);
+
+    /**
+     * 查询病例执行日志 - 医嘱
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<PfExecLogVo> listExecLogOrder(Long idTestexecResult);
 }

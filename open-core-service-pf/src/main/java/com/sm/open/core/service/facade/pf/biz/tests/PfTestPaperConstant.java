@@ -167,5 +167,21 @@ public class PfTestPaperConstant {
     public static final String SELECT_READY_DIE_REASON_ERROR            = "listReadyDieReasonError";
     public static final String SELECT_READY_DIE_REASON_ERROR_MSG        = "查询确诊理由字典出错";
 
+    public static final String LIST_EVA_ERROR                           = "listEvaError";
+    public static final String LIST_EVA_ERROR_MSG                       = "查询评估列表出错";
+
+    public static final String LIST_EXEC_LOG_ERROR                      = "listExecLogError";
+    public static final String LIST_EXEC_LOG_ERROR_MSG                  = "查询病例执行日志出错";
+
+    public static final String EDIT_EVA_ERROR                           = "editEvaError";
+    public static final String EDIT_EVA_ERROR_MSG                       = "编辑得分出错";
+
+    public static final String MED_EVA_ERROR                            = "medEvaError";
+    public static final String MED_EVA_ERROR_MSG                        = "病历评估出错";
+
+    public static final String SELECT_EVA_RESULT_ERROR                  = "selectEvaResultError";
+    public static final String SELECT_EVA_RESULT_ERROR_MSG              = "查询病例执行结果出错";
+
+
 
 }

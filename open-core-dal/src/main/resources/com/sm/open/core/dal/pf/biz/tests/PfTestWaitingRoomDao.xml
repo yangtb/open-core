@@ -299,7 +299,7 @@
             <if test="desSpecial!=null and desSpecial != ''">
                 des_special,
             </if>
-            <if test="fgValid!=null and  fgValid!= ''">
+            <if test="fgValid!=null and fgValid!= ''">
                 fg_valid,
             </if>
                 gmt_create,
@@ -314,25 +314,25 @@
             <if test="idTestexecResult!=null">
                 #{idTestexecResult},
             </if>
-            <if test="desCheck!=null">
+            <if test="desCheck!=null and desCheck != ''">
                 #{desCheck},
             </if>
-            <if test="sdNursRout!=null">
+            <if test="sdNursRout!=null and sdNursRout != ''">
                 #{sdNursRout},
             </if>
-            <if test="cdNursLevel!=null">
+            <if test="cdNursLevel!=null and cdNursLevel != ''">
                 #{cdNursLevel},
             </if>
-            <if test="sdDiet!=null">
+            <if test="sdDiet!=null and sdDiet != ''">
                 #{sdDiet},
             </if>
-            <if test="sdPosition!=null">
+            <if test="sdPosition!=null and sdPosition != ''">
                 #{sdPosition},
             </if>
-            <if test="desSpecial!=null">
+            <if test="desSpecial!=null and desSpecial != ''">
                 #{desSpecial},
             </if>
-            <if test="fgValid!=null">
+            <if test="fgValid!=null and fgValid != ''">
                 #{fgValid},
             </if>
                 now(),
@@ -431,15 +431,9 @@
             id_testexec_result_diagnosis,
             sd_eva_effciency,
             id_med_case_list,
-            <if test="idInques!=null">
-                id_inques,
-            </if>
-            <if test="idBody!=null">
-                id_body,
-            </if>
-            <if test="idInspectItem!=null">
-                id_inspect_item,
-            </if>
+            id_inques,
+            id_body,
+            id_inspect_item,
             gmt_create
         )
         VALUES
@@ -448,15 +442,30 @@
                 #{item.idTestexecResultDiagnosis},
                 #{item.sdEvaEffciency},
                 #{item.idMedCaseList},
-                <if test="idInques!=null">
-                    #{idInques},
-                </if>
-                <if test="idBody!=null">
-                    #{idBody},
-                </if>
-                <if test="idInspectItem!=null">
-                    #{idInspectItem},
-                </if>
+                <choose>
+                    <when test="item.idInques!=null">
+                        #{item.idInques},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.idBody!=null">
+                        #{item.idBody},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
+                <choose>
+                    <when test="item.idInspectItem!=null">
+                        #{item.idInspectItem},
+                    </when>
+                    <otherwise>
+                        null,
+                    </otherwise>
+                </choose>
                 now()
             )
         </foreach>
@@ -563,6 +572,12 @@
             id_testexec_result = #{idTestexecResult}
         and id_med_case_list = #{idMedCaseList}
         and fg_valid = '0'
+    </update>
+    <update id="editEva">
+        update exm_eva_dimension
+        set score_dimemsion = #{scoreDimemsion},
+            weight_score_dimemsion = ROUND(score_dimemsion * weight_dimemsion/100,2)
+        where id_testexec_result_dimension = #{idTestexecResultDimension}
     </update>
     <delete id="delCheckQa">
         update exm_med_result_body
@@ -679,20 +694,22 @@
         LEFT JOIN exm_eva_result p ON o.id_testexec_result = p.id_testexec_result
         WHERE
             a.sd_testplan_detail = '2'
+        and m.sd_testexec = '2'
         AND f.id_org = #{idOrg}
         AND d.id_med_case IS NOT NULL
     </select>
     <select id="listReceivePat" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestReceivePatVo">
         SELECT
             a.id_testplan_detail ,
-            a.sd_testplan_detail AS status ,
+            o.id_testexec_result,
+            case when m.sd_testexec ='2' then '1' else '2' end  AS status ,
             a.id_testplan ,
             a.id_student ,
             m.dt_exec_begin AS receiveDate ,
             m.duration AS receiveConsumingTime ,
             b.id_medicalrec ,
             c.id_demo ,
-            d. NAME AS patName ,
+            d.name AS patName ,
             d.sex AS patSex ,
             d.age ,
             k.name AS receiveDoc ,
@@ -718,6 +735,7 @@
         LEFT JOIN exm_eva_result p ON o.id_testexec_result = p.id_testexec_result
         WHERE
             a.sd_testplan_detail = '2'
+        and m.sd_testexec = '2'
         AND f.id_org = #{idOrg}
         AND d.id_med_case IS NOT NULL
         limit #{offset}, #{limit}
@@ -731,8 +749,15 @@
             exm_testexec a
         left join exm_med_result b on a.id_testexec = b.id_testexec and b.serial = 1
         where
-            id_testplan_detail = #{idTestplanDetail}
-        and id_student=#{idStudent}
+        <choose>
+            <when test="idTestexecResult != null">
+                b.id_testexec_result = #{idTestexecResult}
+            </when>
+            <otherwise>
+                id_testplan_detail = #{idTestplanDetail}
+                and id_student=#{idStudent}
+            </otherwise>
+        </choose>
     </select>
     <select id="selectPatInfo" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo">
         SELECT
@@ -1035,6 +1060,134 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+    </select>
+    <select id="listEva" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo">
+        SELECT
+            a.id_testexec_result_dimension ,
+            a.id_testexec_result ,
+            a.id_dimemsion ,
+            b.name as nzName,
+            b.par_dimemsion ,
+            a.weight_dimemsion ,
+            a.score_dimemsion ,
+            a.weight_score_dimemsion,
+            b.fg_system_algorithm
+        FROM
+            exm_eva_dimension a
+        LEFT JOIN bas_demo_asses b ON a.id_dimemsion = b.id_dimemsion
+        WHERE
+            id_testexec_result = #{idTestexecResult}
+        ORDER BY
+            IFNULL(b.par_dimemsion , '9999999999') ,
+            b.sort
+    </select>
+    <select id="getScore" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo">
+        SELECT
+            temp.id_testexec_result, temp.parDimemsion,
+            c.name as pgItem,
+            c.weight as weight_dimemsion,
+            temp.score_dimemsion,
+            ROUND((c.weight * temp.score_dimemsion)/100, 2) as weight_score_dimemsion
+        FROM
+            (
+                SELECT
+                    a.id_testexec_result ,
+                    IFNULL(b.par_dimemsion , a.id_dimemsion) AS parDimemsion ,
+                    sum(a.weight_score_dimemsion) AS score_dimemsion
+                FROM
+                    exm_eva_dimension a
+                LEFT JOIN bas_demo_asses b ON a.id_dimemsion = b.id_dimemsion
+                WHERE
+                    id_testexec_result = #{idTestexecResult}
+                GROUP BY
+                    IFNULL(b.par_dimemsion , a.id_dimemsion)
+            ) temp
+        LEFT JOIN bas_demo_asses c ON temp.parDimemsion = c.id_dimemsion
+    </select>
+    <select id="listEvaLog" resultType="com.sm.open.core.model.entity.ExmEvaLog">
+        select* from exm_eva_log where id_testexec_result_dimension in
+        (select id_testexec_result_dimension from exm_eva_dimension where id_testexec_result =  #{idTestexecResult})
+    </select>
+
+    <select id="medEva" statementType="CALLABLE" >
+        call P_EVA_AMAIN(
+            #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+            #{parCode,mode=OUT,jdbcType=INTEGER},
+            #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="listExecLogInques" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo">
+        SELECT
+            '问诊' as stage,
+            '添加问诊' as operation,
+            b.des_inques as answer,
+            a.gmt_create as logDate
+        FROM
+            exm_med_result_inques a
+        left join faq_med_case_inques_list b on a.id_inques = b.id_inques
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+    </select>
+    <select id="listExecLogBody" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo">
+        SELECT
+            '检查' as stage,
+            '添加检查' as operation,
+            b.des_body as answer,
+            a.gmt_create as logDate
+        FROM
+            exm_med_result_body a
+        left join faq_med_case_body_list b on a.id_body = b.id_body
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+    </select>
+    <select id="listExecLogInspect" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo">
+        SELECT
+            '检验' as stage,
+            '添加检验' as operation,
+            b.na_item as answer,
+            a.gmt_create as logDate
+        FROM
+            exm_med_result_inspect a
+        left join faq_med_case_inspect_list b on a.id_inspect_item = b.id_inspect_item
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+    </select>
+    <select id="selectEvaResult" resultType="com.sm.open.core.model.entity.ExmEvaResult">
+        select id_testexec_result,score_weight,sd_title
+        from exm_eva_result
+        where id_testexec_result = #{idTestexecResult}
+        limit 1
+    </select>
+    <select id="listExecLogDiagnosis" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo">
+         SELECT	
+            a.id_testexec_result_diagnosis as extId,
+            '诊断' as stage,
+            '添加诊断' as operation,
+            b.name as answer,
+            a.gmt_create as logDate
+        FROM
+            exm_med_result_diagnosis a
+        left join bas_die b on a.id_die = b.id_die
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+    </select>
+    <select id="listExecLogDiagnosisReason" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo">
+        SELECT
+            '诊断' AS stage ,
+            '添加诊断理由' AS operation ,
+            '' AS answer ,
+            gmt_create AS logDate
+        FROM
+            exm_med_result_die_reason
+        WHERE
+            id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
+    </select>
+    <select id="listExecLogOrder" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo">
+
     </select>
 
 </mapper>
