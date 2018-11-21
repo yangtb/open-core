@@ -162,8 +162,9 @@
             id_class_memo a
         left join user_info b on a.id_user = b.user_id
         <where>
+            id_org = #{idOrg}
             <if test="idClass != null">
-                a.id_class = #{idClass}
+                and a.id_class = #{idClass}
             </if>
             <if test="studentName != null and studentName != ''">
                 AND b.real_name like concat('%',#{studentName},'%')
@@ -179,8 +180,9 @@
         left join user_info b on a.id_user = b.user_id
         left join sys_class c on a.id_class = c.id_class
         <where>
+            id_org = #{idOrg}
             <if test="idClass != null">
-                a.id_class = #{idClass}
+                and a.id_class = #{idClass}
             </if>
             <if test="studentName != null and studentName != ''">
                 AND b.real_name like concat('%',#{studentName},'%')
