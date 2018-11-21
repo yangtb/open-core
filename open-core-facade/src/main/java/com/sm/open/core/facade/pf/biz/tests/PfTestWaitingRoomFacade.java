@@ -336,7 +336,7 @@ public interface PfTestWaitingRoomFacade {
      * @param idTestexecResult
      * @return
      */
-    CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult);
+    CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult, Long idMedicalrec);
 
     /**
      * 查询病历评估

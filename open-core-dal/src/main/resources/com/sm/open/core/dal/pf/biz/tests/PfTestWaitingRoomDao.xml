@@ -579,6 +579,9 @@
             weight_score_dimemsion = ROUND(score_dimemsion * weight_dimemsion/100,2)
         where id_testexec_result_dimension = #{idTestexecResultDimension}
     </update>
+    <update id="updateExmMedResultFlag">
+        update exm_med_result set fg_asses = '1' where id_testexec_result = #{idTestexecResult}
+    </update>
     <delete id="delCheckQa">
         update exm_med_result_body
         set
@@ -696,13 +699,32 @@
             a.sd_testplan_detail = '2'
         and m.sd_testexec = '2'
         AND f.id_org = #{idOrg}
+        <if test="medicalrecName != null and medicalrecName != ''">
+            and k.name like concat(#{medicalrecName},'%')
+        </if>
+        <if test="naTestplan != null and naTestplan != ''">
+            and f.na_testplan like concat(#{naTestplan},'%')
+        </if>
+        <if test="naTestpaper != null and naTestpaper != ''">
+            and g.na_testpaper like concat(#{naTestpaper},'%')
+        </if>
+        <if test="fgAsses != null and fgAsses != ''">
+            <choose>
+                <when test='fgAsses == "2"'>
+                    and o.fg_asses ='1'
+                </when>
+                <otherwise>
+                    and o.fg_asses !='1'
+                </otherwise>
+            </choose>
+        </if>
         AND d.id_med_case IS NOT NULL
     </select>
     <select id="listReceivePat" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestReceivePatVo">
         SELECT
             a.id_testplan_detail ,
             o.id_testexec_result,
-            case when m.sd_testexec ='2' then '1' else '2' end  AS status ,
+            case when o.fg_asses ='1' then '2' else '1' end  AS status ,
             a.id_testplan ,
             a.id_student ,
             m.dt_exec_begin AS receiveDate ,
@@ -738,6 +760,25 @@
         and m.sd_testexec = '2'
         AND f.id_org = #{idOrg}
         AND d.id_med_case IS NOT NULL
+        <if test="medicalrecName != null and medicalrecName != ''">
+            and k.name like concat(#{medicalrecName},'%')
+        </if>
+        <if test="naTestplan != null and naTestplan != ''">
+            and f.na_testplan like concat(#{naTestplan},'%')
+        </if>
+        <if test="naTestpaper != null and naTestpaper != ''">
+            and g.na_testpaper like concat(#{naTestpaper},'%')
+        </if>
+        <if test="fgAsses != null and fgAsses != ''">
+            <choose>
+                <when test='fgAsses == "2"'>
+                    and o.fg_asses ='1'
+                </when>
+                <otherwise>
+                    and o.fg_asses !='1'
+                </otherwise>
+            </choose>
+        </if>
         limit #{offset}, #{limit}
     </select>
 
@@ -1066,7 +1107,10 @@
             a.id_testexec_result_dimension ,
             a.id_testexec_result ,
             a.id_dimemsion ,
-            b.name as nzName,
+            a.score_max,
+            a.weight_score_max,
+            IF(b.par_dimemsion is null,'',b.name) as nzName,
+	        IF(b.par_dimemsion is null, b.name, '') as pgItem,
             b.par_dimemsion ,
             a.weight_dimemsion ,
             a.score_dimemsion ,
@@ -1078,31 +1122,39 @@
         WHERE
             id_testexec_result = #{idTestexecResult}
         ORDER BY
-            IFNULL(b.par_dimemsion , '9999999999') ,
+            IFNULL(b.par_dimemsion, a.id_dimemsion) , a.id_dimemsion,
             b.sort
     </select>
     <select id="getScore" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo">
         SELECT
-            temp.id_testexec_result, temp.parDimemsion,
-            c.name as pgItem,
-            c.weight as weight_dimemsion,
-            temp.score_dimemsion,
-            ROUND((c.weight * temp.score_dimemsion)/100, 2) as weight_score_dimemsion
+            a.id_dimemsion,
+            max(b. NAME) AS pgItem ,
+            ROUND(AVG(a.weight_score_dimemsion), 3) as avgScore
         FROM
-            (
-                SELECT
-                    a.id_testexec_result ,
-                    IFNULL(b.par_dimemsion , a.id_dimemsion) AS parDimemsion ,
-                    sum(a.weight_score_dimemsion) AS score_dimemsion
-                FROM
-                    exm_eva_dimension a
-                LEFT JOIN bas_demo_asses b ON a.id_dimemsion = b.id_dimemsion
-                WHERE
-                    id_testexec_result = #{idTestexecResult}
-                GROUP BY
-                    IFNULL(b.par_dimemsion , a.id_dimemsion)
-            ) temp
-        LEFT JOIN bas_demo_asses c ON temp.parDimemsion = c.id_dimemsion
+            exm_eva_dimension a
+        LEFT JOIN bas_demo_asses b ON a.id_dimemsion = b.id_dimemsion
+        WHERE
+            a.id_testexec_result in (
+            <foreach collection="list" item="item" separator="," >
+                #{item}
+            </foreach>
+        )
+        AND b.par_dimemsion IS NULL
+        GROUP BY
+            a.id_dimemsion
+        ORDER BY
+            a.id_dimemsion
+    </select>
+    <select id="getExecResultId" resultType="java.lang.Long">
+        SELECT
+            b.id_testexec_result
+        FROM
+            exm_testexec a
+        LEFT JOIN exm_med_result b ON a.id_testexec = b.id_testexec
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.fg_final_result = '1'
+        AND fg_asses = '1'
     </select>
     <select id="listEvaLog" resultType="com.sm.open.core.model.entity.ExmEvaLog">
         select* from exm_eva_log where id_testexec_result_dimension in

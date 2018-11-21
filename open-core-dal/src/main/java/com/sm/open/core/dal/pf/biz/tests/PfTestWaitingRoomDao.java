@@ -73,6 +73,14 @@ public interface PfTestWaitingRoomDao {
     Integer insertExmMedResult(ExmMedResult dto);
 
     /**
+     * 修改评估标识
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    Integer updateExmMedResultFlag(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
      * 交卷
      *
      * @param dto
@@ -474,12 +482,20 @@ public interface PfTestWaitingRoomDao {
     List<PfEvaExecVo> listEva(PfTestEvaDto dto);
 
     /**
-     * 获取得分
+     * 获取平均得分
      *
-     * @param idTestexecResult
+     * @param list
      * @return
      */
-    List<PfEvaExecVo> getScore(@Param("idTestexecResult") Long idTestexecResult);
+    List<PfEvaExecVo> getScore(@Param("list") List<Long> list);
+
+    /**
+     * 查询已执行病例结果id
+     *
+     * @param idMedicalrec
+     * @return
+     */
+    List<Long> getExecResultId(@Param("idMedicalrec") Long idMedicalrec);
 
     /**
      * 查询评估日志

@@ -20,6 +20,7 @@ import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -364,8 +365,13 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public List<PfEvaExecVo> selectScore(Long idTestexecResult) {
-        return pfTestWaitingRoomDao.getScore(idTestexecResult);
+    public List<PfEvaExecVo> selectScore(Long idTestexecResult, Long idMedicalrec) {
+        // 查询已执行病例结果id
+        List<Long> execResultIds = pfTestWaitingRoomDao.getExecResultId(idMedicalrec);
+        if (CollectionUtils.isEmpty(execResultIds)) {
+            return null;
+        }
+        return pfTestWaitingRoomDao.getScore(execResultIds);
     }
 
     @Override
@@ -385,6 +391,8 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         pfTestWaitingRoomDao.medEva(dto);
         if (dto.getParCode() != 0) {
             throw new BizRuntimeException(String.valueOf(dto.getParCode()), dto.getParMsg());
+        } else {
+            pfTestWaitingRoomDao.updateExmMedResultFlag(idTestexecResult);
         }
         return true;
     }

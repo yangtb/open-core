@@ -653,10 +653,10 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
-    public CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult) {
+    public CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult, Long idMedicalrec) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfTestWaitingRoomService.selectScore(idTestexecResult), PfEvaExecResult.class));
+                    BeanUtil.convertList(pfTestWaitingRoomService.selectScore(idTestexecResult, idMedicalrec), PfEvaExecResult.class));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectScore】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
