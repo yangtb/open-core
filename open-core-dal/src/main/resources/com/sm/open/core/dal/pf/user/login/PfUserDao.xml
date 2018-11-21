@@ -119,6 +119,9 @@
             <if test="operator != null and operator != ''">
                 operator = #{operator},
             </if>
+            <if test="idOrg != null">
+                id_org = #{idOrg},
+            </if>
             gmt_modify = NOW()
         WHERE
             user_id = #{userId};
