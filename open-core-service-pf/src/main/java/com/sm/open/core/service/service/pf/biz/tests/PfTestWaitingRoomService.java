@@ -312,6 +312,14 @@ public interface PfTestWaitingRoomService {
     boolean delDieReason(Long idDieReason);
 
     /**
+     * 查询诊断、确诊理由
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    List<PfDiagnosisVo> selectAllDiagnosis(Long idTestexecResult);
+
+    /**
      * 查询诊断、诊断小结
      *
      * @param idTestexecResult 病历结果ID

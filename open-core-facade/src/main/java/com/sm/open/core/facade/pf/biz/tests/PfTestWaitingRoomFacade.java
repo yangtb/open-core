@@ -308,6 +308,14 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<Boolean> delDieReason(Long idDieReason);
 
     /**
+     * 查询所有诊断
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    CommonResult<List<PfDiagnosisResult>> selectAllDiagnosis(Long idTestexecResult);
+
+    /**
      * 查询诊断、诊断小结
      *
      * @param idTestexecResult 病历结果ID

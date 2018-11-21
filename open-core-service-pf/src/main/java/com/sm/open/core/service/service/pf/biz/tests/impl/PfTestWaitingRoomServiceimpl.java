@@ -2,6 +2,7 @@ package com.sm.open.core.service.service.pf.biz.tests.impl;
 
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
+import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPaperDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao;
@@ -337,16 +338,27 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
+    public List<PfDiagnosisVo> selectAllDiagnosis(Long idTestexecResult) {
+        List<ExmMedResultDiagnosis> diagnoses = pfTestWaitingRoomDao.listDiagnosis(idTestexecResult);
+        List<PfDiagnosisVo> diagnosisVoList = BeanUtil.convertList(diagnoses, PfDiagnosisVo.class);
+        for (PfDiagnosisVo pfDiagnosisVo: diagnosisVoList) {
+            List<PfWaitingRoomDieReasonVo> dieReasonVos = pfTestWaitingRoomDao.listDieReason(pfDiagnosisVo.getIdTestexecResultDiagnosis());
+            pfDiagnosisVo.setIdeReasonList(dieReasonVos);
+        }
+        return diagnosisVoList;
+    }
+
+    @Override
     public PfWaitingRoomDiagnosisVo selectDiagnosis(Long idTestexecResult) {
         PfWaitingRoomDiagnosisVo diagnosisVo = new PfWaitingRoomDiagnosisVo();
-        ExmMedResultDiagnosis diagnosis = pfTestWaitingRoomDao.selectDiagnosis(idTestexecResult);
+        //ExmMedResultDiagnosis diagnosis = pfTestWaitingRoomDao.selectDiagnosis(idTestexecResult);
         ExmMedResultSummary summary = pfTestWaitingRoomDao.selectSummary(idTestexecResult);
-        if (diagnosis != null) {
+        /*if (diagnosis != null) {
             diagnosisVo.setIdTestexecResultDiagnosis(diagnosis.getIdTestexecResultDiagnosis());
             diagnosisVo.setIdTestexecResult(idTestexecResult);
             diagnosisVo.setIdDie(diagnosis.getIdDie());
             diagnosisVo.setIdDieText(diagnosis.getIdDieText());
-        }
+        }*/
         if (summary != null) {
             diagnosisVo.setIdTestexecResultSumary(summary.getIdTestexecResultSumary());
             diagnosisVo.setDieSumary(summary.getDieSumary());

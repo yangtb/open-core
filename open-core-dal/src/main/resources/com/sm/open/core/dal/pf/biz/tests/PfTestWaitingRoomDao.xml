@@ -1022,6 +1022,19 @@
             a.fg_valid = '0'
         and a.id_testexec_result_order = #{idTestexecResultOrder}
     </select>
+    <select id="listDiagnosis" resultType="com.sm.open.core.model.entity.ExmMedResultDiagnosis">
+        select
+            a.id_testexec_result_diagnosis,
+            a.id_testexec_result,
+            a.id_die,
+            a.gmt_create,
+            b.name as idDieText
+        from exm_med_result_diagnosis a
+        left join bas_die b on a.id_die = b.id_die
+        where
+            a.id_testexec_result = #{idTestexecResult}
+        and a.fg_valid = '0'
+    </select>
     <select id="selectDiagnosis" resultType="com.sm.open.core.model.entity.ExmMedResultDiagnosis">
         select   
             a.id_testexec_result_diagnosis,

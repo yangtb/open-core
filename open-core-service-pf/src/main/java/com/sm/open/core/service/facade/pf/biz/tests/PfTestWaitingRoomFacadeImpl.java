@@ -611,6 +611,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<List<PfDiagnosisResult>> selectAllDiagnosis(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    PfTestPaperBeanUtil.convertZdList(pfTestWaitingRoomService.selectAllDiagnosis(idTestexecResult)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectAllDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectAllDiagnosis-error】查询诊断出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR, PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult) {
         try {
             return ResultFactory.initCommonResultWithSuccess(

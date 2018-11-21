@@ -443,6 +443,14 @@ public interface PfTestWaitingRoomDao {
     Integer delDieReasonByResultId(@Param("idTestexecResultDiagnosis") Long idTestexecResultDiagnosis);
 
     /**
+     * 查询诊断list
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    List<ExmMedResultDiagnosis> listDiagnosis(Long idTestexecResult);
+
+    /**
      * 查询诊断
      *
      * @param idTestexecResult 病历结果ID
