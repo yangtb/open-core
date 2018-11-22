@@ -3,6 +3,7 @@ package com.sm.open.core.service.facade.pf.user.login;
 import com.sm.open.care.core.ErrorCode;
 import com.sm.open.care.core.ErrorMessage;
 import com.sm.open.care.core.enums.YesOrNo;
+import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
@@ -82,6 +83,12 @@ public class PfUserFacadeImpl implements PfUserFacade {
             PfPageParam.initPageDto(param);
             PfUserDto pfUserDto = BeanUtil.convert(param, PfUserDto.class);
 
+            if (!param.isSuper()) {
+                // 获取角色level
+                PfRoleVo pfRoleVo = pfRoleService.selectRoleLevel(param.getUserId());
+                pfUserDto.setLevel(pfRoleVo.getLevel());
+            }
+            pfUserDto.setFgSuper(param.isSuper() ? YesOrNoNum.YES.getCode() : YesOrNoNum.NO.getCode());
             return PfResultFactory.initPagePfResultWithSuccess(pfUserService.countUsers(pfUserDto),
                     BeanUtil.convertList(pfUserService.listUsers(pfUserDto), PfUsersResult.class));
         } catch (Exception e) {

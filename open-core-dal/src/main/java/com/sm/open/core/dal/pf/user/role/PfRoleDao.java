@@ -1,7 +1,6 @@
 package com.sm.open.core.dal.pf.user.role;
 
 import com.sm.open.core.model.dto.pf.user.role.PfRoleDto;
-import com.sm.open.core.model.entity.SysAuthority;
 import com.sm.open.core.model.entity.SysRole;
 import com.sm.open.core.model.entity.SysRoleMenu;
 import com.sm.open.core.model.entity.UserRole;
@@ -27,6 +26,14 @@ public interface PfRoleDao {
      * @return
      */
     List<PfRoleVo> list();
+
+    /**
+     * 根据用户id获取角色level
+     *
+     * @param userId 用户id
+     * @return
+     */
+    PfRoleVo selectRoleLevel(Long userId);
 
     /**
      * 获取用户所有角色

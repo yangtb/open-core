@@ -106,4 +106,12 @@ public interface PfRoleService {
      */
     PfRoleVo selectRoleInfoByCode(String code);
 
+    /**
+     * 根据用户id获取角色level
+     *
+     * @param userId 用户id
+     * @return
+     */
+    PfRoleVo selectRoleLevel(Long userId);
+
 }

@@ -161,8 +161,9 @@
         from
             id_class_memo a
         left join user_info b on a.id_user = b.user_id
+        left join sys_class c on a.id_class = c.id_class
         <where>
-            id_org = #{idOrg}
+            c.id_org = #{idOrg}
             <if test="idClass != null">
                 and a.id_class = #{idClass}
             </if>
@@ -180,7 +181,7 @@
         left join user_info b on a.id_user = b.user_id
         left join sys_class c on a.id_class = c.id_class
         <where>
-            id_org = #{idOrg}
+            c.id_org = #{idOrg}
             <if test="idClass != null">
                 and a.id_class = #{idClass}
             </if>
@@ -195,11 +196,15 @@
             count(1)
         FROM
             user_info a
-        left join id_class_memo b on a.user_id = b.id_user
-        WHERE is_deleted = 'N'
-        and b.id_user is null
+        LEFT JOIN id_class_memo b ON a.user_id = b.id_user
+        LEFT JOIN user_role c ON a.user_id = c.user_id AND c.is_deleted = 'N'
+        LEFT JOIN sys_role d ON c.role_id = d.role_id
+        WHERE
+            a.is_deleted = 'N'
+        AND b.id_user IS NULL
+        AND d.code = 'MCST'
         <if test="idOrg != null">
-            and id_org = #{idOrg}
+            and a.id_org = #{idOrg}
         </if>
         <if test="conditionValue != null and conditionValue != '' ">
             AND a.real_name like concat('%',#{conditionValue},'%')
@@ -207,20 +212,23 @@
     </select>
     <select id="listUsStudents" resultType="com.sm.open.core.model.vo.pf.user.login.PfUsersVo">
         SELECT
-            user_id , username , email , sex , phone_no , enabled ,
-            real_name , gmt_create , gmt_modify, operator, id_org
+            a.user_id , a.username , a.email , a.sex , a.phone_no , a.enabled ,
+            a.real_name , a.gmt_create , a.gmt_modify, a.operator, a.id_org
         FROM
             user_info a
-        left join id_class_memo b on a.user_id = b.id_user
-        WHERE is_deleted = 'N'
-        and b.id_user is null
+        LEFT JOIN id_class_memo b ON a.user_id = b.id_user
+        LEFT JOIN user_role c ON a.user_id = c.user_id AND c.is_deleted = 'N'
+        LEFT JOIN sys_role d ON c.role_id = d.role_id
+        WHERE
+            a.is_deleted = 'N'
+        AND b.id_user IS NULL
+        AND d.code = 'MCST'
         <if test="idOrg != null">
-            and id_org = #{idOrg}
+            and a.id_org = #{idOrg}
         </if>
         <if test="conditionValue != null and conditionValue != '' ">
             AND a.real_name like concat('%',#{conditionValue},'%')
         </if>
-        ORDER BY gmt_create desc
         limit #{offset}, #{limit}
     </select>
     <select id="listAllGrades" resultType="com.sm.open.core.model.entity.SysClass">

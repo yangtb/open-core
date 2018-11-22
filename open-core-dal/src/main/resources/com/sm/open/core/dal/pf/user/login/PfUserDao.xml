@@ -158,56 +158,106 @@
     <select id="listUsers" parameterType="com.sm.open.core.model.dto.pf.user.PfUserDto"
             resultType="com.sm.open.core.model.vo.pf.user.login.PfUsersVo">
         SELECT
-            user_id , username , email , sex , phone_no , enabled ,
-            is_first , real_name , last_login_time , is_deleted , role_type,
-            gmt_create , gmt_modify, operator, id_org
+            ui.user_id ,
+            ui.username ,
+            ui.email ,
+            ui.sex ,
+            ui.phone_no ,
+            ui.enabled ,
+            ui.is_first ,
+            ui.real_name ,
+            ui.last_login_time ,
+            ui.is_deleted ,
+            ui.role_type ,
+            ui.gmt_create ,
+            ui.gmt_modify ,
+            ui.operator ,
+            ui.id_org
         FROM
-            user_info
-        WHERE is_deleted = 'N'
+          user_info ui
+        <if test='fgSuper == "0"'>
+            LEFT JOIN(
+                SELECT
+                    a.user_id ,
+                    min(b.level) as level
+                FROM
+                    user_role a
+                LEFT JOIN sys_role b ON a.role_id = b.role_id
+                WHERE
+                    a.is_deleted = 'N'
+                group by a.user_id
+                ORDER BY
+                    b.level DESC
+            ) temp ON ui.user_id = temp.user_id
+        </if>
+        WHERE
+          is_deleted = 'N'
+        <if test='fgSuper == "0"'>
+            AND temp.level > #{level}
+        </if>
         <if test="conditionValue != null and conditionValue !=''">
             <choose>
                 <when test="type != null and type == '1'.toString()">
-                    and username like concat(#{conditionValue},'%')
+                    and ui.username like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '2'.toString()">
-                    and real_name like concat(#{conditionValue},'%')
+                    and ui.real_name like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '3'.toString()">
-                    and phone_no like concat(#{conditionValue},'%')
+                    and ui.phone_no like concat(#{conditionValue},'%')
                 </when>
             </choose>
         </if>
         <if test="idOrg != null">
-            and id_org = #{idOrg}
+            and ui.id_org = #{idOrg}
         </if>
-        and username != 'super'
-        ORDER BY user_id
+        and ui.username != 'super'
         limit #{offset}, #{limit}
     </select>
 
     <!-- 获取用户列表总数 -->
     <select id="countUsers" parameterType="com.sm.open.core.model.dto.pf.user.PfUserDto" resultType="java.lang.Long">
         SELECT
-        count(1)
-        FROM user_info
-        WHERE is_deleted = 'N'
+            count(1)
+        FROM
+            user_info ui
+        <if test='fgSuper == "0"'>
+        LEFT JOIN(
+            SELECT
+                a.user_id ,
+                min(b.level) as level
+            FROM
+                user_role a
+            LEFT JOIN sys_role b ON a.role_id = b.role_id
+            WHERE
+                a.is_deleted = 'N'
+            group by a.user_id
+            ORDER BY
+                b.level DESC
+        ) temp ON ui.user_id = temp.user_id
+        </if>
+        WHERE
+            is_deleted = 'N'
+        <if test='fgSuper == "0"'>
+        AND temp.level > #{level}
+        </if>
         <if test="conditionValue != null and conditionValue !=''">
             <choose>
                 <when test="type != null and type == '1'.toString()">
-                    and username like concat(#{conditionValue},'%')
+                    and ui.username like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '2'.toString()">
-                    and real_name like concat(#{conditionValue},'%')
+                    and ui.real_name like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '3'.toString()">
-                    and phone_no like concat(#{conditionValue},'%')
+                    and ui.phone_no like concat(#{conditionValue},'%')
                 </when>
             </choose>
         </if>
         <if test="idOrg != null">
-            and id_org = #{idOrg}
+            and ui.id_org = #{idOrg}
         </if>
-        and username != 'super'
+        and ui.username != 'super'
     </select>
 
     <!-- 判断是否存在相同的用户名 -->
