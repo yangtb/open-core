@@ -161,5 +161,16 @@
         order by b.level
         LIMIT 1
     </select>
+    <select id="needExpireNotice" resultType="java.lang.Boolean">
+        SELECT
+            count(1)
+        FROM
+            user_role a
+                LEFT JOIN sys_role b ON a.role_id = b.role_id
+        WHERE
+            a.user_id = #{userId}
+          AND b.code = 'MCADM'
+          AND a.is_deleted = 'N'
+    </select>
 
 </mapper>

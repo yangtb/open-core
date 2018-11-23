@@ -49,4 +49,9 @@ public class PfHomeResult implements Serializable {
      * 版权信息
      */
     private String websiteCopyright;
+
+    /**
+     * 过期提示标识 1提示
+     */
+    private String expireNotice;
 }

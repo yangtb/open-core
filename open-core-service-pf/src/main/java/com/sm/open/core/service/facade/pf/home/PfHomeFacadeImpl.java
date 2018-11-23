@@ -1,5 +1,6 @@
 package com.sm.open.core.service.facade.pf.home;
 
+import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.home.PfHomeParam;
@@ -13,6 +14,7 @@ import com.sm.open.core.model.vo.pf.user.menu.PfMenuVo;
 import com.sm.open.core.service.facade.pf.user.menu.PfMenuBeanUtils;
 import com.sm.open.core.service.service.pf.system.org.PfOrgService;
 import com.sm.open.core.service.service.pf.user.menu.PfMenuService;
+import com.sm.open.core.service.service.pf.user.role.PfRoleService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -33,6 +35,9 @@ public class PfHomeFacadeImpl implements PfHomeFacade {
     @Resource
     private PfOrgService pfOrgService;
 
+    @Resource
+    private PfRoleService pfRoleService;
+
     @Override
     public CommonResult<PfHomeResult> selectHomeInfo(PfHomeParam param) {
         PfHomeResult result = new PfHomeResult();
@@ -48,6 +53,10 @@ public class PfHomeFacadeImpl implements PfHomeFacade {
             if (param.getIdOrg() != null) {
                 SysOrg sysOrg = pfOrgService.selectOrgInfoById(param.getIdOrg());
                 result.setSysOrg(BeanUtil.convert(sysOrg, SysOrgResult.class));
+                if (sysOrg.getGmtValid() != null) {
+                    result.setExpireNotice(pfRoleService.needExpireNotice(param.getUserId()) ?
+                            YesOrNoNum.YES.getCode() : YesOrNoNum.NO.getCode());
+                }
             }
             return ResultFactory.initCommonResultWithSuccess(result);
         } catch (BizRuntimeException e) {

@@ -82,6 +82,11 @@ public class PfRoleServiceImpl implements PfRoleService {
     }
 
     @Override
+    public boolean needExpireNotice(Long userId) {
+        return pfRoleDao.needExpireNotice(userId);
+    }
+
+    @Override
     public boolean delRoleMenu(Long roleId) {
         return pfRoleDao.delRoleMenu(roleId) >= 1 ? true : false;
     }

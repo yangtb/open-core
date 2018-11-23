@@ -124,4 +124,12 @@ public interface PfRoleDao {
      * @return
      */
     PfRoleVo selectRoleInfoByCode(@Param("code") String code);
+
+    /**
+     * 需要过期提醒
+     *
+     * @param userId 用户id
+     * @return
+     */
+    boolean needExpireNotice(@Param("userId") Long userId);
 }

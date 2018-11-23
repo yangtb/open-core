@@ -114,4 +114,12 @@ public interface PfRoleService {
      */
     PfRoleVo selectRoleLevel(Long userId);
 
+    /**
+     * 需要过期提醒
+     *
+     * @param userId 用户id
+     * @return
+     */
+    boolean needExpireNotice(Long userId);
+
 }
