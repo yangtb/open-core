@@ -3,6 +3,7 @@ package com.sm.open.core.dal.pf.biz.kb;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -241,4 +242,28 @@ public interface PfKbPartDao {
      * @return
      */
     FaqMedCaseBody selectFaqMedCaseBody(Long idMedCase);
+
+    /**
+     * 批量添加问诊
+     *
+     * @param dto
+     * @return
+     */
+    Integer bachAddCons(PfCommonListDto dto);
+
+    /**
+     * 批量添加体格检查
+     *
+     * @param dto
+     * @return
+     */
+    Integer bachAddCheck(PfCommonListDto dto);
+
+    /**
+     * 批量添加辅助检查
+     *
+     * @param dto
+     * @return
+     */
+    Integer bachAddExam(PfCommonListDto dto);
 }

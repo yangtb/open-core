@@ -3,6 +3,7 @@ package com.sm.open.core.service.service.pf.biz.kb;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 
 import java.util.List;
@@ -214,4 +215,28 @@ public interface PfKbPartService {
      * @return
      */
     FaqMedCaseBody selectFaqMedCaseBody(Long idMedCase);
+
+    /**
+     * 批量添加问诊
+     *
+     * @param dto
+     * @return
+     */
+    boolean bachAddCons(PfCommonListDto dto);
+
+    /**
+     * 批量添加体格检查
+     *
+     * @param dto
+     * @return
+     */
+    boolean bachAddCheck(PfCommonListDto dto);
+
+    /**
+     * 批量添加辅助检查
+     *
+     * @param dto
+     * @return
+     */
+    boolean bachAddExam(PfCommonListDto dto);
 }

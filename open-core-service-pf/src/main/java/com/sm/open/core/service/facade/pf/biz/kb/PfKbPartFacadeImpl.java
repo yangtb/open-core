@@ -6,12 +6,14 @@ import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.kb.PfKbPartFacade;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
 import org.apache.commons.collections.CollectionUtils;
@@ -433,6 +435,57 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
             LOGGER.error("【PfKbPartFacadeImpl-selectFaqMedCaseBody】查询检查定义图片失败, idMedCase:" + idMedCase, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfKbPartConstant.SELECT_FAQ_MED_CASE_BODY_ERROR, PfKbPartConstant.SELECT_FAQ_MED_CASE_BODY_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> bachAddCons(PfCommonListParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            Assert.isTrue(param.getExtId() != null, "extId");
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.bachAddCons(BeanUtil.convert(param, PfCommonListDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-bachAddCons】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-bachAddCons】批量添加问诊问题失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.BACH_ADD_CONS_ERROR, PfKbPartConstant.BACH_ADD_CONS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> bachAddCheck(PfCommonListParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            Assert.isTrue(param.getExtId() != null, "extId");
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.bachAddCheck(BeanUtil.convert(param, PfCommonListDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-bachAddCheck】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-bachAddCheck】批量添加体格检查失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.BACH_ADD_CHECK_ERROR, PfKbPartConstant.BACH_ADD_CHECK_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> bachAddExam(PfCommonListParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            Assert.isTrue(param.getExtId() != null, "extId");
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.bachAddExam(BeanUtil.convert(param, PfCommonListDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-bachAddExam】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-bachAddExam】批量添加辅助检查失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.BACH_ADD_EXAM_ERROR, PfKbPartConstant.BACH_ADD_EXAM_ERROR_MSG));
         }
     }
 }

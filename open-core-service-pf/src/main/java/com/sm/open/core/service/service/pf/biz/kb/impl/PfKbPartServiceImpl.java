@@ -9,6 +9,7 @@ import com.sm.open.core.dal.pf.common.upload.PfUploadDao;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
 import org.springframework.beans.BeanUtils;
@@ -221,5 +222,20 @@ public class PfKbPartServiceImpl implements PfKbPartService {
             }
         }
         return faqMedCaseBody;
+    }
+
+    @Override
+    public boolean bachAddCons(PfCommonListDto dto) {
+        return pfKbPartDao.bachAddCons(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public boolean bachAddCheck(PfCommonListDto dto) {
+        return pfKbPartDao.bachAddCheck(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public boolean bachAddExam(PfCommonListDto dto) {
+        return pfKbPartDao.bachAddExam(dto) >= 1 ? true : false;
     }
 }

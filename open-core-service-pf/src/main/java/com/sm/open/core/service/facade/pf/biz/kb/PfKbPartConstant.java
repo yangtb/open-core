@@ -71,5 +71,14 @@ public class PfKbPartConstant {
     public static final String SELECT_FAQ_MED_CASE_BODY_ERROR               = "selectFaqMedCaseBodyError";
     public static final String SELECT_FAQ_MED_CASE_BODY_ERROR_MSG           = "查询检查定义失败";
 
+    public static final String BACH_ADD_CONS_ERROR                          = "bachAddConsError";
+    public static final String BACH_ADD_CONS_ERROR_MSG                      = "批量添加问诊问题失败";
+
+    public static final String BACH_ADD_CHECK_ERROR                          = "bachAddCheckError";
+    public static final String BACH_ADD_CHECK_ERROR_MSG                      = "批量添加体格检查失败";
+
+    public static final String BACH_ADD_EXAM_ERROR                          = "bachAddExamError";
+    public static final String BACH_ADD_EXAM_ERROR_MSG                      = "批量添加辅助检查失败";
+
 
 }

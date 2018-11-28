@@ -284,6 +284,97 @@
             </if>
         </trim>
     </insert>
+    <insert id="bachAddCons">
+        INSERT INTO faq_med_case_inques_list(
+            id_med_case ,
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        )
+        SELECT
+            #{extId}, a.id_inques_ca, a.id_inques, a.des_inques,
+            b.id_answer, b.des_answer, b.id_media, b.fg_reason, b.fg_back, b.des_expert
+        FROM
+            bas_inques a
+                LEFT JOIN bas_inques_answer b ON a.id_inques = b.id_inques
+                AND b.fg_default = '1'
+        WHERE
+            a.id_inques in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="bachAddCheck">
+        INSERT INTO faq_med_case_body_list(
+            id_med_case ,
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        )
+        SELECT
+            #{extId},a.id_body_ca,a.id_body,a.des_body,a.sd_body,a.cd_check,
+            b.id_result,b.des_result,b.id_media,b.fg_reason,b.fg_back,b.des_expert
+        FROM
+            bas_body a
+        LEFT JOIN bas_body_result b ON a.id_body = b.id_body
+        AND b.fg_default = '1'
+        WHERE
+            a.id_body in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="bachAddExam">
+        INSERT INTO med.faq_med_case_inspect_list(
+            id_med_case ,
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        )
+
+        SELECT
+            #{extId},a.id_inspect,a.id_inspect_item,a.na_item,a.na_short,a.des_stand,
+            b.id_result,b.val_result,b.des_result,b.id_media,b.cost_money,b.cost_time,
+            b.fg_show,b.fg_reason,b.fg_back,b.des_expert
+        FROM
+            bas_inspect_item a
+        LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item
+        AND b.fg_default = '1'
+        WHERE
+            a.id_inspect_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </insert>
     <update id="editKbPart">
         UPDATE faq_med_case
         SET
