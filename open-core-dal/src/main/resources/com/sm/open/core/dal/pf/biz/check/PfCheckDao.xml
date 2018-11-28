@@ -317,7 +317,7 @@
             LEFT JOIN bas_body_ca bbc ON bb.id_body_ca = bbc.id_body_ca
             WHERE
                 bb.fg_active = '1'
-            AND (bbr.fg_active = '1' or bbr.fg_active is null)
+            AND (bbr.fg_active = '1' or bbr.fg_active is null) and bbr.fg_valid='0'
             <if test="keywords != null and keywords != '' ">
                 AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
             </if>
@@ -358,10 +358,11 @@
         left join bas_media bm on bbr.id_media = bm.id_media
         WHERE
             bb.fg_active = '1'
-        AND (bbr.fg_active = '1' or bbr.fg_active is null)
+        AND (bbr.fg_active = '1' or bbr.fg_active is null) and bbr.fg_valid='0'
         <if test="keywords != null and keywords != '' ">
             AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
         </if>
+        order by id_body_ca, id_body
         limit #{offset}, #{limit}
     </select>
     <select id="isExistDefaultAnswer" resultType="java.lang.Boolean">

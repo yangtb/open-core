@@ -307,7 +307,7 @@
             LEFT JOIN bas_inspect_ca bic ON bii.id_inspect = bic.id_inspect
             WHERE
                 bii.fg_active = '1'
-            AND (bir.fg_active = '1' or bir.fg_active is null)
+            AND (bir.fg_active = '1' or bir.fg_active is null) and bir.fg_valid = '0'
             <if test="keywords != null and keywords != '' ">
                 AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
             </if>
@@ -353,10 +353,11 @@
         left join bas_media bm on bir.id_media = bm.id_media
         WHERE
             bii.fg_active = '1'
-        AND (bir.fg_active = '1' or bir.fg_active is null)
+        AND (bir.fg_active = '1' or bir.fg_active is null) and bir.fg_valid = '0'
         <if test="keywords != null and keywords != '' ">
             AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
         </if>
+        order by id_inspect, id_inspect_item
         limit #{offset}, #{limit}
     </select>
 

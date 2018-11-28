@@ -281,7 +281,7 @@
         LEFT JOIN bas_inques_ca bic ON bi.id_inques_ca = bic.id_inques_ca
         WHERE
             bi.fg_active = '1'
-        AND (bia.fg_active = '1' or bia.fg_active is null)
+        AND (bia.fg_active = '1' or bia.fg_active is null) and bia.fg_valid = '0'
         <if test="keywords != null and keywords != '' ">
             AND (bi.des_inques like concat('%',#{keywords},'%') or bia.des_answer like concat('%',#{keywords},'%'))
         </if>
@@ -319,10 +319,11 @@
         left join bas_media bm on bia.id_media = bm.id_media
         WHERE
             bi.fg_active = '1'
-        AND (bia.fg_active = '1' or bia.fg_active is null)
+        AND (bia.fg_active = '1' or bia.fg_active is null) and bia.fg_valid = '0'
         <if test="keywords != null and keywords != '' ">
             AND (bic.name like concat('%',#{keywords},'%') or bi.des_inques like concat('%',#{keywords},'%'))
         </if>
+        order by bi.id_inques_ca, bi.id_inques
         limit #{offset}, #{limit}
     </select>
     <select id="selectBasInquesById" resultType="com.sm.open.core.model.entity.BasInques">
