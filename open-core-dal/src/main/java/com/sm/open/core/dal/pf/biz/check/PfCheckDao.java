@@ -120,6 +120,30 @@ public interface PfCheckDao {
     Integer editAnswer(BasBodyResult dto);
 
     /**
+     * 有无默认答案
+     *
+     * @param idBody 部位ID
+     * @return
+     */
+    boolean isExistDefaultAnswer(@Param("idBody") Long idBody);
+
+    /**
+     * 设定默认答案
+     *
+     * @param idBody 部位ID
+     * @return
+     */
+    Integer setDefaultAnswer(@Param("idBody") Long idBody);
+
+    /**
+     * 更新默认答案
+     *
+     * @param idBody 部位ID
+     * @return
+     */
+    Integer updateDefaultAnswer(@Param("idBody") Long idBody);
+
+    /**
      * 根据ID查询体检部位
      *
      * @param idBody

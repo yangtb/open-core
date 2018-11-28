@@ -74,6 +74,7 @@
                 des_expert,
             </if>
                 fg_tag,
+                fg_default,
                 fg_active,
                 creator,
                 gmt_create,
@@ -93,6 +94,7 @@
                 #{desExpert},
             </if>
                 #{fgTag},
+                #{fgDefault},
                 #{fgActive},
                 #{creator},
                 now(),
@@ -181,6 +183,7 @@
                 des_expert = #{desExpert},
             </if>
             fg_tag = #{fgTag},
+            fg_default = #{fgDefault},
             fg_active = #{fgActive},
             operator = #{operator},
             gmt_modify = now()
@@ -202,6 +205,20 @@
         </foreach>
         )
     </update>
+    <update id="updateDefaultAnswer">
+        UPDATE bas_body_result
+        SET
+            fg_default ='0',
+            gmt_modify = now()
+        WHERE
+            id_body = #{idBody}
+    </update>
+    <update id="setDefaultAnswer">
+        UPDATE bas_body_result set fg_default = '1'
+        where id_result =
+              (select t.id from (select max(id_result) as id from bas_body_result where id_body = #{idBody} AND fg_valid = '0' GROUP BY id_body) t)
+    </update>
+
 
     <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
         SELECT
@@ -257,7 +274,7 @@
     <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasBodyResult">
         select
             bbr.id_result, bbr.des_result, bbr.id_body, bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert, 
-            bbr.fg_tag, bbr.fg_active, bbr.fg_valid, bbr.creator, bbr.gmt_create, bbr.operator, bbr.gmt_modify,
+            bbr.fg_tag, bbr.fg_default, bbr.fg_active, bbr.fg_valid, bbr.creator, bbr.gmt_create, bbr.operator, bbr.gmt_modify,
 	        bm.sd_type, bm.path
         from
             bas_body_result bbr left join bas_media bm on bbr.id_media = bm.id_media
@@ -346,6 +363,9 @@
             AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
+    </select>
+    <select id="isExistDefaultAnswer" resultType="java.lang.Boolean">
+        select count(1) from bas_body_result where id_body = #{idBody} and fg_default ='1' AND fg_valid = '0'
     </select>
 
 </mapper>

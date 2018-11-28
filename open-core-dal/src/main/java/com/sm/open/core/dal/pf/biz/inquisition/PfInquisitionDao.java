@@ -8,6 +8,7 @@ import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -117,6 +118,30 @@ public interface PfInquisitionDao {
      * @return
      */
     Integer editAnswer(BasInquesAnswer dto);
+
+    /**
+     * 有无默认答案
+     *
+     * @param idInques 问题ID
+     * @return
+     */
+    boolean isExistDefaultAnswer(@Param("idInques") Long idInques);
+
+    /**
+     * 设定默认答案
+     *
+     * @param idInques 问题ID
+     * @return
+     */
+    Integer setDefaultAnswer(@Param("idInques") Long idInques);
+
+    /**
+     * 更新默认答案
+     *
+     * @param idInques
+     * @return
+     */
+    Integer updateDefaultAnswer(@Param("idInques") Long idInques);
 
     /**
      * 问诊问题列表搜索总数

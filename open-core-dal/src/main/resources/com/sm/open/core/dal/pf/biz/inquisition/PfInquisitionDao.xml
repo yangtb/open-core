@@ -68,6 +68,7 @@
             <if test="fgTag!=null">
                 fg_tag,
             </if>
+                fg_default,
                 fg_active,
                 creator,
                 gmt_create,
@@ -93,6 +94,7 @@
             <if test="fgTag!=null">
                 #{fgTag},
             </if>
+                #{fgDefault},
                 #{fgActive},
                 #{creator},
                 now(),
@@ -173,6 +175,7 @@
             fg_back = #{fgBack},
             des_expert = #{desExpert},
             fg_tag = #{fgTag},
+            fg_default = #{fgDefault},
             fg_active = #{fgActive},
             operator = #{operator},
             gmt_modify = now()
@@ -193,6 +196,19 @@
             #{item}
         </foreach>
         )
+    </update>
+    <update id="updateDefaultAnswer">
+        UPDATE bas_inques_answer
+        SET
+            fg_default ='0',
+            gmt_modify = now()
+        WHERE
+            id_inques = #{idInques}
+    </update>
+    <update id="setDefaultAnswer">
+        UPDATE bas_inques_answer set fg_default = '1'
+        where id_answer =
+              (select t.id from (select max(id_answer) as id from bas_inques_answer where id_inques = #{idInques} AND fg_valid = '0' GROUP BY id_inques) t)
     </update>
 
     <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
@@ -248,7 +264,7 @@
     <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasInquesAnswer">
         select
             bia.id_answer, bia.des_answer, bia.id_inques, bia.id_media, bia.fg_reason, bia.fg_back, bia.des_expert,
-            bia.fg_tag, bia.fg_active, bia.fg_valid, bia.creator, bia.gmt_create, bia.operator, bia.gmt_modify,
+            bia.fg_tag, bia.fg_default, bia.fg_active, bia.fg_valid, bia.creator, bia.gmt_create, bia.operator, bia.gmt_modify,
 	        bm.sd_type, bm.path
         from
             bas_inques_answer bia left join bas_media bm on bia.id_media = bm.id_media
@@ -330,5 +346,10 @@
             bia.fg_valid = '0'
         and bia.id_answer = #{idAnswer}
     </select>
+
+    <select id="isExistDefaultAnswer" resultType="java.lang.Boolean">
+        select count(1) from bas_inques_answer where id_inques = #{idInques} and fg_default ='1' AND fg_valid = '0'
+    </select>
+
 
 </mapper>

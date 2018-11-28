@@ -8,6 +8,7 @@ import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -117,6 +118,30 @@ public interface PfExamDao {
      * @return
      */
     Integer editAnswer(BasItemResult dto);
+
+    /**
+     * 有无默认答案
+     *
+     * @param idInspectItem 项目ID
+     * @return
+     */
+    boolean isExistDefaultAnswer(@Param("idInspectItem") Long idInspectItem);
+
+    /**
+     * 设定默认答案
+     *
+     * @param idInspectItem 项目ID
+     * @return
+     */
+    Integer setDefaultAnswer(@Param("idInspectItem") Long idInspectItem);
+
+    /**
+     * 更新默认答案
+     *
+     * @param idInspectItem 项目ID
+     * @return
+     */
+    Integer updateDefaultAnswer(@Param("idInspectItem") Long idInspectItem);
 
     /**
      * 检验项目总数

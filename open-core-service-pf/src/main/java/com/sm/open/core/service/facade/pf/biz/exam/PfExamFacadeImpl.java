@@ -205,7 +205,7 @@ public class PfExamFacadeImpl implements PfExamFacade {
     public CommonResult<Long> saveAnswer(BasItemResultParam param) {
         try {
             /* 参数校验 */
-            Assert.isTrue(StringUtils.isNotBlank(param.getDesResult()), "desResult");
+            Assert.isTrue(StringUtils.isNotBlank(param.getValResult()), "valResult");
             Assert.isTrue(param.getIdInspectItem() != null, "idInspectItem");
             return ResultFactory.initCommonResultWithSuccess(
                     pfExamService.saveAnswer(BeanUtil.convert(param, BasItemResult.class)));

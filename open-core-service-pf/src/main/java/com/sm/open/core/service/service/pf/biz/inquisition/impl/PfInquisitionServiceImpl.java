@@ -11,7 +11,9 @@ import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
 import com.sm.open.core.service.service.pf.biz.inquisition.PfInquisitionService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -74,13 +76,31 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
         return pfInquisitionDao.listAnswer(dto);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean delAnswer(PfBachChangeStatusDto dto) {
-        return pfInquisitionDao.delAnswer(dto) == 1 ? true : false;
+        pfInquisitionDao.delAnswer(dto);
+        if (!pfInquisitionDao.isExistDefaultAnswer(dto.getExtId())) {
+            // 设置默认答案
+            pfInquisitionDao.setDefaultAnswer(dto.getExtId());
+        }
+        return true;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveAnswer(BasInquesAnswer dto) {
+        if (StringUtils.isBlank(dto.getFgDefault())) {
+            dto.setFgDefault(YesOrNoNum.NO.getCode());
+        }
+        boolean isExistDefaultAnswer = pfInquisitionDao.isExistDefaultAnswer(dto.getIdInques());
+        // 设置默认答案
+        if (dto.getFgDefault().equals(YesOrNoNum.YES.getCode()) && isExistDefaultAnswer) {
+            // 更新
+            pfInquisitionDao.updateDefaultAnswer(dto.getIdInques());
+        } else {
+            dto.setFgDefault(isExistDefaultAnswer ? YesOrNoNum.NO.getCode() : YesOrNoNum.YES.getCode());
+        }
         Integer num;
         if (dto.getIdAnswer() == null) {
             num = pfInquisitionDao.saveAnswer(dto);

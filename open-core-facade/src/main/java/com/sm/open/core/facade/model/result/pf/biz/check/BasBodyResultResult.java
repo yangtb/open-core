@@ -52,6 +52,11 @@ public class BasBodyResultResult extends BasMediaResult implements Serializable 
     private String fgBack;
 
     /**
+     * 默认答案
+     */
+    private String fgDefault;
+
+    /**
      * 专家解读
      */
     private String desExpert;

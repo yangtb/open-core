@@ -82,6 +82,11 @@ public class BasItemResultParam implements Serializable {
     private String fgTag;
 
     /**
+     * 默认答案
+     */
+    private String fgDefault;
+
+    /**
      * 0 未激活 1 已激活
      */
     private String fgActive;

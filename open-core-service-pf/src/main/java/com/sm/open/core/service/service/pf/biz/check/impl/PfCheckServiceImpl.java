@@ -11,6 +11,7 @@ import com.sm.open.core.model.entity.BasBodyResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo;
 import com.sm.open.core.service.service.pf.biz.check.PfCheckService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -76,11 +77,27 @@ public class PfCheckServiceImpl implements PfCheckService {
 
     @Override
     public boolean delAnswer(PfBachChangeStatusDto dto) {
-        return pfCheckDao.delAnswer(dto) == 1 ? true : false;
+        pfCheckDao.delAnswer(dto);
+        if (!pfCheckDao.isExistDefaultAnswer(dto.getExtId())) {
+            // 设置默认答案
+            pfCheckDao.setDefaultAnswer(dto.getExtId());
+        }
+        return true;
     }
 
     @Override
     public Long saveAnswer(BasBodyResult dto) {
+        if (StringUtils.isBlank(dto.getFgDefault())) {
+            dto.setFgDefault(YesOrNoNum.NO.getCode());
+        }
+        boolean isExistDefaultAnswer = pfCheckDao.isExistDefaultAnswer(dto.getIdBody());
+        // 设置默认答案
+        if (dto.getFgDefault().equals(YesOrNoNum.YES.getCode()) && isExistDefaultAnswer) {
+            // 更新
+            pfCheckDao.updateDefaultAnswer(dto.getIdBody());
+        } else {
+            dto.setFgDefault(isExistDefaultAnswer ? YesOrNoNum.NO.getCode() : YesOrNoNum.YES.getCode());
+        }
         Integer num;
         if (dto.getIdResult() == null) {
             num = pfCheckDao.saveAnswer(dto);

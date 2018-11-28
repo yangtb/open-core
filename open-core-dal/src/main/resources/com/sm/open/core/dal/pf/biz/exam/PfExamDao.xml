@@ -82,6 +82,7 @@
                 des_expert,
             </if>
                 fg_tag,
+                fg_default,
                 fg_active,
                 creator,
                 gmt_create,
@@ -111,6 +112,7 @@
                 #{desExpert},
             </if>
                 #{fgTag},
+                #{fgDefault},
                 #{fgActive},
                 #{creator},
                 now(),
@@ -194,6 +196,7 @@
             fg_back = #{fgBack},
             des_expert = #{desExpert},
             fg_tag = #{fgTag},
+            fg_default = #{fgDefault},
             fg_active = #{fgActive},
             operator = #{operator},
             gmt_modify = now()
@@ -213,6 +216,19 @@
             #{item}
         </foreach>
         )
+    </update>
+    <update id="updateDefaultAnswer">
+        UPDATE bas_item_result
+        SET
+            fg_default ='0',
+            gmt_modify = now()
+        WHERE
+            id_inspect_item = #{idInspectItem}
+    </update>
+    <update id="setDefaultAnswer">
+        UPDATE bas_item_result set fg_default = '1'
+        where id_result =
+              (select t.id from (select max(id_result) as id from bas_item_result where id_inspect_item = #{idInspectItem} AND fg_valid = '0' GROUP BY id_inspect_item) t)
     </update>
 
     <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
@@ -269,8 +285,8 @@
     <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasItemResult">
         select
             bir.id_result, bir.val_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money,
-            bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.
-            fg_tag, bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
+            bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.fg_tag,  bir.fg_default,
+            bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
 	        bm.sd_type, bm.path
         from
             bas_item_result bir left join bas_media bm on bir.id_media = bm.id_media
@@ -366,6 +382,9 @@
         where
             bir.fg_valid = '0'
         and bir.id_result = #{idResult}
+    </select>
+    <select id="isExistDefaultAnswer" resultType="java.lang.Boolean">
+        select count(1) from bas_item_result where id_inspect_item = #{idInspectItem} and fg_default ='1' AND fg_valid = '0'
     </select>
 
 
