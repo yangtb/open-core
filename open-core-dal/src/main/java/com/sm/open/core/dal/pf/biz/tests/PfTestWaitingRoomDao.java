@@ -105,6 +105,14 @@ public interface PfTestWaitingRoomDao {
     PfWaitingRoomPatVo selectPhotoInfo(Long idMedicalrec);
 
     /**
+     * 问诊总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countTestCons(PfTestExamTagDto dto);
+
+    /**
      * 查询问诊信息
      *
      * @param dto
@@ -161,6 +169,14 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Long selectPic(PfTestExamTagDto dto);
+
+    /**
+     * 检查 - 列表总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countTestCheck(PfTestExamTagDto dto);
 
     /**
      * 检查 - 信息
@@ -221,6 +237,13 @@ public interface PfTestWaitingRoomDao {
      */
     List<PfWaitingRoomCheckVo> listCheckQa(PfTestExamTagDto dto);
 
+    /**
+     * 检验 - 列表总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countTestExam(PfTestExamTagDto dto);
 
     /**
      * 检验 - 信息

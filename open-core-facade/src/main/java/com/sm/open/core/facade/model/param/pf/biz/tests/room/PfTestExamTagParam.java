@@ -1,5 +1,6 @@
 package com.sm.open.core.facade.model.param.pf.biz.tests.room;
 
+import com.sm.open.core.facade.model.rpc.PfPageParam;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -9,7 +10,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class PfTestExamTagParam implements Serializable {
+public class PfTestExamTagParam extends PfPageParam implements Serializable {
 
     private static final long serialVersionUID = -1707262746906227797L;
 
@@ -42,5 +43,15 @@ public class PfTestExamTagParam implements Serializable {
      * 检查部位
      */
     private String sdBody;
+
+    /**
+     * 扩展字段 - 分类id
+     */
+    private Long extItemId;
+
+    /**
+     * 搜索关键字
+     */
+    private String keyword;
 
 }

@@ -202,8 +202,9 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     @Override
     public PfPageResult listTestCons(PfTestExamTagParam param) {
         try {
+            PfPageParam.initPageDto(param);
             PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestCons(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listTestCons(dto), FaqMedCaseInquesListResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listTestCons-error】查询问诊列表出错，param:{}", param.toString(), e);
@@ -279,7 +280,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     public PfPageResult listTestCheck(PfTestExamTagParam param) {
         try {
             PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestCheck(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listTestCheck(dto), FaqMedCaseBodyListResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listTestCheck-error】查询检查列表出错，param:{}", param.toString(), e);
@@ -353,7 +354,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     public PfPageResult listTestExam(PfTestExamTagParam param) {
         try {
             PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestExam(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listTestExam(dto), FaqMedCaseInspectListResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listTestExam-error】查询检验列表出错，param:{}", param.toString(), e);

@@ -824,6 +824,25 @@
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = '005'
     </select>
+    <select id="countTestCons" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inques_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inques d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        <if test="extItemId != null">
+          AND c.id_inques_ca = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.des_inques like concat('%',#{keyword},'%')
+        </if>
+    </select>
     <select id="listTestCons" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
         SELECT
             c.id_med_case_list ,
@@ -839,8 +858,15 @@
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
+        <if test="extItemId != null">
+            AND c.id_inques_ca = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.des_inques like concat('%',#{keyword},'%')
+        </if>
         order by
             c.id_med_case_list
+        limit #{offset}, #{limit}
     </select>
     <select id="listConsQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomConsVo">
         SELECT
@@ -879,6 +905,30 @@
         limit 1
     </select>
 
+    <select id="countTestCheck" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_body_list c ON c.id_med_case = a.id_med_case AND c.fg_valid = '0'
+        LEFT JOIN bas_body_ca e ON c.id_body_ca = e.id_body_ca
+        LEFT JOIN exm_med_result_body d ON c.id_med_case_list = d.id_med_case_list AND d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
+        left join bas_die f on d.id_die = f.id_die
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        <if test="sdBody != null and sdBody != ''">
+            AND c.sd_body = #{sdBody}
+        </if>
+        <if test="extItemId != null">
+            AND c.id_body_ca = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.des_body like concat('%',#{keyword},'%')
+        </if>
+    </select>
     <select id="listTestCheck" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
         SELECT
             c.id_med_case_list ,
@@ -901,8 +951,15 @@
         <if test="sdBody != null and sdBody != ''">
             AND c.sd_body = #{sdBody}
         </if>
+        <if test="extItemId != null">
+            AND c.id_body_ca = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.des_body like concat('%',#{keyword},'%')
+        </if>
         ORDER BY
             c.id_med_case_list
+        limit #{offset}, #{limit}
     </select>
     <select id="isExistCheckQa" resultType="java.lang.Long">
         select
@@ -912,6 +969,26 @@
         where
             id_testexec_result = #{idTestexecResult}
         and id_med_case_list = #{idMedCaseList}
+    </select>
+    <select id="countTestExam" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inspect d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
+        left join bas_die e on d.id_die = e.id_die
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        <if test="extItemId != null">
+            AND c.id_inspect = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.na_item like concat('%',#{keyword},'%')
+        </if>
     </select>
     <select id="listTestExam" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
         SELECT
@@ -929,8 +1006,15 @@
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
+        <if test="extItemId != null">
+            AND c.id_inspect = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.na_item like concat('%',#{keyword},'%')
+        </if>
         order by
             c.id_med_case_list
+        limit #{offset}, #{limit}
     </select>
     <select id="isExistExamQa" resultType="java.lang.Long">
         select

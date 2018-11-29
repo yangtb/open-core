@@ -135,6 +135,11 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
+    public Long countTestCons(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.countTestCons(dto);
+    }
+
+    @Override
     public List<FaqMedCaseInquesList> listTestCons(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listTestCons(dto);
     }
@@ -167,6 +172,11 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
+    public Long countTestCheck(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.countTestCheck(dto);
+    }
+
+    @Override
     public List<FaqMedCaseBodyList> listTestCheck(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listTestCheck(dto);
     }
@@ -196,6 +206,11 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public List<PfWaitingRoomCheckVo> listCheckQa(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listCheckQa(dto);
+    }
+
+    @Override
+    public Long countTestExam(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.countTestExam(dto);
     }
 
     @Override
