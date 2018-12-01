@@ -57,6 +57,14 @@ public interface PfKbPartService {
     boolean delKbPart(PfBachChangeStatusDto dto);
 
     /**
+     * 问诊_问题明细总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countFaqMedCaseInques(PfPartCommonDto dto);
+
+    /**
      * 问诊_问题明细
      *
      * @param dto
@@ -137,6 +145,14 @@ public interface PfKbPartService {
     FaqMedCasePatient selectKbPat(Long idMedCase);
 
     /**
+     * 检验列表总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countExams(PfPartCommonDto dto);
+
+    /**
      * 检验列表
      *
      * @param dto
@@ -167,6 +183,14 @@ public interface PfKbPartService {
      * @return
      */
     FaqMedCaseInspectList resetKbExam(FaqMedCaseInspectList dto);
+
+    /**
+     * 检查列表总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countChecks(PfPartCommonDto dto);
 
     /**
      * 检查列表

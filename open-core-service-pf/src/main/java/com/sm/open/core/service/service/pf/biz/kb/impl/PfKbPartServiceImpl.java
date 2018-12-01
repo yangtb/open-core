@@ -64,6 +64,11 @@ public class PfKbPartServiceImpl implements PfKbPartService {
     }
 
     @Override
+    public Long countFaqMedCaseInques(PfPartCommonDto dto) {
+        return pfKbPartDao.countFaqMedCaseInques(dto);
+    }
+
+    @Override
     public List<FaqMedCaseInquesList> listFaqMedCaseInques(PfPartCommonDto dto) {
         return pfKbPartDao.listFaqMedCaseInques(dto);
     }
@@ -127,6 +132,11 @@ public class PfKbPartServiceImpl implements PfKbPartService {
     }
 
     @Override
+    public Long countExams(PfPartCommonDto dto) {
+        return pfKbPartDao.countExams(dto);
+    }
+
+    @Override
     public List<FaqMedCaseInspectList> listExams(PfPartCommonDto dto) {
         return pfKbPartDao.listExams(dto);
     }
@@ -156,6 +166,11 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         dto.setFgCarried(YesOrNoNum.NO.getCode());
         pfKbPartDao.editExam(dto);
         return pfKbPartDao.selectExamById(dto);
+    }
+
+    @Override
+    public Long countChecks(PfPartCommonDto dto) {
+        return pfKbPartDao.countChecks(dto);
     }
 
     @Override
@@ -226,16 +241,70 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public boolean bachAddCons(PfCommonListDto dto) {
+        if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
+            // 全部引入
+            List<FaqMedCaseInquesList> oldDatas = pfKbPartDao.selectOldConsRecord(dto.getExtId());
+            List<FaqMedCaseInquesList> allDatas = pfKbPartDao.selectAllConsRecord(dto.getExtId());
+            allDatas.removeIf(allData -> {
+                boolean flag = false;
+                for (FaqMedCaseInquesList oldData : oldDatas) {
+                    if (oldData.getIdInques().equals(allData.getIdInques())) {
+                        flag = true;
+                    }
+                }
+                return flag;
+            });
+            if (CollectionUtils.isEmpty(allDatas)) {
+                return true;
+            }
+            return pfKbPartDao.bachAddAllCons(allDatas) >= 1 ? true : false;
+        }
         return pfKbPartDao.bachAddCons(dto) >= 1 ? true : false;
     }
 
     @Override
     public boolean bachAddCheck(PfCommonListDto dto) {
+        if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
+            // 全部引入
+            List<FaqMedCaseBodyList> oldDatas = pfKbPartDao.selectOldCheckRecord(dto.getExtId());
+            List<FaqMedCaseBodyList> allDatas = pfKbPartDao.selectAllCheckRecord(dto.getExtId());
+            allDatas.removeIf(allData -> {
+                boolean flag = false;
+                for (FaqMedCaseBodyList oldData : oldDatas) {
+                    if (oldData.getIdBody().equals(allData.getIdBody())) {
+                        flag = true;
+                    }
+                }
+                return flag;
+            });
+            if (CollectionUtils.isEmpty(allDatas)) {
+                return true;
+            }
+            return pfKbPartDao.bachAddAllCheck(allDatas) >= 1 ? true : false;
+        }
         return pfKbPartDao.bachAddCheck(dto) >= 1 ? true : false;
     }
 
     @Override
     public boolean bachAddExam(PfCommonListDto dto) {
+        if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
+            // 全部引入
+            List<FaqMedCaseInspectList> oldDatas = pfKbPartDao.selectOldExamRecord(dto.getExtId());
+            List<FaqMedCaseInspectList> allDatas = pfKbPartDao.selectAllExamRecord(dto.getExtId());
+            allDatas.removeIf(allData -> {
+                boolean flag = false;
+                for (FaqMedCaseInspectList oldData : oldDatas) {
+                    if (oldData.getIdInspectItem().equals(allData.getIdInspectItem())) {
+                        flag = true;
+                    }
+                }
+                return flag;
+            });
+            if (CollectionUtils.isEmpty(allDatas)) {
+                return true;
+            }
+            return pfKbPartDao.bachAddAllExam(allDatas) >= 1 ? true : false;
+        }
         return pfKbPartDao.bachAddExam(dto) >= 1 ? true : false;
     }
 }

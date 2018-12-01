@@ -60,6 +60,14 @@ public interface PfKbPartDao {
     Integer delKbPart(PfBachChangeStatusDto dto);
 
     /**
+     * 问诊_问题明细总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countFaqMedCaseInques(PfPartCommonDto dto);
+
+    /**
      * 问诊_问题明细
      *
      * @param dto
@@ -148,6 +156,14 @@ public interface PfKbPartDao {
     FaqMedCasePatient selectKbPat(@Param("idMedCase") Long idMedCase);
 
     /**
+     * 检验列表总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countExams(PfPartCommonDto dto);
+
+    /**
      * 检验列表
      *
      * @param dto
@@ -186,6 +202,14 @@ public interface PfKbPartDao {
      * @return
      */
     FaqMedCaseInspectList selectExamById(FaqMedCaseInspectList dto);
+
+    /**
+     * 检查列表总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countChecks(PfPartCommonDto dto);
 
     /**
      * 检查列表
@@ -252,6 +276,30 @@ public interface PfKbPartDao {
     Integer bachAddCons(PfCommonListDto dto);
 
     /**
+     * 批量添加问诊
+     *
+     * @param list
+     * @return
+     */
+    Integer bachAddAllCons(List<FaqMedCaseInquesList> list);
+
+    /**
+     * 查询原有问诊记录
+     *
+     * @param idMedCase
+     * @return
+     */
+    List<FaqMedCaseInquesList> selectOldConsRecord(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 查询原有问诊记录
+     *
+     * @param idMedCase
+     * @return
+     */
+    List<FaqMedCaseInquesList> selectAllConsRecord(@Param("idMedCase") Long idMedCase);
+
+    /**
      * 批量添加体格检查
      *
      * @param dto
@@ -260,10 +308,58 @@ public interface PfKbPartDao {
     Integer bachAddCheck(PfCommonListDto dto);
 
     /**
+     * 批量添加检查
+     *
+     * @param list
+     * @return
+     */
+    Integer bachAddAllCheck(List<FaqMedCaseBodyList> list);
+
+    /**
+     * 查询原有检查记录
+     *
+     * @param idMedCase
+     * @return
+     */
+    List<FaqMedCaseBodyList> selectOldCheckRecord(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 查询原有检查记录
+     *
+     * @param idMedCase
+     * @return
+     */
+    List<FaqMedCaseBodyList> selectAllCheckRecord(@Param("idMedCase") Long idMedCase);
+
+    /**
      * 批量添加辅助检查
      *
      * @param dto
      * @return
      */
     Integer bachAddExam(PfCommonListDto dto);
+
+    /**
+     * 批量添加辅助检查
+     *
+     * @param list
+     * @return
+     */
+    Integer bachAddAllExam(List<FaqMedCaseInspectList> list);
+
+    /**
+     * 查询原有辅助检查记录
+     *
+     * @param idMedCase
+     * @return
+     */
+    List<FaqMedCaseInspectList> selectOldExamRecord(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 查询原有辅助检查记录
+     *
+     * @param idMedCase
+     * @return
+     */
+    List<FaqMedCaseInspectList> selectAllExamRecord(@Param("idMedCase") Long idMedCase);
 }

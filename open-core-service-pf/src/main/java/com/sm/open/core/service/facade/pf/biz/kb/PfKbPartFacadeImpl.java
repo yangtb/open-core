@@ -102,7 +102,7 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
         try {
             PfPageParam.initPageDto(param);
             PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfKbPartService.countFaqMedCaseInques(dto),
                     BeanUtil.convertList(pfKbPartService.listFaqMedCaseInques(dto), FaqMedCaseInquesListResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listFaqMedCaseInques-error】获取问诊问题明细列表失败，param:{}", param.toString(), e);
@@ -274,7 +274,7 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
         try {
             PfPageParam.initPageDto(param);
             PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfKbPartService.countExams(dto),
                     BeanUtil.convertList(pfKbPartService.listExams(dto), FaqMedCaseInspectListResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listExams-error】获取检验定义列表失败，param:{}", param.toString(), e);
@@ -343,7 +343,7 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
         try {
             PfPageParam.initPageDto(param);
             PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfKbPartService.countChecks(dto),
                     BeanUtil.convertList(pfKbPartService.listChecks(dto), FaqMedCaseBodyListResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listChecks-error】获取检查列表失败，param:{}", param.toString(), e);
@@ -441,8 +441,11 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     @Override
     public CommonResult<Boolean> bachAddCons(PfCommonListParam param) {
         try {
-            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (param.getExtType().equals(YesOrNoNum.NO.getCode())) {
+                Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            }
             Assert.isTrue(param.getExtId() != null, "extId");
+            Assert.isTrue(StringUtils.isNotBlank(param.getExtType()), "extType");
             return ResultFactory.initCommonResultWithSuccess(
                     pfKbPartService.bachAddCons(BeanUtil.convert(param, PfCommonListDto.class)));
         } catch (BizRuntimeException e) {
@@ -458,8 +461,11 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     @Override
     public CommonResult<Boolean> bachAddCheck(PfCommonListParam param) {
         try {
-            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (param.getExtType().equals(YesOrNoNum.NO.getCode())) {
+                Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            }
             Assert.isTrue(param.getExtId() != null, "extId");
+            Assert.isTrue(StringUtils.isNotBlank(param.getExtType()), "extType");
             return ResultFactory.initCommonResultWithSuccess(
                     pfKbPartService.bachAddCheck(BeanUtil.convert(param, PfCommonListDto.class)));
         } catch (BizRuntimeException e) {
@@ -475,8 +481,11 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     @Override
     public CommonResult<Boolean> bachAddExam(PfCommonListParam param) {
         try {
-            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (param.getExtType().equals(YesOrNoNum.NO.getCode())) {
+                Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            }
             Assert.isTrue(param.getExtId() != null, "extId");
+            Assert.isTrue(StringUtils.isNotBlank(param.getExtType()), "extType");
             return ResultFactory.initCommonResultWithSuccess(
                     pfKbPartService.bachAddExam(BeanUtil.convert(param, PfCommonListDto.class)));
         } catch (BizRuntimeException e) {
