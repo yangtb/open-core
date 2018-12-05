@@ -32,4 +32,15 @@ public class PfCaseHistoryConstant {
     public static final String SAVE_EVA_TAG_ERROR                                      = "saveEvaTagFailed";
     public static final String SAVE_EVA_TAG_ERROR_MSG                                  = "新增评估标签失败";
 
+    public static final String SELECT_MED_TAG_ERROR                                    = "selectMedTagFailed";
+    public static final String SELECT_MED_TAG_ERROR_MSG                                = "查询病历标签失败";
+
+    public static final String SELECT_EVA_TAG_ERROR                                    = "selectEvaTagFailed";
+    public static final String SELECT_EVA_TAG_ERROR_MSG                                = "查询评估标签失败";
+
+    public static final String SAVE_AS_MED_ERROR                                       = "saveAsMedFailed";
+    public static final String SAVE_AS_MED_ERROR_MSG                                   = "另存病例组件失败";
+
+    public static final String SAVE_AS_EVA_ERROR                                       = "saveAsEvaFailed";
+    public static final String SAVE_AS_EVA_ERROR_MSG                                   = "另存评估组件失败";
 }

@@ -1,9 +1,9 @@
 package com.sm.open.core.dal.pf.biz.kb;
 
+import com.sm.open.core.model.dto.pf.biz.kb.PfSaveAsMedDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -273,7 +273,7 @@ public interface PfKbPartDao {
      * @param dto
      * @return
      */
-    Integer bachAddCons(PfCommonListDto dto);
+    Integer bachAddCons(PfSaveAsMedDto dto);
 
     /**
      * 批量添加问诊
@@ -305,7 +305,7 @@ public interface PfKbPartDao {
      * @param dto
      * @return
      */
-    Integer bachAddCheck(PfCommonListDto dto);
+    Integer bachAddCheck(PfSaveAsMedDto dto);
 
     /**
      * 批量添加检查
@@ -337,7 +337,7 @@ public interface PfKbPartDao {
      * @param dto
      * @return
      */
-    Integer bachAddExam(PfCommonListDto dto);
+    Integer bachAddExam(PfSaveAsMedDto dto);
 
     /**
      * 批量添加辅助检查
@@ -362,4 +362,82 @@ public interface PfKbPartDao {
      * @return
      */
     List<FaqMedCaseInspectList> selectAllExamRecord(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制组件主表数据
+     *
+     * @param dto
+     * @return
+     */
+    Integer copyKbPart(FaqMedCase dto);
+
+    /**
+     * 复制文本
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbText(@Param("oldIdMedCase") Long oldIdMedCase,
+                       @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制图片
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbPic(@Param("oldIdMedCase") Long oldIdMedCase,
+                      @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制患者信息
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbPat(@Param("oldIdMedCase") Long oldIdMedCase,
+                      @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制问诊
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbCons(@Param("oldIdMedCase") Long oldIdMedCase,
+                       @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制体格检查
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbCheck(@Param("oldIdMedCase") Long oldIdMedCase,
+                        @Param("idMedCase") Long idMedCase);
+
+    /**
+     * copy检查图片
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyCheckPic(@Param("oldIdMedCase") Long oldIdMedCase,
+                         @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制辅助检查
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbExam(@Param("oldIdMedCase") Long oldIdMedCase,
+                       @Param("idMedCase") Long idMedCase);
 }

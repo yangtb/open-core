@@ -100,4 +100,6 @@ public class FaqMedCase implements Serializable {
      */
     private String fgPlat;
 
+    private String fgPublic;
+
 }

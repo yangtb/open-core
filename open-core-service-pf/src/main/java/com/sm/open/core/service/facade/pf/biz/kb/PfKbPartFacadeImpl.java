@@ -4,16 +4,16 @@ import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.core.facade.model.param.pf.biz.kb.PfSaveAsMedParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
-import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.kb.PfKbPartFacade;
+import com.sm.open.core.model.dto.pf.biz.kb.PfSaveAsMedDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
 import org.apache.commons.collections.CollectionUtils;
@@ -169,8 +169,6 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     @Override
     public CommonResult<Boolean> saveKbText(FaqMedCaseTextParam param) {
         try {
-            Assert.isTrue(param.getIdMedCase() != null, "idMedCase");
-            Assert.isTrue(StringUtils.isNotBlank(param.getContent()), "content");
             return ResultFactory.initCommonResultWithSuccess(
                     pfKbPartService.saveKbText(BeanUtil.convert(param, FaqMedCaseText.class)));
         } catch (BizRuntimeException e) {
@@ -203,8 +201,6 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     @Override
     public CommonResult<Boolean> saveKbPic(FaqMedCasePicParam param) {
         try {
-            Assert.isTrue(param.getIdMedCase() != null, "idMedCase");
-            Assert.isTrue(param.getIdMedia() != null, "idMedia");
             return ResultFactory.initCommonResultWithSuccess(
                     pfKbPartService.saveKbPic(BeanUtil.convert(param, FaqMedCasePic.class)));
         } catch (BizRuntimeException e) {
@@ -237,10 +233,6 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     @Override
     public CommonResult<Boolean> saveKbPat(FaqMedCasePatientParam param) {
         try {
-            Assert.isTrue(param.getIdMedCase() != null, "idMedCase");
-            Assert.isTrue(StringUtils.isNotBlank(param.getName()), "name");
-            Assert.isTrue(param.getAge() != 0, "age");
-            Assert.isTrue(StringUtils.isNotBlank(param.getComplaint()), "complaint");
             return ResultFactory.initCommonResultWithSuccess(
                     pfKbPartService.saveKbPat(BeanUtil.convert(param, FaqMedCasePatient.class)));
         } catch (BizRuntimeException e) {
@@ -439,15 +431,10 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     }
 
     @Override
-    public CommonResult<Boolean> bachAddCons(PfCommonListParam param) {
+    public CommonResult<Boolean> bachAddCons(PfSaveAsMedParam param) {
         try {
-            if (param.getExtType().equals(YesOrNoNum.NO.getCode())) {
-                Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
-            }
-            Assert.isTrue(param.getExtId() != null, "extId");
-            Assert.isTrue(StringUtils.isNotBlank(param.getExtType()), "extType");
             return ResultFactory.initCommonResultWithSuccess(
-                    pfKbPartService.bachAddCons(BeanUtil.convert(param, PfCommonListDto.class)));
+                    pfKbPartService.bachAddCons(BeanUtil.convert(param, PfSaveAsMedDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfKbPartFacadeImpl-bachAddCons】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -459,15 +446,10 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     }
 
     @Override
-    public CommonResult<Boolean> bachAddCheck(PfCommonListParam param) {
+    public CommonResult<Boolean> bachAddCheck(PfSaveAsMedParam param) {
         try {
-            if (param.getExtType().equals(YesOrNoNum.NO.getCode())) {
-                Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
-            }
-            Assert.isTrue(param.getExtId() != null, "extId");
-            Assert.isTrue(StringUtils.isNotBlank(param.getExtType()), "extType");
             return ResultFactory.initCommonResultWithSuccess(
-                    pfKbPartService.bachAddCheck(BeanUtil.convert(param, PfCommonListDto.class)));
+                    pfKbPartService.bachAddCheck(BeanUtil.convert(param, PfSaveAsMedDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfKbPartFacadeImpl-bachAddCheck】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -479,15 +461,10 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
     }
 
     @Override
-    public CommonResult<Boolean> bachAddExam(PfCommonListParam param) {
+    public CommonResult<Boolean> bachAddExam(PfSaveAsMedParam param) {
         try {
-            if (param.getExtType().equals(YesOrNoNum.NO.getCode())) {
-                Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
-            }
-            Assert.isTrue(param.getExtId() != null, "extId");
-            Assert.isTrue(StringUtils.isNotBlank(param.getExtType()), "extType");
             return ResultFactory.initCommonResultWithSuccess(
-                    pfKbPartService.bachAddExam(BeanUtil.convert(param, PfCommonListDto.class)));
+                    pfKbPartService.bachAddExam(BeanUtil.convert(param, PfSaveAsMedDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfKbPartFacadeImpl-bachAddExam】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

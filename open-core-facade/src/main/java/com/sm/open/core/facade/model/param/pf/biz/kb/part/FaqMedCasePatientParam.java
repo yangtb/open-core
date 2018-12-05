@@ -1,5 +1,6 @@
 package com.sm.open.core.facade.model.param.pf.biz.kb.part;
 
+import com.sm.open.core.facade.model.param.pf.biz.clinic.FaqMedTagParam;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -14,7 +15,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class FaqMedCasePatientParam implements Serializable {
+public class FaqMedCasePatientParam extends FaqMedTagParam implements Serializable {
 
     private static final long serialVersionUID = 1540020746319L;
 

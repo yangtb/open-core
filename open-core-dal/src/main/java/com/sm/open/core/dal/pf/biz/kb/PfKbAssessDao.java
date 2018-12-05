@@ -5,6 +5,7 @@ import com.sm.open.core.model.dto.pf.biz.kb.assess.PfAssessEffciencyDto;
 import com.sm.open.core.model.dto.pf.biz.kb.assess.PfEvaCaseDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -363,5 +364,102 @@ public interface PfKbAssessDao {
      * @return
      */
     Integer delCommonAssess(PfBachChangeStatusDto dto);
+
+    /**
+     * 复制组件主表数据
+     *
+     * @param dto
+     * @return
+     */
+    Integer copyKbAssess(FaqEvaCase dto);
+
+    /**
+     * 查询评估项目
+     *
+     * @param idEvaCase
+     * @return
+     */
+    List<FaqEvaCaseItem> selectFaqEvaCaseItem(@Param("idEvaCase") Long idEvaCase);
+
+    /**
+     * 复制评估项
+     *
+     * @param dto
+     * @param oldIdEvaCase
+     * @return
+     */
+    Integer copyAssessItem(FaqEvaCaseItem dto, @Param("oldIdEvaCase") Long oldIdEvaCase);
+
+    /**
+     * 复制拟诊
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess001(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
+
+    /**
+     * 复制确诊项清单
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess002(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
+
+
+    /**
+     * 复制确诊理由
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess003(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
+
+
+    /**
+     * 复制鉴定检查
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess004(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
+
+    /**
+     * 复制必须检查
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess005(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
+
+    /**
+     * 复制检查效率
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess006(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
+
+    /**
+     * 复制医嘱
+     *
+     * @param oldIdEvaCaseItem
+     * @param newIdEvaCaseItem
+     * @return
+     */
+    Integer copyKbAssess007(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
+                            @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
 
 }

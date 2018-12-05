@@ -1,8 +1,8 @@
 package com.sm.open.core.facade.pf.biz.kb;
 
+import com.sm.open.core.facade.model.param.pf.biz.kb.PfSaveAsMedParam;
 import com.sm.open.core.facade.model.param.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
-import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.*;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -214,7 +214,7 @@ public interface PfKbPartFacade {
      * @param param
      * @return
      */
-    CommonResult<Boolean> bachAddCons(PfCommonListParam param);
+    CommonResult<Boolean> bachAddCons(PfSaveAsMedParam param);
 
     /**
      * 批量添加体格检查
@@ -222,7 +222,7 @@ public interface PfKbPartFacade {
      * @param param
      * @return
      */
-    CommonResult<Boolean> bachAddCheck(PfCommonListParam param);
+    CommonResult<Boolean> bachAddCheck(PfSaveAsMedParam param);
 
     /**
      * 批量添加辅助检查
@@ -230,5 +230,5 @@ public interface PfKbPartFacade {
      * @param param
      * @return
      */
-    CommonResult<Boolean> bachAddExam(PfCommonListParam param);
+    CommonResult<Boolean> bachAddExam(PfSaveAsMedParam param);
 }

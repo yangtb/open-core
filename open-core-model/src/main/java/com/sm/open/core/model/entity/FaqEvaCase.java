@@ -112,4 +112,6 @@ public class FaqEvaCase implements Serializable {
      */
     private Date gmtModify;
 
+    private String fgPublic;
+
 }

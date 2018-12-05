@@ -227,5 +227,11 @@
             faq_medicalrec fm
         where fm.id_medicalrec = #{idMedicalrec}
     </select>
+    <select id="selectMedTag" resultType="com.sm.open.core.model.entity.FaqMedTag">
+        select id_med_tag,id_med_case from faq_med_tag where id_medicalrec = #{idMedicalrec} and id_tag = #{idTag}
+    </select>
+    <select id="selectEvaTag" resultType="com.sm.open.core.model.entity.FaqEvaTag">
+        select id_eva_tag,id_eva_case from faq_eva_tag where id_medicalrec = #{idMedicalrec} and id_tag = #{idTag}
+    </select>
 
 </mapper>

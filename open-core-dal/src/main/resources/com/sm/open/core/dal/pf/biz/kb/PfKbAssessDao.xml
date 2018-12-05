@@ -34,7 +34,7 @@
             score_default,
             #{idOrg},
             #{fgActive},
-            '1',
+            #{fgPublic},
             #{creator},
             now(),
             #{operator},
@@ -362,6 +362,173 @@
         </trim>
         )
     </insert>
+    <insert id="copyKbAssess" useGeneratedKeys="true" keyProperty="idEvaCase">
+        INSERT INTO faq_eva_case(
+            cd_eva_asse ,
+            name ,
+            descript ,
+            fg_group ,
+            score_upper ,
+            score_lower ,
+            score_default ,
+            id_org ,
+            count ,
+            fg_active ,
+            fg_valid ,
+            creator ,
+            gmt_create ,
+            operator ,
+            gmt_modify ,
+            fg_public
+        )
+        select
+            cd_eva_asse ,
+            #{name} ,
+            descript ,
+            fg_group ,
+            score_upper ,
+            score_lower ,
+            score_default ,
+            id_org ,
+            '0' ,
+            fg_active ,
+            fg_valid ,
+            #{creator} ,
+            now() ,
+            #{creator} ,
+            now() ,
+            '0'
+        from faq_eva_case
+        where id_eva_case = #{idEvaCase}
+    </insert>
+    <insert id="copyAssessItem" useGeneratedKeys="true" keyProperty="idEvaCaseItem">
+        INSERT INTO faq_eva_case_item(
+            cd_eva_asse ,
+            id_eva_case ,
+            item_name ,
+            score_eva
+        )
+        select
+            cd_eva_asse ,
+            #{idEvaCase} ,
+            item_name ,
+            score_eva
+        from faq_eva_case
+        where id_med_case = #{oldIdEvaCase}
+    </insert>
+    <insert id="copyKbAssess001">
+        INSERT INTO faq_eva_case_item_referral(
+            id_eva_case_item ,
+            sd_eva_referral ,
+            id_die
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_referral ,
+            id_die
+        from faq_eva_case_item_referral
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess002">
+        INSERT INTO faq_eva_case_item_diagnosis(id_eva_case_item , id_die)
+        select
+            #{newIdEvaCaseItem} ,
+            id_die
+        from faq_eva_case_item_diagnosis
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess003">
+        INSERT INTO faq_eva_case_item_reason(
+            id_eva_case_item ,
+            sd_eva_effciency ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_effciency ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        from faq_eva_case_item_reason
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess004">
+        INSERT INTO faq_eva_case_item_cover(
+            id_eva_case_item ,
+            sd_eva_cover ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_cover ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        from faq_eva_case_item_cover
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess005">
+        INSERT INTO faq_eva_case_item_must(
+            id_eva_case_item ,
+            sd_eva_must ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_must ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        from faq_eva_case_item_must
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess006">
+        INSERT INTO faq_eva_case_item_effciency(
+            sd_eva_effciency ,
+            id_eva_case_item ,
+            qua_upper
+        )
+        select
+            sd_eva_effciency ,
+            #{newIdEvaCaseItem} ,
+            qua_upper
+        from faq_eva_case_item_effciency
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess007">
+        INSERT INTO faq_eva_case_item_order(
+            id_eva_case_item ,
+            sd_eva_order ,
+            id_short_drugs ,
+            sd_nurs_rout ,
+            cd_nurs_level ,
+            sd_diet ,
+            sd_position ,
+            id_long_drugs
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_order ,
+            id_short_drugs ,
+            sd_nurs_rout ,
+            cd_nurs_level ,
+            sd_diet ,
+            sd_position ,
+            id_long_drugs
+        from faq_eva_case_item_order
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+
     <update id="editKbAssess">
         UPDATE faq_eva_case
         SET
@@ -582,6 +749,7 @@
         LEFT JOIN sys_org so on fec.id_org = so.id_org
         WHERE
             fec.fg_valid = '0'
+        AND fec.fg_public = '1'
         <if test="cdEvaAsse != null and cdEvaAsse != '' ">
             AND fec.cd_eva_asse = #{cdEvaAsse}
         </if>
@@ -609,6 +777,7 @@
         left join bas_eva_asse bea on fec.cd_eva_asse = bea.cd_eva_asse and bea.fg_valid = '0'
         WHERE
             fec.fg_valid = '0'
+        AND fec.fg_public = '1'
         <if test="cdEvaAsse != null and cdEvaAsse != '' ">
             AND fec.cd_eva_asse = #{cdEvaAsse}
         </if>
@@ -898,5 +1067,16 @@
         </if>
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="selectFaqEvaCaseItem" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        select
+            id_eva_case_item ,
+            cd_eva_asse ,
+            id_eva_case ,
+            item_name ,
+            score_eva
+        from faq_eva_case_item
+        WHERE
+            id_eva_case = #{idEvaCase}
     </select>
 </mapper>

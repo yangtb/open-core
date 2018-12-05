@@ -4,16 +4,19 @@ import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.biz.check.PfCheckDao;
 import com.sm.open.core.dal.pf.biz.exam.PfExamDao;
 import com.sm.open.core.dal.pf.biz.inquisition.PfInquisitionDao;
+import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
 import com.sm.open.core.dal.pf.biz.kb.PfKbPartDao;
 import com.sm.open.core.dal.pf.common.upload.PfUploadDao;
+import com.sm.open.core.model.dto.pf.biz.kb.PfSaveAsMedDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfMedCaseDto;
 import com.sm.open.core.model.dto.pf.biz.kb.part.PfPartCommonDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
-import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
@@ -38,6 +41,9 @@ public class PfKbPartServiceImpl implements PfKbPartService {
     @Resource
     private PfUploadDao pfUploadDao;
 
+    @Resource
+    private PfCaseHistoryDao pfCaseHistoryDao;
+
     @Override
     public Long countKbPart(PfMedCaseDto dto) {
         return pfKbPartDao.countKbPart(dto);
@@ -50,6 +56,7 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public Long addKbPart(FaqMedCase dto) {
+        dto.setFgPublic(YesOrNoNum.NO.getCode());
         return pfKbPartDao.addKbPart(dto) == 1 ? dto.getIdMedCase() : null;
     }
 
@@ -101,8 +108,48 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         return pfKbPartDao.selectConsById(dto);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveKbText(FaqMedCaseText dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            if (dto.getOldIdMedCase() == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("001");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                FaqMedCaseText faqMedCaseText = new FaqMedCaseText();
+                faqMedCaseText.setIdMedCase(faqMedCase.getIdMedCase());
+                faqMedCaseText.setContent(dto.getContent());
+                pfKbPartDao.saveKbText(faqMedCaseText);
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+                return true;
+            }
+            // 病例维护 1-生成主表记录
+            FaqMedCase faqMedCase = new FaqMedCase();
+            faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+            faqMedCase.setCreator(dto.getCreator());
+            faqMedCase.setName(dto.getCaseName());
+            faqMedCase.setIdOrg(dto.getIdOrg());
+            pfKbPartDao.copyKbPart(faqMedCase);
+            // 2-复制子表
+            pfKbPartDao.copyKbText(dto.getOldIdMedCase(), faqMedCase.getIdMedCase());
+            // 3 保存病例标签
+            dto.setIdMedCase(faqMedCase.getIdMedCase());
+            pfCaseHistoryDao.saveMedTag(dto);
+            return true;
+        }
         return pfKbPartDao.saveKbText(dto) == 1 ? true : false;
     }
 
@@ -111,8 +158,48 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         return pfKbPartDao.selectKbText(idMedCase);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveKbPic(FaqMedCasePic dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            if (dto.getOldIdMedCase() == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("002");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                FaqMedCasePic faqMedCasePic = new FaqMedCasePic();
+                faqMedCasePic.setIdMedCase(faqMedCase.getIdMedCase());
+                faqMedCasePic.setIdMedia(dto.getIdMedia());
+                pfKbPartDao.saveKbPic(faqMedCasePic);
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+                return true;
+            }
+            // 病例维护 1-生成主表记录
+            FaqMedCase faqMedCase = new FaqMedCase();
+            faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+            faqMedCase.setCreator(dto.getCreator());
+            faqMedCase.setName(dto.getCaseName());
+            faqMedCase.setIdOrg(dto.getIdOrg());
+            pfKbPartDao.copyKbPart(faqMedCase);
+            // 2-复制子表
+            pfKbPartDao.copyKbPic(dto.getOldIdMedCase(), faqMedCase.getIdMedCase());
+            // 3 保存病例标签
+            dto.setIdMedCase(faqMedCase.getIdMedCase());
+            pfCaseHistoryDao.saveMedTag(dto);
+            return true;
+        }
         return pfKbPartDao.saveKbPic(dto) == 1 ? true : false;
     }
 
@@ -121,8 +208,51 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         return pfKbPartDao.selectKbPic(idMedCase);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean saveKbPat(FaqMedCasePatient dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            if (dto.getOldIdMedCase() == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("003");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                FaqMedCasePatient faqMedCasePatient = new FaqMedCasePatient();
+                faqMedCasePatient.setIdMedCase(faqMedCase.getIdMedCase());
+                faqMedCasePatient.setName(dto.getName());
+                faqMedCasePatient.setSex(dto.getSex());
+                faqMedCasePatient.setAge(dto.getAge());
+                faqMedCasePatient.setComplaint(dto.getComplaint());
+                pfKbPartDao.saveKbPat(faqMedCasePatient);
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+                return true;
+            }
+            // 病例维护 1-生成主表记录
+            FaqMedCase faqMedCase = new FaqMedCase();
+            faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+            faqMedCase.setCreator(dto.getCreator());
+            faqMedCase.setName(dto.getCaseName());
+            faqMedCase.setIdOrg(dto.getIdOrg());
+            pfKbPartDao.copyKbPart(faqMedCase);
+            // 2-复制子表
+            pfKbPartDao.copyKbPat(dto.getOldIdMedCase(), faqMedCase.getIdMedCase());
+            // 3 保存病例标签
+            dto.setIdMedCase(faqMedCase.getIdMedCase());
+            pfCaseHistoryDao.saveMedTag(dto);
+            return true;
+        }
         return pfKbPartDao.saveKbPat(dto) == 1 ? true : false;
     }
 
@@ -208,6 +338,34 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public boolean saveFaqMedCaseBody(FaqMedCaseBody dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            FaqMedTag tagDto = new FaqMedTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqMedTag tagVo = pfCaseHistoryDao.selectMedTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("005");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+            } else {
+                dto.setIdMedCase(tagVo.getIdMedCase());
+            }
+        }
         return pfKbPartDao.saveFaqMedCaseBody(dto) == 1 ? true : false;
     }
 
@@ -239,8 +397,37 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         return faqMedCaseBody;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean bachAddCons(PfCommonListDto dto) {
+    public boolean bachAddCons(PfSaveAsMedDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            FaqMedTag tagDto = new FaqMedTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqMedTag tagVo = pfCaseHistoryDao.selectMedTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("004");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                dto.setExtId(faqMedCase.getIdMedCase());
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+            } else {
+                dto.setExtId(tagVo.getIdMedCase());
+            }
+        }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
             // 全部引入
             List<FaqMedCaseInquesList> oldDatas = pfKbPartDao.selectOldConsRecord(dto.getExtId());
@@ -262,8 +449,37 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         return pfKbPartDao.bachAddCons(dto) >= 1 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean bachAddCheck(PfCommonListDto dto) {
+    public boolean bachAddCheck(PfSaveAsMedDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            FaqMedTag tagDto = new FaqMedTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqMedTag tagVo = pfCaseHistoryDao.selectMedTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("005");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                dto.setExtId(faqMedCase.getIdMedCase());
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+            } else {
+                dto.setExtId(tagVo.getIdMedCase());
+            }
+        }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
             // 全部引入
             List<FaqMedCaseBodyList> oldDatas = pfKbPartDao.selectOldCheckRecord(dto.getExtId());
@@ -285,8 +501,37 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         return pfKbPartDao.bachAddCheck(dto) >= 1 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
-    public boolean bachAddExam(PfCommonListDto dto) {
+    public boolean bachAddExam(PfSaveAsMedDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            FaqMedTag tagDto = new FaqMedTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqMedTag tagVo = pfCaseHistoryDao.selectMedTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("006");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                dto.setExtId(faqMedCase.getIdMedCase());
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+            } else {
+                dto.setExtId(tagVo.getIdMedCase());
+            }
+        }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
             // 全部引入
             List<FaqMedCaseInspectList> oldDatas = pfKbPartDao.selectOldExamRecord(dto.getExtId());

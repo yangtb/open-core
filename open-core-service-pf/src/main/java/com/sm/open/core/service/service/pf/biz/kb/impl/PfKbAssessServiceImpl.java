@@ -1,10 +1,13 @@
 package com.sm.open.core.service.service.pf.biz.kb.impl;
 
+import com.sm.open.care.core.enums.YesOrNoNum;
+import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
 import com.sm.open.core.dal.pf.biz.kb.PfKbAssessDao;
 import com.sm.open.core.model.dto.pf.biz.kb.assess.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbAssessService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
@@ -18,6 +21,9 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
 
     @Resource
     private PfKbAssessDao pfKbAssessDao;
+
+    @Resource
+    private PfCaseHistoryDao pfCaseHistoryDao;
 
     @Override
     public Long countKbAssess(PfEvaCaseDto dto) {
@@ -33,6 +39,7 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     public Long saveKbAssess(FaqEvaCase dto) {
         Integer num;
         if (dto.getIdEvaCase() == null) {
+            dto.setFgPublic(YesOrNoNum.YES.getCode());
             num = pfKbAssessDao.addKbAssess(dto);
         } else {
             num = pfKbAssessDao.editKbAssess(dto);
@@ -63,6 +70,40 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveReferral(PfAssessReferralDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("001");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {
@@ -105,6 +146,39 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveDiagnosis(PfAssessDiagnosisDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("002");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {
@@ -146,6 +220,39 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveReason(PfAssessReasonDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("003");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {
@@ -188,6 +295,40 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveCover(PfAssessCoverDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("004");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {
@@ -231,6 +372,40 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveMust(PfAssessMustDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("005");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {
@@ -269,6 +444,40 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveEffciency(PfAssessEffciencyDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("006");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {
@@ -302,6 +511,40 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveOrder(PfAssessOrderDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("007");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
         if (dto.getIdEvaCaseItem() == null) {
             pfKbAssessDao.addItem(dto);
         } else {

@@ -140,4 +140,20 @@ public interface PfCaseHistoryDao {
      */
     FaqMedicalrecVo selectCaseInfoById(@Param("idMedicalrec") Long idMedicalrec);
 
+    /**
+     * 查询病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    FaqMedTag selectMedTag(FaqMedTag dto);
+
+    /**
+     * 查询评估标签信息
+     *
+     * @param dto
+     * @return
+     */
+    FaqEvaTag selectEvaTag(FaqEvaTag dto);
+
 }

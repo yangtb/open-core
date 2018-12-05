@@ -11,6 +11,8 @@ import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.FaqMedicalrecPa
 import com.sm.open.core.facade.model.param.pf.biz.kb.casehistory.PfCaseHistoryParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.FaqEvaTagResult;
+import com.sm.open.core.facade.model.result.pf.biz.clinic.FaqMedTagResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.PfAssessTagResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.casehistory.FaqMedicalrecResult;
@@ -230,6 +232,68 @@ public class PfCaseHistoryFacadeImpl implements PfCaseHistoryFacade {
             LOGGER.error("【PfClinicTemplateFacadeImpl-listAllAssessTag-error】获取所有评估表标签失败，idDemo:{}", idDemo, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR, PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<FaqMedTagResult> selectMedTag(FaqMedTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(
+                            pfCaseHistoryService.selectMedTag(BeanUtil.convert(param, FaqMedTag.class)), FaqMedTagResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfCaseHistoryFacadeImpl-selectMedTag】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfCaseHistoryFacadeImpl-selectMedTag】查询病历标签失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfCaseHistoryConstant.SELECT_MED_TAG_ERROR, PfCaseHistoryConstant.SELECT_MED_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<FaqEvaTagResult> selectEvaTag(FaqEvaTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(
+                            pfCaseHistoryService.selectEvaTag(BeanUtil.convert(param, FaqEvaTag.class)), FaqEvaTagResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfCaseHistoryFacadeImpl-selectEvaTag】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfCaseHistoryFacadeImpl-selectEvaTag】查询评估标签失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfCaseHistoryConstant.SELECT_EVA_TAG_ERROR, PfCaseHistoryConstant.SELECT_EVA_TAG_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> saveAsMed(FaqMedTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfCaseHistoryService.saveAsMed(BeanUtil.convert(param, FaqMedTag.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfCaseHistoryFacadeImpl-saveAsMed】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfCaseHistoryFacadeImpl-saveAsMed】另存病例组件失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfCaseHistoryConstant.SAVE_AS_MED_ERROR, PfCaseHistoryConstant.SAVE_AS_MED_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> saveAsEva(FaqEvaTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfCaseHistoryService.saveAsEva(BeanUtil.convert(param, FaqEvaTag.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfCaseHistoryFacadeImpl-saveAsEva】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfCaseHistoryFacadeImpl-saveAsEva】另存评估组件失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfCaseHistoryConstant.SAVE_AS_EVA_ERROR, PfCaseHistoryConstant.SAVE_AS_EVA_ERROR_MSG));
         }
     }
 }

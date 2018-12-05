@@ -125,4 +125,36 @@ public interface PfCaseHistoryService {
      */
     List<PfAssessTagVo> listAllAssessTag(Long idDemo, Long idMedicalrec);
 
+    /**
+     * 查询病历标签信息
+     *
+     * @param dto
+     * @return
+     */
+    FaqMedTag selectMedTag(FaqMedTag dto);
+
+    /**
+     * 查询评估标签信息
+     *
+     * @param dto
+     * @return
+     */
+    FaqEvaTag selectEvaTag(FaqEvaTag dto);
+
+    /**
+     * 重载病历组件
+     *
+     * @param dto
+     * @return
+     */
+    boolean saveAsMed(FaqMedTag dto);
+
+    /**
+     * 重载评估组件
+     *
+     * @param dto
+     * @return
+     */
+    boolean saveAsEva(FaqEvaTag dto);
+
 }

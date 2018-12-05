@@ -31,6 +31,11 @@ public class FaqEvaTagParam implements Serializable {
     private Long idMedicalrec;
 
     /**
+     * 所属病历名称
+     */
+    private String caseName;
+
+    /**
      * 模板标签id
      */
     private Long idTag;
@@ -39,5 +44,30 @@ public class FaqEvaTagParam implements Serializable {
      * 评估组件案例id
      */
     private Long idEvaCase;
+
+    /**
+     * 为1时保存病例与标签关联管理
+     */
+    private String tagFlag;
+
+    /**
+     * 创建者
+     */
+    private String creator;
+
+    /**
+     * 原病历组件案例id
+     */
+    private Long oldIdEvaCase;
+
+    /**
+     * 机构id
+     */
+    private Long idOrg;
+
+    /**
+     * 组件编码
+     */
+    private String cdEvaAsse;
 
 }

@@ -27,7 +27,7 @@
                 #{cdMedAsse},
                 #{idOrg},
                 #{fgActive},
-                '1',
+                #{fgPublic},
                 #{creator},
                 now(),
                 #{operator},
@@ -470,6 +470,198 @@
             #{item.desExpert})
         </foreach>
     </insert>
+    <insert id="copyKbPart" useGeneratedKeys="true" keyProperty="idMedCase">
+        INSERT INTO faq_med_case(
+            name ,
+            descript ,
+            cd_med_asse ,
+            id_org ,
+            count ,
+            fg_active ,
+            fg_valid ,
+            creator ,
+            gmt_create ,
+            operator ,
+            gmt_modify ,
+            fg_public
+        )
+        select  #{name} ,
+                descript ,
+                cd_med_asse ,
+                #{idOrg} ,
+                '0' ,
+                fg_active ,
+                fg_valid ,
+                #{creator} ,
+                now(),
+                #{creator} ,
+                now() ,
+                '0'
+        from faq_med_case
+        where id_med_case = #{idMedCase}
+    </insert>
+    <insert id="copyKbText">
+        INSERT INTO faq_med_case_text(id_med_case , content)
+        SELECT
+            #{idMedCase},content
+        FROM
+            faq_med_case_text
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbPic">
+        INSERT INTO faq_med_case_pic(id_med_case , id_media)
+        SELECT
+            #{idMedCase},id_media
+        FROM
+            faq_med_case_pic
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbPat">
+        INSERT INTO faq_med_case_patient(id_med_case, name, sex,age, complaint)
+        SELECT
+            #{idMedCase}, name, sex,age, complaint
+        FROM
+            faq_med_case_patient
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbCons">
+        INSERT INTO faq_med_case_inques_list(
+            id_med_case ,
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried
+        )
+        SELECT
+            #{idMedCase},
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried
+        FROM
+            faq_med_case_inques_list
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbCheck">
+        INSERT INTO faq_med_case_body_list(
+            id_med_case ,
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        )
+        SELECT
+            #{idMedCase},
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        FROM
+            faq_med_case_body_list
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbExam">
+        INSERT INTO faq_med_case_inspect_list(
+            id_med_case ,
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        )
+        SELECT
+            #{idMedCase},
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        FROM
+            faq_med_case_inspect_list
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyCheckPic">
+        INSERT INTO faq_med_case_body(
+            id_med_case ,
+            id_media_front ,
+            id_media_back ,
+            id_media_chest ,
+            id_media_abdomen ,
+            id_media_head
+        )
+        SELECT
+            #{idMedCase},
+            id_media_front ,
+            id_media_back ,
+            id_media_chest ,
+            id_media_abdomen ,
+            id_media_head
+        FROM
+            faq_med_case_body
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+
     <update id="editKbPart">
         UPDATE faq_med_case
         SET
@@ -625,6 +817,7 @@
         LEFT JOIN sys_org so on fmc.id_org = so.id_org
         WHERE
             fmc.fg_valid = '0'
+        and fmc.fg_public = '1'
         <if test="cdMedAsse != null and cdMedAsse != '' ">
             AND fmc.cd_med_asse = #{cdMedAsse}
         </if>
@@ -653,6 +846,7 @@
         left join bas_med_asse bma on fmc.cd_med_asse = bma.cd_med_asse and bma.fg_valid='0'
         WHERE
             fmc.fg_valid = '0'
+        and fmc.fg_public = '1'
         <if test="cdMedAsse != null and cdMedAsse != '' ">
             AND fmc.cd_med_asse = #{cdMedAsse}
         </if>
