@@ -881,7 +881,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            b.id_med_case_list
+            a.gmt_create
     </select>
     <select id="isExistConsQa" resultType="java.lang.Long">
         select
@@ -1038,7 +1038,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            b.id_med_case_list
+            a.gmt_create
     </select>
     <select id="listExamQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomExamVo">
         SELECT
@@ -1053,7 +1053,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            b.id_med_case_list
+            a.gmt_create
     </select>
     <select id="listReferral" resultType="com.sm.open.core.model.entity.ExmMedResultReferral">
         SELECT
