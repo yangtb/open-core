@@ -56,7 +56,7 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public Long addKbPart(FaqMedCase dto) {
-        dto.setFgPublic(YesOrNoNum.NO.getCode());
+        dto.setFgPublic(YesOrNoNum.YES.getCode());
         return pfKbPartDao.addKbPart(dto) == 1 ? dto.getIdMedCase() : null;
     }
 
