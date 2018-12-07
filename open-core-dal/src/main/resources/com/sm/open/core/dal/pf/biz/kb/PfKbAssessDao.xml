@@ -765,6 +765,9 @@
         <if test="fgPlat != null and fgPlat != '' ">
             AND so.name = #{orgName}
         </if>
+        <if test="idOrg != null">
+            AND fec.id_org = #{idOrg}
+        </if>
     </select>
     <select id="listKbAssess" resultType="com.sm.open.core.model.entity.FaqEvaCase">
         SELECT
@@ -792,6 +795,9 @@
         </if>
         <if test="fgPlat != null and fgPlat != '' ">
             AND so.name = #{orgName}
+        </if>
+        <if test="idOrg != null">
+            AND fec.id_org = #{idOrg}
         </if>
         limit #{offset}, #{limit}
     </select>

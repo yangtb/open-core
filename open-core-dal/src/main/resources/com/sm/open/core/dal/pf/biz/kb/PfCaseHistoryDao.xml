@@ -137,7 +137,8 @@
             id_medicalrec_ca AS id ,
             id_par AS pId ,
             name,
-            1 as open
+            1 as open,
+            id_org as ext
         FROM
             faq_medicalrec_ca
         WHERE

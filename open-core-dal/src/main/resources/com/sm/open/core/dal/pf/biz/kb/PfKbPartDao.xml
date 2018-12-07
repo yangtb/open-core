@@ -836,6 +836,9 @@
         <if test="fgPlat != null and fgPlat != '' ">
             AND so.name = #{orgName}
         </if>
+        <if test="idOrg != null">
+            AND fmc.id_org = #{idOrg}
+        </if>
     </select>
 
     <select id="listKbPart" resultType="com.sm.open.core.model.entity.FaqMedCase">
@@ -864,6 +867,9 @@
         </if>
         <if test="fgPlat != null and fgPlat != '' ">
             AND so.name = #{orgName}
+        </if>
+        <if test="idOrg != null">
+            AND fmc.id_org = #{idOrg}
         </if>
         limit #{offset}, #{limit}
     </select>
