@@ -263,6 +263,9 @@
         <if test="naTestplan != null and naTestplan != ''">
             AND a.na_testplan like concat('%',#{naTestplan},'%')
         </if>
+        <if test="idOrg != null">
+            AND a.id_org = #{idOrg}
+        </if>
     </select>
     <select id="listPlans" resultType="com.sm.open.core.model.entity.ExmTestplan">
         SELECT
@@ -278,6 +281,9 @@
             a.fg_valid = '0'
         <if test="naTestplan != null and naTestplan != ''">
             AND a.na_testplan like concat('%',#{naTestplan},'%')
+        </if>
+        <if test="idOrg != null">
+            AND a.id_org = #{idOrg}
         </if>
         limit #{offset}, #{limit}
     </select>

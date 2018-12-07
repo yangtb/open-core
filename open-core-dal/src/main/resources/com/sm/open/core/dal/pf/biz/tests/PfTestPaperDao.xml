@@ -198,6 +198,9 @@
         <if test="naTestpaper != null and naTestpaper != '' ">
             AND a.na_testpaper like concat('%',#{naTestpaper},'%')
         </if>
+        <if test="idOrg != null">
+            AND a.id_org = #{idOrg}
+        </if>
     </select>
     <select id="listPaper" resultType="com.sm.open.core.model.entity.ExmTestpaper">
         SELECT
@@ -215,6 +218,9 @@
         </if>
         <if test="naTestpaper != null and naTestpaper != '' ">
             AND a.na_testpaper like concat('%',#{naTestpaper},'%')
+        </if>
+        <if test="idOrg != null">
+            AND a.id_org = #{idOrg}
         </if>
         limit #{offset}, #{limit}
     </select>
