@@ -612,6 +612,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.selectAllReferral(idTestexecResult), ExmMedResultReferralResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectAllReferral】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectAllReferral-error】查询拟诊出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_REFERRAL_ERROR, PfTestPaperConstant.SELECT_REFERRAL_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<List<PfDiagnosisResult>> selectAllDiagnosis(Long idTestexecResult) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
@@ -770,6 +785,33 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectEvaResult-error】查询病例执行结果出错, idTestexecResult:{}", idTestexecResult, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SELECT_EVA_RESULT_ERROR, PfTestPaperConstant.SELECT_EVA_RESULT_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> saveReferralReason(List<ExmMedResultReferralReasonParam> params) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveReferralReason(BeanUtil.convertList(params, ExmMedResultReferralReason.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveReferralReason】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveReferralReason-error】保存拟诊原因出错, param:{}", params.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_REFERRAL_REASON_ERROR, PfTestPaperConstant.SAVE_REFERRAL_REASON_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listReferralReason(Long idTestexecResultReferral) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestWaitingRoomService.listReferralReason(idTestexecResultReferral), PfReferralReasonResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listDieReason-error】查询拟诊理由列表出错，idTestexecResultReferral:{}", idTestexecResultReferral, e);
+            return PfResultFactory.initPageResultWithError(
+                    PfTestPaperConstant.LIST_REFERRAL_REASON_ERROR, PfTestPaperConstant.LIST_REFERRAL_REASON_ERROR_MSG);
         }
     }
 

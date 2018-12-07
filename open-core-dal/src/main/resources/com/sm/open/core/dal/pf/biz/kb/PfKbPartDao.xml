@@ -557,6 +557,7 @@
             faq_med_case_inques_list
         WHERE
             id_med_case = #{oldIdMedCase}
+        AND fg_valid = '0'
     </insert>
     <insert id="copyKbCheck">
         INSERT INTO faq_med_case_body_list(
@@ -594,6 +595,7 @@
             faq_med_case_body_list
         WHERE
             id_med_case = #{oldIdMedCase}
+        AND fg_valid = '0'
     </insert>
     <insert id="copyKbExam">
         INSERT INTO faq_med_case_inspect_list(
@@ -639,6 +641,7 @@
             faq_med_case_inspect_list
         WHERE
             id_med_case = #{oldIdMedCase}
+        AND fg_valid = '0'
     </insert>
     <insert id="copyCheckPic">
         INSERT INTO faq_med_case_body(

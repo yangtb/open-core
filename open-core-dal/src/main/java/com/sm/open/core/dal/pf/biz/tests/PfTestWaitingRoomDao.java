@@ -450,6 +450,31 @@ public interface PfTestWaitingRoomDao {
     Integer saveDieReason(@Param("list") List<ExmMedResultDieReason> list);
 
     /**
+     * 保存确诊理由
+     *
+     * @param idTestexecResultDiagnosis
+     * @param idTestexecResultReferral
+     * @return
+     */
+    Integer saveQzDieReason(@Param("idTestexecResultDiagnosis") Long idTestexecResultDiagnosis,
+                            @Param("idTestexecResultReferral") Long idTestexecResultReferral);
+
+    /**
+     * 删除已有确诊原因
+     * @param idTestexecResultDiagnosis
+     * @return
+     */
+    Integer delQzDieReason(@Param("idTestexecResultDiagnosis") Long idTestexecResultDiagnosis);
+
+    /**
+     * 查询确诊id
+     *
+     * @param idTestexecResultReferral
+     * @return
+     */
+    Long selectQzId(@Param("idTestexecResultReferral") Long idTestexecResultReferral);
+
+    /**
      * 删除确诊理由
      *
      * @param idDieReason 主键
@@ -607,4 +632,28 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfExecLogVo> listExecLogOrder(Long idTestexecResult);
+
+    /**
+     * 拟诊列表
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<ExmMedResultReferral> selectAllReferral(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
+     * 保存拟诊原因
+     *
+     * @param list
+     * @return
+     */
+    Integer saveReferralReason(@Param("list") List<ExmMedResultReferralReason> list);
+
+    /**
+     * 拟诊原因列表
+     *
+     * @param idTestexecResultReferral
+     * @return
+     */
+    List<PfReferralReasonVo> listReferralReason(@Param("idTestexecResultReferral") Long idTestexecResultReferral);
 }

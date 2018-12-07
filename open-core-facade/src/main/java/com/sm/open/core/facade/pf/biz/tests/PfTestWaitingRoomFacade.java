@@ -308,6 +308,14 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<Boolean> delDieReason(Long idDieReason);
 
     /**
+     * 查询拟诊
+     *
+     * @param idTestexecResult 病历结果ID
+     * @return
+     */
+    CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult);
+
+    /**
      * 查询所有诊断
      *
      * @param idTestexecResult 病历结果ID
@@ -393,5 +401,21 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<ExmEvaResultResult> selectEvaResult(Long idTestexecResult);
+
+    /**
+     * 保存拟诊原因
+     *
+     * @param params
+     * @return
+     */
+    CommonResult<Boolean> saveReferralReason(List<ExmMedResultReferralReasonParam> params);
+
+    /**
+     * 拟诊原因列表
+     *
+     * @param idTestexecResultReferral
+     * @return
+     */
+    PfPageResult listReferralReason(Long idTestexecResultReferral);
 
 }

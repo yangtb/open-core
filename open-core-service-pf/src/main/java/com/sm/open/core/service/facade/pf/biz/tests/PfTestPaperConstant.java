@@ -164,6 +164,9 @@ public class PfTestPaperConstant {
     public static final String SELECT_DIAGNOSIS_ERROR                   = "selectDiagnosisError";
     public static final String SELECT_DIAGNOSIS_ERROR_MSG               = "查询诊断出错";
 
+    public static final String SELECT_REFERRAL_ERROR                    = "selectAllReferralError";
+    public static final String SELECT_REFERRAL_ERROR_MSG                = "查询拟诊出错";
+
     public static final String SELECT_READY_DIE_REASON_ERROR            = "listReadyDieReasonError";
     public static final String SELECT_READY_DIE_REASON_ERROR_MSG        = "查询确诊理由字典出错";
 
@@ -182,6 +185,10 @@ public class PfTestPaperConstant {
     public static final String SELECT_EVA_RESULT_ERROR                  = "selectEvaResultError";
     public static final String SELECT_EVA_RESULT_ERROR_MSG              = "查询病例执行结果出错";
 
+    public static final String SAVE_REFERRAL_REASON_ERROR               = "saveReferralReasonError";
+    public static final String SAVE_REFERRAL_REASON_ERROR_MSG           = "保存拟诊原因出错";
 
+    public static final String LIST_REFERRAL_REASON_ERROR               = "listReferralReasonError";
+    public static final String LIST_REFERRAL_REASON_ERROR_MSG           = "查询拟诊理由列表出错";
 
 }

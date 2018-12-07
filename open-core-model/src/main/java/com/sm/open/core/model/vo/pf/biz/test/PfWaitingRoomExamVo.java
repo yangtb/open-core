@@ -37,6 +37,11 @@ public class PfWaitingRoomExamVo implements Serializable {
     private String valResult;
 
     /**
+     * 标准值
+     */
+    private String desStand;
+
+    /**
      * 专家解读
      */
     private String desExpert;

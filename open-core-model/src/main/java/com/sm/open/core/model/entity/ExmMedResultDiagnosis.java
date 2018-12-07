@@ -50,4 +50,9 @@ public class ExmMedResultDiagnosis implements Serializable {
      */
     private Date gmtCreate;
 
+    /**
+     * 拟诊id
+     */
+    private Long idTestexecResultReferral;
+
 }

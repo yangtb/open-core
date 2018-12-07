@@ -245,10 +245,17 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return pfTestWaitingRoomDao.listExamQa(dto);
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public Long saveReferral(ExmMedResultReferral dto) {
         if (dto.getIdTestexecResultReferral() == null) {
             pfTestWaitingRoomDao.saveReferral(dto);
+            // 导入到确诊
+            ExmMedResultDiagnosis diagnosis = new ExmMedResultDiagnosis();
+            diagnosis.setIdTestexecResult(dto.getIdTestexecResult());
+            diagnosis.setIdDie(dto.getIdDie());
+            diagnosis.setIdTestexecResultReferral(dto.getIdTestexecResultReferral());
+            pfTestWaitingRoomDao.addDiagnosis(diagnosis);
         } else {
             pfTestWaitingRoomDao.outReferral(dto);
         }
@@ -356,11 +363,16 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     public List<PfDiagnosisVo> selectAllDiagnosis(Long idTestexecResult) {
         List<ExmMedResultDiagnosis> diagnoses = pfTestWaitingRoomDao.listDiagnosis(idTestexecResult);
         List<PfDiagnosisVo> diagnosisVoList = BeanUtil.convertList(diagnoses, PfDiagnosisVo.class);
-        for (PfDiagnosisVo pfDiagnosisVo: diagnosisVoList) {
+        for (PfDiagnosisVo pfDiagnosisVo : diagnosisVoList) {
             List<PfWaitingRoomDieReasonVo> dieReasonVos = pfTestWaitingRoomDao.listDieReason(pfDiagnosisVo.getIdTestexecResultDiagnosis());
             pfDiagnosisVo.setIdeReasonList(dieReasonVos);
         }
         return diagnosisVoList;
+    }
+
+    @Override
+    public List<ExmMedResultReferral> selectAllReferral(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.selectAllReferral(idTestexecResult);
     }
 
     @Override
@@ -502,6 +514,45 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public ExmEvaResult selectEvaResult(Long idTestexecResult) {
         return pfTestWaitingRoomDao.selectEvaResult(idTestexecResult);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public boolean saveReferralReason(List<ExmMedResultReferralReason> list) {
+        boolean qzFlag = false;
+        Long idTestexecResultReferral = null;
+        Long idTestexecResultDiagnosis = null;
+        ExmMedResultDieReason exmMedResultDieReason;
+        List<ExmMedResultDieReason> dieReasons = new ArrayList<>(list.size());
+        for (ExmMedResultReferralReason dieReason : list) {
+            idTestexecResultReferral = dieReason.getIdTestexecResultReferral();
+            if (dieReason.getFgExclude().equals(YesOrNoNum.NO.getCode())) {
+                qzFlag = true;
+            }
+            if (dieReason.getSdEvaEffciency().equals("1")) {
+                dieReason.setIdInques(dieReason.getExtId());
+            } else if (dieReason.getSdEvaEffciency().equals("2")) {
+                dieReason.setIdBody(dieReason.getExtId());
+            } else if (dieReason.getSdEvaEffciency().equals("3")) {
+                dieReason.setIdInspectItem(dieReason.getExtId());
+            }
+            exmMedResultDieReason = BeanUtil.convert(dieReason, ExmMedResultDieReason.class);
+            dieReasons.add(exmMedResultDieReason);
+            if (idTestexecResultDiagnosis == null) {
+                idTestexecResultDiagnosis = pfTestWaitingRoomDao.selectQzId(idTestexecResultReferral);
+            }
+            exmMedResultDieReason.setIdTestexecResultDiagnosis(idTestexecResultDiagnosis);
+        }
+        if (qzFlag) {
+            // 导入到确诊
+            saveDieReason(dieReasons);
+        }
+        return pfTestWaitingRoomDao.saveReferralReason(list) >= 1 ? true : false;
+    }
+
+    @Override
+    public List<PfReferralReasonVo> listReferralReason(Long idTestexecResultReferral) {
+        return pfTestWaitingRoomDao.listReferralReason(idTestexecResultReferral);
     }
 
 }
