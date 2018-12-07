@@ -322,6 +322,14 @@ public interface PfTestWaitingRoomDao {
     Integer outReferral(ExmMedResultReferral dto);
 
     /**
+     * 排除确诊
+     *
+     * @param idTestexecResultReferral
+     * @return
+     */
+    Integer updateQzFlag(Long idTestexecResultReferral);
+
+    /**
      * 已添加拟诊
      *
      * @param dto
@@ -461,6 +469,7 @@ public interface PfTestWaitingRoomDao {
 
     /**
      * 删除已有确诊原因
+     *
      * @param idTestexecResultDiagnosis
      * @return
      */

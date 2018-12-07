@@ -257,7 +257,10 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             diagnosis.setIdTestexecResultReferral(dto.getIdTestexecResultReferral());
             pfTestWaitingRoomDao.addDiagnosis(diagnosis);
         } else {
+            // 排除拟诊
             pfTestWaitingRoomDao.outReferral(dto);
+            // 修改确诊标识
+            pfTestWaitingRoomDao.updateQzFlag(dto.getIdTestexecResultReferral());
         }
         return dto.getIdTestexecResultReferral();
     }
