@@ -447,4 +447,11 @@ public interface PfTestWaitingRoomService {
      */
     List<PfReferralReasonVo> listReferralReason(Long idTestexecResultReferral);
 
+    /**
+     * 删除计划详情
+     *
+     * @param dto
+     * @return
+     */
+    boolean delPlanDetail(PfBachChangeStatusDto dto);
 }

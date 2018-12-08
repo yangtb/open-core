@@ -191,4 +191,7 @@ public class PfTestPaperConstant {
     public static final String LIST_REFERRAL_REASON_ERROR               = "listReferralReasonError";
     public static final String LIST_REFERRAL_REASON_ERROR_MSG           = "查询拟诊理由列表出错";
 
+    public static final String DEL_PLAN_DETAIL_ERROR                    = "delPlanDetailFailed";
+    public static final String DEL_PLAN_DETAIL_ERROR_MSG                = "删除计划详情失败";
+
 }

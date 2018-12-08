@@ -217,8 +217,11 @@ public class PfUserFacadeImpl implements PfUserFacade {
     @Override
     public CommonResult<UserInfoResult> selectUser(String userName) {
         try {
-            return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convert(pfUserService.selectUser(userName), UserInfoResult.class));
+            UserInfoResult userInfoResult = BeanUtil.convert(pfUserService.selectUser(userName), UserInfoResult.class);
+            if (userInfoResult != null && userInfoResult.getUserId() != null) {
+                userInfoResult.setRoleCodes(pfRoleService.selectUserRoleCode(userInfoResult.getUserId()));
+            }
+            return ResultFactory.initCommonResultWithSuccess(userInfoResult);
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfUserFacadeImpl-selectUser】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

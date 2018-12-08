@@ -122,4 +122,11 @@ public interface PfRoleService {
      */
     boolean needExpireNotice(Long userId);
 
+    /**
+     * 用户拥有角色编码集合
+     *
+     * @param userId   用户id
+     * @return
+     */
+    List<String> selectUserRoleCode(Long userId);
 }

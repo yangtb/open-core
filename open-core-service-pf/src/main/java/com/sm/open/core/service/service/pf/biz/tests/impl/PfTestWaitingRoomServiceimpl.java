@@ -558,4 +558,12 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return pfTestWaitingRoomDao.listReferralReason(idTestexecResultReferral);
     }
 
+    @Override
+    public boolean delPlanDetail(PfBachChangeStatusDto dto) {
+        if (pfTestWaitingRoomDao.selectDelPlanDetailstatus(dto) >= 1) {
+            throw new BizRuntimeException("planStatusChange", "删除失败！原因：候诊记录状态已改变。请刷新列表后重试！");
+        }
+        return pfTestWaitingRoomDao.delPlanDetail(dto) >= 1 ? true : false;
+    }
+
 }

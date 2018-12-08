@@ -132,4 +132,12 @@ public interface PfRoleDao {
      * @return
      */
     boolean needExpireNotice(@Param("userId") Long userId);
+
+    /**
+     * 用户拥有角色编码集合
+     *
+     * @param userId 用户id
+     * @return
+     */
+    List<String> selectUserRoleCode(@Param("userId") Long userId);
 }

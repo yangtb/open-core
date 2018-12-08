@@ -172,5 +172,15 @@
           AND b.code = 'MCADM'
           AND a.is_deleted = 'N'
     </select>
+    <select id="selectUserRoleCode" resultType="java.lang.String">
+        SELECT
+            b.code
+        FROM
+            user_role a
+                left join sys_role b on a.role_id = b.role_id
+        WHERE
+            a.user_id = #{userId}
+          AND a.is_deleted = 'N'
+    </select>
 
 </mapper>

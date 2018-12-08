@@ -687,6 +687,15 @@
     <delete id="delQzDieReason">
         delete from exm_med_result_die_reason where id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
     </delete>
+    <delete id="delPlanDetail">
+        delete from exm_testplan_detail
+        WHERE
+        id_testplan_detail in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
 
     <select id="countWaitingRoom" resultType="java.lang.Long">
         SELECT
@@ -712,6 +721,9 @@
         </if>
         <if test="naTestpaper != null and naTestpaper != ''">
             and g.na_testpaper like concat(#{naTestpaper},'%')
+        </if>
+        <if test="currentUserId != null">
+            and a.id_student = #{currentUserId}
         </if>
     </select>
     <select id="listWaitingRoom" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestWaitingRoomVo">
@@ -749,6 +761,9 @@
         </if>
         <if test="naTestpaper != null and naTestpaper != ''">
             and g.na_testpaper like concat(#{naTestpaper},'%')
+        </if>
+        <if test="currentUserId != null">
+            and a.id_student = #{currentUserId}
         </if>
         limit #{offset}, #{limit}
     </select>
@@ -1462,6 +1477,19 @@
             exm_med_result_diagnosis a
         WHERE
             a.id_testexec_result_referral = #{idTestexecResultReferral}
+    </select>
+    <select id="selectDelPlanDetailstatus" resultType="java.lang.Integer">
+        select
+            count(1)
+        from
+            exm_testplan_detail
+        WHERE
+            id_testplan_detail in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+        AND sd_testplan_detail != '0'
     </select>
 
 </mapper>

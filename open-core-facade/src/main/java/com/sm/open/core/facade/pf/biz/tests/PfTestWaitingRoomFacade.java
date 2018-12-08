@@ -418,4 +418,12 @@ public interface PfTestWaitingRoomFacade {
      */
     PfPageResult listReferralReason(Long idTestexecResultReferral);
 
+    /**
+     * 删除计划详情
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delPlanDetail(PfBachChangeStatusParam param);
+
 }

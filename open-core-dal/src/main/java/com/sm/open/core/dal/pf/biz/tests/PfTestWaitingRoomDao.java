@@ -665,4 +665,20 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfReferralReasonVo> listReferralReason(@Param("idTestexecResultReferral") Long idTestexecResultReferral);
+
+    /**
+     * 删除计划详情
+     *
+     * @param dto
+     * @return
+     */
+    Integer delPlanDetail(PfBachChangeStatusDto dto);
+
+    /**
+     * 删除计划详情状态有无变动
+     *
+     * @param dto
+     * @return
+     */
+    Integer selectDelPlanDetailstatus(PfBachChangeStatusDto dto);
 }

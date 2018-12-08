@@ -34,6 +34,7 @@ import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
 import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
+import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,7 +59,6 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
 
     @Resource
     private PfKbPartService pfKbPartService;
-
 
     @Override
     public PfPageResult listWaitingRoom(PfTestWatingRoomParam param) {
@@ -812,6 +812,22 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfKbPartFacadeImpl-listDieReason-error】查询拟诊理由列表出错，idTestexecResultReferral:{}", idTestexecResultReferral, e);
             return PfResultFactory.initPageResultWithError(
                     PfTestPaperConstant.LIST_REFERRAL_REASON_ERROR, PfTestPaperConstant.LIST_REFERRAL_REASON_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delPlanDetail(PfBachChangeStatusParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.delPlanDetail(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestPlanFacadeImpl-delPlanDetail】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestPlanFacadeImpl-delPlanDetail】删除计划详情失败, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.DEL_PLAN_DETAIL_ERROR, PfTestPaperConstant.DEL_PLAN_DETAIL_ERROR_MSG));
         }
     }
 
