@@ -60,5 +60,8 @@ public class PfTestPaperInfoResult implements Serializable {
      */
     private Date endTime;
 
-
+    /**
+     * 执行状态
+     */
+    private String sdTestexec;
 }

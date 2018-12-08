@@ -872,7 +872,7 @@
     <select id="selectTestPaperInfo"
             resultType="com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo">
         select
-            a.id_testexec, a.dt_exec_begin as beginTime, a.dt_exec_end as endTime, b.id_testexec_result
+            a.id_testexec, a.dt_exec_begin as beginTime, a.dt_exec_end as endTime, b.id_testexec_result, a.sd_testexec
         from
             exm_testexec a
         left join exm_med_result b on a.id_testexec = b.id_testexec and b.serial = 1
@@ -882,8 +882,8 @@
                 b.id_testexec_result = #{idTestexecResult}
             </when>
             <otherwise>
-                id_testplan_detail = #{idTestplanDetail}
-                and id_student=#{idStudent}
+                a.id_testplan_detail = #{idTestplanDetail}
+                and a.id_student=#{idStudent}
             </otherwise>
         </choose>
     </select>

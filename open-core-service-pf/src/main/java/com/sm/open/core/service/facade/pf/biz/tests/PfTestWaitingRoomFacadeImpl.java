@@ -279,6 +279,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     @Override
     public PfPageResult listTestCheck(PfTestExamTagParam param) {
         try {
+            PfPageParam.initPageDto(param);
             PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestCheck(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listTestCheck(dto), FaqMedCaseBodyListResult.class));
@@ -353,6 +354,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     @Override
     public PfPageResult listTestExam(PfTestExamTagParam param) {
         try {
+            PfPageParam.initPageDto(param);
             PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestExam(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listTestExam(dto), FaqMedCaseInspectListResult.class));
