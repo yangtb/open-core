@@ -5,7 +5,6 @@ import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.*;
 import com.sm.open.core.facade.model.rpc.CommonResult;
-import com.sm.open.core.facade.model.rpc.PageResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
 import java.util.List;
@@ -191,4 +190,12 @@ public interface PfClinicTemplateFacade {
      * @return
      */
     CommonResult<List<PfAssessTagResult>> listAllAssessTag(Long idDemo);
+
+    /**
+     * 病例流程配置
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> saveSerialNo(BasMedicalTagParam param);
 }

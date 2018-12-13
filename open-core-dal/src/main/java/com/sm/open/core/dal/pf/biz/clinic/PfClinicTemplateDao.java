@@ -219,4 +219,11 @@ public interface PfClinicTemplateDao {
      * @return
      */
     List<PfAssessTagVo> listAllAssessTag(@Param("idDemo") Long idDemo);
+
+    /**
+     * 病例流程配置
+     * @param dto
+     * @return
+     */
+    Integer saveSerialNo(BasMedicalTag dto);
 }

@@ -10,7 +10,6 @@ import com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo;
 import com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo;
 import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
@@ -148,5 +147,10 @@ public class PfClinicTemplateServiceImpl implements PfClinicTemplateService {
     @Override
     public List<PfAssessTagVo> listAllAssessTag(Long idDemo) {
         return pfClinicTemplateDao.listAllAssessTag(idDemo);
+    }
+
+    @Override
+    public boolean saveSerialNo(BasMedicalTag dto) {
+        return pfClinicTemplateDao.saveSerialNo(dto) >= 1 ? true : false;
     }
 }

@@ -323,6 +323,23 @@
         </foreach>
         )
     </update>
+    <update id="saveSerialNo">
+        update bas_medical_tag
+        set
+            sd_process = #{sdProcess},
+            <choose>
+                <when test="processSerialno != null">
+                    process_serialno = #{processSerialno},
+                </when>
+                <otherwise>
+                    process_serialno = null,
+                </otherwise>
+            </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_tag = #{idTag}
+    </update>
 
     <select id="listClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
         SELECT
@@ -392,12 +409,15 @@
 	       bmt.id_tag, bmt.name, bmt.id_media, bmt.id_demo, bmt.cd_med_asse, 
 	       bmt.fg_show_make, bmt.fg_show_exec, bmt.fg_active, bmt.fg_valid, 
 	       bmt.sort, bmt.creator, bmt.gmt_create, bmt.operator, bmt.gmt_modify, 
-	       bm.path
+	       bm.path, bmt.sd_process, bmt.process_serialno
         from
             bas_medical_tag bmt left join bas_media bm on bmt.id_media = bm.id_media
         where
             bmt.fg_valid = '0'
         and bmt.id_demo = #{idDemo}
+        <if test="fgShowExec != null and fgShowExec != '' ">
+            and bmt.fg_show_exec = #{fgShowExec}
+        </if>
         order by bmt.sort
     </select>
     <select id="listDimensionTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">

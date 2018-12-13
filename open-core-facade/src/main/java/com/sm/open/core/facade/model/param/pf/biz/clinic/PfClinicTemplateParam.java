@@ -29,4 +29,9 @@ public class PfClinicTemplateParam extends PfPageParam implements Serializable {
      */
     private String name;
 
+    /**
+     * 执行时是否显示
+     */
+    private String fgShowExec;
+
 }

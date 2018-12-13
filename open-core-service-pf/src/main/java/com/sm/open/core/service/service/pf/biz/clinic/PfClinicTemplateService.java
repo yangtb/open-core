@@ -1,6 +1,5 @@
 package com.sm.open.core.service.service.pf.biz.clinic;
 
-import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
@@ -192,4 +191,12 @@ public interface PfClinicTemplateService {
      * @return
      */
     List<PfAssessTagVo> listAllAssessTag(Long idDemo);
+
+    /**
+     * 病例流程配置
+     *
+     * @param dto
+     * @return
+     */
+    boolean saveSerialNo(BasMedicalTag dto);
 }

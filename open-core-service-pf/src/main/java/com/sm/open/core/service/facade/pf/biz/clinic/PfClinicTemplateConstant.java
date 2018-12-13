@@ -118,4 +118,7 @@ public class PfClinicTemplateConstant {
 
     public static final String LIST_ALL_ASSESS_TAG_ERROR                   = "listAllAssessTagFailed";
     public static final String LIST_ALL_ASSESS_TAG_ERROR_MSG               = "获取全部评估表标签失败";
+
+    public static final String SAVE_SERIAL_NO_ERROR                         = "saveSerialNoFailed";
+    public static final String SAVE_SERIAL_NO_ERROR_MSG                     = "保存病例配置失败";
 }

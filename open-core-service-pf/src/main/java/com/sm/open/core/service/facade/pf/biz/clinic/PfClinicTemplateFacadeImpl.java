@@ -374,4 +374,21 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
                     PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR, PfClinicTemplateConstant.LIST_ALL_ASSESS_TAG_ERROR_MSG));
         }
     }
+
+    @Override
+    public CommonResult<Boolean> saveSerialNo(BasMedicalTagParam param) {
+        try {
+            /* 参数校验 */
+            Assert.isTrue(param.getIdTag() != null, "idTag");
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfClinicTemplateService.saveSerialNo(BeanUtil.convert(param, BasMedicalTag.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfClinicTemplateFacadeImpl-saveSerialNo】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-saveSerialNo】保存病例配置失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfClinicTemplateConstant.SAVE_SERIAL_NO_ERROR, PfClinicTemplateConstant.SAVE_SERIAL_NO_ERROR_MSG));
+        }
+    }
 }
