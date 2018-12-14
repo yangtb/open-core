@@ -583,7 +583,10 @@
         )
     </update>
     <update id="delConsQa">
-        update exm_med_result_inques set fg_valid=#{fgValid} where id_testexec_result_inques = #{idTestexecResultInques}
+        update exm_med_result_inques
+        set fg_valid=#{fgValid},
+            gmt_create=now()
+        where id_testexec_result_inques = #{idTestexecResultInques}
     </update>
     <update id="outReferral">
         update
@@ -657,7 +660,8 @@
             <if test="idDie != null">
                 id_die = #{idDie},
             </if>
-            fg_valid=#{fgValid}
+            fg_valid=#{fgValid},
+            gmt_create=now()
         where id_testexec_result_body = #{idTestexecResultBody}
     </delete>
     <delete id="delExamQa">
@@ -666,7 +670,8 @@
             <if test="idDie != null">
                 id_die = #{idDie},
             </if>
-            fg_valid=#{fgValid}
+            fg_valid=#{fgValid},
+            gmt_create=now()
         where id_testexec_result_inspect = #{idTestexecResultInspect}
     </delete>
     <delete id="delLongDrugs">
@@ -968,7 +973,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            a.gmt_create
+            a.gmt_create desc
     </select>
     <select id="isExistConsQa" resultType="java.lang.Long">
         select
@@ -1125,7 +1130,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            a.gmt_create
+            a.gmt_create desc
     </select>
     <select id="listExamQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomExamVo">
         SELECT
@@ -1140,7 +1145,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            a.gmt_create
+            a.gmt_create desc
     </select>
     <select id="listReferral" resultType="com.sm.open.core.model.entity.ExmMedResultReferral">
         SELECT
