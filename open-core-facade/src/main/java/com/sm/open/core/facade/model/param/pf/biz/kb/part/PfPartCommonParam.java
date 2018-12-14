@@ -17,4 +17,8 @@ public class PfPartCommonParam extends PfPageParam implements Serializable {
      */
     private Long idMedCase;
 
+    /**
+     * 搜索关键字
+     */
+    private String keyword;
 }
