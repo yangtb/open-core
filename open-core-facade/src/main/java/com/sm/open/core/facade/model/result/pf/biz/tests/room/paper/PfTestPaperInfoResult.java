@@ -64,4 +64,10 @@ public class PfTestPaperInfoResult implements Serializable {
      * 执行状态
      */
     private String sdTestexec;
+
+    /**
+     * 当前串行序号
+     */
+    private Integer curSerialno;
+
 }

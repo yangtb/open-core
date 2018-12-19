@@ -453,7 +453,10 @@
             bmt.cd_med_asse ,
             bm.path ,
             bma.script,
-            bma.script_exec
+            bma.script_exec,
+            bmt.sort,
+            bmt.sd_process,
+            IF(bmt.process_serialno is null,bmt.sort,bmt.process_serialno) as process_serialno
         FROM
             bas_medical_tag bmt
         LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media

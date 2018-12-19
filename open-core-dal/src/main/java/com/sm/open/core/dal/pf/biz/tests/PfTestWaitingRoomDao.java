@@ -681,4 +681,12 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer selectDelPlanDetailstatus(PfBachChangeStatusDto dto);
+
+    /**
+     * 保存执行序号
+     *
+     * @param dto
+     * @return
+     */
+    Integer saveExecSerialNo(ExmTestexec dto);
 }

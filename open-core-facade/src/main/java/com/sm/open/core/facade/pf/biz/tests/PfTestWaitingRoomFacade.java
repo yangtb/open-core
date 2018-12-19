@@ -426,4 +426,12 @@ public interface PfTestWaitingRoomFacade {
      */
     CommonResult<Boolean> delPlanDetail(PfBachChangeStatusParam param);
 
+    /**
+     * 保存执行序号
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> saveExecSerialNo(ExmTestexecParam param);
+
 }

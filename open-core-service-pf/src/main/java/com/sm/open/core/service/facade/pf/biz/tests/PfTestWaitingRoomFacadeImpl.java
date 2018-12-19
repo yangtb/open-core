@@ -833,5 +833,20 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
         }
     }
 
+    @Override
+    public CommonResult<Boolean> saveExecSerialNo(ExmTestexecParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveExecSerialNo(BeanUtil.convert(param, ExmTestexec.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveExecSerialNo】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveExecSerialNo-error】保存执行序号出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_EXEC_SERIAL_NO_ERROR, PfTestPaperConstant.SAVE_EXEC_SERIAL_NO_ERROR_MSG));
+        }
+    }
+
 
 }

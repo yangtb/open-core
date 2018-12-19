@@ -654,6 +654,9 @@
     <update id="updateQzFlag">
         update exm_med_result_diagnosis set fg_valid = '1' where id_testexec_result_referral=#{idTestexecResultReferral}
     </update>
+    <update id="saveExecSerialNo">
+        update exm_testexec set cur_serialno = #{curSerialno} where id_testexec = #{idTestexec}
+    </update>
     <delete id="delCheckQa">
         update exm_med_result_body
         set
@@ -877,7 +880,8 @@
     <select id="selectTestPaperInfo"
             resultType="com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo">
         select
-            a.id_testexec, a.dt_exec_begin as beginTime, a.dt_exec_end as endTime, b.id_testexec_result, a.sd_testexec
+            a.id_testexec, a.dt_exec_begin as beginTime, a.dt_exec_end as endTime, b.id_testexec_result,
+            a.sd_testexec, a.cur_serialno
         from
             exm_testexec a
         left join exm_med_result b on a.id_testexec = b.id_testexec and b.serial = 1
@@ -973,7 +977,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            a.gmt_create desc
+            a.gmt_create
     </select>
     <select id="isExistConsQa" resultType="java.lang.Long">
         select
@@ -1130,7 +1134,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            a.gmt_create desc
+            a.gmt_create
     </select>
     <select id="listExamQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomExamVo">
         SELECT
@@ -1145,7 +1149,7 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         order by
-            a.gmt_create desc
+            a.gmt_create
     </select>
     <select id="listReferral" resultType="com.sm.open.core.model.entity.ExmMedResultReferral">
         SELECT

@@ -566,4 +566,9 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return pfTestWaitingRoomDao.delPlanDetail(dto) >= 1 ? true : false;
     }
 
+    @Override
+    public boolean saveExecSerialNo(ExmTestexec dto) {
+        return pfTestWaitingRoomDao.saveExecSerialNo(dto) >= 1 ? true : false;
+    }
+
 }

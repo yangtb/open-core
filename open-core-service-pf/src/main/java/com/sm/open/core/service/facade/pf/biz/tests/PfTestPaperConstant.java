@@ -194,4 +194,7 @@ public class PfTestPaperConstant {
     public static final String DEL_PLAN_DETAIL_ERROR                    = "delPlanDetailFailed";
     public static final String DEL_PLAN_DETAIL_ERROR_MSG                = "删除计划详情失败";
 
+    public static final String SAVE_EXEC_SERIAL_NO_ERROR                = "saveExecSerialNoError";
+    public static final String SAVE_EXEC_SERIAL_NO_ERROR_MSG            = "保存执行序号出错";
+
 }

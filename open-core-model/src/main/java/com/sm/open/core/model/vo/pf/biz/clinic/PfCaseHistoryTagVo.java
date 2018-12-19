@@ -36,4 +36,19 @@ public class PfCaseHistoryTagVo extends FaqMedTag implements Serializable {
      */
     private String fgShowExec;
 
+    /**
+     * 排序
+     */
+    private Integer sort;
+
+    /**
+     * 流程类型 1 并行 2 串行
+     */
+    private String sdProcess;
+
+    /**
+     * 串行序号(串行必填，并行为空或0)
+     */
+    private Integer processSerialno;
+
 }

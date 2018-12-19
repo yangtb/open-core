@@ -65,4 +65,9 @@ public class ExmTestexecParam implements Serializable {
      */
     private Date dtExecEnd;
 
+    /**
+     * 当前串行序号
+     */
+    private Integer curSerialno;
+
 }
