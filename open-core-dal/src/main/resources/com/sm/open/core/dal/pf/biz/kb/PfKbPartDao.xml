@@ -706,8 +706,7 @@
                 fg_carried = #{status}
             </when>
             <otherwise>
-                fg_valid = #{status},
-                fg_active = '0'
+                fg_valid = #{status}
             </otherwise>
         </choose>
         WHERE
@@ -765,8 +764,7 @@
                 fg_carried = #{status}
             </when>
             <otherwise>
-                fg_valid = #{status},
-                fg_active = '0'
+                fg_valid = #{status}
             </otherwise>
         </choose>
         WHERE
@@ -803,8 +801,7 @@
                 fg_carried = #{status}
             </when>
             <otherwise>
-                fg_valid = #{status},
-                fg_active = '0'
+                fg_valid = #{status}
             </otherwise>
         </choose>
         WHERE
