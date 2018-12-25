@@ -48,5 +48,9 @@ public class FaqEvaCaseItemReasonParam implements Serializable {
      */
     private Long idInspectItem;
 
+    /**
+     * 诊断
+     */
+    private Long idDie;
 
 }

@@ -126,6 +126,9 @@
             <if test="idInspectItem!=null">
                 id_inspect_item,
             </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
         </trim>
         )
         VALUES
@@ -148,6 +151,9 @@
             </if>
             <if test="idInspectItem!=null">
                 #{idInspectItem},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
             </if>
         </trim>
         )
@@ -603,7 +609,8 @@
             sd_eva_effciency = #{sdEvaEffciency},
             id_inques = #{idInques},
             id_body = #{idBody},
-            id_inspect_item = #{idInspectItem}
+            id_inspect_item = #{idInspectItem},
+            id_die = #{idDie}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -836,10 +843,13 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_effciency AS sdEva
+            b.sd_eva_effciency AS sdEva,
+            b.id_die,
+            c.name as idDieText
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_reason b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
         WHERE
              a.id_eva_case = #{idEvaCase}
         AND a.cd_eva_asse = #{cdEvaAsse}

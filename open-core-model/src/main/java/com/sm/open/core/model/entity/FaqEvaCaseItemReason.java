@@ -53,5 +53,9 @@ public class FaqEvaCaseItemReason implements Serializable {
      */
     private String desText;
 
+    /**
+     * 诊断
+     */
+    private Long idDie;
 
 }

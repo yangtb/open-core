@@ -267,6 +267,7 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
             for (FaqEvaCaseItemReason faqEvaCaseItemReason : list) {
                 faqEvaCaseItemReason.setSdEvaEffciency(dto.getSdEva());
                 faqEvaCaseItemReason.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                faqEvaCaseItemReason.setIdDie(dto.getIdDie());
                 if (faqEvaCaseItemReason.getIdEvaCaseItemList() == null) {
                     pfKbAssessDao.saveReason(faqEvaCaseItemReason);
                 } else {
