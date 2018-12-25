@@ -1,6 +1,9 @@
 package com.sm.open.core.service.service.pf.biz.clinic;
 
+import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
+import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
+import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
@@ -199,4 +202,62 @@ public interface PfClinicTemplateService {
      * @return
      */
     boolean saveSerialNo(BasMedicalTag dto);
+
+    /**
+     * 获取病例关联的idMedCase
+     *
+     * @param idMedicalrec 病例id
+     * @param cdMedAsse    组件编码
+     * @return
+     */
+    Long selectCaseIdMedCase(Long idMedicalrec, String cdMedAsse);
+
+    /**
+     * 病例-问诊问题总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countInquisitionQuestion(PfInquisitionQuestionDto dto);
+
+    /**
+     * 病例-问诊问题列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasInques> listInquisitionQuestion(PfInquisitionQuestionDto dto);
+
+    /**
+     * 病例-体格检查问题总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countCheckQuestion(PfCheckQuestionDto dto);
+
+    /**
+     * 病例-体格检查问题列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasBody> listCheckQuestion(PfCheckQuestionDto dto);
+
+    /**
+     * 病例-辅助检查问题总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countExamQuestion(PfExamQuestionDto dto);
+
+    /**
+     * 病例-辅助检查问题列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasInspectItem> listExamQuestion(PfExamQuestionDto dto);
+
 }

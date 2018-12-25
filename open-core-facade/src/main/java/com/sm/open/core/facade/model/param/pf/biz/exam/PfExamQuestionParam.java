@@ -33,4 +33,9 @@ public class PfExamQuestionParam extends PfPageParam implements Serializable {
      * 搜索关键字
      */
     private String keywords;
+
+    /**
+     * 扩展id
+     */
+    private Long extId;
 }

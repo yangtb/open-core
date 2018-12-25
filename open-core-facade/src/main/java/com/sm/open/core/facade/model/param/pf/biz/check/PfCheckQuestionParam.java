@@ -34,4 +34,9 @@ public class PfCheckQuestionParam extends PfPageParam implements Serializable {
      */
     private String keywords;
 
+    /**
+     * 扩展id
+     */
+    private Long extId;
+
 }

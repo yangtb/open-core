@@ -3,13 +3,22 @@ package com.sm.open.core.service.facade.pf.biz.clinic;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.core.facade.model.param.pf.biz.check.PfCheckQuestionParam;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.*;
+import com.sm.open.core.facade.model.param.pf.biz.exam.PfExamQuestionParam;
+import com.sm.open.core.facade.model.param.pf.biz.inquisition.PfInquisitionQuestionParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
+import com.sm.open.core.facade.model.result.pf.biz.check.BasBodyCheckResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.*;
+import com.sm.open.core.facade.model.result.pf.biz.exam.BasInspectItemResult;
+import com.sm.open.core.facade.model.result.pf.biz.inquisition.BasInquesResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.clinic.PfClinicTemplateFacade;
+import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
+import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
+import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
@@ -389,6 +398,51 @@ public class PfClinicTemplateFacadeImpl implements PfClinicTemplateFacade {
             LOGGER.error("【PfClinicTemplateFacadeImpl-saveSerialNo】保存病例配置失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfClinicTemplateConstant.SAVE_SERIAL_NO_ERROR, PfClinicTemplateConstant.SAVE_SERIAL_NO_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listInquisitionQuestion(PfInquisitionQuestionParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfInquisitionQuestionDto dto = BeanUtil.convert(param, PfInquisitionQuestionDto.class);
+            dto.setExtId(pfClinicTemplateService.selectCaseIdMedCase(param.getExtId(), "004"));
+            return PfResultFactory.initPagePfResultWithSuccess(pfClinicTemplateService.countInquisitionQuestion(dto),
+                    BeanUtil.convertList(pfClinicTemplateService.listInquisitionQuestion(dto), BasInquesResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listInquisitionQuestion-error】获取病例-问诊问题列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfClinicTemplateConstant.PAGE_CASE_QUESTION_LIST_ERROR, PfClinicTemplateConstant.PAGE_CASE_QUESTION_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public PfPageResult listCheckQuestion(PfCheckQuestionParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfCheckQuestionDto dto = BeanUtil.convert(param, PfCheckQuestionDto.class);
+            dto.setExtId(pfClinicTemplateService.selectCaseIdMedCase(param.getExtId(), "005"));
+            return PfResultFactory.initPagePfResultWithSuccess(pfClinicTemplateService.countCheckQuestion(dto),
+                    BeanUtil.convertList(pfClinicTemplateService.listCheckQuestion(dto), BasBodyCheckResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listCheckQuestion-error】获取病例-体格检查问题列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfClinicTemplateConstant.PAGE_CHECK_QUESTION_LIST_ERROR, PfClinicTemplateConstant.PAGE_CHECK_QUESTION_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public PfPageResult listExamQuestion(PfExamQuestionParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfExamQuestionDto dto = BeanUtil.convert(param, PfExamQuestionDto.class);
+            dto.setExtId(pfClinicTemplateService.selectCaseIdMedCase(param.getExtId(), "006"));
+            return PfResultFactory.initPagePfResultWithSuccess(pfClinicTemplateService.countExamQuestion(dto),
+                    BeanUtil.convertList(pfClinicTemplateService.listExamQuestion(dto), BasInspectItemResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfClinicTemplateFacadeImpl-listExamQuestion-error】获取病例-辅助检查问题列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfClinicTemplateConstant.PAGE_EXAM_QUESTION_LIST_ERROR, PfClinicTemplateConstant.PAGE_EXAM_QUESTION_LIST_ERROR_MSG);
         }
     }
 }

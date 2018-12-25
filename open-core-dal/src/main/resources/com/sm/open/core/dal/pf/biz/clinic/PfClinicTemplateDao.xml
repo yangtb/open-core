@@ -489,4 +489,128 @@
         ORDER BY
             bet.sort
     </select>
+    <select id="selectCaseIdMedCase" resultType="java.lang.Long">
+        SELECT
+            a.id_med_case
+        FROM
+            faq_med_tag a
+        left join bas_med_asse b on a.id_tag = b.id_med_asse
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        and b.cd_med_asse = #{cdMedAsse}
+    </select>
+    <select id="countInquisitionQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_inques_list bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.id_med_case = #{extId}
+        and bi.fg_valid = '0'
+        <if test="idInquesCa != null and idInquesCa != ''">
+            AND bi.id_inques_ca = #{idInquesCa}
+        </if>
+        <if test="desInques != null and desInques != '' ">
+            AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listInquisitionQuestion" resultType="com.sm.open.core.model.entity.BasInques">
+        SELECT
+            bi.id_inques, bi.des_inques, bi.id_inques_ca,bic.name as idInquesCaText
+        FROM
+            faq_med_case_inques_list bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.id_med_case = #{extId}
+        and bi.fg_valid = '0'
+        <if test="idInquesCa != null and idInquesCa != ''">
+            AND bi.id_inques_ca = #{idInquesCa}
+        </if>
+        <if test="desInques != null and desInques != '' ">
+            AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countCheckQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_body_list bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.id_med_case = #{extId}
+        and bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listCheckQuestion" resultType="com.sm.open.core.model.entity.BasBody">
+        SELECT
+            bb.id_body, bb.des_body, bb.sd_body, bb.id_body_ca, bbc.name as idBodyCaText,
+            bb.cd_check
+        FROM
+            faq_med_case_body_list bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.id_med_case = #{extId}
+        and bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countExamQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_inspect_list bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        WHERE
+            bii.id_med_case = #{extId}
+        and bii.fg_valid = '0'
+        <if test="idInspect != null and idInspect != ''">
+            AND bii.id_inspect = #{idInspect}
+        </if>
+        <if test="naItem != null and naItem != '' ">
+            AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listExamQuestion" resultType="com.sm.open.core.model.entity.BasInspectItem">
+        SELECT
+            bii.id_inspect_item, bii.na_item, bii.id_inspect, bii.na_short, bii.des_stand,
+            bic.name as idInspectText
+        FROM
+            faq_med_case_inspect_list bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        WHERE
+            bii.id_med_case = #{extId}
+        and bii.fg_valid = '0'
+        <if test="idInspect != null and idInspect != ''">
+            AND bii.id_inspect = #{idInspect}
+        </if>
+        <if test="naItem != null and naItem != '' ">
+            AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
 </mapper>

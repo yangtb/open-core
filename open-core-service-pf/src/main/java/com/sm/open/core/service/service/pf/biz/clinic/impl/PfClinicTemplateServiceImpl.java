@@ -1,7 +1,10 @@
 package com.sm.open.core.service.service.pf.biz.clinic.impl;
 
 import com.sm.open.core.dal.pf.biz.clinic.PfClinicTemplateDao;
+import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.biz.clinic.PfClinicTemplateDto;
+import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
+import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
@@ -153,4 +156,41 @@ public class PfClinicTemplateServiceImpl implements PfClinicTemplateService {
     public boolean saveSerialNo(BasMedicalTag dto) {
         return pfClinicTemplateDao.saveSerialNo(dto) >= 1 ? true : false;
     }
+
+    @Override
+    public Long selectCaseIdMedCase(Long idMedicalrec, String cdMedAsse) {
+        return pfClinicTemplateDao.selectCaseIdMedCase(idMedicalrec, cdMedAsse);
+    }
+
+    @Override
+    public Long countInquisitionQuestion(PfInquisitionQuestionDto dto) {
+        return pfClinicTemplateDao.countInquisitionQuestion(dto);
+    }
+
+    @Override
+    public List<BasInques> listInquisitionQuestion(PfInquisitionQuestionDto dto) {
+        return pfClinicTemplateDao.listInquisitionQuestion(dto);
+    }
+
+    @Override
+    public Long countCheckQuestion(PfCheckQuestionDto dto) {
+        return pfClinicTemplateDao.countCheckQuestion(dto);
+    }
+
+    @Override
+    public List<BasBody> listCheckQuestion(PfCheckQuestionDto dto) {
+        return pfClinicTemplateDao.listCheckQuestion(dto);
+    }
+
+    @Override
+    public Long countExamQuestion(PfExamQuestionDto dto) {
+        return pfClinicTemplateDao.countExamQuestion(dto);
+    }
+
+    @Override
+    public List<BasInspectItem> listExamQuestion(PfExamQuestionDto dto) {
+        return pfClinicTemplateDao.listExamQuestion(dto);
+    }
+
+
 }

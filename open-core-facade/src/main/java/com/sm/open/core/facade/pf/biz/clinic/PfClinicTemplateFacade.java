@@ -1,6 +1,9 @@
 package com.sm.open.core.facade.pf.biz.clinic;
 
+import com.sm.open.core.facade.model.param.pf.biz.check.PfCheckQuestionParam;
 import com.sm.open.core.facade.model.param.pf.biz.clinic.*;
+import com.sm.open.core.facade.model.param.pf.biz.exam.PfExamQuestionParam;
+import com.sm.open.core.facade.model.param.pf.biz.inquisition.PfInquisitionQuestionParam;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.result.pf.biz.PfCommonZtreeResult;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.*;
@@ -198,4 +201,29 @@ public interface PfClinicTemplateFacade {
      * @return
      */
     CommonResult<Boolean> saveSerialNo(BasMedicalTagParam param);
+
+    /**
+     * 病例 - 问诊问题列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listInquisitionQuestion(PfInquisitionQuestionParam param);
+
+    /**
+     * 病例 - 体格检查问题列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listCheckQuestion(PfCheckQuestionParam param);
+
+    /**
+     * 病例 - 辅助检查问题列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listExamQuestion(PfExamQuestionParam param);
+
 }

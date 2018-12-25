@@ -119,6 +119,15 @@ public class PfClinicTemplateConstant {
     public static final String LIST_ALL_ASSESS_TAG_ERROR                   = "listAllAssessTagFailed";
     public static final String LIST_ALL_ASSESS_TAG_ERROR_MSG               = "获取全部评估表标签失败";
 
-    public static final String SAVE_SERIAL_NO_ERROR                         = "saveSerialNoFailed";
-    public static final String SAVE_SERIAL_NO_ERROR_MSG                     = "保存病例配置失败";
+    public static final String SAVE_SERIAL_NO_ERROR                        = "saveSerialNoFailed";
+    public static final String SAVE_SERIAL_NO_ERROR_MSG                    = "保存病例配置失败";
+
+    public static final String PAGE_CASE_QUESTION_LIST_ERROR               = "pageCaseQuestionListError";
+    public static final String PAGE_CASE_QUESTION_LIST_ERROR_MSG           = "分页查询病例问诊问题列表失败";
+
+    public static final String PAGE_CHECK_QUESTION_LIST_ERROR              = "pageCheckQuestionListError";
+    public static final String PAGE_CHECK_QUESTION_LIST_ERROR_MSG          = "分页查询病例体格检查问题列表失败";
+
+    public static final String PAGE_EXAM_QUESTION_LIST_ERROR               = "pageExamQuestionListError";
+    public static final String PAGE_EXAM_QUESTION_LIST_ERROR_MSG           = "分页查询病例辅助检查问题列表失败";
 }
