@@ -163,23 +163,25 @@
 
     <select id="listDrugInfo" resultType="com.sm.open.core.model.entity.BasDrugs">
         SELECT
-            id_drugs, name, cd_drugsclass, spec, unit, pinyin,
-            fg_active, fg_valid, sort, creator, gmt_create, operator, gmt_modify
+            a.id_drugs, a.name, a.cd_drugsclass, a.spec, a.unit, a.pinyin,
+            a.fg_active, a.fg_valid, a.sort, a.creator, a.gmt_create, a.operator, a.gmt_modify,
+            b.name as cdDrugsclassText
         FROM
-            bas_drugs
+            bas_drugs a
+        left join bas_drugs_class b on a.cd_drugsclass = b.cd
         WHERE
-            fg_valid = '0'
+            a.fg_valid = '0'
         <if test="name != null and name != '' ">
-            AND name like concat('%',#{name},'%')
+            AND a.name like concat('%',#{name},'%')
         </if>
         <if test="fgActive != null and fgActive != '' ">
-            AND fg_active = #{fgActive}
+            AND a.fg_active = #{fgActive}
         </if>
         <if test="pinyin != null and pinyin != '' ">
-            AND pinyin like concat('%',#{pinyin},'%')
+            AND a.pinyin like concat('%',#{pinyin},'%')
         </if>
         <if test="keywords != null and keywords != '' ">
-            AND (name like concat('%',#{keywords},'%') or pinyin like concat('%',#{keywords},'%'))
+            AND (a.name like concat('%',#{keywords},'%') or a.pinyin like concat('%',#{keywords},'%'))
         </if>
         limit #{offset}, #{limit}
     </select>
