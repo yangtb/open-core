@@ -252,17 +252,19 @@ public class PfUserFacadeImpl implements PfUserFacade {
         try {
             /* 参数校验 */
             Assert.isTrue(StringUtils.isNotBlank(param.getEmail()), "email");
-            Assert.isTrue(StringUtils.isNotBlank(param.getEmailVercode()), "emailVercode");
             Assert.isTrue(StringUtils.isNotBlank(param.getOrgName()), "orgName");
             Assert.isTrue(StringUtils.isNotBlank(param.getPassword()), "password");
             Assert.isTrue(StringUtils.isNotBlank(param.getPhone()), "phone");
             Assert.isTrue(StringUtils.isNotBlank(param.getUsername()), "orgName");
 
             // email验证码校验
-            RegisterVerification registerVerification = pfVerificationService.selectRvByReceiver(param.getEmail());
-            if (registerVerification == null || registerVerification.getEndTime().before(new Date())) {
-                throw new BizRuntimeException(PfUserConstant.EMAIL_VCODE_EXPIRED, PfUserConstant.EMAIL_VCODE_EXPIRED_MSG);
+            if (StringUtils.isNotBlank(param.getEmailVercode())) {
+                RegisterVerification registerVerification = pfVerificationService.selectRvByReceiver(param.getEmail());
+                if (registerVerification == null || registerVerification.getEndTime().before(new Date())) {
+                    throw new BizRuntimeException(PfUserConstant.EMAIL_VCODE_EXPIRED, PfUserConstant.EMAIL_VCODE_EXPIRED_MSG);
+                }
             }
+
 
             // add 机构
             int orgExpiryDay = 0;
