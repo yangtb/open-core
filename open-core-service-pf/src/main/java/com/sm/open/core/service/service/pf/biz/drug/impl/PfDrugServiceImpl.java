@@ -88,4 +88,13 @@ public class PfDrugServiceImpl implements PfDrugService {
     public boolean delDrugInfo(PfBachChangeStatusDto dto) {
         return pfDrugDao.delDrugInfo(dto) >= 1 ? true : false;
     }
+
+    @Override
+    public boolean dealPinyin() {
+        List<BasDrugs> basDrugs = pfDrugDao.listAllDrugs();
+        for (BasDrugs basDrug : basDrugs) {
+            pfDrugDao.updatePinyin(basDrug.getIdDrugs(), PinyinUtil.getFirstLettersUp(basDrug.getName()));
+        }
+        return true;
+    }
 }

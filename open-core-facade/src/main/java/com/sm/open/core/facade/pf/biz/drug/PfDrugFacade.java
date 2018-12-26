@@ -85,4 +85,11 @@ public interface PfDrugFacade {
      * @return
      */
     CommonResult<Boolean> delDrugInfo(PfBachChangeStatusParam param);
+
+    /**
+     * 处理拼音
+     *
+     * @return
+     */
+    CommonResult<Boolean> dealPinyin();
 }

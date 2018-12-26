@@ -136,6 +136,9 @@
         </foreach>
         )
     </update>
+    <update id="updatePinyin">
+        update bas_drugs set pinyin = #{pinyin} where id_drugs = #{idDrugs}
+    </update>
 
     <select id="countDrugInfo" resultType="java.lang.Long">
         SELECT
@@ -216,6 +219,13 @@
 
     <select id="isExistDrugCatalogue" resultType="java.lang.Integer">
         select count(1) from bas_drugs_class where cd = #{cd} and fg_valid = '0'
+    </select>
+    <select id="listAllDrugs" resultType="com.sm.open.core.model.entity.BasDrugs">
+        SELECT
+            id_drugs, name, cd_drugsclass, spec, unit, pinyin,
+            fg_active, fg_valid, sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_drugs
     </select>
 
 </mapper>

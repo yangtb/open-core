@@ -106,4 +106,21 @@ public interface PfDrugDao {
      * @return
      */
     int delDrugInfo(PfBachChangeStatusDto dto);
+
+    /**
+     * 所有药品
+     *
+     * @return
+     */
+    List<BasDrugs> listAllDrugs();
+
+    /**
+     * 更新拼音
+     *
+     * @param idDrugs
+     * @param pinyin
+     * @return
+     */
+    Integer updatePinyin(@Param("idDrugs") Long idDrugs,
+                         @Param("pinyin") String pinyin);
 }

@@ -92,4 +92,11 @@ public interface PfDrugService {
      * @return
      */
     boolean delDrugInfo(PfBachChangeStatusDto dto);
+
+    /**
+     * 处理拼音
+     *
+     * @return
+     */
+    boolean dealPinyin();
 }

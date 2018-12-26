@@ -169,4 +169,9 @@ public class PfDrugFacadeImpl implements PfDrugFacade {
                     PfDrugConstant.DEL_DRUG_INFO_ERROR, PfDrugConstant.DEL_DRUG_INFO_ERROR_MSG));
         }
     }
+
+    @Override
+    public CommonResult<Boolean> dealPinyin() {
+        return ResultFactory.initCommonResultWithSuccess(pfDrugService.dealPinyin());
+    }
 }
