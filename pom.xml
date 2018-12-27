@@ -55,7 +55,7 @@
         <commons.io.version>2.0.1</commons.io.version>
         <apache.commons.io.version>1.3.2</apache.commons.io.version>
         <apache.directory.commons.io.version>2.4</apache.directory.commons.io.version>
-        <commons.fileupload.version>1.3</commons.fileupload.version>
+        <commons.fileupload.version>1.3.3</commons.fileupload.version>
         <commons.digester.version>2.1</commons.digester.version>
         <commons.httpclient.version>3.1</commons.httpclient.version>
         <commons.net.version>3.3</commons.net.version>
