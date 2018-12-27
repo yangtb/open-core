@@ -136,7 +136,7 @@ public class PfRoleFacadeImpl implements PfRoleFacade {
         }
     }
 
-    @Transactional
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public CommonResult<Boolean> saveRoleMenu(PfRoleMenuParam param) {
         try {

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.system.verification.PfRegisterVerificationDao">
+
+    <insert id="insertRegisterVerification">
+        INSERT INTO register_verification(
+            user_id, code, start_time, end_time,
+            type, receiver, gmt_create, gmt_modify
+        )
+        VALUES(
+            #{userId}, #{code}, #{startTime}, #{endTime},
+            #{type}, #{receiver}, NOW() , NOW()
+        );
+    </insert>
+
+    <update id="updateRegisterVerification">
+        update
+          register_verification
+        set
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="code != null and code!=''">
+                code = #{code},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="endTime != null">
+                end_time = #{endTime},
+            </if>
+            <if test="type != null and type!=''">
+                type = #{type},
+            </if>
+            <if test="receiver != null and receiver!=''">
+                receiver = #{receiver},
+            </if>
+            gmt_modify = now()
+        where
+          id = #{id}
+    </update>
+
+    <select id="selectRvByReceiver" resultType="com.sm.open.core.model.entity.RegisterVerification">
+        select
+          id,user_id, code, start_time, end_time, type, receiver
+        from
+          register_verification
+        where
+          receiver = #{receiver}
+        order by gmt_create desc
+        limit 1
+    </select>
+
+
+</mapper>

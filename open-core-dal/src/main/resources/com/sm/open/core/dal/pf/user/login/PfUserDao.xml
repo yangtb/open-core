@@ -3,7 +3,7 @@
 <mapper namespace="com.sm.open.core.dal.pf.user.login.PfUserDao">
 
     <sql id="Base_Column_List" >
-         user_id, username, password, salt, email, phone_no, enabled, is_first, role_type, role_desc,
+         user_id, username, password, salt, email, phone_no, enabled, is_first, role_type, role_desc,id_org ,
          real_name, remark, last_login_time, is_deleted, gmt_create, gmt_modify
     </sql>
 
@@ -12,14 +12,20 @@
             keyColumn="user_id" keyProperty="userId">
         INSERT INTO user_info(
             username , password , salt , email , phone_no ,
-            enabled , role_type , role_desc , real_name , sex,
+            enabled , real_name , id_org ,
+            <if test="sex!=0">
+                sex,
+            </if>
             remark , gmt_create , gmt_modify , operator
         )
         VALUES
             (
               #{username} , #{password} , #{salt} ,  #{email} ,  #{phoneNo} ,
-              #{enabled} , #{roleType} , #{roleDesc} , #{realName} , #{sex} ,
-              #{remark}  , now() , now() , #{operator}
+              #{enabled} , #{realName} , #{idOrg} ,
+              <if test="sex!=0">
+                #{sex} ,
+              </if>
+              #{remark} , now() , now() , #{operator}
             );
     </insert>
 
@@ -38,6 +44,18 @@
     <delete id="delUserRole">
         update user_role set is_deleted = 'Y' where user_id = #{userId}
     </delete>
+
+    <!-- 获取用户所在机构集合 -->
+    <select id="selectOrgId" resultType="java.lang.Long">
+        SELECT id_org
+        FROM  user_info
+        WHERE
+        user_id in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
 
     <!-- 删除用户 -->
     <update id="delUser" parameterType="java.util.List">
@@ -101,6 +119,9 @@
             <if test="operator != null and operator != ''">
                 operator = #{operator},
             </if>
+            <if test="idOrg != null">
+                id_org = #{idOrg},
+            </if>
             gmt_modify = NOW()
         WHERE
             user_id = #{userId};
@@ -116,10 +137,13 @@
     <!-- 根据用户获取用户信息 -->
     <select id="selectUser" resultType="com.sm.open.core.model.entity.UserInfo">
         SELECT
-        <include refid="Base_Column_List" />
-        FROM user_info
-        WHERE username = #{userName}
-        and is_deleted = 'N'
+            ui.user_id, ui.username, ui.password, ui.salt, ui.email, ui.phone_no, ui.enabled,
+            ui.is_first, ui.role_type, ui.role_desc,ui.id_org ,
+            ui.real_name, ui.remark, ui.last_login_time, ui.is_deleted, ui.gmt_create, ui.gmt_modify,
+            so.fg_active, so.fg_plat
+        FROM user_info ui left join sys_org so on ui.id_org = so.id_org
+        WHERE ui.username = #{userName}
+        and ui.is_deleted = 'N'
     </select>
 
     <!-- 根据用户id获取用户信息 -->
@@ -134,54 +158,125 @@
     <select id="listUsers" parameterType="com.sm.open.core.model.dto.pf.user.PfUserDto"
             resultType="com.sm.open.core.model.vo.pf.user.login.PfUsersVo">
         SELECT
-            user_id , username , email , sex , phone_no , enabled ,
-            is_first , real_name , last_login_time , is_deleted , role_type,
-            gmt_create , gmt_modify, operator
+            ui.user_id ,
+            ui.username ,
+            ui.email ,
+            ui.sex ,
+            ui.phone_no ,
+            ui.enabled ,
+            ui.is_first ,
+            ui.real_name ,
+            ui.last_login_time ,
+            ui.is_deleted ,
+            ui.role_type ,
+            ui.gmt_create ,
+            ui.gmt_modify ,
+            ui.operator ,
+            ui.id_org
         FROM
-            user_info
-        WHERE is_deleted = 'N'
+          user_info ui
+        <if test='fgSuper == "0"'>
+            LEFT JOIN(
+                SELECT
+                    a.user_id ,
+                    min(b.level) as level
+                FROM
+                    user_role a
+                LEFT JOIN sys_role b ON a.role_id = b.role_id
+                WHERE
+                    a.is_deleted = 'N'
+                group by a.user_id
+                ORDER BY
+                    b.level DESC
+            ) temp ON ui.user_id = temp.user_id
+        </if>
+        WHERE
+          is_deleted = 'N'
+        <if test='fgSuper == "0"'>
+            AND temp.level > #{level}
+        </if>
         <if test="conditionValue != null and conditionValue !=''">
             <choose>
                 <when test="type != null and type == '1'.toString()">
-                    and username like concat(#{conditionValue},'%')
+                    and ui.username like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '2'.toString()">
-                    and real_name like concat(#{conditionValue},'%')
+                    and ui.real_name like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '3'.toString()">
-                    and phone_no like concat(#{conditionValue},'%')
+                    and ui.phone_no like concat(#{conditionValue},'%')
                 </when>
             </choose>
         </if>
-        and username != 'super'
-        ORDER BY user_id
+        <if test="idOrg != null">
+            and ui.id_org = #{idOrg}
+        </if>
+        and ui.username != 'super'
         limit #{offset}, #{limit}
     </select>
 
     <!-- 获取用户列表总数 -->
     <select id="countUsers" parameterType="com.sm.open.core.model.dto.pf.user.PfUserDto" resultType="java.lang.Long">
         SELECT
-        count(1)
-        FROM user_info
-        WHERE is_deleted = 'N'
+            count(1)
+        FROM
+            user_info ui
+        <if test='fgSuper == "0"'>
+        LEFT JOIN(
+            SELECT
+                a.user_id ,
+                min(b.level) as level
+            FROM
+                user_role a
+            LEFT JOIN sys_role b ON a.role_id = b.role_id
+            WHERE
+                a.is_deleted = 'N'
+            group by a.user_id
+            ORDER BY
+                b.level DESC
+        ) temp ON ui.user_id = temp.user_id
+        </if>
+        WHERE
+            is_deleted = 'N'
+        <if test='fgSuper == "0"'>
+        AND temp.level > #{level}
+        </if>
         <if test="conditionValue != null and conditionValue !=''">
             <choose>
                 <when test="type != null and type == '1'.toString()">
-                    and username like concat(#{conditionValue},'%')
+                    and ui.username like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '2'.toString()">
-                    and real_name like concat(#{conditionValue},'%')
+                    and ui.real_name like concat(#{conditionValue},'%')
                 </when>
                 <when test="type != null and type == '3'.toString()">
-                    and phone_no like concat(#{conditionValue},'%')
+                    and ui.phone_no like concat(#{conditionValue},'%')
                 </when>
             </choose>
         </if>
+        <if test="idOrg != null">
+            and ui.id_org = #{idOrg}
+        </if>
+        and ui.username != 'super'
     </select>
 
     <!-- 判断是否存在相同的用户名 -->
     <select id="isExistUser" resultType="java.lang.Boolean">
          SELECT COUNT(1) FROM user_info WHERE username = #{userName} and is_deleted = 'N'
+    </select>
+
+    <!-- 查询学生信息 -->
+    <select id="selectStudentInfo" resultType="com.sm.open.core.model.vo.pf.user.login.PfStudentVo">
+        SELECT
+            a.user_id as studentId, a.real_name, a.sex, a.email, a.phone_no, 
+            b.name as orgName, d.name as className
+        FROM
+            user_info a
+        LEFT JOIN sys_org b on a.id_org = b.id_org
+        LEFT JOIN id_class_memo c ON a.user_id = c.id_user
+        LEFT JOIN sys_class d on c.id_class = d.id_class
+        WHERE
+            a.user_id = #{idStudent}
     </select>
 
 </mapper>

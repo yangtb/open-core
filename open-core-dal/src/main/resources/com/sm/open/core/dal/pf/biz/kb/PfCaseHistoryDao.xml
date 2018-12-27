@@ -1,0 +1,239 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao">
+    <insert id="addClassify" useGeneratedKeys="true" keyProperty="idMedicalrecCa">
+        INSERT INTO faq_medicalrec_ca
+        (
+            name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <insert id="addTemplate">
+        INSERT INTO faq_medicalrec
+        (
+            name,
+            id_demo,
+            <if test="idMedicalrecCa!=null">
+                id_medicalrec_ca,
+            </if>
+            id_org,
+            sd_level,
+            sd_use,
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            #{idDemo},
+            <if test="idMedicalrecCa!=null">
+                #{idMedicalrecCa},
+            </if>
+            #{idOrg},
+            #{sdLevel},
+            #{sdUse},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <insert id="saveMedTag" useGeneratedKeys="true" keyProperty="idMedTag">
+        INSERT INTO faq_med_tag(id_med_tag ,id_medicalrec,  id_tag, id_med_case)
+        VALUES
+            (#{idMedTag}, #{idMedicalrec}, #{idTag}, #{idMedCase})
+        ON DUPLICATE KEY UPDATE id_med_case = #{idMedCase}
+    </insert>
+    <insert id="saveEvaTag" useGeneratedKeys="true" keyProperty="idEvaTag">
+        INSERT INTO faq_eva_tag(id_eva_tag ,id_medicalrec,  id_tag, id_eva_case)
+        VALUES
+            (#{idEvaTag}, #{idMedicalrec}, #{idTag}, #{idEvaCase})
+        ON DUPLICATE KEY UPDATE id_eva_case = #{idEvaCase}
+    </insert>
+    <update id="editClassify">
+        UPDATE faq_medicalrec_ca
+        SET
+            name = #{name},
+            <if test="idPar != null">
+                id_par = #{idPar},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_medicalrec_ca = #{idMedicalrecCa}
+    </update>
+    <update id="editTemplate">
+        UPDATE faq_medicalrec
+        SET
+            name = #{name},
+            id_demo = #{idDemo},
+            <if test="idMedicalrecCa != null">
+                id_medicalrec_ca = #{idMedicalrecCa},
+            </if>
+            sd_level = #{sdLevel},
+            sd_use = #{sdUse},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_medicalrec = #{idMedicalrec}
+    </update>
+    <update id="delClassify">
+        UPDATE faq_medicalrec_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_medicalrec_ca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delTemplate">
+        UPDATE faq_medicalrec
+        SET
+            <choose>
+                <when test="operationType == 'updateStatus'">
+                    fg_active = #{status},
+                </when>
+                <otherwise>
+                    fg_valid = #{status},
+                    fg_active = '0',
+                </otherwise>
+            </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_medicalrec in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+
+    <select id="listClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_medicalrec_ca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open,
+            id_org as ext
+        FROM
+            faq_medicalrec_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+    <select id="countTemplate" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_medicalrec
+        WHERE
+            fg_valid = '0'
+        <if test="idMedicalrecCa != null">
+            AND id_medicalrec_ca = #{idMedicalrecCa}
+        </if>
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="listTemplate" resultType="com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo">
+        SELECT
+            fm.id_medicalrec, fm.name, fm.id_demo, fm.id_medicalrec_ca, fm.id_org, fm.sd_level, fm.sd_use, 
+            fm.count, fm.fg_active, fm.fg_valid, fm.creator, fm.gmt_create, fm.operator, fm.gmt_modify,
+            fmc.name as idMedicalrecCaText, bd.name as chtName, so.name as orgName
+        FROM
+            faq_medicalrec fm 
+        left join faq_medicalrec_ca fmc on fm.id_medicalrec_ca = fmc.id_medicalrec_ca
+        left join bas_demo bd on fm.id_demo = bd.id_demo
+        left join sys_org so on fm.id_org = so.id_org
+        WHERE
+            fm.fg_valid = '0'
+        <if test="idMedicalrecCa != null">
+        AND fm.id_medicalrec_ca = #{idMedicalrecCa}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fm.name like concat('%',#{name},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listAllCaseHistoryTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo">
+        SELECT
+            bmt.id_tag , bmt.name , bmt.cd_med_asse ,
+            bm.path ,
+            bma.script,
+            d.id_med_tag, d.id_med_case, e.name as caseName
+        FROM
+            bas_medical_tag bmt
+        LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media
+        LEFT JOIN bas_med_asse bma ON bmt.cd_med_asse = bma.cd_med_asse
+        left join faq_med_tag d on d.id_tag = bmt.id_tag and d.id_medicalrec = #{idMedicalrec}
+        left join faq_med_case e on d.id_med_case = e.id_med_case
+        WHERE
+            bmt.fg_valid = '0'
+        AND bmt.fg_active = '1'
+        AND bmt.fg_show_make = '1'
+        AND bmt.id_demo = #{idDemo}
+        ORDER BY
+            bmt.sort
+    </select>
+
+    <select id="listAllAssessTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo">
+        SELECT
+            bet.id_tag , bet.name , bet.cd_eva_asse ,
+            bm.path ,
+            bea.script,
+            d.id_eva_tag, d.id_eva_case, e.name as caseName
+        FROM
+            bas_eva_tag bet
+        LEFT JOIN bas_media bm ON bet.id_media = bm.id_media
+        LEFT JOIN bas_eva_asse bea ON bea.cd_eva_asse = bet.cd_eva_asse
+        left join faq_eva_tag d on d.id_tag = bet.id_tag and d.id_medicalrec = #{idMedicalrec}
+        left join faq_eva_case e on d.id_eva_case = e.id_eva_case
+        WHERE
+            bet.fg_valid = '0'
+        AND bet.fg_active = '1'
+        AND bet.fg_show_make = '1'
+        AND bet.id_demo = #{idDemo}
+        ORDER BY
+            bet.sort
+    </select>
+    <select id="selectCaseInfoById" resultType="com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo">
+        SELECT
+            fm.id_medicalrec, fm.name, fm.id_demo, fm.id_medicalrec_ca, fm.id_org, fm.sd_level, fm.sd_use,
+            fm.count, fm.fg_active, fm.fg_valid, fm.creator, fm.gmt_create, fm.operator, fm.gmt_modify
+        FROM
+            faq_medicalrec fm
+        where fm.id_medicalrec = #{idMedicalrec}
+    </select>
+    <select id="selectMedTag" resultType="com.sm.open.core.model.entity.FaqMedTag">
+        select id_med_tag,id_med_case from faq_med_tag where id_medicalrec = #{idMedicalrec} and id_tag = #{idTag}
+    </select>
+    <select id="selectEvaTag" resultType="com.sm.open.core.model.entity.FaqEvaTag">
+        select id_eva_tag,id_eva_case from faq_eva_tag where id_medicalrec = #{idMedicalrec} and id_tag = #{idTag}
+    </select>
+
+</mapper>

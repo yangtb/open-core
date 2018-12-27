@@ -17,4 +17,6 @@ public class PfParamConstant {
     public static final String CHANGE_PARAM_STATUS_ERROR            = "changeParamStatusFailed";
     public static final String CHANGE_PARAM_STATUS_ERROR_MSG        = "停用、启用参数失败";
 
+    public static final String LIST_ALL_PARAM_ERROR                 = "listAllParamError";
+    public static final String LIST_ALL_PARAM_ERROR_MSG             = "查询所有参数失败";
 }

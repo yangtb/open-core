@@ -69,4 +69,12 @@ public interface PfParamService {
      * @return
      */
     boolean changeStatus(List<Long> list, String status);
+
+    /**
+     * 根据参数编码获取参数信息
+     *
+     * @param paramCode 参数编码
+     * @return
+     */
+    SysParam selectParamByCode(String paramCode);
 }

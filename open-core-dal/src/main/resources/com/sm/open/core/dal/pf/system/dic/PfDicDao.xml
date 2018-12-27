@@ -2,6 +2,19 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="com.sm.open.core.dal.pf.system.dic.PfDicDao">
 
+    <select id="countDicGroup" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            sys_dictionary
+        WHERE
+            status = 'enabled'
+        AND group_code = 'DICTIONARY_GROUP'
+        <if test="dicName != null and dicName != ''">
+            AND dict_name LIKE concat(#{dicName},'%')
+        </if>
+    </select>
+
     <!-- 查询字典分组 -->
     <select id="listDicGroups" resultType="com.sm.open.core.model.entity.SysDictionary">
         SELECT
@@ -15,11 +28,12 @@
             sys_dictionary
         WHERE
             status = 'enabled'
+        AND group_code = 'DICTIONARY_GROUP'
         <if test="dicName != null and dicName != ''">
         AND dict_name LIKE concat(#{dicName},'%')
         </if>
-        AND group_code = 'DICTIONARY_GROUP'
         ORDER BY id
+        limit #{offset}, #{limit}
     </select>
 
     <!-- 获取字典枚举 -->
@@ -97,6 +111,16 @@
         SELECT COUNT(1) FROM sys_dictionary WHERE dict_code = #{dictCode} AND group_code = #{groupCode}
     </select>
 
+    <select id="selectDicInfoById" resultType="com.sm.open.core.model.entity.SysDictionary">
+        SELECT
+            id ,group_name , group_code , dict_name , dict_code ,
+            ext_value , gmt_create , gmt_modify , status , sort_num , operator , remark , sys_type
+        FROM
+            sys_dictionary
+        WHERE
+            id = #{id}
+    </select>
+
     <!-- 新增字典 -->
     <insert id="addDic" parameterType="com.sm.open.core.model.entity.SysDictionary">
         INSERT INTO sys_dictionary (
@@ -129,6 +153,10 @@
             gmt_modify = NOW()
         WHERE
         id = #{id}
+    </update>
+
+    <update id="updateDicGroup">
+        update sys_dictionary set group_code = #{newGroupCode} where group_code = #{oldGroupCode};
     </update>
 
     <!-- 删除字典 -->

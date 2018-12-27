@@ -16,5 +16,15 @@ public class PfUserParam extends PfPageParam implements Serializable {
 
     private String type;
     private String conditionValue;
+    private Long idOrg;
 
+    /**
+     * 获取用户id
+     */
+    private Long userId;
+
+    /**
+     * 超级管理员
+     */
+    private boolean isSuper;
 }

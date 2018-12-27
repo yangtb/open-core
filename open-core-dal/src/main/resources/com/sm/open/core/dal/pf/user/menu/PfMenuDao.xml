@@ -20,8 +20,10 @@
             ur.user_id = #{userId}
         AND sf.status = 'enabled'
 	    AND sf.function_type = 1
-        GROUP BY
-            sf.sort_num
+	    AND ur.is_deleted = 'N'
+	    AND srm.is_deleted = 'N'
+        ORDER BY
+            sf.level, sf.sort_num
     </select>
 
     <!-- 获取系统所有菜单 -->
@@ -47,8 +49,11 @@
             sys_function sf
         WHERE
             1 = 1
+        <if test="parentCode != null and parentCode != ''">
+            AND sf.parent_code = #{parentCode}
+        </if>
         <if test="name != null and name != ''">
-            AND sf.name LIKE concat(#{name},'%')
+            AND sf.name LIKE concat('%', #{name},'%')
         </if>
         <if test="level != null and level != 0">
             AND sf.level = #{level}
@@ -68,8 +73,11 @@
             sys_function sf
         WHERE
             1 = 1
+        <if test="parentCode != null and parentCode != ''">
+            AND sf.parent_code = #{parentCode}
+        </if>
         <if test="name != null and name != ''">
-            AND sf.name LIKE concat(#{name},'%')
+            AND sf.name LIKE concat('%', #{name},'%')
         </if>
         <if test="level != null and level != 0">
             AND sf.level = #{level}
@@ -137,11 +145,14 @@
             sf.code as id,
             sf.name as name ,
             sf.parent_code as pId,
-            true as open
+            true as open,
+            sf.level,
+            sf.position
         FROM
             sys_function sf
         WHERE
             sf.status = 'enabled'
+        ORDER BY sf.level, sf.sort_num
     </select>
 
     <!-- 获取角色拥有菜单 -->
@@ -155,6 +166,21 @@
         LEFT JOIN sys_role_menu srm ON srm.menu_id = sf.id and srm.role_id = #{roleId}
         WHERE
              sf.status = 'enabled'
+    </select>
+
+    <select id="listAnonymousUserMenus" resultType="com.sm.open.core.model.entity.SysFunction">
+        SELECT
+            sf.id, sf.function_url, sf.name, sf.level,
+            sf.icon_source, sf.code, sf.parent_code, sf.position
+        FROM
+            sys_function sf
+        LEFT JOIN sys_role_menu srm ON srm.menu_id = sf.id
+        left join sys_role sr on srm.role_id = sr.role_id
+        WHERE
+            sf.status = 'enabled'
+        AND sr.code='PFTOU'
+        AND sf.function_type = 1
+        ORDER BY sf.sort_num
     </select>
 
 

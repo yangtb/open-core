@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.util.List;
 
 @Component("pfParamFacade")
 public class PfParamFacadeImpl implements PfParamFacade {
@@ -88,6 +89,21 @@ public class PfParamFacadeImpl implements PfParamFacade {
             LOGGER.error("【PfParamFacadeImpl-changeStatus-error】停用、启用参数失败, param=" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfParamConstant.CHANGE_PARAM_STATUS_ERROR, PfParamConstant.CHANGE_PARAM_STATUS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<SysParamResult>> listAllParam() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfParamService.listAllParam(), SysParamResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfParamFacadeImpl-listAllParam】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfParamFacadeImpl-listAllParam-error】查询所有参数失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfParamConstant.LIST_ALL_PARAM_ERROR, PfParamConstant.LIST_ALL_PARAM_ERROR_MSG));
         }
     }
 }

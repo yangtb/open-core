@@ -22,7 +22,7 @@ public class PfUsersResult implements Serializable {
     private String      email;          // 电邮
     @JSONField(name = "phone_no")
     private String      phoneNo;        // 联系电话
-    private int         sex;            // 性别
+    private Integer         sex;            // 性别
     private boolean     enabled;        // 是否锁定
     @JSONField(name = "is_first")
     private int         isFirst;        // 是否首次为0, 否则为1
@@ -49,5 +49,9 @@ public class PfUsersResult implements Serializable {
      */
     @JSONField(name = "gmt_modify")
     private Date        gmtModify;
+    /**
+     * 所属机构id
+     */
+    private Long        idOrg;
 
 }

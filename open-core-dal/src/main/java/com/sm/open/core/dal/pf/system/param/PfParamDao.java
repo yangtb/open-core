@@ -68,4 +68,13 @@ public interface PfParamDao {
      */
     int changeStatus(@Param("list") List<Long> list,
                      @Param("status") String status);
+
+
+    /**
+     * 根据参数编码获取参数信息
+     *
+     * @param paramCode 参数编码
+     * @return
+     */
+    SysParam selectParamByCode(@Param("paramCode") String paramCode);
 }

@@ -52,4 +52,20 @@ public interface PfMessageDao {
      */
     int updateStatus(@Param("list") List<Long> list,
                      @Param("isDeleted") String isDeleted);
+
+    /**
+     * 查询模板是否已存在
+     *
+     * @param templateCode 模板code
+     * @return
+     */
+    int isExistTemplate(@Param("templateCode") String templateCode);
+
+    /**
+     * 根据模板code查询消息模板
+     *
+     * @param templateCode
+     * @return
+     */
+    MessageTemplate selectTempInfoByCode(@Param("templateCode") String templateCode);
 }

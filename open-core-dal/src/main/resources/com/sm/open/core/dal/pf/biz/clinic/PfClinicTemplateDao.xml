@@ -1,0 +1,616 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.clinic.PfClinicTemplateDao">
+    <insert id="addClassify" useGeneratedKeys="true" keyProperty="idDemoCa">
+        INSERT INTO bas_demo_ca
+        (
+            name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <insert id="addTemplate" useGeneratedKeys="true" keyProperty="idDemo">
+        INSERT INTO bas_demo
+        (
+            name,
+            id_demo_ca,
+            fg_active,
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{name},
+            #{idDemoCa},
+            #{fgActive},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+    <insert id="saveSheetTag" useGeneratedKeys="true" keyProperty="idTag">
+        INSERT INTO bas_eva_tag
+        (
+                name,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+                id_demo,
+                cd_eva_asse,
+                fg_show_make,
+                fg_show_exec,
+                fg_active,
+            <if test="sort!=null">
+                sort,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+                #{idDemo},
+                #{cdEvaAsse},
+                #{fgShowMake},
+                #{fgShowExec},
+                #{fgActive},
+            <if test="sort!=null">
+                #{sort},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="saveCaseHistoryTag" useGeneratedKeys="true" keyProperty="idTag">
+        INSERT INTO bas_medical_tag
+        (
+                name,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+                id_demo,
+                cd_med_asse,
+                fg_show_make,
+                fg_show_exec,
+                fg_active,
+                sort,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+                #{idDemo},
+                #{cdMedAsse},
+                #{fgShowMake},
+                #{fgShowExec},
+                #{fgActive},
+                #{sort},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="saveDimensionTag" useGeneratedKeys="true" keyProperty="idDimemsion">
+        INSERT INTO bas_demo_asses
+        (
+                name,
+            <if test="parDimemsion!=null">
+                par_dimemsion,
+            </if>
+                id_demo,
+                weight,
+                fg_system_algorithm,
+            <if test="idAlgorithm!=null">
+                id_algorithm,
+            </if>
+            <if test="scoreUpper!=null">
+                score_upper,
+            </if>
+            <if test="scoreLower!=null">
+                score_lower,
+            </if>
+            <if test="scoreDefault!=null">
+                score_default,
+            </if>
+                fg_active,
+                sort,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="parDimemsion!=null">
+                #{parDimemsion},
+            </if>
+                #{idDemo},
+                #{weight},
+                #{fgSystemAlgorithm},
+            <if test="idAlgorithm!=null">
+                #{idAlgorithm},
+            </if>
+            <if test="scoreUpper!=null">
+                #{scoreUpper},
+            </if>
+            <if test="scoreLower!=null">
+                #{scoreLower},
+            </if>
+            <if test="scoreDefault!=null">
+                #{scoreDefault},
+            </if>
+                #{fgActive},
+                #{sort},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <update id="editClassify">
+        UPDATE bas_demo_ca
+        SET
+                name = #{name},
+            <if test="idPar != null">
+                id_par = #{idPar},
+            </if>
+            <if test="fgActive != null and fgActive != ''">
+                fg_active = #{fgActive},
+            </if>
+                operator = #{operator},
+                gmt_modify = now()
+        WHERE
+            id_demo_ca = #{idDemoCa}
+    </update>
+    <update id="editTemplate">
+        UPDATE bas_demo
+        SET
+            name = #{name},
+            id_demo_ca = #{idDemoCa},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_demo = #{idDemo}
+    </update>
+    <update id="editCaseHistoryTag">
+        UPDATE bas_medical_tag
+        SET
+            name = #{name},
+            id_media = #{idMedia},
+            id_demo = #{idDemo},
+            cd_med_asse = #{cdMedAsse},
+            fg_show_make = #{fgShowMake},
+            fg_show_exec = #{fgShowExec},
+            fg_active = #{fgActive},
+            sort = #{sort},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_tag = #{idTag}
+    </update>
+    <update id="editSheetTag">
+        UPDATE bas_eva_tag
+        SET
+            name = #{name},
+            id_media = #{idMedia},
+            id_demo = #{idDemo},
+            cd_eva_asse = #{cdEvaAsse},
+            fg_show_make = #{fgShowMake},
+            fg_show_exec = #{fgShowExec},
+            fg_active = #{fgActive},
+            sort = #{sort},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_tag = #{idTag}
+    </update>
+    <update id="delClassify">
+        UPDATE bas_demo_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_demo_ca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delTemplate">
+        UPDATE bas_demo
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+          id_demo in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delSheetTag">
+        UPDATE bas_eva_tag
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+          id_tag in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delCaseHistoryTag">
+        UPDATE bas_medical_tag
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_tag in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="editDimensionTag">
+        UPDATE bas_demo_asses
+        SET
+            name = #{name},
+            par_dimemsion = #{parDimemsion},
+            id_demo = #{idDemo},
+            weight = #{weight},
+            fg_system_algorithm = #{fgSystemAlgorithm},
+            id_algorithm = #{idAlgorithm},
+            score_upper = #{scoreUpper},
+            score_lower = #{scoreLower},
+            score_default = #{scoreDefault},
+            fg_active = #{fgActive},
+            sort = #{sort},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_dimemsion = #{idDimemsion}
+    </update>
+    <update id="delDimensionTag">
+        UPDATE bas_demo_asses
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_dimemsion in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="saveSerialNo">
+        update bas_medical_tag
+        set
+            sd_process = #{sdProcess},
+            <choose>
+                <when test="processSerialno != null">
+                    process_serialno = #{processSerialno},
+                </when>
+                <otherwise>
+                    process_serialno = null,
+                </otherwise>
+            </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_tag = #{idTag}
+    </update>
+
+    <select id="listClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_demo_ca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            bas_demo_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+    <select id="countTemplate" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_demo
+        WHERE
+            fg_valid = '0'
+        <if test="idDemoCa != null">
+            AND id_demo_ca = #{idDemoCa}
+        </if>
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="listTemplate" resultType="com.sm.open.core.model.entity.BasDemo">
+        SELECT
+            bd.id_demo, bd.name, bd.id_demo_ca, bd.fg_active, bd.fg_valid, 
+            bd.creator, bd.gmt_create, bd.operator, bd.gmt_modify,
+            bdc.name as idDemoCaText
+        FROM
+            bas_demo bd left join bas_demo_ca bdc on bd.id_demo_ca = bdc.id_demo_ca
+        WHERE
+            bd.fg_valid = '0'
+        <if test="idDemoCa != null">
+            AND bd.id_demo_ca =  #{idDemoCa}
+        </if>
+        <if test="name != null and name != '' ">
+            AND bd.name like concat('%',#{name},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listSheetTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.BasEvaTagVo">
+        select
+	        bet.id_tag, bet.name, bet.id_media, bet.id_demo, bet.cd_eva_asse, bet.fg_show_make,
+	        bet.fg_show_exec, bet.fg_active, bet.fg_valid, bet.sort,
+	        bet.creator, bet.gmt_create, bet.operator, bet.gmt_modify, bm.path
+        from
+            bas_eva_tag bet left join bas_media bm on bet.id_media = bm.id_media
+        where
+            bet.fg_valid = '0'
+        and bet.id_demo = #{idDemo}
+        order by bet.sort
+    </select>
+    <select id="listAllBasDemo" resultType="com.sm.open.core.model.entity.BasDemo">
+        SELECT
+            bd.id_demo, bd.name
+        FROM
+            bas_demo bd
+        WHERE
+            bd.fg_valid = '0'
+        AND bd.fg_active = '1'
+    </select>
+    <select id="listCaseHistoryTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.BasMedicalTagVo">
+        select
+	       bmt.id_tag, bmt.name, bmt.id_media, bmt.id_demo, bmt.cd_med_asse, 
+	       bmt.fg_show_make, bmt.fg_show_exec, bmt.fg_active, bmt.fg_valid, 
+	       bmt.sort, bmt.creator, bmt.gmt_create, bmt.operator, bmt.gmt_modify, 
+	       bm.path, bmt.sd_process, bmt.process_serialno
+        from
+            bas_medical_tag bmt left join bas_media bm on bmt.id_media = bm.id_media
+        where
+            bmt.fg_valid = '0'
+        and bmt.id_demo = #{idDemo}
+        <if test="fgShowExec != null and fgShowExec != '' ">
+            and bmt.fg_show_exec = #{fgShowExec}
+        </if>
+        order by bmt.sort
+    </select>
+    <select id="listDimensionTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_dimemsion AS id ,
+            par_dimemsion AS pId ,
+            name,
+            1 as open,
+	        weight as ext
+        FROM
+            bas_demo_asses
+        WHERE
+            fg_valid = '0'
+        and id_demo = #{idDemo}
+        order by sort
+    </select>
+    <select id="selectDimensionTagInfo" resultType="com.sm.open.core.model.entity.BasDemoAsses">
+        SELECT
+            id_dimemsion, name, par_dimemsion, id_demo, weight,
+            fg_system_algorithm, id_algorithm, score_upper, score_lower, 
+            score_default, fg_active, fg_valid, sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_demo_asses
+        WHERE
+            id_dimemsion = #{idDimemsion}
+    </select>
+    <select id="listAllCaseHistoryTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfCaseHistoryTagVo">
+        SELECT
+            bmt.id_tag ,
+            bmt.fg_show_make,
+            bmt.fg_show_exec,
+            bmt.name ,
+            bmt.cd_med_asse ,
+            bm.path ,
+            bma.script,
+            bma.script_exec,
+            bmt.sort,
+            bmt.sd_process,
+            IF(bmt.process_serialno is null,bmt.sort,bmt.process_serialno) as process_serialno
+        FROM
+            bas_medical_tag bmt
+        LEFT JOIN bas_media bm ON bmt.id_media = bm.id_media
+        LEFT JOIN bas_med_asse bma ON bmt.cd_med_asse = bma.cd_med_asse
+        WHERE
+            bmt.fg_valid = '0'
+        AND bmt.fg_active = '1'
+        AND bmt.id_demo = #{idDemo}
+        ORDER BY
+            bmt.sort
+    </select>
+
+    <select id="listAllAssessTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo">
+        SELECT
+            bet.id_tag ,
+            bet.fg_show_make,
+            bet.fg_show_exec,
+            bet.name ,
+            bet.cd_eva_asse ,
+            bm.path ,
+            bea.script
+        FROM
+            bas_eva_tag bet
+        LEFT JOIN bas_media bm ON bet.id_media = bm.id_media
+        LEFT JOIN bas_eva_asse bea ON bea.cd_eva_asse = bet.cd_eva_asse
+        WHERE
+            bet.fg_valid = '0'
+        AND bet.fg_active = '1'
+        AND bet.id_demo = #{idDemo}
+        ORDER BY
+            bet.sort
+    </select>
+    <select id="selectCaseIdMedCase" resultType="java.lang.Long">
+        SELECT
+            a.id_med_case
+        FROM
+            faq_med_tag a
+        left join bas_med_asse b on a.id_tag = b.id_med_asse
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        and b.cd_med_asse = #{cdMedAsse}
+    </select>
+    <select id="countInquisitionQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_inques_list bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.id_med_case = #{extId}
+        and bi.fg_valid = '0'
+        <if test="idInquesCa != null and idInquesCa != ''">
+            AND bi.id_inques_ca = #{idInquesCa}
+        </if>
+        <if test="desInques != null and desInques != '' ">
+            AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listInquisitionQuestion" resultType="com.sm.open.core.model.entity.BasInques">
+        SELECT
+            bi.id_inques, bi.des_inques, bi.id_inques_ca,bic.name as idInquesCaText
+        FROM
+            faq_med_case_inques_list bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.id_med_case = #{extId}
+        and bi.fg_valid = '0'
+        <if test="idInquesCa != null and idInquesCa != ''">
+            AND bi.id_inques_ca = #{idInquesCa}
+        </if>
+        <if test="desInques != null and desInques != '' ">
+            AND bi.des_inques like concat('%',#{desInques},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countCheckQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_body_list bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.id_med_case = #{extId}
+        and bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listCheckQuestion" resultType="com.sm.open.core.model.entity.BasBody">
+        SELECT
+            bb.id_body, bb.des_body, bb.sd_body, bb.id_body_ca, bbc.name as idBodyCaText,
+            bb.cd_check
+        FROM
+            faq_med_case_body_list bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.id_med_case = #{extId}
+        and bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countExamQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_inspect_list bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        WHERE
+            bii.id_med_case = #{extId}
+        and bii.fg_valid = '0'
+        <if test="idInspect != null and idInspect != ''">
+            AND bii.id_inspect = #{idInspect}
+        </if>
+        <if test="naItem != null and naItem != '' ">
+            AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listExamQuestion" resultType="com.sm.open.core.model.entity.BasInspectItem">
+        SELECT
+            bii.id_inspect_item, bii.na_item, bii.id_inspect, bii.na_short, bii.des_stand,
+            bic.name as idInspectText
+        FROM
+            faq_med_case_inspect_list bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        WHERE
+            bii.id_med_case = #{extId}
+        and bii.fg_valid = '0'
+        <if test="idInspect != null and idInspect != ''">
+            AND bii.id_inspect = #{idInspect}
+        </if>
+        <if test="naItem != null and naItem != '' ">
+            AND bii.na_item like concat('%',#{naItem},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+</mapper>

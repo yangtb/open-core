@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.check.PfCheckDao">
+
+    <insert id="addQuestionClassify" useGeneratedKeys="true" keyProperty="idBodyCa">
+        INSERT INTO bas_body_ca
+        (
+                name,
+            <if test="idPar!=null">
+                id_par,
+            </if>
+            <if test="fgActive!=null">
+                fg_active,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="idPar!=null">
+                #{idPar},
+            </if>
+            <if test="fgActive!=null">
+                #{fgActive},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <insert id="addQuestion">
+        INSERT INTO bas_body
+        (
+            des_body,
+            sd_body,
+            id_body_ca,
+            cd_check,
+            fg_active,
+            creator,
+            gmt_create,
+            operator,
+            gmt_modify
+        )
+        VALUES
+        (
+            #{desBody},
+            #{sdBody},
+            #{idBodyCa},
+            #{cdCheck},
+            #{fgActive},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        )
+    </insert>
+
+    <insert id="saveAnswer"  useGeneratedKeys="true" keyProperty="idResult">
+        INSERT INTO bas_body_result
+        (
+                des_result,
+                id_body,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+                fg_reason,
+                fg_back,
+            <if test="desExpert!=null">
+                des_expert,
+            </if>
+                fg_tag,
+                fg_default,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{desResult},
+                #{idBody},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+                #{fgReason},
+                #{fgBack},
+            <if test="desExpert!=null">
+                #{desExpert},
+            </if>
+                #{fgTag},
+                #{fgDefault},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editQuestionClassify">
+        UPDATE bas_body_ca
+        SET
+            name = #{name},
+            <if test="idPar != null and idPar!=''">
+            id_par = #{idPar},
+            </if>
+            <if test="fgActive != null and fgActive != ''">
+            fg_active = #{fgActive},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body_ca = #{idBodyCa}
+    </update>
+
+    <update id="delQuestionClassify">
+        UPDATE bas_body_ca
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body_ca in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <update id="editQuestion">
+        UPDATE bas_body
+        SET
+            des_body = #{desBody},
+            sd_body = #{sdBody},
+            id_body_ca = #{idBodyCa},
+            cd_check = #{cdCheck},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body = #{idBody}
+    </update>
+
+    <update id="delQuestion">
+        UPDATE bas_body
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_body in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    
+    <update id="editAnswer">
+        UPDATE bas_body_result
+        SET
+            des_result = #{desResult},
+            id_body = #{idBody},
+            <if test="idMedia != null">
+                id_media = #{idMedia},
+            </if>
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            <if test="desExpert != null and desExpert!=''">
+                des_expert = #{desExpert},
+            </if>
+            fg_tag = #{fgTag},
+            fg_default = #{fgDefault},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_result = #{idResult}
+    </update>
+
+    <update id="delAnswer">
+        UPDATE bas_body_result
+        SET
+            fg_valid = #{status},
+            fg_active = '0',
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_result in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="updateDefaultAnswer">
+        UPDATE bas_body_result
+        SET
+            fg_default ='0',
+            gmt_modify = now()
+        WHERE
+            id_body = #{idBody}
+    </update>
+    <update id="setDefaultAnswer">
+        UPDATE bas_body_result set fg_default = '1'
+        where id_result =
+              (select t.id from (select max(id_result) as id from bas_body_result where id_body = #{idBody} AND fg_valid = '0' GROUP BY id_body) t)
+    </update>
+
+
+    <select id="listQuestionClassifyTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            id_body_ca AS id ,
+            id_par AS pId ,
+            name,
+            1 as open
+        FROM
+            bas_body_ca
+        WHERE
+            fg_valid = '0'
+    </select>
+
+    <select id="countQuestion" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+
+    <select id="listQuestion" resultType="com.sm.open.core.model.entity.BasBody">
+        SELECT
+            bb.id_body, bb.des_body, bb.sd_body, bb.id_body_ca, bbc.name as idBodyCaText,
+            bb.cd_check, bb.fg_active,
+            bb.fg_valid, bb.creator, bb.gmt_create, bb.operator, bb.gmt_modify
+        FROM
+            bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        WHERE
+            bb.fg_valid = '0'
+        <if test="idBodyCa != null and idBodyCa != ''">
+            AND bb.id_body_ca = #{idBodyCa}
+        </if>
+        <if test="desBody != null and desBody != '' ">
+            AND bb.des_body like concat('%',#{desBody},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasBodyResult">
+        select
+            bbr.id_result, bbr.des_result, bbr.id_body, bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert, 
+            bbr.fg_tag, bbr.fg_default, bbr.fg_active, bbr.fg_valid, bbr.creator, bbr.gmt_create, bbr.operator, bbr.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_body_result bbr left join bas_media bm on bbr.id_media = bm.id_media
+        where
+            bbr.fg_valid = '0'
+        and bbr.id_body = #{idBody}
+    </select>
+    <select id="selectBasBodyById" resultType="com.sm.open.core.model.entity.BasBody">
+        SELECT
+            bb.id_body, bb.des_body, bb.sd_body, bb.id_body_ca,
+            bb.cd_check, bb.fg_active,
+            bb.fg_valid, bb.creator, bb.gmt_create, bb.operator, bb.gmt_modify
+        FROM
+            bas_body bb
+        WHERE
+            bb.fg_valid = '0'
+        AND bb.id_body = #{idBody}
+    </select>
+    <select id="selectBasBodyResultById" resultType="com.sm.open.core.model.entity.BasBodyResult">
+         select
+            bbr.id_result, bbr.des_result, bbr.id_body, bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert,
+            bbr.fg_tag, bbr.fg_active, bbr.fg_valid, bbr.creator, bbr.gmt_create, bbr.operator, bbr.gmt_modify,
+	        bm.sd_type, bm.path
+        from
+            bas_body_result bbr left join bas_media bm on bbr.id_media = bm.id_media
+        where
+            bbr.fg_valid = '0'
+        and bbr.id_result = #{idResult}
+    </select>
+    <select id="countSearchCheck" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+        (
+            SELECT
+                count(1)
+            FROM
+                bas_body bb
+            LEFT JOIN bas_body_result bbr ON bb.id_body = bbr.id_body
+            LEFT JOIN bas_body_ca bbc ON bb.id_body_ca = bbc.id_body_ca
+            WHERE
+                bb.fg_active = '1'
+            AND (bbr.fg_active = '1' or bbr.fg_active is null) and bbr.fg_valid='0'
+            <if test="keywords != null and keywords != '' ">
+                AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+            </if>
+            group by bb.id_body
+        ) a
+    </select>
+
+    <resultMap type="com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo" id="checkResult">
+        <id property="idBody" column="id_body" />
+        <result column="id_body_ca" property="idBodyCa" />
+        <result column="id_body" property="idBody" />
+        <result column="des_body" property="desBody" />
+        <result column="sd_body" property="sdBody" />
+        <result column="cd_check" property="cdCheck" />
+        <result column="idBodyText" property="idBodyText" />
+        <collection property="checkList" ofType="com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchItemVo">
+            <result column="id_result" property="idResult" />
+            <result column="des_result" property="desResult" />
+            <result column="id_media" property="idMedia" />
+            <result column="sd_type" property="sdType"/>
+            <result column="path" property="path" />
+            <result column="fg_reason" property="fgReason" />
+            <result column="fg_back" property="fgBack" />
+            <result column="des_expert" property="desExpert" />
+        </collection>
+    </resultMap>
+
+    <select id="searchCheck" resultMap="checkResult">
+        SELECT
+            bbc.name AS idBodyText, bb.id_body_ca, bb.id_body,
+            bb.des_body, bb.sd_body, bb.cd_check, bbr.id_result, bbr.des_result,
+            bbr.id_media, bbr.fg_reason, bbr.fg_back, bbr.des_expert,
+            bm.sd_type, bm.path
+        FROM
+            bas_body bb
+        LEFT JOIN bas_body_result bbr ON bb.id_body = bbr.id_body
+        LEFT JOIN bas_body_ca bbc ON bb.id_body_ca = bbc.id_body_ca
+        left join bas_media bm on bbr.id_media = bm.id_media
+        WHERE
+            bb.fg_active = '1'
+        AND (bbr.fg_active = '1' or bbr.fg_active is null) and bbr.fg_valid='0'
+        <if test="keywords != null and keywords != '' ">
+            AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        order by id_body_ca, id_body
+        limit #{offset}, #{limit}
+    </select>
+    <select id="isExistDefaultAnswer" resultType="java.lang.Boolean">
+        select count(1) from bas_body_result where id_body = #{idBody} and fg_default ='1' AND fg_valid = '0'
+    </select>
+
+</mapper>

@@ -1,10 +1,15 @@
 package com.sm.open.core.service.service.pf.user.login.impl;
 
+import com.sm.open.care.core.ErrorCode;
+import com.sm.open.care.core.ErrorMessage;
+import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.core.dal.pf.user.login.PfUserDao;
+import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.dto.pf.user.login.RegisterDto;
 import com.sm.open.core.model.dto.pf.user.login.UpdatePswDto;
 import com.sm.open.core.model.entity.UserInfo;
+import com.sm.open.core.model.vo.pf.user.login.PfStudentVo;
 import com.sm.open.core.model.vo.pf.user.login.PfUsersVo;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
 import org.apache.commons.lang3.StringUtils;
@@ -13,10 +18,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.crypto.password.StandardPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Service("pfUserService")
 public class PfUserServiceImpl implements PfUserService {
@@ -70,18 +77,39 @@ public class PfUserServiceImpl implements PfUserService {
     }
 
     @Override
-    public boolean delUser(List<Long> users) {
-        return pfUserDao.delUser(users) >= 1 ? true : false;
+    public boolean delUser(PfCommonListDto dto) {
+        if (!dto.isPlatOrSuper()) {
+            // 校验用户机构
+            List<Long> orgList = pfUserDao.selectOrgId(dto.getList()).stream()
+                    .filter(idOrg -> !idOrg.equals(dto.getCurrentUserOrgId())).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(orgList)) {
+                throw new BizRuntimeException(ErrorCode.USER_AUTH_EXCEPTION, ErrorMessage.USER_AUTH_EXCEPTION_MSG);
+            }
+        }
+        return pfUserDao.delUser(dto.getList()) >= 1 ? true : false;
     }
 
     @Override
-    public boolean freezeUser(List<Long> users) {
-        return pfUserDao.freezeUser(users) >= 1 ? true : false;
+    public boolean freezeUser(PfCommonListDto dto) {
+        if (!dto.isPlatOrSuper()) {
+            // 校验用户机构
+            List<Long> orgList = pfUserDao.selectOrgId(dto.getList()).stream()
+                    .filter(idOrg -> !idOrg.equals(dto.getCurrentUserOrgId())).collect(Collectors.toList());
+            if (!CollectionUtils.isEmpty(orgList)) {
+                throw new BizRuntimeException(ErrorCode.USER_AUTH_EXCEPTION, ErrorMessage.USER_AUTH_EXCEPTION_MSG);
+            }
+        }
+        return pfUserDao.freezeUser(dto.getList()) >= 1 ? true : false;
     }
 
     @Override
     public UserInfo selectUser(String userName) {
         return pfUserDao.selectUser(userName);
+    }
+
+    @Override
+    public UserInfo selectUserById(Long userId) {
+        return pfUserDao.selectUserById(userId);
     }
 
     @Override
@@ -99,6 +127,11 @@ public class PfUserServiceImpl implements PfUserService {
     public boolean matchPassword(String rawPwd, String salt, String encriptPwd) {
         PasswordEncoder passwordEncoder = new StandardPasswordEncoder(salt);
         return passwordEncoder.matches(rawPwd, encriptPwd);
+    }
+
+    @Override
+    public PfStudentVo selectStudentInfo(Long idStudent) {
+        return pfUserDao.selectStudentInfo(idStudent);
     }
 
     @Override

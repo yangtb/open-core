@@ -1,0 +1,1147 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.kb.PfKbPartDao">
+
+    <insert id="addKbPart" useGeneratedKeys="true" keyProperty="idMedCase">
+        INSERT INTO faq_med_case
+        (
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                cd_med_asse,
+                id_org,
+                fg_active,
+                fg_public,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+                #{cdMedAsse},
+                #{idOrg},
+                #{fgActive},
+                #{fgPublic},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="saveKbText">
+        INSERT INTO faq_med_case_text(id_med_case , content)
+        VALUES
+            (#{idMedCase},#{content})
+        ON DUPLICATE KEY UPDATE content = #{content}
+    </insert>
+    <insert id="saveKbPic">
+        INSERT INTO faq_med_case_pic(id_med_case , id_media)
+        VALUES
+            (#{idMedCase},#{idMedia})
+        ON DUPLICATE KEY UPDATE id_media = #{idMedia}
+    </insert>
+    <insert id="saveKbPat">
+        INSERT INTO faq_med_case_patient
+        (
+            id_med_case,
+            name,
+            sex,
+            age,
+            complaint
+        )
+        VALUES
+        (
+            #{idMedCase},
+            #{name},
+            #{sex},
+            #{age},
+            #{complaint}
+        )
+        ON DUPLICATE KEY 
+        UPDATE  name = #{name}, 
+                sex = #{sex},
+                age = #{age},
+                complaint = #{complaint}
+    </insert>
+    <insert id="saveFaqMedCaseInques" useGeneratedKeys="true" keyProperty="idMedCaseList">
+        INSERT INTO faq_med_case_inques_list
+        (
+                id_med_case,
+                id_inques_ca,
+                id_inques,
+                des_inques,
+                id_answer,
+                des_answer,
+                id_media,
+            <if test="fgReason!=null">
+                fg_reason,
+            </if>
+            <if test="fgBack!=null">
+                fg_back,
+            </if>
+                des_expert,
+                fg_carried
+        )
+        VALUES
+        (
+                #{idMedCase},
+                #{idInquesCa},
+                #{idInques},
+                #{desInques},
+                #{idAnswer},
+                #{desAnswer},
+                #{idMedia},
+            <if test="fgReason!=null">
+                #{fgReason},
+            </if>
+            <if test="fgBack!=null">
+                #{fgBack},
+            </if>
+                #{desExpert},
+                #{fgCarried}
+        )
+    </insert>
+    <insert id="addExam" useGeneratedKeys="true" keyProperty="idMedCaseList">
+        INSERT INTO faq_med_case_inspect_list
+        (
+                id_med_case,
+                id_inspect,
+                id_inspect_item,
+                na_item,
+            <if test="naShort!=null">
+                na_short,
+            </if>
+                des_stand,
+                id_result,
+                val_result,
+                des_result,
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+            <if test="costMoney!=null">
+                cost_money,
+            </if>
+            <if test="costTime!=null">
+                cost_time,
+            </if>
+                fg_show,
+                fg_reason,
+                fg_back,
+            <if test="desExpert!=null">
+                des_expert,
+            </if>
+                fg_carried
+        )
+        VALUES
+        (
+                #{idMedCase},
+                #{idInspect},
+                #{idInspectItem},
+                #{naItem},
+            <if test="naShort!=null">
+                #{naShort},
+            </if>
+                #{desStand},
+                #{idResult},
+                #{valResult},
+                #{desResult},
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+            <if test="costMoney!=null">
+                #{costMoney},
+            </if>
+            <if test="costTime!=null">
+                #{costTime},
+            </if>
+                #{fgShow},
+                #{fgReason},
+                #{fgBack},
+            <if test="desExpert!=null">
+                #{desExpert},
+            </if>
+                #{fgCarried}
+        )
+    </insert>
+    <insert id="addCheck" useGeneratedKeys="true" keyProperty="idMedCaseList">
+        INSERT INTO faq_med_case_body_list
+        (
+        <trim suffixOverrides=",">
+            <if test="idMedCase!=null">
+                id_med_case,
+            </if>
+            <if test="idBodyCa!=null">
+                id_body_ca,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="desBody!=null">
+                des_body,
+            </if>
+            <if test="sdBody!=null">
+                sd_body,
+            </if>
+            <if test="cdCheck!=null">
+                cd_check,
+            </if>
+            <if test="idResult!=null">
+                id_result,
+            </if>
+            <if test="desResult!=null">
+                des_result,
+            </if>
+            <if test="idMedia!=null">
+                id_media,
+            </if>
+            <if test="fgReason!=null">
+                fg_reason,
+            </if>
+            <if test="fgBack!=null">
+                fg_back,
+            </if>
+            <if test="desExpert!=null">
+                des_expert,
+            </if>
+            <if test="fgCarried!=null">
+                fg_carried,
+            </if>
+            <if test="fgValid!=null">
+                fg_valid,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idMedCase!=null">
+                #{idMedCase},
+            </if>
+            <if test="idBodyCa!=null">
+                #{idBodyCa},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="desBody!=null">
+                #{desBody},
+            </if>
+            <if test="sdBody!=null">
+                #{sdBody},
+            </if>
+            <if test="cdCheck!=null">
+                #{cdCheck},
+            </if>
+            <if test="idResult!=null">
+                #{idResult},
+            </if>
+            <if test="desResult!=null">
+                #{desResult},
+            </if>
+            <if test="idMedia!=null">
+                #{idMedia},
+            </if>
+            <if test="fgReason!=null">
+                #{fgReason},
+            </if>
+            <if test="fgBack!=null">
+                #{fgBack},
+            </if>
+            <if test="desExpert!=null">
+                #{desExpert},
+            </if>
+            <if test="fgCarried!=null">
+                #{fgCarried},
+            </if>
+            <if test="fgValid!=null">
+                #{fgValid},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="saveFaqMedCaseBody">
+        INSERT INTO faq_med_case_body
+        (
+            id_med_case,
+            id_media_front,
+            id_media_back,
+            id_media_chest,
+            id_media_abdomen,
+            id_media_head
+        )
+        VALUES (#{idMedCase}, #{idMediaFront}, #{idMediaBack}, #{idMediaChest},  #{idMediaAbdomen}, #{idMediaHead})
+        ON DUPLICATE KEY UPDATE
+        <trim suffixOverrides=",">
+            <if test="idMediaFront!=null">
+                id_media_front = #{idMediaFront},
+            </if>
+            <if test="idMediaBack!=null">
+                id_media_back =  #{idMediaBack},
+            </if>
+        </trim>
+    </insert>
+    <insert id="bachAddCons">
+        INSERT INTO faq_med_case_inques_list(
+            id_med_case ,
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        )
+        SELECT
+            #{extId}, a.id_inques_ca, a.id_inques, a.des_inques,
+            b.id_answer, b.des_answer, b.id_media, b.fg_reason, b.fg_back, b.des_expert
+        FROM
+            bas_inques a
+        LEFT JOIN bas_inques_answer b ON a.id_inques = b.id_inques AND b.fg_default = '1' and b.fg_active = '1' and b.fg_valid = '0'
+        WHERE
+            a.fg_active = '1' and a.fg_valid = '0'
+        and a.id_inques in (
+            <foreach collection="list" item="item" separator="," >
+                #{item}
+            </foreach>
+            )
+    </insert>
+    <insert id="bachAddAllCons">
+        INSERT INTO faq_med_case_inques_list(
+            id_med_case ,
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        ) VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{item.idMedCase},
+            #{item.idInquesCa},
+            #{item.idInques},
+            #{item.desInques},
+            #{item.idAnswer},
+            #{item.desAnswer},
+            #{item.idMedia},
+            #{item.fgReason},
+            #{item.fgBack},
+            #{item.desExpert})
+        </foreach>
+    </insert>
+    <insert id="bachAddCheck">
+        INSERT INTO faq_med_case_body_list(
+            id_med_case ,
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        )
+        SELECT
+            #{extId},a.id_body_ca,a.id_body,a.des_body,a.sd_body,a.cd_check,
+            b.id_result,b.des_result,b.id_media,b.fg_reason,b.fg_back,b.des_expert
+        FROM
+            bas_body a
+        LEFT JOIN bas_body_result b ON a.id_body = b.id_body
+        AND b.fg_default = '1'
+        WHERE
+            a.id_body in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="bachAddAllCheck">
+        INSERT INTO faq_med_case_body_list(
+            id_med_case ,
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        ) VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{item.idMedCase},
+            #{item.idBodyCa},
+            #{item.idBody},
+            #{item.desBody},
+            #{item.sdBody},
+            #{item.cdCheck},
+            #{item.idResult},
+            #{item.desResult},
+            #{item.idMedia},
+            #{item.fgReason},
+            #{item.fgBack},
+            #{item.desExpert})
+        </foreach>
+    </insert>
+    <insert id="bachAddExam">
+        INSERT INTO faq_med_case_inspect_list(
+            id_med_case ,
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        )
+        SELECT
+            #{extId},a.id_inspect,a.id_inspect_item,a.na_item,a.na_short,a.des_stand,
+            b.id_result,b.val_result,b.des_result,b.id_media,b.cost_money,b.cost_time,
+            b.fg_show,b.fg_reason,b.fg_back,b.des_expert
+        FROM
+            bas_inspect_item a
+        LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item
+        AND b.fg_default = '1'
+        WHERE
+            a.id_inspect_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </insert>
+    <insert id="bachAddAllExam">
+        INSERT INTO faq_med_case_inspect_list(
+            id_med_case ,
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        ) VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{item.idMedCase},
+            #{item.idInspect},
+            #{item.idInspectItem},
+            #{item.naItem},
+            #{item.naShort},
+            #{item.desStand},
+            #{item.idResult},
+            #{item.valResult},
+            #{item.desResult},
+            #{item.idMedia},
+            #{item.costMoney},
+            #{item.costTime},
+            #{item.fgShow},
+            #{item.fgReason},
+            #{item.fgBack},
+            #{item.desExpert})
+        </foreach>
+    </insert>
+    <insert id="copyKbPart" useGeneratedKeys="true" keyProperty="idMedCase">
+        INSERT INTO faq_med_case(
+            name ,
+            descript ,
+            cd_med_asse ,
+            id_org ,
+            count ,
+            fg_active ,
+            fg_valid ,
+            creator ,
+            gmt_create ,
+            operator ,
+            gmt_modify ,
+            fg_public
+        )
+        select  #{name} ,
+                descript ,
+                cd_med_asse ,
+                #{idOrg} ,
+                '0' ,
+                fg_active ,
+                fg_valid ,
+                #{creator} ,
+                now(),
+                #{creator} ,
+                now() ,
+                '0'
+        from faq_med_case
+        where id_med_case = #{idMedCase}
+    </insert>
+    <insert id="copyKbText">
+        INSERT INTO faq_med_case_text(id_med_case , content)
+        SELECT
+            #{idMedCase},content
+        FROM
+            faq_med_case_text
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbPic">
+        INSERT INTO faq_med_case_pic(id_med_case , id_media)
+        SELECT
+            #{idMedCase},id_media
+        FROM
+            faq_med_case_pic
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbPat">
+        INSERT INTO faq_med_case_patient(id_med_case, name, sex,age, complaint)
+        SELECT
+            #{idMedCase}, name, sex,age, complaint
+        FROM
+            faq_med_case_patient
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+    <insert id="copyKbCons">
+        INSERT INTO faq_med_case_inques_list(
+            id_med_case ,
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried
+        )
+        SELECT
+            #{idMedCase},
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried
+        FROM
+            faq_med_case_inques_list
+        WHERE
+            id_med_case = #{oldIdMedCase}
+        AND fg_valid = '0'
+    </insert>
+    <insert id="copyKbCheck">
+        INSERT INTO faq_med_case_body_list(
+            id_med_case ,
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        )
+        SELECT
+            #{idMedCase},
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        FROM
+            faq_med_case_body_list
+        WHERE
+            id_med_case = #{oldIdMedCase}
+        AND fg_valid = '0'
+    </insert>
+    <insert id="copyKbExam">
+        INSERT INTO faq_med_case_inspect_list(
+            id_med_case ,
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        )
+        SELECT
+            #{idMedCase},
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert ,
+            fg_carried ,
+            fg_valid
+        FROM
+            faq_med_case_inspect_list
+        WHERE
+            id_med_case = #{oldIdMedCase}
+        AND fg_valid = '0'
+    </insert>
+    <insert id="copyCheckPic">
+        INSERT INTO faq_med_case_body(
+            id_med_case ,
+            id_media_front ,
+            id_media_back ,
+            id_media_chest ,
+            id_media_abdomen ,
+            id_media_head
+        )
+        SELECT
+            #{idMedCase},
+            id_media_front ,
+            id_media_back ,
+            id_media_chest ,
+            id_media_abdomen ,
+            id_media_head
+        FROM
+            faq_med_case_body
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
+
+    <update id="editKbPart">
+        UPDATE faq_med_case
+        SET
+            name = #{name},
+            descript = #{descript},
+            cd_med_asse = #{cdMedAsse},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_med_case = #{idMedCase}
+    </update>
+    <update id="delKbPart">
+        UPDATE faq_med_case
+        SET
+            <choose>
+                <when test="operationType == 'updateStatus'">
+                    fg_active = #{status},
+                </when>
+                <otherwise>
+                    fg_valid = #{status},
+                    fg_active = '0',
+                </otherwise>
+            </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_med_case in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delFaqMedCaseInques">
+        UPDATE faq_med_case_inques_list
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_carried = #{status}
+            </when>
+            <otherwise>
+                fg_valid = #{status}
+            </otherwise>
+        </choose>
+        WHERE
+            id_med_case_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="editFaqMedCaseInques">
+        UPDATE faq_med_case_inques_list
+        SET
+            id_med_case = #{idMedCase},
+            id_inques_ca = #{idInquesCa},
+            id_inques = #{idInques},
+            des_inques = #{desInques},
+            id_answer = #{idAnswer},
+            des_answer = #{desAnswer},
+            id_media = #{idMedia},
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            des_expert = #{desExpert},
+            fg_carried = #{fgCarried}
+        WHERE
+            id_med_case_list = #{idMedCaseList}
+    </update>
+    <update id="editExam">
+        UPDATE faq_med_case_inspect_list
+        SET
+            id_med_case = #{idMedCase},
+            id_inspect = #{idInspect},
+            id_inspect_item = #{idInspectItem},
+            na_item = #{naItem},
+            na_short = #{naShort},
+            des_stand = #{desStand},
+            id_result = #{idResult},
+            val_result = #{valResult},
+            des_result = #{desResult},
+            id_media = #{idMedia},
+            cost_money = #{costMoney},
+            cost_time = #{costTime},
+            fg_show = #{fgShow},
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            des_expert = #{desExpert},
+            fg_carried = #{fgCarried}
+        WHERE
+            id_med_case_list = #{idMedCaseList}
+    </update>
+    <update id="delKbExam">
+        UPDATE faq_med_case_inspect_list
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_carried = #{status}
+            </when>
+            <otherwise>
+                fg_valid = #{status}
+            </otherwise>
+        </choose>
+        WHERE
+            id_med_case_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="editCheck">
+        UPDATE faq_med_case_body_list
+        SET
+            id_med_case = #{idMedCase},
+            id_body_ca = #{idBodyCa},
+            id_body = #{idBody},
+            des_body = #{desBody},
+            sd_body = #{sdBody},
+            cd_check = #{cdCheck},
+            id_result = #{idResult},
+            des_result = #{desResult},
+            id_media = #{idMedia},
+            fg_reason = #{fgReason},
+            fg_back = #{fgBack},
+            des_expert = #{desExpert},
+            fg_carried = #{fgCarried}
+        WHERE
+            id_med_case_list = #{idMedCaseList}
+    </update>
+    <update id="delKbCheck">
+        UPDATE faq_med_case_body_list
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_carried = #{status}
+            </when>
+            <otherwise>
+                fg_valid = #{status}
+            </otherwise>
+        </choose>
+        WHERE
+            id_med_case_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="countKbPart" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case fmc
+        LEFT JOIN sys_org so on fmc.id_org = so.id_org
+        WHERE
+            fmc.fg_valid = '0'
+        and fmc.fg_public = '1'
+        <if test="cdMedAsse != null and cdMedAsse != '' ">
+            AND fmc.cd_med_asse = #{cdMedAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fmc.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fmc.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+        <if test="idOrg != null">
+            AND fmc.id_org = #{idOrg}
+        </if>
+    </select>
+
+    <select id="listKbPart" resultType="com.sm.open.core.model.entity.FaqMedCase">
+        SELECT
+            fmc.id_med_case,fmc.name, fmc.descript, fmc.cd_med_asse,
+            fmc.id_org, fmc.count, fmc.fg_active, fmc.fg_valid, fmc.creator, fmc.gmt_create,
+            fmc.operator, fmc.gmt_modify, so.name as orgName, so.fg_plat, bma.script
+        FROM
+            faq_med_case fmc
+        LEFT JOIN sys_org so on fmc.id_org = so.id_org
+        left join bas_med_asse bma on fmc.cd_med_asse = bma.cd_med_asse and bma.fg_valid='0'
+        WHERE
+            fmc.fg_valid = '0'
+        and fmc.fg_public = '1'
+        <if test="cdMedAsse != null and cdMedAsse != '' ">
+            AND fmc.cd_med_asse = #{cdMedAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fmc.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fmc.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+        <if test="idOrg != null">
+            AND fmc.id_org = #{idOrg}
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="countFaqMedCaseInques" resultType="java.lang.Long">
+        SELECT
+           count(1)
+        FROM
+            faq_med_case_inques_list fmci
+        WHERE
+            fmci.id_med_case = #{idMedCase}
+        AND fmci.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND fmci.des_inques like concat('%',#{keyword},'%')
+        </if>
+    </select>
+    <select id="listFaqMedCaseInques" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            fmci.id_med_case_list, fmci.id_med_case, fmci.id_inques_ca, fmci.id_inques, fmci.des_inques, fmci.id_answer,
+            fmci.des_answer, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
+            bm.sd_type, bm.path
+        FROM
+            faq_med_case_inques_list fmci
+        LEFT join bas_media bm on fmci.id_media = bm.id_media
+        WHERE
+            fmci.id_med_case = #{idMedCase}
+        AND fmci.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND fmci.des_inques like concat('%',#{keyword},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="selectKbText" resultType="com.sm.open.core.model.entity.FaqMedCaseText">
+        select
+            id_med_case,content
+        from
+            faq_med_case_text
+        where
+            id_med_case = #{idMedCase}
+    </select>
+    <select id="selectKbPic" resultType="com.sm.open.core.model.entity.FaqMedCasePic">
+        select
+            fmca.id_med_case,fmca.id_media,bm.path
+        from
+            faq_med_case_pic fmca
+        left join bas_media bm on fmca.id_media = bm.id_media
+        where
+            fmca.id_med_case = #{idMedCase}
+    </select>
+    <select id="selectKbPat" resultType="com.sm.open.core.model.entity.FaqMedCasePatient">
+        select
+            id_med_case, name, sex, age, complaint
+        from
+            faq_med_case_patient
+        where
+            id_med_case = #{idMedCase}
+    </select>
+    <select id="countExams" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_inspect_list fmci
+        WHERE
+            fmci.id_med_case = #{idMedCase}
+        AND fmci.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND fmci.na_item like concat('%',#{keyword},'%')
+        </if>
+    </select>
+    <select id="listExams" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
+        SELECT
+            fmci.id_med_case_list,fmci.id_med_case, fmci.id_inspect, fmci.id_inspect_item, fmci.na_item, 
+            fmci.na_short, fmci.des_stand, fmci.id_result, fmci.val_result, fmci.des_result, fmci.id_media, fmci.cost_money,
+            fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
+            bm.sd_type, bm.path
+        FROM
+            faq_med_case_inspect_list fmci
+        LEFT join bas_media bm on fmci.id_media = bm.id_media
+        WHERE
+            fmci.id_med_case = #{idMedCase}
+        AND fmci.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND fmci.na_item like concat('%',#{keyword},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="selectExamById" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
+        SELECT
+            fmci.id_med_case_list,fmci.id_med_case, fmci.id_inspect, fmci.id_inspect_item, fmci.na_item,
+            fmci.na_short, fmci.des_stand, fmci.id_result, fmci.val_result, fmci.des_result, fmci.id_media, fmci.cost_money,
+            fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
+            bm.sd_type, bm.path
+        FROM
+            faq_med_case_inspect_list fmci
+        LEFT join bas_media bm on fmci.id_media = bm.id_media
+        WHERE
+            fmci.id_med_case_list = #{idMedCaseList}
+        AND fmci.fg_valid = '0'
+    </select>
+    <select id="selectConsById" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+         SELECT
+            fmci.id_med_case_list, fmci.id_med_case, fmci.id_inques_ca, fmci.id_inques, fmci.des_inques, fmci.id_answer,
+            fmci.des_answer, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
+            bm.sd_type, bm.path
+        FROM
+            faq_med_case_inques_list fmci
+        LEFT join bas_media bm on fmci.id_media = bm.id_media
+        WHERE
+            fmci.id_med_case_list = #{idMedCaseList}
+        AND fmci.fg_valid = '0'
+    </select>
+    <select id="countChecks" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_case_body_list fmcbl
+        WHERE
+            fmcbl.id_med_case = #{idMedCase}
+        AND fmcbl.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND fmcbl.des_body like concat('%',#{keyword},'%')
+        </if>
+    </select>
+    <select id="listChecks" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
+        SELECT
+            fmcbl.id_med_case_list, fmcbl.id_med_case, fmcbl.id_body_ca, fmcbl.id_body,
+            fmcbl.des_body, fmcbl.sd_body, fmcbl.cd_check, fmcbl.id_result, fmcbl.des_result,
+            fmcbl.id_media, fmcbl.fg_reason, fmcbl.fg_back, fmcbl.des_expert, fmcbl.fg_carried, fmcbl.fg_valid,
+            bm.sd_type, bm.path
+        FROM
+            faq_med_case_body_list fmcbl
+        LEFT join bas_media bm on fmcbl.id_media = bm.id_media
+        WHERE
+            fmcbl.id_med_case = #{idMedCase}
+        AND fmcbl.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND fmcbl.des_body like concat('%',#{keyword},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="selectCheckById" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
+        SELECT
+            fmcbl.id_med_case_list, fmcbl.id_med_case, fmcbl.id_body_ca, fmcbl.id_body,
+            fmcbl.des_body, fmcbl.sd_body, fmcbl.cd_check, fmcbl.id_result, fmcbl.des_result,
+            fmcbl.id_media, fmcbl.fg_reason, fmcbl.fg_back, fmcbl.des_expert, fmcbl.fg_carried, fmcbl.fg_valid,
+            bm.sd_type, bm.path
+        FROM
+            faq_med_case_body_list fmcbl
+        LEFT join bas_media bm on fmcbl.id_media = bm.id_media
+        WHERE
+            fmcbl.id_med_case_list = #{idMedCaseList}
+    </select>
+
+    <select id="selectFaqMedCaseBody" resultType="com.sm.open.core.model.entity.FaqMedCaseBody">
+        select
+            id_med_case, id_media_front, id_media_back,
+            id_media_chest, id_media_abdomen, id_media_head
+        from
+            faq_med_case_body
+        where id_med_case = #{idMedCase}
+    </select>
+    <select id="selectOldConsRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            id_med_case ,
+            id_inques_ca ,
+            id_inques ,
+            des_inques ,
+            id_answer ,
+            des_answer ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        FROM
+            faq_med_case_inques_list
+        WHERE
+            id_med_case = #{idMedCase}
+    </select>
+    <select id="selectAllConsRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            #{idMedCase} as idMedCase ,
+            a.id_inques_ca ,
+            a.id_inques ,
+            a.des_inques ,
+            b.id_answer ,
+            b.des_answer ,
+            b.id_media ,
+            b.fg_reason ,
+            b.fg_back ,
+            b.des_expert
+        FROM
+            bas_inques a
+            LEFT JOIN bas_inques_answer b ON a.id_inques = b.id_inques
+            AND b.fg_default = '1'
+            AND b.fg_active = '1'
+            AND b.fg_valid = '0'
+        WHERE
+            a.fg_active = '1'
+        AND a.fg_valid = '0'
+    </select>
+    <select id="selectOldCheckRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
+        SELECT
+            id_med_case ,
+            id_body_ca ,
+            id_body ,
+            des_body ,
+            sd_body ,
+            cd_check ,
+            id_result ,
+            des_result ,
+            id_media ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        FROM
+            faq_med_case_body_list
+        WHERE
+            id_med_case = #{idMedCase}
+    </select>
+    <select id="selectAllCheckRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
+        SELECT
+            #{idMedCase} as idMedCase,a.id_body_ca,a.id_body,a.des_body,a.sd_body,a.cd_check,
+            b.id_result,b.des_result,b.id_media,b.fg_reason,b.fg_back,b.des_expert
+        FROM
+            bas_body a
+        LEFT JOIN bas_body_result b ON a.id_body = b.id_body
+        AND b.fg_default = '1'
+        AND b.fg_active = '1'
+        AND b.fg_valid = '0'
+        WHERE
+            a.fg_active = '1'
+          AND a.fg_valid = '0'
+    </select>
+    <select id="selectOldExamRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
+        SELECT
+            id_med_case ,
+            id_inspect ,
+            id_inspect_item ,
+            na_item ,
+            na_short ,
+            des_stand ,
+            id_result ,
+            val_result ,
+            des_result ,
+            id_media ,
+            cost_money ,
+            cost_time ,
+            fg_show ,
+            fg_reason ,
+            fg_back ,
+            des_expert
+        FROM
+            faq_med_case_inspect_list
+        WHERE
+            id_med_case = #{idMedCase}
+    </select>
+    <select id="selectAllExamRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
+        SELECT
+            #{idMedCase} as idMedCase,a.id_inspect,a.id_inspect_item,a.na_item,a.na_short,a.des_stand,
+            b.id_result,b.val_result,b.des_result,b.id_media,b.cost_money,b.cost_time,
+            b.fg_show,b.fg_reason,b.fg_back,b.des_expert
+        FROM
+            bas_inspect_item a
+                LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item
+                AND b.fg_default = '1'
+                AND b.fg_active = '1'
+                AND b.fg_valid = '0'
+        WHERE
+            a.fg_active = '1'
+          AND a.fg_valid = '0'
+    </select>
+
+
+</mapper>

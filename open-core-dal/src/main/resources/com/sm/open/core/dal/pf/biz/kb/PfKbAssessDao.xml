@@ -1,0 +1,1098 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.kb.PfKbAssessDao">
+
+    <insert id="addKbAssess" useGeneratedKeys="true" keyProperty="idEvaCase">
+        INSERT INTO faq_eva_case
+        (
+                cd_eva_asse,
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                fg_group,
+                score_upper,
+                score_lower,
+                score_default,
+                id_org,
+                fg_active,
+                fg_public,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        SELECT
+            #{cdEvaAsse},
+            #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+            #{fgGroup},
+            score_upper ,
+            score_lower ,
+            score_default,
+            #{idOrg},
+            #{fgActive},
+            #{fgPublic},
+            #{creator},
+            now(),
+            #{operator},
+            now()
+        FROM
+            bas_eva_asse
+        WHERE
+            cd_eva_asse =#{cdEvaAsse}
+    </insert>
+    <insert id="addItem" useGeneratedKeys="true" keyProperty="idEvaCaseItem">
+        INSERT INTO faq_eva_case_item
+        (
+            id_eva_case,
+            cd_eva_asse,
+            item_name,
+            score_eva
+        )
+        VALUES
+        (
+            #{idEvaCase},
+            #{cdEvaAsse},
+            #{itemName},
+            #{scoreEva}
+        )
+    </insert>
+    <insert id="addReferral" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_referral
+        (
+            id_eva_case_item,
+            sd_eva_referral,
+            id_die
+        )
+        VALUES
+        (
+            #{idEvaCaseItem},
+            #{sdEvaReferral},
+            #{idDie}
+        )
+    </insert>
+    <insert id="addDiagnosis" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_diagnosis
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="saveReason" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_reason
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="sdEvaEffciency!=null">
+                sd_eva_effciency,
+            </if>
+            <if test="idInques!=null">
+                id_inques,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="sdEvaEffciency!=null">
+                #{sdEvaEffciency},
+            </if>
+            <if test="idInques!=null">
+                #{idInques},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="idInspectItem!=null">
+                #{idInspectItem},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="saveCover" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_cover
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="sdEvaCover!=null">
+                sd_eva_cover,
+            </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
+            <if test="idInques!=null">
+                id_inques,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="sdEvaCover!=null">
+                #{sdEvaCover},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
+            </if>
+            <if test="idInques!=null">
+                #{idInques},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="idInspectItem!=null">
+                #{idInspectItem},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="saveMust" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_must
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="sdEvaMust!=null">
+                sd_eva_must,
+            </if>
+            <if test="idInques!=null">
+                id_inques,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
+            <if test="idDie!=null">
+                id_die,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="sdEvaMust!=null">
+                #{sdEvaMust},
+            </if>
+            <if test="idInques!=null">
+                #{idInques},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="idInspectItem!=null">
+                #{idInspectItem},
+            </if>
+            <if test="idDie!=null">
+                #{idDie},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="saveEffciency" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_effciency
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="sdEvaEffciency!=null">
+                sd_eva_effciency,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="quaUpper!=null">
+                qua_upper,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="sdEvaEffciency!=null">
+                #{sdEvaEffciency},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="quaUpper!=null">
+                #{quaUpper},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="saveOrder" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_order
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="sdEvaOrder!=null">
+                sd_eva_order,
+            </if>
+            <if test="idShortDrugs!=null">
+                id_short_drugs,
+            </if>
+            <if test="sdNursRout!=null">
+                sd_nurs_rout,
+            </if>
+            <if test="cdNursLevel!=null">
+                cd_nurs_level,
+            </if>
+            <if test="sdDiet!=null">
+                sd_diet,
+            </if>
+            <if test="sdPosition!=null">
+                sd_position,
+            </if>
+            <if test="idLongDrugs!=null">
+                id_long_drugs,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="sdEvaOrder!=null">
+                #{sdEvaOrder},
+            </if>
+            <if test="idShortDrugs!=null">
+                #{idShortDrugs},
+            </if>
+            <if test="sdNursRout!=null">
+                #{sdNursRout},
+            </if>
+            <if test="cdNursLevel!=null">
+                #{cdNursLevel},
+            </if>
+            <if test="sdDiet!=null">
+                #{sdDiet},
+            </if>
+            <if test="sdPosition!=null">
+                #{sdPosition},
+            </if>
+            <if test="idLongDrugs!=null">
+                #{idLongDrugs},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="copyKbAssess" useGeneratedKeys="true" keyProperty="idEvaCase">
+        INSERT INTO faq_eva_case(
+            cd_eva_asse ,
+            name ,
+            descript ,
+            fg_group ,
+            score_upper ,
+            score_lower ,
+            score_default ,
+            id_org ,
+            count ,
+            fg_active ,
+            fg_valid ,
+            creator ,
+            gmt_create ,
+            operator ,
+            gmt_modify ,
+            fg_public
+        )
+        select
+            cd_eva_asse ,
+            #{name} ,
+            descript ,
+            fg_group ,
+            score_upper ,
+            score_lower ,
+            score_default ,
+            id_org ,
+            '0' ,
+            fg_active ,
+            fg_valid ,
+            #{creator} ,
+            now() ,
+            #{creator} ,
+            now() ,
+            '0'
+        from faq_eva_case
+        where id_eva_case = #{idEvaCase}
+    </insert>
+    <insert id="copyAssessItem" useGeneratedKeys="true" keyProperty="idEvaCaseItem">
+        INSERT INTO faq_eva_case_item(
+            cd_eva_asse ,
+            id_eva_case ,
+            item_name ,
+            score_eva
+        )
+        select
+            cd_eva_asse ,
+            #{idEvaCase} ,
+            item_name ,
+            score_eva
+        from faq_eva_case
+        where id_med_case = #{oldIdEvaCase}
+    </insert>
+    <insert id="copyKbAssess001">
+        INSERT INTO faq_eva_case_item_referral(
+            id_eva_case_item ,
+            sd_eva_referral ,
+            id_die
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_referral ,
+            id_die
+        from faq_eva_case_item_referral
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess002">
+        INSERT INTO faq_eva_case_item_diagnosis(id_eva_case_item , id_die)
+        select
+            #{newIdEvaCaseItem} ,
+            id_die
+        from faq_eva_case_item_diagnosis
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess003">
+        INSERT INTO faq_eva_case_item_reason(
+            id_eva_case_item ,
+            sd_eva_effciency ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_effciency ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        from faq_eva_case_item_reason
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess004">
+        INSERT INTO faq_eva_case_item_cover(
+            id_eva_case_item ,
+            sd_eva_cover ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_cover ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        from faq_eva_case_item_cover
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess005">
+        INSERT INTO faq_eva_case_item_must(
+            id_eva_case_item ,
+            sd_eva_must ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_must ,
+            id_die ,
+            id_inques ,
+            id_body ,
+            id_inspect_item
+        from faq_eva_case_item_must
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess006">
+        INSERT INTO faq_eva_case_item_effciency(
+            sd_eva_effciency ,
+            id_eva_case_item ,
+            qua_upper
+        )
+        select
+            sd_eva_effciency ,
+            #{newIdEvaCaseItem} ,
+            qua_upper
+        from faq_eva_case_item_effciency
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+    <insert id="copyKbAssess007">
+        INSERT INTO faq_eva_case_item_order(
+            id_eva_case_item ,
+            sd_eva_order ,
+            id_short_drugs ,
+            sd_nurs_rout ,
+            cd_nurs_level ,
+            sd_diet ,
+            sd_position ,
+            id_long_drugs
+        )
+        select
+            #{newIdEvaCaseItem} ,
+            sd_eva_order ,
+            id_short_drugs ,
+            sd_nurs_rout ,
+            cd_nurs_level ,
+            sd_diet ,
+            sd_position ,
+            id_long_drugs
+        from faq_eva_case_item_order
+        where id_eva_case_item = #{oldIdEvaCaseItem}
+    </insert>
+
+    <update id="editKbAssess">
+        UPDATE faq_eva_case
+        SET
+                cd_eva_asse = #{cdEvaAsse},
+                name = #{name},
+                descript = #{descript},
+                fg_group = #{fgGroup},
+                score_upper = #{scoreUpper},
+                score_lower = #{scoreLower},
+                score_default = #{scoreDefault},
+            <if test="count != null">
+                count = #{count},
+            </if>
+                fg_active = #{fgActive},
+                operator = #{operator},
+                gmt_modify = now()
+        WHERE
+            id_eva_case = #{idEvaCase}
+    </update>
+    <update id="delKbAssess">
+        UPDATE faq_eva_case
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_eva_case in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="editItem">
+        UPDATE faq_eva_case_item
+        SET
+            id_eva_case = #{idEvaCase},
+            cd_eva_asse = #{cdEvaAsse},
+            item_name = #{itemName},
+            score_eva = #{scoreEva}
+        WHERE
+            id_eva_case_item = #{idEvaCaseItem}
+    </update>
+    <update id="editReferral">
+        UPDATE faq_eva_case_item_referral
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            sd_eva_referral = #{sdEvaReferral},
+            id_die = #{idDie}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+    <update id="editDiagnosis">
+        UPDATE faq_eva_case_item_diagnosis
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            id_die = #{idDie}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+    <update id="editReason">
+        UPDATE faq_eva_case_item_reason
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            sd_eva_effciency = #{sdEvaEffciency},
+            id_inques = #{idInques},
+            id_body = #{idBody},
+            id_inspect_item = #{idInspectItem},
+            id_die = #{idDie}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+    <update id="editCover">
+        UPDATE faq_eva_case_item_cover
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            sd_eva_cover = #{sdEvaCover},
+            id_die = #{idDie},
+            id_inques = #{idInques},
+            id_body = #{idBody},
+            id_inspect_item = #{idInspectItem}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+    <update id="editMust">
+        UPDATE faq_eva_case_item_must
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            sd_eva_must = #{sdEvaMust},
+            id_die = #{idDie},
+            id_inques = #{idInques},
+            id_body = #{idBody},
+            id_inspect_item = #{idInspectItem}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+    <update id="editEffciency">
+        UPDATE faq_eva_case_item_effciency
+        SET
+            sd_eva_effciency = #{sdEvaEffciency},
+            id_eva_case_item = #{idEvaCaseItem},
+            qua_upper = #{quaUpper}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+    <update id="editOrder">
+        UPDATE faq_eva_case_item_order
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            sd_eva_order = #{sdEvaOrder},
+            id_short_drugs = #{idShortDrugs},
+            sd_nurs_rout = #{sdNursRout},
+            cd_nurs_level = #{cdNursLevel},
+            sd_diet = #{sdDiet},
+            sd_position = #{sdPosition},
+            id_long_drugs = #{idLongDrugs}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
+
+    <delete id="delItem">
+        delete from faq_eva_case_item
+        WHERE
+            id_eva_case_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+    <delete id="delReferral">
+        delete from faq_eva_case_item_referral
+        WHERE
+            id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        ) 
+    </delete>
+    <delete id="delDiagnosis">
+        delete from faq_eva_case_item_diagnosis
+        WHERE
+        id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delReason">
+        delete from faq_eva_case_item_reason
+        WHERE
+        id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delCover">
+        delete from faq_eva_case_item_cover
+        WHERE
+        id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delMust">
+        delete from faq_eva_case_item_must
+        WHERE
+        id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delEffciency">
+        delete from faq_eva_case_item_effciency
+        WHERE
+        id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delOrder">
+        delete from faq_eva_case_item_order
+        WHERE
+        id_eva_case_item_list in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delCommonAssess">
+        DELETE
+        FROM
+            faq_eva_case_item
+        WHERE
+            id_eva_case_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+
+
+    <select id="countKbAssess" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_eva_case fec
+        LEFT JOIN sys_org so on fec.id_org = so.id_org
+        WHERE
+            fec.fg_valid = '0'
+        AND fec.fg_public = '1'
+        <if test="cdEvaAsse != null and cdEvaAsse != '' ">
+            AND fec.cd_eva_asse = #{cdEvaAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fec.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fec.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+        <if test="idOrg != null">
+            AND fec.id_org = #{idOrg}
+        </if>
+    </select>
+    <select id="listKbAssess" resultType="com.sm.open.core.model.entity.FaqEvaCase">
+        SELECT
+            fec.id_eva_case, fec.cd_eva_asse, fec.name, fec.descript, fec.fg_group, fec.score_upper,
+            fec.score_lower, fec.score_default, fec.id_org, fec.count, fec.fg_active, fec.fg_valid,
+            fec.creator, fec.gmt_create, fec.operator, fec.gmt_modify, so.name as orgName, so.fg_plat, bea.script
+        FROM
+            faq_eva_case fec
+        LEFT JOIN sys_org so on fec.id_org = so.id_org
+        left join bas_eva_asse bea on fec.cd_eva_asse = bea.cd_eva_asse and bea.fg_valid = '0'
+        WHERE
+            fec.fg_valid = '0'
+        AND fec.fg_public = '1'
+        <if test="cdEvaAsse != null and cdEvaAsse != '' ">
+            AND fec.cd_eva_asse = #{cdEvaAsse}
+        </if>
+        <if test="name != null and name != '' ">
+            AND fec.name like concat('%',#{name},'%')
+        </if>
+        <if test="creator != null and creator != '' ">
+            AND fec.creator like concat('%',#{creator},'%')
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.fg_plat = #{fgPlat}
+        </if>
+        <if test="fgPlat != null and fgPlat != '' ">
+            AND so.name = #{orgName}
+        </if>
+        <if test="idOrg != null">
+            AND fec.id_org = #{idOrg}
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listKbReferral" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_referral AS sdEva
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_referral b ON a.id_eva_case_item = b.id_eva_case_item
+        WHERE
+            a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_referral
+    </select>
+    <select id="listKbDiagnosis" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva
+        FROM
+            faq_eva_case_item a
+        WHERE
+            a.id_eva_case = #{idEvaCase}
+        and a.cd_eva_asse = #{cdEvaAsse}
+    </select>
+    <select id="listKbReason" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_effciency AS sdEva,
+            b.id_die,
+            c.name as idDieText
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_reason b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
+        WHERE
+             a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_effciency
+    </select>
+    <select id="listKbCover" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_cover AS sdEva, b.id_die, c.name as idDieText
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_cover b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
+        WHERE
+             a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_cover
+    </select>
+    <select id="listKbMust" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_must AS sdEva, b.id_die, c.name as idDieText
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_must b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
+        WHERE
+             a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_must
+    </select>
+    <select id="listKbEffciency" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_effciency AS sdEva,
+            b.qua_upper
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_effciency b ON a.id_eva_case_item = b.id_eva_case_item
+        WHERE
+             a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_effciency
+    </select>
+    <select id="listKbOrder" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_order AS sdEva
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_order b ON a.id_eva_case_item = b.id_eva_case_item
+        WHERE
+             a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_order
+    </select>
+
+    <select id="listReferral" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemReferral">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.sd_eva_referral ,
+            a.id_die ,
+            b.name AS idDieText
+        FROM
+            faq_eva_case_item_referral a
+        LEFT JOIN bas_die b ON a.id_die = b.id_die
+        WHERE
+            a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="listDiagnosisAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemDiagnosis">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.id_die ,
+            b.name AS idDieText
+        FROM
+            faq_eva_case_item_diagnosis a
+        LEFT JOIN bas_die b ON a.id_die = b.id_die
+        WHERE
+            a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="listReasonAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemReason">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.sd_eva_effciency ,
+            a.id_inques, a.id_body, a.id_inspect_item,
+            <if test='sdType == "1"'>
+                b.des_inques AS desText
+            </if>
+            <if test='sdType == "2"'>
+                b.des_body AS desText
+            </if>
+            <if test='sdType == "3"'>
+                b.na_item AS desText
+            </if>
+        FROM
+            faq_eva_case_item_reason a
+        <if test='sdType == "1"'>
+            LEFT JOIN bas_inques b ON a.id_inques = b.id_inques
+        </if>
+        <if test='sdType == "2"'>
+            LEFT JOIN bas_body b ON a.id_body = b.id_body
+        </if>
+        <if test='sdType == "3"'>
+            LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
+        </if>
+        WHERE
+            a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="listCoverAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemCover">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.sd_eva_cover ,
+            a.id_inques, a.id_body, a.id_inspect_item, a.id_die, c.name as idDieText,
+        <if test='sdType == "1"'>
+            b.des_inques AS desText
+        </if>
+        <if test='sdType == "2"'>
+            b.des_body AS desText
+        </if>
+        <if test='sdType == "3"'>
+            b.na_item AS desText
+        </if>
+        FROM
+            faq_eva_case_item_cover a
+        <if test='sdType == "1"'>
+            LEFT JOIN bas_inques b ON a.id_inques = b.id_inques
+        </if>
+        <if test='sdType == "2"'>
+            LEFT JOIN bas_body b ON a.id_body = b.id_body
+        </if>
+        <if test='sdType == "3"'>
+            LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
+        </if>
+        left join bas_die c on c.id_die = a.id_die
+        WHERE
+            a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="listMustAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemMust">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.sd_eva_must ,
+            a.id_inques, a.id_body, a.id_inspect_item,
+        <if test='sdType == "1"'>
+            b.des_inques AS desText
+        </if>
+        <if test='sdType == "2"'>
+            b.des_body AS desText
+        </if>
+        <if test='sdType == "3"'>
+            b.na_item AS desText
+        </if>
+        FROM
+            faq_eva_case_item_must a
+        <if test='sdType == "1"'>
+            LEFT JOIN bas_inques b ON a.id_inques = b.id_inques
+        </if>
+        <if test='sdType == "2"'>
+            LEFT JOIN bas_body b ON a.id_body = b.id_body
+        </if>
+        <if test='sdType == "3"'>
+            LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
+        </if>
+        WHERE
+            a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="listOrderAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemOrder">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.sd_eva_order,
+            a.id_short_drugs,
+            a.sd_nurs_rout,
+            a.cd_nurs_level,
+            a.sd_diet,
+            a.sd_position,
+            a.id_long_drugs,
+        <choose>
+            <when test='sdType == "1" or sdType == "6"'>
+                b.name AS desText
+            </when>
+            <otherwise>
+                b.dict_name AS desText
+            </otherwise>
+        </choose>
+        FROM
+            faq_eva_case_item_order a
+        <if test='sdType == "1"'>
+            LEFT JOIN bas_drugs b ON a.id_short_drugs = b.id_drugs
+        </if>
+        <if test='sdType == "2"'>
+            LEFT JOIN sys_dictionary b ON b.group_code = 'SD_NURS_ROUT' AND a.sd_nurs_rout = b.dict_code and b.status='enabled'
+        </if>
+        <if test='sdType == "3"'>
+            LEFT JOIN sys_dictionary b ON b.group_code = 'CD_NURS_LEVEL' AND a.cd_nurs_level = b.dict_code and b.status='enabled'
+        </if>
+        <if test='sdType == "4"'>
+            LEFT JOIN sys_dictionary b ON b.group_code = 'SD_DIET' AND a.sd_diet = b.dict_code and b.status='enabled'
+        </if>
+        <if test='sdType == "5"'>
+            LEFT JOIN sys_dictionary b ON b.group_code = 'SD_POSITION' AND a.sd_position = b.dict_code and b.status='enabled'
+        </if>
+        <if test='sdType == "6"'>
+            LEFT JOIN bas_drugs b ON a.id_long_drugs = b.id_drugs
+        </if>
+        WHERE
+            a.id_eva_case_item = #{idEvaCaseItem}
+    </select>
+    <select id="selectFaqEvaCaseItem" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        select
+            id_eva_case_item ,
+            cd_eva_asse ,
+            id_eva_case ,
+            item_name ,
+            score_eva
+        from faq_eva_case_item
+        WHERE
+            id_eva_case = #{idEvaCase}
+    </select>
+</mapper>

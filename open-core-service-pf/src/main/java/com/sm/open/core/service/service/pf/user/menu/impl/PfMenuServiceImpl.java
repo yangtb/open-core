@@ -60,8 +60,13 @@ public class PfMenuServiceImpl implements PfMenuService {
     }
 
     @Override
-    public List<PfMenuVo> listMyMenus(boolean isSuper, Long userId) {
-        List<SysFunction> menus = isSuper ? pfMenuDao.listAllMenus() : pfMenuDao.listMyMenus(userId);
+    public List<PfMenuVo> listMyMenus(boolean isSuper, boolean isAnonymousUser, Long userId) {
+        List<SysFunction> menus;
+        if (isAnonymousUser) {
+            menus = pfMenuDao.listAnonymousUserMenus();
+        } else {
+            menus = isSuper ? pfMenuDao.listAllMenus() : pfMenuDao.listMyMenus(userId);
+        }
         List<PfMenuVo> parentMenuList = new ArrayList<>();
         PfMenuVo pfMenuVo;
         for (SysFunction sysMenu : menus) {

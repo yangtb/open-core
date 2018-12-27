@@ -98,4 +98,35 @@ public interface PfRoleService {
      */
     boolean cancelRole(List<SysRole> roles);
 
+    /**
+     * 根据角色编码获取角色信息
+     *
+     * @param code 角色编码
+     * @return
+     */
+    PfRoleVo selectRoleInfoByCode(String code);
+
+    /**
+     * 根据用户id获取角色level
+     *
+     * @param userId 用户id
+     * @return
+     */
+    PfRoleVo selectRoleLevel(Long userId);
+
+    /**
+     * 需要过期提醒
+     *
+     * @param userId 用户id
+     * @return
+     */
+    boolean needExpireNotice(Long userId);
+
+    /**
+     * 用户拥有角色编码集合
+     *
+     * @param userId   用户id
+     * @return
+     */
+    List<String> selectUserRoleCode(Long userId);
 }

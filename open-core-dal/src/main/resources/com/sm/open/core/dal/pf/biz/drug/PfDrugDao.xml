@@ -1,0 +1,233 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.drug.PfDrugDao">
+
+    <insert id="addDrugInfo">
+        INSERT INTO bas_drugs
+        (
+                name,
+            <if test="cdDrugsclass!=null">
+                cd_drugsclass,
+            </if>
+            <if test="spec!=null">
+                spec,
+            </if>
+            <if test="unit!=null">
+                unit,
+            </if>
+                pinyin,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+
+                #{name},
+            <if test="cdDrugsclass!=null">
+                #{cdDrugsclass},
+            </if>
+            <if test="spec!=null">
+                #{spec},
+            </if>
+            <if test="unit!=null">
+                #{unit},
+            </if>
+                #{pinyin},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <insert id="saveDrugCatalogue" useGeneratedKeys="true" keyProperty="idDrugsclass">
+        INSERT INTO bas_drugs_class
+        (
+                name,
+                cd,
+            <if test="cdPar!=null">
+                cd_par,
+            </if>
+                fg_active,
+            <if test="sort!=null">
+                sort,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+                #{cd},
+            <if test="cdPar!=null">
+                #{cdPar},
+            </if>
+                #{fgActive},
+            <if test="sort!=null">
+                #{sort},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editDrugInfo">
+        UPDATE bas_drugs
+        SET
+            name = #{name},
+            cd_drugsclass = #{cdDrugsclass},
+            spec = #{spec},
+            unit = #{unit},
+            pinyin = #{pinyin},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_drugs = #{idDrugs}
+        
+    </update>
+
+    <update id="editDrugCatalogue">
+        UPDATE bas_drugs_class
+        SET
+            name = #{name},
+            cd = #{cd},
+            cd_par = #{cdPar},
+            fg_active = #{fgActive},
+            <if test="sort != null">
+                sort = #{sort},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_drugsclass = #{idDrugsclass}
+    </update>
+
+    <update id="delDrugInfo">
+        UPDATE bas_drugs
+        SET fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_drugs in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <update id="delDrugCatalogue">
+        UPDATE
+            bas_drugs_class
+        SET
+            fg_valid = #{status}, operator = #{operator}, gmt_modify = now()
+        WHERE
+            id_drugsclass in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="updatePinyin">
+        update bas_drugs set pinyin = #{pinyin} where id_drugs = #{idDrugs}
+    </update>
+
+    <select id="countDrugInfo" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_drugs
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+        <if test="fgActive != null and fgActive != '' ">
+            AND fg_active = #{fgActive}
+        </if>
+        <if test="pinyin != null and pinyin != '' ">
+            AND pinyin like concat('%',#{pinyin},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (name like concat('%',#{keywords},'%') or pinyin like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+
+    <select id="listDrugInfo" resultType="com.sm.open.core.model.entity.BasDrugs">
+        SELECT
+            a.id_drugs, a.name, a.cd_drugsclass, a.spec, a.unit, a.pinyin,
+            a.fg_active, a.fg_valid, a.sort, a.creator, a.gmt_create, a.operator, a.gmt_modify,
+            b.name as cdDrugsclassText
+        FROM
+            bas_drugs a
+        left join bas_drugs_class b on a.cd_drugsclass = b.cd
+        WHERE
+            a.fg_valid = '0'
+        <if test="name != null and name != '' ">
+            AND a.name like concat('%',#{name},'%')
+        </if>
+        <if test="fgActive != null and fgActive != '' ">
+            AND a.fg_active = #{fgActive}
+        </if>
+        <if test="pinyin != null and pinyin != '' ">
+            AND a.pinyin like concat('%',#{pinyin},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (a.name like concat('%',#{keywords},'%') or a.pinyin like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listDrugCatalogueTree" resultType="com.sm.open.core.model.vo.pf.biz.drug.PfDrugZtreeVo">
+        SELECT
+            id_drugsclass,
+            cd AS id ,
+            cd_par AS pId ,
+            name,
+            fg_active
+        FROM
+            bas_drugs_class
+        WHERE
+        fg_valid = '0'
+        <if test="async == true">
+            <choose>
+                <when test="id != null">
+                    and cd_par = #{id}
+                </when>
+                <otherwise>
+                    and (cd_par is null or cd_par = '')
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectDrugDetail" resultType="com.sm.open.core.model.entity.BasDrugsClass">
+        SELECT
+           id_drugsclass, name, cd, cd_par, fg_active, fg_valid,
+           sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_drugs_class
+        WHERE
+            id_drugsclass = #{idDrugsclass}
+    </select>
+
+    <select id="isExistDrugCatalogue" resultType="java.lang.Integer">
+        select count(1) from bas_drugs_class where cd = #{cd} and fg_valid = '0'
+    </select>
+    <select id="listAllDrugs" resultType="com.sm.open.core.model.entity.BasDrugs">
+        SELECT
+            id_drugs, name, cd_drugsclass, spec, unit, pinyin,
+            fg_active, fg_valid, sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_drugs
+    </select>
+
+</mapper>

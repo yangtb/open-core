@@ -1,0 +1,242 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.disease.PfDiseaseDao">
+
+    <insert id="addDiseaseInfo">
+        INSERT INTO bas_die
+        (
+                name,
+            <if test="cdDieclass!=null">
+                cd_dieclass,
+            </if>
+            <if test="icd!=null">
+                icd,
+            </if>
+                pinyin,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="cdDieclass!=null">
+                #{cdDieclass},
+            </if>
+            <if test="icd!=null">
+                #{icd},
+            </if>
+                #{pinyin},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    
+    <insert id="saveDiseaseCatalogue" useGeneratedKeys="true" keyProperty="idDieclass">
+        INSERT INTO bas_die_class
+        (
+                name,
+                cd,
+            <if test="cdPar!=null">
+                cd_par,
+            </if>
+            <if test="icdB!=null">
+                icd_b,
+            </if>
+            <if test="icdE!=null">
+                icd_e,
+            </if>
+                fg_active,
+            <if test="sort!=null">
+                sort,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+                #{cd},
+            <if test="cdPar!=null">
+                #{cdPar},
+            </if>
+            <if test="icdB!=null">
+                #{icdB},
+            </if>
+            <if test="icdE!=null">
+                #{icdE},
+            </if>
+                #{fgActive},
+            <if test="sort!=null">
+                #{sort},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+
+    <update id="editDiseaseInfo">
+        UPDATE bas_die
+        SET
+            name = #{name},
+            cd_dieclass = #{cdDieclass},
+            icd = #{icd},
+            pinyin = #{pinyin},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_die = #{idDie}
+    </update>
+
+    <update id="editDiseaseCatalogue">
+        UPDATE bas_die_class
+        SET
+            name = #{name},
+            cd = #{cd},
+            cd_par = #{cdPar},
+            icd_b = #{icdB},
+            icd_e = #{icdE},
+            fg_active = #{fgActive},
+            <if test="sort != null">
+              sort = #{sort},
+            </if>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_dieclass = #{idDieclass}
+    </update>
+
+    <update id="delDiseaseInfo">
+        UPDATE
+            bas_die
+        SET
+            fg_valid = #{status},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+        id_die in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <update id="delDiseaseCatalogue">
+        UPDATE
+            bas_die_class
+        SET
+            fg_valid = #{status}, operator = #{operator}, gmt_modify = now()
+        WHERE
+            id_dieclass in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="countDiseaseInfo" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_die
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            AND name like concat('%',#{name},'%')
+        </if>
+        <if test="fgActive != null and fgActive != '' ">
+            AND fg_active = #{fgActive}
+        </if>
+        <if test="icd != null and icd != '' ">
+            AND icd like concat('%',#{icd},'%')
+        </if>
+        <if test="pinyin != null and pinyin != '' ">
+            AND pinyin like concat('%',#{pinyin},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (name like concat('%',#{keywords},'%')
+            or   icd like concat('%',#{keywords},'%')
+            or   pinyin like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+
+    <select id="listDiseaseInfo" resultType="com.sm.open.core.model.entity.BasDie">
+        SELECT
+            bd.id_die, bd.name, bd.cd_dieclass,bdc.name as cdDieclassText,
+            bd.icd, bd.pinyin, bd.fg_active, bd.fg_valid,
+            bd.sort, bd.creator, bd.gmt_create, bd.operator, bd.gmt_modify
+        FROM
+            bas_die bd left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
+        WHERE
+            bd.fg_valid = '0'
+        <if test="name != null and name != '' ">
+            AND bd.name like concat('%',#{name},'%')
+        </if>
+        <if test="fgActive != null and fgActive != '' ">
+            AND bd.fg_active = #{fgActive}
+        </if>
+        <if test="icd != null and icd != '' ">
+            AND bd.icd like concat('%',#{icd},'%')
+        </if>
+        <if test="pinyin != null and pinyin != '' ">
+            AND bd.pinyin like concat('%',#{pinyin},'%')
+        </if>
+        <if test="keywords != null and keywords != '' ">
+            AND (bd.name like concat('%',#{keywords},'%')
+            or   bd.icd like concat('%',#{keywords},'%')
+            or   bd.pinyin like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+
+    <select id="listDiseaseCatalogueTree"
+            parameterType="com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto"
+            resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
+        SELECT
+            id_dieclass,
+            cd AS id ,
+            cd_par AS pId ,
+            name,
+            fg_active,
+            is_parent
+        FROM
+            bas_die_class
+        WHERE
+            fg_valid = '0'
+        <if test="async == true">
+            <choose>
+                <when test="id != null">
+                    and cd_par = #{id}
+                </when>
+                <otherwise>
+                    and (cd_par is null or cd_par = '')
+                </otherwise>
+            </choose>
+        </if>
+    </select>
+
+    <select id="selectDiseaseDetail" resultType="com.sm.open.core.model.entity.BasDieClass">
+        SELECT
+            id_dieclass, name, cd, cd_par, icd_b, icd_e, fg_active, fg_valid,
+            sort, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_die_class
+        WHERE
+            id_dieclass = #{idDieClass}
+    </select>
+
+    <select id="isExistDiseaseCatalogue" resultType="java.lang.Integer">
+         select count(1) from bas_die_class where cd = #{cd} and fg_valid = '0'
+    </select>
+
+</mapper>

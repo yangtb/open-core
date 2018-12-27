@@ -2,6 +2,7 @@ package com.sm.open.core.dal.pf.user.login;
 
 import com.sm.open.core.model.dto.pf.user.PfUserDto;
 import com.sm.open.core.model.entity.UserInfo;
+import com.sm.open.core.model.vo.pf.user.login.PfStudentVo;
 import com.sm.open.core.model.vo.pf.user.login.PfUsersVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -68,6 +69,14 @@ public interface PfUserDao {
     Integer updateUser(UserInfo user);
 
     /**
+     * 获取用户所在机构集合
+     *
+     * @param users
+     * @return
+     */
+    List<Long> selectOrgId(@Param("list") List<Long> users);
+
+    /**
      * 删除用户
      *
      * @param users 用户id集合
@@ -81,7 +90,7 @@ public interface PfUserDao {
      * @param users 用户id集合
      * @return
      */
-    int freezeUser(List<Long> users);
+    int freezeUser(@Param("list") List<Long> users);
 
     /**
      * 根据用户获取用户信息
@@ -106,5 +115,13 @@ public interface PfUserDao {
      * @return
      */
     Integer updatePsw(UserInfo user);
+
+    /**
+     * 查询学生信息
+     *
+     * @param idStudent 学生id
+     * @return
+     */
+    PfStudentVo selectStudentInfo(Long idStudent);
 
 }

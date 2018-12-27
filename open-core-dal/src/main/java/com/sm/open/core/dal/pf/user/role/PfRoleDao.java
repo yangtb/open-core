@@ -1,7 +1,6 @@
 package com.sm.open.core.dal.pf.user.role;
 
 import com.sm.open.core.model.dto.pf.user.role.PfRoleDto;
-import com.sm.open.core.model.entity.SysAuthority;
 import com.sm.open.core.model.entity.SysRole;
 import com.sm.open.core.model.entity.SysRoleMenu;
 import com.sm.open.core.model.entity.UserRole;
@@ -27,6 +26,14 @@ public interface PfRoleDao {
      * @return
      */
     List<PfRoleVo> list();
+
+    /**
+     * 根据用户id获取角色level
+     *
+     * @param userId 用户id
+     * @return
+     */
+    PfRoleVo selectRoleLevel(Long userId);
 
     /**
      * 获取用户所有角色
@@ -109,4 +116,28 @@ public interface PfRoleDao {
     Integer cancelRole(@Param("state") Integer state,
                        @Param("roleId") Long roleId);
 
+
+    /**
+     * 根据角色编码获取角色信息
+     *
+     * @param code 角色编码
+     * @return
+     */
+    PfRoleVo selectRoleInfoByCode(@Param("code") String code);
+
+    /**
+     * 需要过期提醒
+     *
+     * @param userId 用户id
+     * @return
+     */
+    boolean needExpireNotice(@Param("userId") Long userId);
+
+    /**
+     * 用户拥有角色编码集合
+     *
+     * @param userId 用户id
+     * @return
+     */
+    List<String> selectUserRoleCode(@Param("userId") Long userId);
 }

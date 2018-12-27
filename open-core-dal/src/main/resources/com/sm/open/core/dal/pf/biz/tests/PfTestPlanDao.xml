@@ -1,0 +1,401 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao">
+    <insert id="addPlan" useGeneratedKeys="true" keyProperty="idTestplan">
+        INSERT INTO exm_testplan
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplan!=null">
+                id_testplan,
+            </if>
+            <if test="naTestplan!=null">
+                na_testplan,
+            </if>
+            <if test="desTestplan!=null">
+                des_testplan,
+            </if>
+            <if test="idTestpaper!=null">
+                id_testpaper,
+            </if>
+            <if test="idOrg!=null">
+                id_org,
+            </if>
+            <if test="sdTestplan!=null">
+                sd_testplan,
+            </if>
+            <if test="fgActive!=null">
+                fg_active,
+            </if>
+            <if test="fgValid!=null">
+                fg_valid,
+            </if>
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplan!=null">
+                #{idTestplan},
+            </if>
+            <if test="naTestplan!=null">
+                #{naTestplan},
+            </if>
+            <if test="desTestplan!=null">
+                #{desTestplan},
+            </if>
+            <if test="idTestpaper!=null">
+                #{idTestpaper},
+            </if>
+            <if test="idOrg!=null">
+                #{idOrg},
+            </if>
+            <if test="sdTestplan!=null">
+                #{sdTestplan},
+            </if>
+            <if test="fgActive!=null">
+                #{fgActive},
+            </if>
+            <if test="fgValid!=null">
+                #{fgValid},
+            </if>
+                #{creator},
+                now(),
+                #{operator},
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="addPlanItem" useGeneratedKeys="true" keyProperty="idTestplanMedicalrec">
+        INSERT INTO exm_testplan_medicalrec
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanMedicalrec!=null">
+                id_testplan_medicalrec,
+            </if>
+            <if test="idTestplan!=null">
+                id_testplan,
+            </if>
+            <if test="idMedicalrec!=null">
+                id_medicalrec,
+            </if>
+            <if test="sort!=null">
+                sort,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanMedicalrec!=null">
+                #{idTestplanMedicalrec},
+            </if>
+            <if test="idTestplan!=null">
+                #{idTestplan},
+            </if>
+            <if test="idMedicalrec!=null">
+                #{idMedicalrec},
+            </if>
+            <if test="sort!=null">
+                #{sort},
+            </if>
+        </trim>
+        )
+    </insert>
+    <insert id="defaultPlamItem">
+        INSERT INTO exm_testplan_medicalrec(
+            id_testplan ,
+            id_medicalrec ,
+            sort
+        ) 
+        SELECT
+            #{idTestplan} ,
+            id_medicalrec ,
+            sort
+        FROM
+            exm_testpaper_medicalrec
+        WHERE
+            id_testpaper = #{idTestpaper}
+    </insert>
+    <insert id="addPlanStudent">
+        INSERT INTO exm_testplan_student
+        (id_testplan, id_student)
+        VALUES
+        <foreach collection="list" item="item" separator="," >
+            (#{idTestplan}, #{item})
+        </foreach>
+    </insert>
+    <insert id="addPlanDetail" useGeneratedKeys="true" keyProperty="idTestplanDetail">
+        INSERT INTO `exm_testplan_detail`
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanDetail!=null">
+                `id_testplan_detail`,
+            </if>
+            <if test="idTestplan!=null">
+                `id_testplan`,
+            </if>
+            <if test="idStudent!=null">
+                `id_student`,
+            </if>
+            <if test="idMedicalrec!=null">
+                `id_medicalrec`,
+            </if>
+            <if test="sort!=null">
+                `sort`,
+            </if>
+            <if test="sdTestplanDetail!=null">
+                `sd_testplan_detail`,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestplanDetail!=null">
+                #{idTestplanDetail},
+            </if>
+            <if test="idTestplan!=null">
+                #{idTestplan},
+            </if>
+            <if test="idStudent!=null">
+                #{idStudent},
+            </if>
+            <if test="idMedicalrec!=null">
+                #{idMedicalrec},
+            </if>
+            <if test="sort!=null">
+                #{sort},
+            </if>
+            <if test="sdTestplanDetail!=null">
+                #{sdTestplanDetail},
+            </if>
+        </trim>
+        )
+    </insert>
+    <update id="editPlan">
+        UPDATE exm_testplan
+        SET
+            na_testplan = #{naTestplan},
+            des_testplan = #{desTestplan},
+            id_testpaper = #{idTestpaper},
+        <if test="sdTestplan!=null">
+            sd_testplan = #{sdTestplan},
+        </if>
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testplan = #{idTestplan}
+    </update>
+    <update id="delPlan">
+        UPDATE exm_testplan
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_testplan in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="updatePlanItemSort">
+        update
+            exm_testplan_medicalrec
+        set
+            sort = #{sort}
+        WHERE
+            id_testplan_medicalrec = #{idTestplanMedicalrec}
+    </update>
+    <update id="updatePlanStatus">
+        update
+            exm_testplan_detail
+        set
+            sd_testplan_detail = #{status}
+        WHERE
+            id_testplan_detail = #{idTestplanDetail}
+    </update>
+    <delete id="delAllPlanItem">
+        delete from exm_testplan_medicalrec where id_testplan = #{idTestplan}
+    </delete>
+    <delete id="delPlanItem">
+        delete from exm_testplan_medicalrec
+        WHERE
+            id_testplan_medicalrec in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delPlanStudent">
+        delete from exm_testplan_student
+        WHERE
+            id_testplan_student in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delAllPlanStudent">
+        delete from exm_testplan_student where id_testplan = #{idTestplan}
+    </delete>
+
+    <select id="countPlans" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            exm_testplan a
+        WHERE
+            a.fg_valid = '0'
+        <if test="naTestplan != null and naTestplan != ''">
+            AND a.na_testplan like concat('%',#{naTestplan},'%')
+        </if>
+        <if test="idOrg != null">
+            AND a.id_org = #{idOrg}
+        </if>
+    </select>
+    <select id="listPlans" resultType="com.sm.open.core.model.entity.ExmTestplan">
+        SELECT
+            a.id_testplan,a.na_testplan, a.des_testplan, a.id_testpaper, a.id_org,
+            a.sd_testplan, a.fg_active, a.fg_valid,
+            a.creator, a.gmt_create, a.operator, a.gmt_modify,
+            so.name as orgName, ifnull(b.na_testpaper, '自定义') as idTestpaperText
+        FROM
+            exm_testplan a
+        left join sys_org so on a.id_org = so.id_org
+        left join exm_testpaper b on a.id_testpaper = b.id_testpaper
+        WHERE
+            a.fg_valid = '0'
+        <if test="naTestplan != null and naTestplan != ''">
+            AND a.na_testplan like concat('%',#{naTestplan},'%')
+        </if>
+        <if test="idOrg != null">
+            AND a.id_org = #{idOrg}
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listCaseTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+        SELECT
+            CONCAT('case-' , a.id_medicalrec) AS id ,
+            a.id_medicalrec_ca AS pId ,
+            a. NAME ,
+            1 AS open ,
+            IF(b.id_testplan_medicalrec is null,0,1) checked
+        FROM
+            faq_medicalrec a
+        LEFT JOIN exm_testplan_medicalrec b
+        ON a.id_medicalrec = b.id_medicalrec AND b.id_testplan = #{extId}
+        WHERE
+            fg_active = '1'
+    </select>
+    <select id="listPlanItem" resultType="com.sm.open.core.model.entity.ExmTestplanMedicalrec">
+        SELECT
+            a.id_testplan_medicalrec, a.id_testplan, a.id_medicalrec, a.sort,
+            fm.name, fm.id_demo, fm.id_medicalrec_ca, fm.id_org, fm.sd_level, fm.sd_use,
+            fm.count, fm.fg_active, fm.fg_valid, fm.creator, fm.gmt_create, fm.operator, fm.gmt_modify,
+            so.name as orgName
+        FROM
+            exm_testplan_medicalrec a
+        LEFT JOIN faq_medicalrec fm ON a.id_medicalrec = fm.id_medicalrec
+        LEFT JOIN sys_org so on fm.id_org = so.id_org
+        WHERE
+            id_testplan = #{idTestplan}
+        ORDER BY a.sort
+    </select>
+    <select id="listAllPlanItem" resultType="com.sm.open.core.model.entity.ExmTestplanMedicalrec">
+        SELECT
+            id_testplan_medicalrec, id_testplan, id_medicalrec, sort
+        FROM
+            exm_testplan_medicalrec
+        WHERE
+            id_testplan = #{idTestplan}
+    </select>
+    <select id="listStudentTree" resultType="com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo">
+         SELECT
+            CONCAT('user-' , a.id_user) AS id ,
+            a.id_class AS pId ,
+            c.real_name as name,
+            1 AS open ,
+            IF(b.id_testplan_student is null,0,1) checked
+        FROM
+            id_class_memo a
+        LEFT JOIN user_info c ON a.id_user = c.user_id
+        LEFT JOIN exm_testplan_student b ON a.id_user = b.id_student AND b.id_testplan = #{extId}
+        LEFT JOIN sys_class d on a.id_class = d.id_class
+        WHERE
+            c.id_org = #{idOrg}
+        and d.fg_active = '1'
+    </select>
+    <select id="listPlanStudent" resultType="com.sm.open.core.model.entity.ExmTestplanStudent">
+        select
+            a.id_testplan_student,  a.id_student,  a.id_testplan,
+            b.real_name as studentName, b.phone_no,
+            group_concat(e.sd_testplan_detail) AS planStatusStr
+        from
+            exm_testplan_student a
+        left join user_info b on a.id_student = b.user_id
+        LEFT JOIN exm_testplan_detail e ON e.id_student = a.id_student and e.id_testplan = #{idTestplan}
+        where
+            a.id_testplan = #{idTestplan}
+        GROUP BY
+            a.id_testplan_student ,
+            a.id_student ,
+            a.id_testplan
+    </select>
+    <select id="listPlanDetail" resultType="com.sm.open.core.model.entity.ExmTestplanDetail">
+        SELECT
+            b.real_name ,
+            b.phone_no ,
+            c.name AS caseName ,
+            c.sd_level ,
+            a.sort ,
+            a.sd_testplan_detail
+        FROM
+            exm_testplan_detail a
+        LEFT JOIN user_info b ON a.id_student = b.user_id
+        LEFT JOIN faq_medicalrec c ON a.id_medicalrec = c.id_medicalrec
+        WHERE
+            id_testplan = #{idTestplan}
+        order by
+            a.id_student, a.sort
+    </select>
+    <select id="selectPlanDetail" resultType="com.sm.open.core.model.entity.ExmTestplanDetail">
+        SELECT
+            a.id_testplan, a.id_student, b.id_medicalrec, b.sort, '0' as sd_testplan_detail
+        FROM
+            exm_testplan_student a
+        CROSS JOIN exm_testplan_medicalrec b
+        WHERE
+            a.id_testplan = #{idTestplan}
+        AND b.id_testplan = #{idTestplan}
+    </select>
+    <select id="isExistPlanDetail" resultType="java.lang.Boolean">
+        select count(1) from exm_testplan_detail
+        where id_testplan = #{idTestplan} and id_student = #{idStudent} and id_medicalrec = #{idMedicalrec}
+    </select>
+    <select id="selectPlanById" resultType="com.sm.open.core.model.entity.ExmTestplan">
+        SELECT
+            a.id_testplan,a.na_testplan, a.des_testplan, a.id_testpaper, a.id_org,
+            a.sd_testplan, a.fg_active, a.fg_valid,
+            a.creator, a.gmt_create, a.operator, a.gmt_modify,
+            so.name as orgName
+        FROM
+            exm_testplan a
+        LEFT JOIN sys_org so on a.id_org = so.id_org
+        WHERE
+            a.id_testplan = #{idTestplan}
+    </select>
+</mapper>

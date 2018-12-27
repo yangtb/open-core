@@ -3,7 +3,7 @@
 <mapper namespace="com.sm.open.core.dal.pf.user.role.PfRoleDao">
 
     <sql id="Base_Column_List" >
-        name , resume , state , is_deleted , operator , gmt_create , gmt_update
+        code, name , resume , level , state , is_deleted , operator , gmt_create , gmt_update
     </sql>
 
     <!-- 获取用户角色 -->
@@ -17,7 +17,7 @@
             <include refid="Base_Column_List"/>
         )
         VALUES(
-            #{name} , #{resume} , 0 , 'N' , #{operator} , NOW() , NOW()
+            #{code}, #{name} , #{resume} , #{level},  0 , 'N' , #{operator} , NOW() , NOW()
         );
     </insert>
 
@@ -25,16 +25,22 @@
     <update id="updateRole" parameterType="com.sm.open.core.model.entity.SysRole">
         UPDATE sys_role
         SET
-            <if test="name != null">
+            <if test="code != null and code != ''">
+                code = #{code} ,
+            </if>
+            <if test="name != null and name != ''">
                 name = #{name} ,
             </if>
-            <if test="resume != null">
+            <if test="resume != null and resume != ''">
                 resume = #{resume} ,
+            </if>
+            <if test="level != null">
+                level = #{level} ,
             </if>
             <if test="state != null">
                 state = #{state} ,
             </if>
-            <if test="operator != null">
+            <if test="operator != null and operator != ''">
                 operator = #{operator} ,
             </if>
             gmt_update = NOW()
@@ -68,13 +74,15 @@
         INSERT INTO sys_role_menu(role_id, menu_id, gmt_create, gmt_modify)
         VALUES
         <foreach collection="list" item="item" separator="," >
-            (#{item.roleId}, #{item.menuId}, NOW(), NOW())
+            <if test="item.menuId > 0">
+                (#{item.roleId}, #{item.menuId}, NOW(), NOW())
+            </if>
         </foreach>
     </insert>
 
     <select id="list" resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
         SELECT
-            sr.role_id, sr.name
+            sr.role_id, sr.name, sr.level
         FROM
             sys_role sr
         WHERE
@@ -87,7 +95,8 @@
         SELECT
             sr.role_id ,
             sr.name ,
-            if(ur.user_id is null, false, true) as checked
+            if(ur.user_id is null, false, true) as checked,
+            sr.level
         FROM
             sys_role sr
         LEFT JOIN user_role ur ON sr.role_id = ur.role_id AND ur.user_id = #{userId} AND ur.is_deleted = 'N'
@@ -101,7 +110,7 @@
     <select id="listRoles" parameterType="com.sm.open.core.model.dto.pf.user.role.PfRoleDto"
             resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
         SELECT
-            sr.role_id, sr.name , sr.resume , sr.state , sr.operator , sr.gmt_create
+            sr.role_id, sr.code , sr.name , sr.resume , sr.level , sr.state , sr.operator , sr.gmt_create
         FROM
             sys_role sr
         WHERE
@@ -129,6 +138,49 @@
     <!-- 判断是否存在该角色 -->
     <select id="isExistRole" resultType="java.lang.Boolean">
         SELECT COUNT(1) FROM sys_role WHERE name = #{roleName}
+    </select>
+
+    <select id="selectRoleInfoByCode" resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
+        SELECT
+            sr.role_id, sr.code , sr.name , sr.resume , sr.state , sr.operator , sr.gmt_create
+        FROM
+            sys_role sr
+        WHERE
+            sr.is_deleted = 'N'
+        AND sr.code = #{code}
+    </select>
+    <select id="selectRoleLevel" resultType="com.sm.open.core.model.vo.pf.user.role.PfRoleVo">
+        SELECT
+            b.code, b.level
+        FROM
+            user_role a
+        LEFT JOIN sys_role b ON a.role_id = b.role_id
+        WHERE
+            a.user_id = #{userId}
+          AND a.is_deleted = 'N'
+        order by b.level
+        LIMIT 1
+    </select>
+    <select id="needExpireNotice" resultType="java.lang.Boolean">
+        SELECT
+            count(1)
+        FROM
+            user_role a
+                LEFT JOIN sys_role b ON a.role_id = b.role_id
+        WHERE
+            a.user_id = #{userId}
+          AND b.code = 'MCADM'
+          AND a.is_deleted = 'N'
+    </select>
+    <select id="selectUserRoleCode" resultType="java.lang.String">
+        SELECT
+            b.code
+        FROM
+            user_role a
+                left join sys_role b on a.role_id = b.role_id
+        WHERE
+            a.user_id = #{userId}
+          AND a.is_deleted = 'N'
     </select>
 
 </mapper>

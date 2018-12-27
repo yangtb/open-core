@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.sm.open.core.dal.pf.biz.clinic.PfClinicPartsDao">
+    <insert id="addPart">
+        INSERT INTO bas_med_asse
+        (
+                cd_med_asse,
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                script_exec,
+                sd_med_asse,
+                script,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{cdMedAsse},
+                #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+                #{scriptExec},
+                #{sdMedAsse},
+                #{script},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="addSheet">
+        INSERT INTO bas_eva_asse
+        (
+                cd_eva_asse,
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                sd_eva_asse,
+            <if test="script!=null">
+                script,
+            </if>
+            <if test="scriptExec!=null">
+                script_exec,
+            </if>
+                fg_group,
+                score_upper,
+                score_lower,
+                score_default,
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{cdEvaAsse},
+                #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+                #{sdEvaAsse},
+            <if test="script!=null">
+                #{script},
+            </if>
+            <if test="scriptExec!=null">
+                #{scriptExec},
+            </if>
+                #{fgGroup},
+                #{scoreUpper},
+                #{scoreLower},
+                #{scoreDefault},
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <insert id="addAlgorithm">
+        INSERT INTO bas_algorithm
+        (
+                name,
+            <if test="descript!=null">
+                descript,
+            </if>
+                sd_asses,
+            <if test="script!=null">
+                script,
+            </if>
+                fg_active,
+                creator,
+                gmt_create,
+                operator,
+                gmt_modify
+        )
+        VALUES
+        (
+                #{name},
+            <if test="descript!=null">
+                #{descript},
+            </if>
+                #{sdAsses},
+            <if test="script!=null">
+                #{script},
+            </if>
+                #{fgActive},
+                #{creator},
+                now(),
+                #{operator},
+                now()
+        )
+    </insert>
+    <update id="editPart">
+        UPDATE bas_med_asse
+        SET
+            name = #{name},
+            descript = #{descript},
+            script_exec = #{scriptExec},
+            sd_med_asse = #{sdMedAsse},
+            script = #{script},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_med_asse = #{idMedAsse}
+    </update>
+    <update id="editSheet">
+        UPDATE bas_eva_asse
+        SET
+            name = #{name},
+            descript = #{descript},
+            sd_eva_asse = #{sdEvaAsse},
+            script = #{script},
+            script_exec = #{scriptExec},
+            fg_group = #{fgGroup},
+            score_upper = #{scoreUpper},
+            score_lower = #{scoreLower},
+            score_default = #{scoreDefault},
+            fg_active = #{fgActive},
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_eva_asse = #{idEvaAsse}
+    </update>
+    <update id="editAlgorithm">
+        UPDATE bas_algorithm
+        SET
+                name = #{name},
+            <if test="descript != null and descript!=''">
+                descript = #{descript},
+            </if>
+                sd_asses = #{sdAsses},
+            <if test="script != null and script!=''">
+                script = #{script},
+            </if>
+                fg_active = #{fgActive},
+                operator = #{operator},
+                gmt_modify = now()
+        WHERE
+            id_algorithm = #{idAlgorithm}
+    </update>
+
+    <update id="delPart">
+        UPDATE bas_med_asse
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_med_asse in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delSheet">
+        UPDATE bas_eva_asse
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_eva_asse in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+    <update id="delAlgorithm">
+        UPDATE bas_algorithm
+        SET
+        <choose>
+            <when test="operationType == 'updateStatus'">
+                fg_active = #{status},
+            </when>
+            <otherwise>
+                fg_valid = #{status},
+                fg_active = '0',
+            </otherwise>
+        </choose>
+            operator = #{operator},
+            gmt_modify = now()
+        WHERE
+            id_algorithm in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </update>
+
+    <select id="countParts" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_med_asse
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            and name like concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="listParts" resultType="com.sm.open.core.model.entity.BasMedAsse">
+        SELECT
+            id_med_asse, cd_med_asse, name, descript, script_exec, sd_med_asse, script,
+            fg_active, fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_med_asse
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            and name like concat('%',#{name},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countSheet" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_eva_asse
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            and name like concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="listSheet" resultType="com.sm.open.core.model.entity.BasEvaAsse">
+        SELECT
+            id_eva_asse, cd_eva_asse, name, descript, script_exec, sd_eva_asse, script,
+            fg_group, score_upper, score_lower, score_default, fg_active, 
+            fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_eva_asse
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            and name like concat('%',#{name},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countAlgorithm" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_algorithm
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            and name like concat('%',#{name},'%')
+        </if>
+    </select>
+    <select id="listAlgorithm" resultType="com.sm.open.core.model.entity.BasAlgorithm">
+        SELECT
+            id_algorithm, name, descript, sd_asses, script, fg_active,
+            fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_algorithm
+        WHERE
+            fg_valid = '0'
+        <if test="name != null and name != '' ">
+            and name like concat('%',#{name},'%')
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="listAllPart" resultType="com.sm.open.core.model.entity.BasMedAsse">
+        SELECT
+            id_med_asse, cd_med_asse, name, descript, sd_med_asse, script,
+            fg_active, fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_med_asse
+        WHERE
+            fg_active = '1'
+    </select>
+    <select id="listAllSheet" resultType="com.sm.open.core.model.entity.BasEvaAsse">
+        SELECT
+            id_eva_asse, cd_eva_asse, name, descript, sd_eva_asse, script,
+            fg_group, score_upper, score_lower, score_default, fg_active,
+            fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_eva_asse
+        WHERE
+            fg_active = '1'
+    </select>
+    <select id="listAllAlgorithm" resultType="com.sm.open.core.model.entity.BasAlgorithm">
+        SELECT
+            id_algorithm, name, descript, sd_asses, script, fg_active,
+            fg_valid, creator, gmt_create, operator, gmt_modify
+        FROM
+            bas_algorithm
+        WHERE
+            fg_active = '1'
+    </select>
+    <select id="isExistPart" resultType="java.lang.Integer">
+        select count(1) from bas_med_asse where cd_med_asse = #{cdMedAsse}
+    </select>
+    <select id="isExistSheet" resultType="java.lang.Integer">
+        select count(1) from bas_eva_asse where cd_eva_asse = #{cdEvaAsse}
+    </select>
+</mapper>

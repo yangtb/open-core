@@ -88,4 +88,11 @@ public interface PfMenuDao {
      * @return
      */
     List<SysFunction> listAllMenus();
+
+    /**
+     * 获取匿名用户菜单
+     *
+     * @return
+     */
+    List<SysFunction> listAnonymousUserMenus();
 }

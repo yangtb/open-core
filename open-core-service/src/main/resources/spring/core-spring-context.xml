@@ -20,7 +20,7 @@
 
 	<import resource="classpath*:spring/core-spring-jdbc.xml" />
 
-	<import resource="classpath*:spring/core-thread-pool.xml"/>
+	<!--<import resource="classpath*:spring/core-thread-pool.xml"/>-->
 
 	<import resource="classpath*:spring/dubbo/core-dubbo-provider.xml"/>
 

@@ -1,8 +1,10 @@
 package com.sm.open.core.facade.pf.user.login;
 
+import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.param.pf.user.PfUserParam;
 import com.sm.open.core.facade.model.param.pf.user.login.RegisterParam;
 import com.sm.open.core.facade.model.param.pf.user.login.UpdatePswParam;
+import com.sm.open.core.facade.model.param.pf.user.register.UserRegisterParam;
 import com.sm.open.core.facade.model.result.pf.common.auth.UserInfoResult;
 import com.sm.open.core.facade.model.result.pf.user.login.PfUsersResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
@@ -45,18 +47,18 @@ public interface PfUserFacade {
     /**
      * 删除用户
      *
-     * @param users 用户ID
+     * @param param 用户ID
      * @return
      */
-    CommonResult<Boolean> delUser(List<Long> users);
+    CommonResult<Boolean> delUser(PfCommonListParam param);
 
     /**
      * 删除用户
      *
-     * @param users 用户ID
+     * @param param
      * @return
      */
-    CommonResult<Boolean> freezeUser(List<Long> users);
+    CommonResult<Boolean> freezeUser(PfCommonListParam param);
 
     /**
      * 修改密码
@@ -84,8 +86,25 @@ public interface PfUserFacade {
     /**
      * 根据用户ID查找用户的权限编码集合
      *
-     * @param userId 用户id
+     * @param userId   用户id
+     * @param roleType 角色类型
      * @return
      */
-    CommonResult<List<String>> findAuthoritiesByUserId(Long userId);
+    CommonResult<List<String>> findAuthoritiesByUserId(Long userId, String roleType);
+
+    /**
+     * 用户注册
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> registerUser(UserRegisterParam param);
+
+    /**
+     * 发送邮件验证码
+     *
+     * @param email 邮箱
+     * @return
+     */
+    CommonResult<Boolean> sendRegisterEmailVcode(String email, Long userId);
 }

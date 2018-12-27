@@ -1,5 +1,6 @@
 package com.sm.open.core.service.service.pf.user.security.impl;
 
+import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.system.authority.AuthorityDao;
 import com.sm.open.core.service.service.pf.user.security.AuthorityService;
 import org.apache.commons.collections.CollectionUtils;
@@ -16,8 +17,13 @@ public class AuthorityServiceImpl implements AuthorityService {
 	private AuthorityDao authorityDao;
 
 	@Override
-	public List<String> findAuthoritiesByUserId(Long userId) {
-		List<String> functionCodes = authorityDao.findFunctionCodesByUserId(userId);
+	public List<String> findAuthoritiesByUserId(Long userId, String roleType) {
+		List<String> functionCodes;
+		if (roleType.equals(YesOrNoNum.YES.getCode())) {
+			functionCodes = authorityDao.findFunctionCodesByRoot();
+		} else {
+			functionCodes = authorityDao.findFunctionCodesByUserId(userId);
+		}
 		List<String> authorities = new ArrayList<>();
 		if(CollectionUtils.isNotEmpty(functionCodes)){
 			authorities.addAll(functionCodes);

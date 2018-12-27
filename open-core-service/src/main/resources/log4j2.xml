@@ -1,19 +1,25 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!-- status=debug 可以查看log4j的装配过程，monitorInterval运行时，动态重新加载log4j2配置文件的间隔时间，单位秒 -->
 <configuration status="${log4j2.level}" monitorInterval="3600">
+
+	<properties>
+		<property name="CONSOLE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %highlight{%5p} %style{%processId}{magenta} --- [%15.15t] %style{%-40.40c{1.}}{cyan} : %m%n</property>
+		<property name="FILE_LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p %processId --- [%15.15t] %-40.40c{1.} : %m%n</property>
+	</properties>
+
 	<Appenders>
 		<!-- 输出到控制台 -->
 		<Console name="Console" target="SYSTEM_OUT">
 			<!-- 需要记录的级别 -->
 			<!-- <ThresholdFilter level="debug" onMatch="ACCEPT" onMismatch="DENY" /> -->
-			<PatternLayout pattern="%d %-5p %-32t - %m%n" />
+			<PatternLayout pattern="${CONSOLE_LOG_PATTERN}" />
 		</Console>
 
 		<!-- 输出到文件，按天分割 -->
 		<RollingRandomAccessFile name="default" immediateFlush="${log4j2.immediateFlush}"
 								 append="true" fileName="${log4j2.log.basePath}/${app.name}.log"
 								 filePattern="${log4j2.log.basePath}/${app.name}%d{yyyy-MM-dd}.log">
-			<PatternLayout pattern="%d %-5p %-32t - %m%n" />
+			<PatternLayout pattern="${FILE_LOG_PATTERN}" />
 			<Policies>
 				<!-- TimeBased Triggering Policy 基于时间的触发策略。该策略主要是完成周期性的log文件封存工作。有两个参数：
 					interval，integer型，指定两次封存动作之间的时间间隔。单位:以日志的命名精度来确定单位，比如上面的filePattern中的yyyy-MM-dd-HH 单位为小时，yyyy-MM-dd-HH-mm 单位为分钟
@@ -53,6 +59,18 @@
 		</Logger>
 		<Logger name="druid.sql.ResultSet" level="${log4j2.sql.level}" additivity="false">
 			<AppenderRef ref="Console" />
+		</Logger>
+		<Logger name="org.springframework.core" level="error" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error" />
+		</Logger>
+		<Logger name="com.alibaba.dubbo" level="error" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error" />
+		</Logger>
+		<Logger name="org.apache.zookeeper" level="error" additivity="false">
+			<AppenderRef ref="Console" />
+			<AppenderRef ref="error" />
 		</Logger>
 	</Loggers>
 </configuration>

@@ -31,7 +31,7 @@ public class PfDicFacadeImpl implements PfDicFacade {
             PfPageParam.initPageDto(param);
             PfDicDto pfDicDto = BeanUtil.convert(param, PfDicDto.class);
 
-            return PfResultFactory.initPagePfResultWithSuccess(0L,
+            return PfResultFactory.initPagePfResultWithSuccess(pfDicService.countDicGroup(pfDicDto),
                     BeanUtil.convertList(pfDicService.listDicGroups(pfDicDto), SysDictionaryResult.class));
         } catch (Exception e) {
             LOGGER.error("【PfDicFacadeImpl-listDicGroups-error】获取字典分组列表失败，param={}", param.toString(), e);

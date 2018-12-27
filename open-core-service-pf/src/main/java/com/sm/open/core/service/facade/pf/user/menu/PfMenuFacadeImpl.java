@@ -12,7 +12,9 @@ import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.user.menu.PfMenuFacade;
 import com.sm.open.core.model.dto.pf.user.menu.MenuDto;
 import com.sm.open.core.model.entity.SysFunction;
+import com.sm.open.core.model.vo.pf.user.menu.PfMenuZtreeVo;
 import com.sm.open.core.service.service.pf.user.menu.PfMenuService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -94,8 +96,30 @@ public class PfMenuFacadeImpl implements PfMenuFacade {
     @Override
     public CommonResult<List<PfMenuZtreeResult>> listMenuTree() {
         try {
+            List<PfMenuZtreeVo> menuZtreeVos = pfMenuService.listMenuTree();
+            for (PfMenuZtreeVo pfMenuZtreeVo : menuZtreeVos) {
+                if (StringUtils.isNotBlank(pfMenuZtreeVo.getPId())) {
+                    continue;
+                }
+                pfMenuZtreeVo.setPId(pfMenuZtreeVo.getPosition());
+            }
+            // 左侧菜单
+            PfMenuZtreeVo leftMenu = new PfMenuZtreeVo();
+            leftMenu.setMenuId(-1L);
+            leftMenu.setId("left");
+            leftMenu.setName("左侧");
+            leftMenu.setOpen(true);
+            menuZtreeVos.add(leftMenu);
+            // 顶部菜单
+            PfMenuZtreeVo topMenu = new PfMenuZtreeVo();
+            topMenu.setMenuId(-2L);
+            topMenu.setId("top");
+            topMenu.setName("顶部");
+            topMenu.setOpen(true);
+            menuZtreeVos.add(topMenu);
+
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfMenuService.listMenuTree(), PfMenuZtreeResult.class));
+                    BeanUtil.convertList(menuZtreeVos, PfMenuZtreeResult.class));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfMenuFacadeImpl-listMenuTree】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -122,10 +146,10 @@ public class PfMenuFacadeImpl implements PfMenuFacade {
     }
 
     @Override
-    public CommonResult<List<PfMenuResult>> listMyMenus(boolean isSuper, Long userId) {
+    public CommonResult<List<PfMenuResult>> listMyMenus(boolean isSuper, boolean isAnonymousUser, Long userId) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    PfMenuBeanUtils.convertMyMenuList(pfMenuService.listMyMenus(isSuper, userId)));
+                    PfMenuBeanUtils.convertMyMenuList(pfMenuService.listMyMenus(isSuper, isAnonymousUser, userId)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfMenuFacadeImpl-listMyMenus】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

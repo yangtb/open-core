@@ -4,11 +4,11 @@
 
     <insert id="addMessageTemplate">
         INSERT INTO message_template(
-            template_name, template_type, content,
+            template_code, template_name, template_type, content,
             is_deleted, operator, gmt_create, gmt_modify
         )
         VALUES(
-            #{templateName} , #{templateType} , #{content} ,
+            #{templateCode}, #{templateName} , #{templateType} , #{content} ,
             'N' , #{operator} , NOW() , NOW()
         );
     </insert>
@@ -16,6 +16,9 @@
     <update id="editMessageTemplate">
         UPDATE message_template
         SET
+        <if test="templateCode != null and templateCode != ''">
+            template_code = #{templateCode} ,
+        </if>
         <if test="templateName != null and templateName != ''">
             template_name = #{templateName} ,
         </if>
@@ -60,7 +63,7 @@
 
     <select id="listMessages" resultType="com.sm.open.core.model.entity.MessageTemplate">
         SELECT
-            template_id, template_name, template_type, content,
+            template_id, template_code, template_name, template_type, content,
             is_deleted, operator, gmt_create, gmt_modify
         FROM
             message_template
@@ -77,5 +80,18 @@
         </if>
         ORDER BY template_id desc
         limit #{offset}, #{limit}
+    </select>
+
+    <select id="isExistTemplate" resultType="java.lang.Integer">
+        SELECT count(1) FROM message_template where template_code = #{templateCode}
+    </select>
+
+    <select id="selectTempInfoByCode" resultType="com.sm.open.core.model.entity.MessageTemplate">
+        SELECT
+            template_id, template_code, template_name, template_type, content
+        FROM
+            message_template
+        WHERE template_code = #{templateCode}
+        and is_deleted = 'N'
     </select>
 </mapper>
