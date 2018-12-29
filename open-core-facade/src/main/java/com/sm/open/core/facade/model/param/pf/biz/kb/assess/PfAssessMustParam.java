@@ -27,12 +27,12 @@ public class PfAssessMustParam extends FaqEvaCaseItemParam implements Serializab
     private Long idEvaTag;
 
     /**
-     * 病历id
+     * 病例id
      */
     private Long idMedicalrec;
 
     /**
-     * 所属病历名称
+     * 所属病例名称
      */
     private String caseName;
 
@@ -57,7 +57,7 @@ public class PfAssessMustParam extends FaqEvaCaseItemParam implements Serializab
     private String creator;
 
     /**
-     * 原病历组件案例id
+     * 原病例组件案例id
      */
     private Long oldIdEvaCase;
 

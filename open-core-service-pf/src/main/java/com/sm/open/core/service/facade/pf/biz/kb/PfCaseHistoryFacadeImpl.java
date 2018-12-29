@@ -245,7 +245,7 @@ public class PfCaseHistoryFacadeImpl implements PfCaseHistoryFacade {
             LOGGER.warn("【PfCaseHistoryFacadeImpl-selectMedTag】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfCaseHistoryFacadeImpl-selectMedTag】查询病历标签失败, param:" + param.toString(), e);
+            LOGGER.error("【PfCaseHistoryFacadeImpl-selectMedTag】查询病例标签失败, param:" + param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfCaseHistoryConstant.SELECT_MED_TAG_ERROR, PfCaseHistoryConstant.SELECT_MED_TAG_ERROR_MSG));
         }

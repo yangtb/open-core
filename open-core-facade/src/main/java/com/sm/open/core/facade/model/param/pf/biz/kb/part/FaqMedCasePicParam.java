@@ -22,7 +22,7 @@ public class FaqMedCasePicParam extends FaqMedTagParam implements Serializable {
 
     /**
      * 主键
-     * 病历组件案例id
+     * 病例组件案例id
      */
     private Long idMedCase;
 

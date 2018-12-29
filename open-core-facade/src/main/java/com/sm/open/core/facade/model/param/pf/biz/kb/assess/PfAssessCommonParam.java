@@ -23,7 +23,7 @@ public class PfAssessCommonParam extends PfPageParam implements Serializable {
     private String cdEvaAsse;
 
     /**
-     * 病历评估项id
+     * 病例评估项id
      */
     private Long idEvaCaseItem;
 

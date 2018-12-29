@@ -22,7 +22,7 @@ public class PfEvaExecResult extends ExmEvaDimensionResult implements Serializab
     private String nzName;
 
     /**
-     * 病历结果ID
+     * 病例结果ID
      */
     private Long parDimemsion;
 

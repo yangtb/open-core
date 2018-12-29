@@ -133,7 +133,7 @@ public interface PfCaseHistoryDao {
                                          @Param("idMedicalrec") Long idMedicalrec);
 
     /**
-     * 根据病历id查询病历信息
+     * 根据病例id查询病例信息
      *
      * @param idMedicalrec 病例id
      * @return
@@ -141,7 +141,7 @@ public interface PfCaseHistoryDao {
     FaqMedicalrecVo selectCaseInfoById(@Param("idMedicalrec") Long idMedicalrec);
 
     /**
-     * 查询病历标签信息
+     * 查询病例标签信息
      *
      * @param dto
      * @return

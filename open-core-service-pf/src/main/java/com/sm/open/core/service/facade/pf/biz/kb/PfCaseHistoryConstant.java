@@ -33,7 +33,7 @@ public class PfCaseHistoryConstant {
     public static final String SAVE_EVA_TAG_ERROR_MSG                                  = "新增评估标签失败";
 
     public static final String SELECT_MED_TAG_ERROR                                    = "selectMedTagFailed";
-    public static final String SELECT_MED_TAG_ERROR_MSG                                = "查询病历标签失败";
+    public static final String SELECT_MED_TAG_ERROR_MSG                                = "查询病例标签失败";
 
     public static final String SELECT_EVA_TAG_ERROR                                    = "selectEvaTagFailed";
     public static final String SELECT_EVA_TAG_ERROR_MSG                                = "查询评估标签失败";

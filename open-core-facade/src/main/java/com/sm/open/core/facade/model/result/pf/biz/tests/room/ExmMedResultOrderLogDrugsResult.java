@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * 临床模拟_测试执行_病历结果_医嘱_长期用药
+ * 临床模拟_测试执行_病例结果_医嘱_长期用药
  *
  * @author yangtongbin
  */
@@ -24,7 +24,7 @@ public class ExmMedResultOrderLogDrugsResult implements Serializable {
     private Long idOrderLongDrugs;
 
     /**
-     * 病历结果医嘱ID
+     * 病例结果医嘱ID
      */
     private Long idTestexecResultOrder;
 

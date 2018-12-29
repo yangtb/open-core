@@ -26,7 +26,7 @@ public class ExmMedResultReferralReasonParam implements Serializable {
     private Long idReferralReason;
 
     /**
-     * 病历结果拟诊ID
+     * 病例结果拟诊ID
      */
     private Long idTestexecResultReferral;
 

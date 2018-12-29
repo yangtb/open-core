@@ -8,7 +8,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * 临床模拟_试卷定义_关联病历
+ * 临床模拟_试卷定义_关联病例
  *
  * @author yangtongbin
  */
@@ -21,7 +21,7 @@ public class ExmTestpaperMedicalrecResult extends FaqMedicalrecResult implements
 
     /**
      * 主键
-     * 关联病历ID
+     * 关联病例ID
      */
     private Long idTestpaperMedicalrec;
 
@@ -31,7 +31,7 @@ public class ExmTestpaperMedicalrecResult extends FaqMedicalrecResult implements
     private Long idTestpaper;
 
     /**
-     * 病历ID
+     * 病例ID
      */
     private Long idMedicalrec;
 

@@ -180,7 +180,7 @@ public class PfTestPaperConstant {
     public static final String EDIT_EVA_ERROR_MSG                       = "编辑得分出错";
 
     public static final String MED_EVA_ERROR                            = "medEvaError";
-    public static final String MED_EVA_ERROR_MSG                        = "病历评估出错";
+    public static final String MED_EVA_ERROR_MSG                        = "病例评估出错";
 
     public static final String SELECT_EVA_RESULT_ERROR                  = "selectEvaResultError";
     public static final String SELECT_EVA_RESULT_ERROR_MSG              = "查询病例执行结果出错";

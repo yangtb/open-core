@@ -338,7 +338,7 @@ public interface PfTestWaitingRoomService {
     /**
      * 查询诊断、确诊理由
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     List<PfDiagnosisVo> selectAllDiagnosis(Long idTestexecResult);
@@ -346,7 +346,7 @@ public interface PfTestWaitingRoomService {
     /**
      * 查询拟诊
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     List<ExmMedResultReferral> selectAllReferral(Long idTestexecResult);
@@ -354,7 +354,7 @@ public interface PfTestWaitingRoomService {
     /**
      * 查询诊断、诊断小结
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     PfWaitingRoomDiagnosisVo selectDiagnosis(Long idTestexecResult);
@@ -375,7 +375,7 @@ public interface PfTestWaitingRoomService {
     List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis);
 
     /**
-     * 查询病历评估得分
+     * 查询病例评估得分
      *
      * @param idTestexecResult
      * @param idMedicalrec
@@ -384,7 +384,7 @@ public interface PfTestWaitingRoomService {
     List<PfEvaExecVo> selectScore(Long idTestexecResult, Long idMedicalrec);
 
     /**
-     * 查询病历评估
+     * 查询病例评估
      *
      * @param dto
      * @return
@@ -400,7 +400,7 @@ public interface PfTestWaitingRoomService {
     List<ExmEvaLog> listEvaLog(Long idTestexecResultDimension);
 
     /**
-     * 病历评估
+     * 病例评估
      *
      * @param idTestexecResult
      * @return

@@ -39,7 +39,7 @@ public class PfTestWaitingRoomResult implements Serializable {
     private Long idMedicalrec;
 
     /**
-     * 病历组件案例id
+     * 病例组件案例id
      */
     private Long idMedCase;
 

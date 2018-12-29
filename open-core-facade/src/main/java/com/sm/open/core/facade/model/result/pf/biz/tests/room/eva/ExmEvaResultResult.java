@@ -22,7 +22,7 @@ public class ExmEvaResultResult implements Serializable {
 
     /**
      * 主键
-     * 病历结果ID
+     * 病例结果ID
      */
     private Long idTestexecResult;
 

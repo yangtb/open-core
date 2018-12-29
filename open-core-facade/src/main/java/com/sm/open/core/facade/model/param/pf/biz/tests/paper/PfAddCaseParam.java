@@ -20,7 +20,7 @@ public class PfAddCaseParam implements Serializable {
     private List<Long> list;
 
     /**
-     * 关联病历ID
+     * 关联病例ID
      */
     private Long idTestpaperMedicalrec;
 

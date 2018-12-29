@@ -739,7 +739,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-medEva】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-medEva-error】病历评估出错, idTestexecResult:{}", idTestexecResult, e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-medEva-error】病例评估出错, idTestexecResult:{}", idTestexecResult, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.MED_EVA_ERROR, PfTestPaperConstant.MED_EVA_ERROR_MSG));
         }

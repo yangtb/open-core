@@ -26,7 +26,7 @@ public class FaqEvaTagResult implements Serializable {
     private Long idEvaTag;
 
     /**
-     * 病历id
+     * 病例id
      */
     private Long idMedicalrec;
 

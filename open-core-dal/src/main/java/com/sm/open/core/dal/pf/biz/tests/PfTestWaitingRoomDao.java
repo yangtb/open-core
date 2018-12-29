@@ -65,7 +65,7 @@ public interface PfTestWaitingRoomDao {
     Integer startExam(ExmTestexec dto);
 
     /**
-     * 插入测试执行_病历结果
+     * 插入测试执行_病例结果
      *
      * @param dto
      * @return
@@ -502,7 +502,7 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询诊断list
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     List<ExmMedResultDiagnosis> listDiagnosis(Long idTestexecResult);
@@ -510,7 +510,7 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询诊断
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     ExmMedResultDiagnosis selectDiagnosis(Long idTestexecResult);
@@ -518,7 +518,7 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询诊断小结
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     ExmMedResultSummary selectSummary(Long idTestexecResult);
@@ -539,7 +539,7 @@ public interface PfTestWaitingRoomDao {
     List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis);
 
     /**
-     * 查询病历评估
+     * 查询病例评估
      *
      * @param dto
      * @return
@@ -571,7 +571,7 @@ public interface PfTestWaitingRoomDao {
     List<ExmEvaLog> listEvaLog(@Param("idTestexecResult") Long idTestexecResult);
 
     /**
-     * 病历评估
+     * 病例评估
      *
      * @param dto
      * @return
