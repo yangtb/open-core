@@ -32,4 +32,9 @@ public class PfAssessCommonParam extends PfPageParam implements Serializable {
      */
     private String sdType;
 
+    /**
+     * 扩展id
+     */
+    private Long extId;
+
 }
