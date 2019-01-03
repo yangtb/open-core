@@ -1369,7 +1369,7 @@
             a.gmt_create as logDate
         FROM
             exm_med_result_inques a
-        left join faq_med_case_inques_list b on a.id_inques = b.id_inques
+        left join faq_med_case_inques_list b on a.id_med_case_list = b.id_med_case_list
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
@@ -1382,7 +1382,7 @@
             a.gmt_create as logDate
         FROM
             exm_med_result_body a
-        left join faq_med_case_body_list b on a.id_body = b.id_body
+        left join faq_med_case_body_list b on a.id_med_case_list = b.id_med_case_list
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
@@ -1395,7 +1395,7 @@
             a.gmt_create as logDate
         FROM
             exm_med_result_inspect a
-        left join faq_med_case_inspect_list b on a.id_inspect_item = b.id_inspect_item
+        left join faq_med_case_inspect_list b on a.id_med_case_list = b.id_med_case_list
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
