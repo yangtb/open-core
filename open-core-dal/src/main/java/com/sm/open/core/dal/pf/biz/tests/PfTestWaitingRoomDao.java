@@ -526,9 +526,12 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询已做问诊、检查、检验
      *
+     * @param idTestexecResult
+     * @param keyword
      * @return
      */
-    List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult);
+    List<PfWaitingRoomDieReasonVo> listReadyDieReason(@Param("idTestexecResult") Long idTestexecResult,
+                                                      @Param("keyword") String keyword);
 
     /**
      * 查询确诊理由

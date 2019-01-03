@@ -659,10 +659,10 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
-    public CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult) {
+    public CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult, String keyword) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfTestWaitingRoomService.listReadyDieReason(idTestexecResult), PfWaitingRoomDieReasonResult.class));
+                    BeanUtil.convertList(pfTestWaitingRoomService.listReadyDieReason(idTestexecResult, keyword), PfWaitingRoomDieReasonResult.class));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listReadyDieReason】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

@@ -397,8 +397,8 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult) {
-        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult);
+    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult, String keyword) {
+        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult, keyword);
     }
 
     @Override

@@ -336,7 +336,7 @@ public interface PfTestWaitingRoomFacade {
      *
      * @return
      */
-    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult);
+    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult, String keyword);
 
     /**
      * 查询确诊理由
