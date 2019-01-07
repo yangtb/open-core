@@ -571,4 +571,9 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return pfTestWaitingRoomDao.saveExecSerialNo(dto) >= 1 ? true : false;
     }
 
+    @Override
+    public List<BasDie> listAllReferralDie(Long idTestexecResult, String keywords) {
+        return pfTestWaitingRoomDao.listAllReferralDie(idTestexecResult, keywords);
+    }
+
 }

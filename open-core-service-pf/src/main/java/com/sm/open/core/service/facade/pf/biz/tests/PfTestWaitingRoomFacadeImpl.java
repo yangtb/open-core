@@ -7,6 +7,7 @@ import com.sm.open.core.facade.model.param.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
+import com.sm.open.core.facade.model.result.pf.biz.disease.BasDieResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyListResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseInquesListResult;
@@ -21,6 +22,7 @@ import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperR
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperStudentResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.tests.PfTestWaitingRoomFacade;
+import com.sm.open.core.model.dto.pf.biz.disease.PfDiseaseInfoDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestEvaDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
@@ -29,6 +31,7 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo;
+import com.sm.open.core.service.facade.pf.biz.disease.PfDiseaseConstant;
 import com.sm.open.core.service.facade.pf.biz.kb.PfKbPartConstant;
 import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
@@ -845,6 +848,18 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveExecSerialNo-error】保存执行序号出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_EXEC_SERIAL_NO_ERROR, PfTestPaperConstant.SAVE_EXEC_SERIAL_NO_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listAllReferralDie(Long idTestexecResult, String keywords) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestWaitingRoomService.listAllReferralDie(idTestexecResult, keywords), BasDieResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listAllReferralDie-error】获取拟诊疾病列表失败，param:{}", idTestexecResult, e);
+            return PfResultFactory.initPageResultWithError(
+                    PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR_MSG);
         }
     }
 

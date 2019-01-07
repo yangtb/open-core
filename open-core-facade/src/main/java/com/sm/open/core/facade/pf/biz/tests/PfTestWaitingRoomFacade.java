@@ -434,4 +434,12 @@ public interface PfTestWaitingRoomFacade {
      */
     CommonResult<Boolean> saveExecSerialNo(ExmTestexecParam param);
 
+    /**
+     * 拟诊疾病列表
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    PfPageResult listAllReferralDie(Long idTestexecResult, String keywords);
+
 }

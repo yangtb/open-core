@@ -1509,5 +1509,20 @@
         )
         AND sd_testplan_detail != '0'
     </select>
+    <select id="listAllReferralDie" resultType="com.sm.open.core.model.entity.BasDie">
+        select
+            bd.id_die, bd.name, bd.cd_dieclass, bdc.name as cdDieclassText, bd.icd, bd.pinyin
+        from exm_med_result_referral a
+        left join bas_die bd on a.id_die = bd.id_die and bd.fg_valid = '0'
+        left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+        <if test="keywords != null and keywords != '' ">
+            AND (bd.name like concat('%',#{keywords},'%')
+            or   bd.icd like concat('%',#{keywords},'%')
+            or   bd.pinyin like concat('%',#{keywords},'%'))
+        </if>
+    </select>
 
 </mapper>

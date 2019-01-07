@@ -692,4 +692,14 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer saveExecSerialNo(ExmTestexec dto);
+
+    /**
+     * 拟诊疾病列表
+     *
+     * @param idTestexecResult
+     * @param keywords
+     * @return
+     */
+    List<BasDie> listAllReferralDie(@Param("idTestexecResult") Long idTestexecResult,
+                                    @Param("keywords") String keywords);
 }
