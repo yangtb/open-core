@@ -197,4 +197,10 @@ public class PfTestPaperConstant {
     public static final String SAVE_EXEC_SERIAL_NO_ERROR                = "saveExecSerialNoError";
     public static final String SAVE_EXEC_SERIAL_NO_ERROR_MSG            = "保存执行序号出错";
 
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_ERROR           = "listDiagnosticAnalysisError";
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_ERROR_MSG       = "查询确诊项、排除拟诊项失败";
+
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR       = "listDiagnosticAnalysisDetailError";
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR_MSG   = "查询病例诊断分析明细项失败";
+
 }

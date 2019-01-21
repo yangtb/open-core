@@ -13,16 +13,12 @@ import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseInquesListResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseInspectListResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaLogResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaResultResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfEvaExecResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfExecLogResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.*;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperInfoResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperStudentResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.tests.PfTestWaitingRoomFacade;
-import com.sm.open.core.model.dto.pf.biz.disease.PfDiseaseInfoDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestEvaDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
 import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
@@ -860,6 +856,40 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-listAllReferralDie-error】获取拟诊疾病列表失败，param:{}", idTestexecResult, e);
             return PfResultFactory.initPageResultWithError(
                     PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfDiagnosticAnalysisResult>> listDiagnosticAnalysis(PfTestEvaParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listDiagnosticAnalysis(
+                            BeanUtil.convert(param, PfTestEvaDto.class)
+                    ), PfDiagnosticAnalysisResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listDiagnosticAnalysis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiagnosticAnalysis-error】查询确诊项、排除拟诊项失败, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_ERROR, PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfDiagnosticAnalysisDetailResult>> listDiagnosticAnalysisDetail(PfTestEvaParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listDiagnosticAnalysisDetail(
+                            BeanUtil.convert(param, PfTestEvaDto.class)
+                    ), PfDiagnosticAnalysisDetailResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listDiagnosticAnalysisDetail】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiagnosticAnalysisDetail-error】查询病例诊断分析详情失败, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR, PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR_MSG));
         }
     }
 

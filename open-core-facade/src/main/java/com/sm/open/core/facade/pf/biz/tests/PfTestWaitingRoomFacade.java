@@ -5,10 +5,7 @@ import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaLogResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaResultResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfEvaExecResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfExecLogResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.*;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -441,5 +438,21 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     PfPageResult listAllReferralDie(Long idTestexecResult, String keywords);
+
+    /**
+     * 确诊项 及 排除拟诊项
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfDiagnosticAnalysisResult>> listDiagnosticAnalysis(PfTestEvaParam param);
+
+    /**
+     * 查询病例诊断分析详情
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfDiagnosticAnalysisDetailResult>> listDiagnosticAnalysisDetail(PfTestEvaParam param);
 
 }

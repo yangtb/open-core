@@ -5,8 +5,7 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -702,4 +701,62 @@ public interface PfTestWaitingRoomDao {
      */
     List<BasDie> listAllReferralDie(@Param("idTestexecResult") Long idTestexecResult,
                                     @Param("keywords") String keywords);
+
+    /**
+     * 查询确诊项目
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiagnosticAnalysisVo> listQzItem(PfTestEvaDto dto);
+
+    /**
+     * 查询确诊项目
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiagnosticAnalysisVo> listPcnzItem(PfTestEvaDto dto);
+
+    /**
+     * 确诊理由
+     *
+     * @param dto
+     * @return
+     */
+    List<PfAnalysisVo> getDiagnosislReason(PfTestEvaDto dto);
+
+
+    /**
+     * 排除拟诊理由
+     *
+     * @param dto
+     * @return
+     */
+    List<PfAnalysisVo> getUnReferralReason(PfTestEvaDto dto);
+
+    /**
+     * 查询问诊问题
+     *
+     * @param idReasonList
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> getInques(@Param("list") List<String> idReasonList);
+
+    /**
+     * 查询体格检查问题
+     *
+     * @param idReasonList
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> getBody(@Param("list") List<String> idReasonList);
+
+    /**
+     * 查询检验问题
+     *
+     * @param idReasonList
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> getCheck(@Param("list") List<String> idReasonList);
+
 }

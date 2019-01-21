@@ -1525,4 +1525,81 @@
         </if>
     </select>
 
+    <select id="listQzItem" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisVo">
+        call P_GET_DIAGNOSISL(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+
+    <select id="listPcnzItem" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisVo">
+        call P_GET_UN_REFERRAL(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getDiagnosislReason" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfAnalysisVo">
+        call P_GET_DIAGNOSISL_REASON(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getUnReferralReason" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfAnalysisVo">
+        call P_GET_UN_REFERRAL_REASON(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getInques" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
+        SELECT
+            a.des_inques AS question ,
+            b.des_answer AS answer
+        FROM
+            bas_inques a
+        LEFT JOIN bas_inques_answer b ON a.id_inques = b.id_inques
+        WHERE
+            a.id_inques in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="getBody" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
+        SELECT
+            a.des_body AS question ,
+            b.des_result AS answer
+        FROM
+            bas_body a
+        LEFT JOIN bas_body_result b ON a.id_body = b.id_body
+        WHERE
+            a.id_body in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getCheck" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
+        SELECT
+            a.na_item AS question ,
+            b.val_result AS answer
+        FROM
+            bas_inspect_item a
+        LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item
+        WHERE
+            a.id_inspect_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+
 </mapper>

@@ -14,8 +14,7 @@ import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.enums.TestPlanStatusEnum;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +24,8 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -574,6 +575,78 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public List<BasDie> listAllReferralDie(Long idTestexecResult, String keywords) {
         return pfTestWaitingRoomDao.listAllReferralDie(idTestexecResult, keywords);
+    }
+
+    @Override
+    public List<PfDiagnosticAnalysisVo> listDiagnosticAnalysis(PfTestEvaDto dto) {
+        List<PfDiagnosticAnalysisVo> qzList = pfTestWaitingRoomDao.listQzItem(dto);
+        if (dto.getParCode() != 0) {
+            throw new BizRuntimeException(String.valueOf(dto.getParCode()), dto.getParMsg());
+        }
+        for (PfDiagnosticAnalysisVo pfDiagnosticAnalysisVo: qzList) {
+            pfDiagnosticAnalysisVo.setType(1);
+        }
+        List<PfDiagnosticAnalysisVo> pcnzList = pfTestWaitingRoomDao.listPcnzItem(dto);
+        if (dto.getParCode() != 0) {
+            throw new BizRuntimeException(String.valueOf(dto.getParCode()), dto.getParMsg());
+        }
+        for (PfDiagnosticAnalysisVo pfDiagnosticAnalysisVo: pcnzList) {
+            pfDiagnosticAnalysisVo.setType(2);
+        }
+        qzList.addAll(pcnzList);
+        return qzList;
+    }
+
+    @Override
+    public List<PfDiagnosticAnalysisDetailVo> listDiagnosticAnalysisDetail(PfTestEvaDto dto) {
+        List<PfDiagnosticAnalysisDetailVo> allList = new ArrayList<>();
+        if (StringUtils.isBlank(dto.getIdDieStr())) {
+            return Collections.EMPTY_LIST;
+        }
+        List<String> idList = Arrays.asList(dto.getIdDieStr().split("\\|"));
+
+        if (dto.getType() == 1) {
+            List<PfAnalysisVo> qzAnalysisVos =  pfTestWaitingRoomDao.getDiagnosislReason(dto);
+            for (String str: idList) {
+                for (PfAnalysisVo pfAnalysisVo: qzAnalysisVos) {
+                    if (str.equals(pfAnalysisVo.getIdDie())) {
+                        allList.addAll(getQaDetal(pfAnalysisVo.getSdEvaEffciency(), pfAnalysisVo.getIdReason(), pfAnalysisVo.getFlag()));
+                    }
+                }
+            }
+
+        } else {
+            List<PfAnalysisVo> pcqzAnalysisVos =  pfTestWaitingRoomDao.getUnReferralReason(dto);
+            for (String str: idList) {
+                for (PfAnalysisVo pcqzAnalysisVo: pcqzAnalysisVos) {
+                    if (str.equals(pcqzAnalysisVo.getIdDie())) {
+                        allList.addAll(getQaDetal(pcqzAnalysisVo.getSdEvaEffciency(), pcqzAnalysisVo.getIdReason(), pcqzAnalysisVo.getFlag()));
+                    }
+                }
+            }
+        }
+        return allList;
+    }
+
+    private List<PfDiagnosticAnalysisDetailVo> getQaDetal(Integer sdEvaEffciency, String idReason, Integer flag) {
+        if (StringUtils.isBlank(idReason)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<PfDiagnosticAnalysisDetailVo> allList = new ArrayList<>();
+        List<String> idReasonList = Arrays.asList(idReason.split("\\|"));
+        if (sdEvaEffciency == 1) {
+            allList = pfTestWaitingRoomDao.getInques(idReasonList);
+        } else if (sdEvaEffciency == 2) {
+            allList = pfTestWaitingRoomDao.getBody(idReasonList);
+        } else if (sdEvaEffciency == 3) {
+            allList = pfTestWaitingRoomDao.getCheck(idReasonList);
+        }
+        for (PfDiagnosticAnalysisDetailVo pfDiagnosticAnalysisDetailVo: allList) {
+            pfDiagnosticAnalysisDetailVo.setSdEvaEffciency(sdEvaEffciency);
+            pfDiagnosticAnalysisDetailVo.setFlag(flag);
+        }
+        return allList;
     }
 
 }

@@ -8,6 +8,8 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisVo;
 import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
 import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
@@ -470,4 +472,21 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     List<BasDie> listAllReferralDie(Long idTestexecResult, String keywords);
+
+    /**
+     * 确诊项 及 排除拟诊项
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiagnosticAnalysisVo> listDiagnosticAnalysis(PfTestEvaDto dto);
+
+    /**
+     * 查询病例诊断分析详情
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> listDiagnosticAnalysisDetail(PfTestEvaDto dto);
+
 }
