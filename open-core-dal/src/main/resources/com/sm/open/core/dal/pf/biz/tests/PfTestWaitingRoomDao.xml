@@ -1562,12 +1562,12 @@
     <select id="getInques" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
         SELECT
             a.des_inques AS question ,
-            b.des_answer AS answer
+            a.des_answer AS answer
         FROM
-            bas_inques a
-        LEFT JOIN bas_inques_answer b ON a.id_inques = b.id_inques
+            faq_med_case_inques_list a
         WHERE
-            a.id_inques in (
+            id_med_case = #{idMedCase}
+        and a.id_inques in (
         <foreach collection="list" item="item" separator="," >
             #{item}
         </foreach>
@@ -1576,12 +1576,12 @@
     <select id="getBody" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
         SELECT
             a.des_body AS question ,
-            b.des_result AS answer
+            a.des_result AS answer
         FROM
-            bas_body a
-        LEFT JOIN bas_body_result b ON a.id_body = b.id_body
+          faq_med_case_body_list a
         WHERE
-            a.id_body in (
+            id_med_case = #{idMedCase}
+        and a.id_body in (
         <foreach collection="list" item="item" separator="," >
             #{item}
         </foreach>
@@ -1591,16 +1591,21 @@
     <select id="getCheck" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
         SELECT
             a.na_item AS question ,
-            b.val_result AS answer
+            a.val_result AS answer
         FROM
-            bas_inspect_item a
-        LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item
+            faq_med_case_inspect_list a
         WHERE
-            a.id_inspect_item in (
+            id_med_case = #{idMedCase}
+        and a.id_inspect_item in (
         <foreach collection="list" item="item" separator="," >
             #{item}
         </foreach>
         )
+    </select>
+    <select id="getIdMedCase" resultType="java.lang.Long">
+        select id_med_case from faq_med_tag a
+        left join bas_medical_tag b on a.id_tag = b.id_tag
+        where a.id_medicalrec = #{idMedicalrec} and b.cd_med_asse = #{cdMedAsse}
     </select>
 
 </mapper>

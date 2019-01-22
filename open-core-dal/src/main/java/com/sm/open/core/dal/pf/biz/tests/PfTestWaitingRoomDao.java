@@ -736,27 +736,43 @@ public interface PfTestWaitingRoomDao {
     List<PfAnalysisVo> getUnReferralReason(PfTestEvaDto dto);
 
     /**
+     * 获取idMedCase
+     *
+     * @param idMedicalrec 病历id
+     * @param cdMedAsse    组件编码
+     * @return
+     */
+    Long getIdMedCase(@Param("idMedicalrec") Long idMedicalrec,
+                      @Param("cdMedAsse") String cdMedAsse);
+
+    /**
      * 查询问诊问题
      *
      * @param idReasonList
+     * @param idMedCase
      * @return
      */
-    List<PfDiagnosticAnalysisDetailVo> getInques(@Param("list") List<String> idReasonList);
+    List<PfDiagnosticAnalysisDetailVo> getInques(@Param("list") List<String> idReasonList,
+                                                 @Param("idMedCase") Long idMedCase);
 
     /**
      * 查询体格检查问题
      *
      * @param idReasonList
+     * @param idMedCase
      * @return
      */
-    List<PfDiagnosticAnalysisDetailVo> getBody(@Param("list") List<String> idReasonList);
+    List<PfDiagnosticAnalysisDetailVo> getBody(@Param("list") List<String> idReasonList,
+                                               @Param("idMedCase") Long idMedCase);
 
     /**
      * 查询检验问题
      *
      * @param idReasonList
+     * @param idMedCase
      * @return
      */
-    List<PfDiagnosticAnalysisDetailVo> getCheck(@Param("list") List<String> idReasonList);
+    List<PfDiagnosticAnalysisDetailVo> getCheck(@Param("list") List<String> idReasonList,
+                                                @Param("idMedCase") Long idMedCase);
 
 }
