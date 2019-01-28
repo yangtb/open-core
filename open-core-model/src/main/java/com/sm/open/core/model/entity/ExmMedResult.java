@@ -7,7 +7,7 @@ import lombok.ToString;
 import java.io.Serializable;
 
 /**
- * 临床模拟_测试执行_病历结果
+ * 临床模拟_测试执行_病例结果
  *
  * @author yangtongbin
  */

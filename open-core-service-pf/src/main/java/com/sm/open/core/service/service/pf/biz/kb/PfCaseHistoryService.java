@@ -126,7 +126,7 @@ public interface PfCaseHistoryService {
     List<PfAssessTagVo> listAllAssessTag(Long idDemo, Long idMedicalrec);
 
     /**
-     * 查询病历标签信息
+     * 查询病例标签信息
      *
      * @param dto
      * @return
@@ -142,7 +142,7 @@ public interface PfCaseHistoryService {
     FaqEvaTag selectEvaTag(FaqEvaTag dto);
 
     /**
-     * 重载病历组件
+     * 重载病例组件
      *
      * @param dto
      * @return

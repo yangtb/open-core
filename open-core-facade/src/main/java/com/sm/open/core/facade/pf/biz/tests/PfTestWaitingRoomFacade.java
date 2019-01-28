@@ -5,10 +5,7 @@ import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.*;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaLogResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.ExmEvaResultResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfEvaExecResult;
-import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.PfExecLogResult;
+import com.sm.open.core.facade.model.result.pf.biz.tests.room.eva.*;
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperResult;
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
@@ -310,7 +307,7 @@ public interface PfTestWaitingRoomFacade {
     /**
      * 查询拟诊
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult);
@@ -318,7 +315,7 @@ public interface PfTestWaitingRoomFacade {
     /**
      * 查询所有诊断
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     CommonResult<List<PfDiagnosisResult>> selectAllDiagnosis(Long idTestexecResult);
@@ -326,7 +323,7 @@ public interface PfTestWaitingRoomFacade {
     /**
      * 查询诊断、诊断小结
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult);
@@ -336,7 +333,7 @@ public interface PfTestWaitingRoomFacade {
      *
      * @return
      */
-    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult);
+    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult, String keyword);
 
     /**
      * 查询确诊理由
@@ -347,7 +344,7 @@ public interface PfTestWaitingRoomFacade {
     PfPageResult listDieReason(Long idTestexecResultDiagnosis);
 
     /**
-     * 查询病历评估得分
+     * 查询病例评估得分
      *
      * @param idTestexecResult
      * @return
@@ -355,7 +352,7 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<List<PfEvaExecResult>> selectScore(Long idTestexecResult, Long idMedicalrec);
 
     /**
-     * 查询病历评估
+     * 查询病例评估
      *
      * @param param
      * @return
@@ -371,7 +368,7 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<List<ExmEvaLogResult>> listEvaLog(Long idTestexecResult);
 
     /**
-     * 病历评估
+     * 病例评估
      *
      * @param idTestexecResult
      * @return
@@ -433,5 +430,29 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<Boolean> saveExecSerialNo(ExmTestexecParam param);
+
+    /**
+     * 拟诊疾病列表
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    PfPageResult listAllReferralDie(Long idTestexecResult, String keywords);
+
+    /**
+     * 确诊项 及 排除拟诊项
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfDiagnosticAnalysisResult>> listDiagnosticAnalysis(PfTestEvaParam param);
+
+    /**
+     * 查询病例诊断分析详情
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<PfDiagnosticAnalysisDetailResult>> listDiagnosticAnalysisDetail(PfTestEvaParam param);
 
 }

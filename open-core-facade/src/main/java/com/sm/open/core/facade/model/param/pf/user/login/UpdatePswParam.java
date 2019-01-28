@@ -8,14 +8,26 @@ import java.io.Serializable;
 
 @Setter
 @Getter
-@ToString
+@ToString(exclude = {"oldPassword", "newPassword"})
 public class UpdatePswParam implements Serializable {
 
     private static final long serialVersionUID = 6379879533868883447L;
 
-    private Long        userId;          // 用户id
-    private String      userName;        // 用户名
-    private String      oldPassword;     // 原密码
-    private String      newPassword;     // 新密码
+    /**
+     * 用户id
+     */
+    private Long userId;
+    /**
+     * 用户名
+     */
+    private String userName;
+    /**
+     * 原密码
+     */
+    private String oldPassword;
+    /**
+     * 新密码
+     */
+    private String newPassword;
 
 }

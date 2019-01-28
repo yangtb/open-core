@@ -14,8 +14,7 @@ import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.enums.TestPlanStatusEnum;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import org.apache.commons.lang3.StringUtils;
@@ -25,6 +24,8 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -397,8 +398,8 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult) {
-        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult);
+    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult, String keyword) {
+        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult, keyword);
     }
 
     @Override
@@ -569,6 +570,101 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public boolean saveExecSerialNo(ExmTestexec dto) {
         return pfTestWaitingRoomDao.saveExecSerialNo(dto) >= 1 ? true : false;
+    }
+
+    @Override
+    public List<BasDie> listAllReferralDie(Long idTestexecResult, String keywords) {
+        return pfTestWaitingRoomDao.listAllReferralDie(idTestexecResult, keywords);
+    }
+
+    @Override
+    public List<PfDiagnosticAnalysisVo> listDiagnosticAnalysis(PfTestEvaDto dto) {
+        List<PfDiagnosticAnalysisVo> qzList = pfTestWaitingRoomDao.listQzItem(dto);
+        if (dto.getParCode() != 0) {
+            throw new BizRuntimeException(String.valueOf(dto.getParCode()), dto.getParMsg());
+        }
+        for (PfDiagnosticAnalysisVo pfDiagnosticAnalysisVo : qzList) {
+            pfDiagnosticAnalysisVo.setType(1);
+        }
+        List<PfDiagnosticAnalysisVo> pcnzList = pfTestWaitingRoomDao.listPcnzItem(dto);
+        if (dto.getParCode() != 0) {
+            throw new BizRuntimeException(String.valueOf(dto.getParCode()), dto.getParMsg());
+        }
+        for (PfDiagnosticAnalysisVo pfDiagnosticAnalysisVo : pcnzList) {
+            pfDiagnosticAnalysisVo.setType(2);
+        }
+        qzList.addAll(pcnzList);
+        return qzList;
+    }
+
+    @Override
+    public List<PfDiagnosticAnalysisDetailVo> listDiagnosticAnalysisDetail(PfTestEvaDto dto) {
+        List<PfDiagnosticAnalysisDetailVo> allList = new ArrayList<>();
+        if (StringUtils.isBlank(dto.getIdDieStr())) {
+            return Collections.EMPTY_LIST;
+        }
+        List<String> idList = Arrays.asList(dto.getIdDieStr().split("\\|"));
+
+        if (dto.getType() == 1) {
+            List<PfAnalysisVo> qzAnalysisVos = pfTestWaitingRoomDao.getDiagnosislReason(dto);
+            for (String str : idList) {
+                for (PfAnalysisVo pfAnalysisVo : qzAnalysisVos) {
+                    if (str.equals(pfAnalysisVo.getIdDie())) {
+                        allList.addAll(getQaDetal(pfAnalysisVo, dto.getIdMedicalrec()));
+                    }
+                }
+            }
+
+        } else {
+            List<PfAnalysisVo> pcqzAnalysisVos = pfTestWaitingRoomDao.getUnReferralReason(dto);
+            for (String str : idList) {
+                for (PfAnalysisVo pcqzAnalysisVo : pcqzAnalysisVos) {
+                    if (str.equals(pcqzAnalysisVo.getIdDie())) {
+                        allList.addAll(getQaDetal(pcqzAnalysisVo, dto.getIdMedicalrec()));
+                    }
+                }
+            }
+        }
+        return allList;
+    }
+
+    private List<PfDiagnosticAnalysisDetailVo> getQaDetal(PfAnalysisVo pfAnalysisVo, Long idMedicalrec) {
+        Integer sdEvaEffciency = pfAnalysisVo.getSdEvaEffciency();
+        String idReason = pfAnalysisVo.getIdReason();
+        Integer flag = pfAnalysisVo.getFlag();
+        if (StringUtils.isBlank(idReason)) {
+            return Collections.EMPTY_LIST;
+        }
+
+        List<PfDiagnosticAnalysisDetailVo> allList = new ArrayList<>();
+        List<String> idReasonList = Arrays.asList(idReason.split("\\|"));
+
+        String cdMedAsse = null;
+        if (sdEvaEffciency == 1) {
+            cdMedAsse = "004";
+        } else if (sdEvaEffciency == 2) {
+            cdMedAsse = "005";
+        } else if (sdEvaEffciency == 3) {
+            cdMedAsse = "006";
+        }
+        Long idMedCase = pfTestWaitingRoomDao.getIdMedCase(idMedicalrec, cdMedAsse);
+
+        if (idMedCase == null) {
+            return Collections.EMPTY_LIST;
+        }
+
+        if (sdEvaEffciency == 1) {
+            allList = pfTestWaitingRoomDao.getInques(idReasonList, idMedCase);
+        } else if (sdEvaEffciency == 2) {
+            allList = pfTestWaitingRoomDao.getBody(idReasonList, idMedCase);
+        } else if (sdEvaEffciency == 3) {
+            allList = pfTestWaitingRoomDao.getCheck(idReasonList, idMedCase);
+        }
+        for (PfDiagnosticAnalysisDetailVo pfDiagnosticAnalysisDetailVo : allList) {
+            pfDiagnosticAnalysisDetailVo.setSdEvaEffciency(sdEvaEffciency);
+            pfDiagnosticAnalysisDetailVo.setFlag(flag);
+        }
+        return allList;
     }
 
 }

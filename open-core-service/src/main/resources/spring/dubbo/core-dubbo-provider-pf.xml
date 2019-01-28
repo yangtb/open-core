@@ -63,10 +63,10 @@
     <dubbo:service ref="pfClinicTemplateFacade"
                    interface="com.sm.open.core.facade.pf.biz.clinic.PfClinicTemplateFacade"/>
 
-    <!-- 病历组件用例服务 -->
+    <!-- 病例组件用例服务 -->
     <dubbo:service ref="pfKbPartFacade" interface="com.sm.open.core.facade.pf.biz.kb.PfKbPartFacade"/>
 
-    <!-- 病历库服务 -->
+    <!-- 病例库服务 -->
     <dubbo:service ref="pfCaseHistoryFacade" interface="com.sm.open.core.facade.pf.biz.kb.PfCaseHistoryFacade"/>
 
     <!-- 临床组件服务 -->

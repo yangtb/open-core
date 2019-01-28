@@ -5,8 +5,7 @@ import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.*;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
-import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
+import com.sm.open.core.model.vo.pf.biz.test.eva.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -65,7 +64,7 @@ public interface PfTestWaitingRoomDao {
     Integer startExam(ExmTestexec dto);
 
     /**
-     * 插入测试执行_病历结果
+     * 插入测试执行_病例结果
      *
      * @param dto
      * @return
@@ -502,7 +501,7 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询诊断list
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     List<ExmMedResultDiagnosis> listDiagnosis(Long idTestexecResult);
@@ -510,7 +509,7 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询诊断
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     ExmMedResultDiagnosis selectDiagnosis(Long idTestexecResult);
@@ -518,7 +517,7 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询诊断小结
      *
-     * @param idTestexecResult 病历结果ID
+     * @param idTestexecResult 病例结果ID
      * @return
      */
     ExmMedResultSummary selectSummary(Long idTestexecResult);
@@ -526,9 +525,12 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询已做问诊、检查、检验
      *
+     * @param idTestexecResult
+     * @param keyword
      * @return
      */
-    List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult);
+    List<PfWaitingRoomDieReasonVo> listReadyDieReason(@Param("idTestexecResult") Long idTestexecResult,
+                                                      @Param("keyword") String keyword);
 
     /**
      * 查询确诊理由
@@ -539,7 +541,7 @@ public interface PfTestWaitingRoomDao {
     List<PfWaitingRoomDieReasonVo> listDieReason(Long idTestexecResultDiagnosis);
 
     /**
-     * 查询病历评估
+     * 查询病例评估
      *
      * @param dto
      * @return
@@ -571,7 +573,7 @@ public interface PfTestWaitingRoomDao {
     List<ExmEvaLog> listEvaLog(@Param("idTestexecResult") Long idTestexecResult);
 
     /**
-     * 病历评估
+     * 病例评估
      *
      * @param dto
      * @return
@@ -689,4 +691,88 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer saveExecSerialNo(ExmTestexec dto);
+
+    /**
+     * 拟诊疾病列表
+     *
+     * @param idTestexecResult
+     * @param keywords
+     * @return
+     */
+    List<BasDie> listAllReferralDie(@Param("idTestexecResult") Long idTestexecResult,
+                                    @Param("keywords") String keywords);
+
+    /**
+     * 查询确诊项目
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiagnosticAnalysisVo> listQzItem(PfTestEvaDto dto);
+
+    /**
+     * 查询确诊项目
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiagnosticAnalysisVo> listPcnzItem(PfTestEvaDto dto);
+
+    /**
+     * 确诊理由
+     *
+     * @param dto
+     * @return
+     */
+    List<PfAnalysisVo> getDiagnosislReason(PfTestEvaDto dto);
+
+
+    /**
+     * 排除拟诊理由
+     *
+     * @param dto
+     * @return
+     */
+    List<PfAnalysisVo> getUnReferralReason(PfTestEvaDto dto);
+
+    /**
+     * 获取idMedCase
+     *
+     * @param idMedicalrec 病历id
+     * @param cdMedAsse    组件编码
+     * @return
+     */
+    Long getIdMedCase(@Param("idMedicalrec") Long idMedicalrec,
+                      @Param("cdMedAsse") String cdMedAsse);
+
+    /**
+     * 查询问诊问题
+     *
+     * @param idReasonList
+     * @param idMedCase
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> getInques(@Param("list") List<String> idReasonList,
+                                                 @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 查询体格检查问题
+     *
+     * @param idReasonList
+     * @param idMedCase
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> getBody(@Param("list") List<String> idReasonList,
+                                               @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 查询检验问题
+     *
+     * @param idReasonList
+     * @param idMedCase
+     * @return
+     */
+    List<PfDiagnosticAnalysisDetailVo> getCheck(@Param("list") List<String> idReasonList,
+                                                @Param("idMedCase") Long idMedCase);
+
 }

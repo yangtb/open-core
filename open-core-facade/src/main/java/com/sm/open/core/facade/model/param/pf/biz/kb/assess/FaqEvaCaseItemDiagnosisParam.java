@@ -24,7 +24,7 @@ public class FaqEvaCaseItemDiagnosisParam implements Serializable {
     private Long idEvaCaseItemList;
 
     /**
-     * 病历评估项id
+     * 病例评估项id
      */
     private Long idEvaCaseItem;
 

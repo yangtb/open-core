@@ -19,7 +19,7 @@ public class PfDiagnosisVo implements Serializable {
     private Long idTestexecResultDiagnosis;
 
     /**
-     * 病历结果ID
+     * 病例结果ID
      */
     private Long idTestexecResult;
 

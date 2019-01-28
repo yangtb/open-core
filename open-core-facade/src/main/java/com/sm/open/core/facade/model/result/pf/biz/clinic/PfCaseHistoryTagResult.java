@@ -18,7 +18,7 @@ public class PfCaseHistoryTagResult extends FaqMedTagResult implements Serializa
     private String cdMedAsse;
     private String path;
     /**
-     * 病历组件嵌入代码
+     * 病例组件嵌入代码
      */
     private String script;
     /**

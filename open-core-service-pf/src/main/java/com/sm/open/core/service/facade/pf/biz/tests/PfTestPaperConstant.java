@@ -180,7 +180,7 @@ public class PfTestPaperConstant {
     public static final String EDIT_EVA_ERROR_MSG                       = "编辑得分出错";
 
     public static final String MED_EVA_ERROR                            = "medEvaError";
-    public static final String MED_EVA_ERROR_MSG                        = "病历评估出错";
+    public static final String MED_EVA_ERROR_MSG                        = "病例评估出错";
 
     public static final String SELECT_EVA_RESULT_ERROR                  = "selectEvaResultError";
     public static final String SELECT_EVA_RESULT_ERROR_MSG              = "查询病例执行结果出错";
@@ -196,5 +196,11 @@ public class PfTestPaperConstant {
 
     public static final String SAVE_EXEC_SERIAL_NO_ERROR                = "saveExecSerialNoError";
     public static final String SAVE_EXEC_SERIAL_NO_ERROR_MSG            = "保存执行序号出错";
+
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_ERROR           = "listDiagnosticAnalysisError";
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_ERROR_MSG       = "查询确诊项、排除拟诊项失败";
+
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR       = "listDiagnosticAnalysisDetailError";
+    public static final String LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR_MSG   = "查询病例诊断分析明细项失败";
 
 }

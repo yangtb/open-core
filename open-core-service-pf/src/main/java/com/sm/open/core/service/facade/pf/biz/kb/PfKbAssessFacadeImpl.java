@@ -12,6 +12,7 @@ import com.sm.open.core.facade.pf.biz.kb.PfKbAssessFacade;
 import com.sm.open.core.model.dto.pf.biz.kb.assess.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.entity.*;
+import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbAssessService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -29,6 +30,9 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
 
     @Resource
     private PfKbAssessService pfKbAssessService;
+
+    @Resource
+    private PfClinicTemplateService pfClinicTemplateService;
 
     @Override
     public PfPageResult listKbAssess(PfEvaCaseParam param) {
@@ -229,6 +233,7 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
     public CommonResult<List<FaqEvaCaseItemReasonResult>> listReasonAnswer(PfAssessCommonParam param) {
         try {
             PfAssessCommonDto dto = BeanUtil.convert(param, PfAssessCommonDto.class);
+            dto.setExtId(getIdMedCase(param.getExtId(), param.getSdType()));
             return ResultFactory.initCommonResultWithSuccess(
                     BeanUtil.convertList(pfKbAssessService.listReasonAnswer(dto), FaqEvaCaseItemReasonResult.class));
         } catch (BizRuntimeException e) {
@@ -239,6 +244,17 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfKbAssessConstant.LIST_REASON_ERROR, PfKbAssessConstant.LIST_REASON_ERROR_MSG));
         }
+    }
+
+    private Long getIdMedCase(Long extId, String sdType) {
+        if (sdType.equals("1")) {
+            return pfClinicTemplateService.selectCaseIdMedCase(extId, "004");
+        } else if (sdType.equals("2")) {
+            return pfClinicTemplateService.selectCaseIdMedCase(extId, "005");
+        } else if (sdType.equals("3")) {
+            return pfClinicTemplateService.selectCaseIdMedCase(extId, "006");
+        }
+        return null;
     }
 
     @Override
@@ -295,6 +311,7 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
     public CommonResult<List<FaqEvaCaseItemCoverResult>> listCoverAnswer(PfAssessCommonParam param) {
         try {
             PfAssessCommonDto dto = BeanUtil.convert(param, PfAssessCommonDto.class);
+            dto.setExtId(getIdMedCase(param.getExtId(), param.getSdType()));
             return ResultFactory.initCommonResultWithSuccess(
                     BeanUtil.convertList(pfKbAssessService.listCoverAnswer(dto), FaqEvaCaseItemCoverResult.class));
         } catch (BizRuntimeException e) {
@@ -361,6 +378,7 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
     public CommonResult<List<FaqEvaCaseItemMustResult>> listMustAnswer(PfAssessCommonParam param) {
         try {
             PfAssessCommonDto dto = BeanUtil.convert(param, PfAssessCommonDto.class);
+            dto.setExtId(getIdMedCase(param.getExtId(), param.getSdType()));
             return ResultFactory.initCommonResultWithSuccess(
                     BeanUtil.convertList(pfKbAssessService.listMustAnswer(dto), FaqEvaCaseItemMustResult.class));
         } catch (BizRuntimeException e) {

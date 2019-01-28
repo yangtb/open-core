@@ -972,13 +972,13 @@
         FROM
             faq_eva_case_item_reason a
         <if test='sdType == "1"'>
-            LEFT JOIN bas_inques b ON a.id_inques = b.id_inques
+            LEFT JOIN faq_med_case_inques_list b ON a.id_inques = b.id_inques and b.id_med_case = #{extId}
         </if>
         <if test='sdType == "2"'>
-            LEFT JOIN bas_body b ON a.id_body = b.id_body
+            LEFT JOIN faq_med_case_body_list b ON a.id_body = b.id_body and b.id_med_case = #{extId}
         </if>
         <if test='sdType == "3"'>
-            LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
+            LEFT JOIN faq_med_case_inspect_list b ON a.id_inspect_item = b.id_inspect_item and b.id_med_case = #{extId}
         </if>
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
@@ -1001,13 +1001,13 @@
         FROM
             faq_eva_case_item_cover a
         <if test='sdType == "1"'>
-            LEFT JOIN bas_inques b ON a.id_inques = b.id_inques
+            LEFT JOIN faq_med_case_inques_list b ON a.id_inques = b.id_inques and b.id_med_case = #{extId}
         </if>
         <if test='sdType == "2"'>
-            LEFT JOIN bas_body b ON a.id_body = b.id_body
+            LEFT JOIN faq_med_case_body_list b ON a.id_body = b.id_body and b.id_med_case = #{extId}
         </if>
         <if test='sdType == "3"'>
-            LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
+            LEFT JOIN faq_med_case_inspect_list b ON a.id_inspect_item = b.id_inspect_item and b.id_med_case = #{extId}
         </if>
         left join bas_die c on c.id_die = a.id_die
         WHERE
@@ -1031,13 +1031,13 @@
         FROM
             faq_eva_case_item_must a
         <if test='sdType == "1"'>
-            LEFT JOIN bas_inques b ON a.id_inques = b.id_inques
+            LEFT JOIN faq_med_case_inques_list b ON a.id_inques = b.id_inques and b.id_med_case = #{extId}
         </if>
         <if test='sdType == "2"'>
-            LEFT JOIN bas_body b ON a.id_body = b.id_body
+            LEFT JOIN faq_med_case_body_list b ON a.id_body = b.id_body and b.id_med_case = #{extId}
         </if>
         <if test='sdType == "3"'>
-            LEFT JOIN bas_inspect_item b ON a.id_inspect_item = b.id_inspect_item
+            LEFT JOIN faq_med_case_inspect_list b ON a.id_inspect_item = b.id_inspect_item and b.id_med_case = #{extId}
         </if>
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}

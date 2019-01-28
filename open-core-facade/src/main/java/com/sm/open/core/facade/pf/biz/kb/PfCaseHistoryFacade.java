@@ -138,7 +138,7 @@ public interface PfCaseHistoryFacade {
     CommonResult<FaqEvaTagResult> selectEvaTag(FaqEvaTagParam param);
 
     /**
-     * 重载病历组件
+     * 重载病例组件
      *
      * @param param
      * @return

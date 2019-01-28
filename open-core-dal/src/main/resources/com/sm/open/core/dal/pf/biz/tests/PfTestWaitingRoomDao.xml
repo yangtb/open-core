@@ -874,6 +874,7 @@
                 </otherwise>
             </choose>
         </if>
+        order by m.dt_exec_begin desc
         limit #{offset}, #{limit}
     </select>
 
@@ -1270,6 +1271,9 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND b.des_inques like concat('%',#{keyword},'%')
+        </if>
         UNION ALL
         SELECT
             '2' AS sdEvaEffciency ,
@@ -1282,6 +1286,9 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND b.des_body like concat('%',#{keyword},'%')
+        </if>
         UNION ALL
         SELECT
             '3' AS sdEvaEffciency ,
@@ -1294,6 +1301,9 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+        <if test="keyword != null and keyword != ''">
+            AND b.na_item like concat('%',#{keyword},'%')
+        </if>
     </select>
     <select id="listEva" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo">
         SELECT
@@ -1369,7 +1379,7 @@
             a.gmt_create as logDate
         FROM
             exm_med_result_inques a
-        left join faq_med_case_inques_list b on a.id_inques = b.id_inques
+        left join faq_med_case_inques_list b on a.id_med_case_list = b.id_med_case_list
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
@@ -1382,7 +1392,7 @@
             a.gmt_create as logDate
         FROM
             exm_med_result_body a
-        left join faq_med_case_body_list b on a.id_body = b.id_body
+        left join faq_med_case_body_list b on a.id_med_case_list = b.id_med_case_list
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
@@ -1395,7 +1405,7 @@
             a.gmt_create as logDate
         FROM
             exm_med_result_inspect a
-        left join faq_med_case_inspect_list b on a.id_inspect_item = b.id_inspect_item
+        left join faq_med_case_inspect_list b on a.id_med_case_list = b.id_med_case_list
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
@@ -1499,6 +1509,103 @@
         </foreach>
         )
         AND sd_testplan_detail != '0'
+    </select>
+    <select id="listAllReferralDie" resultType="com.sm.open.core.model.entity.BasDie">
+        select
+            bd.id_die, bd.name, bd.cd_dieclass, bdc.name as cdDieclassText, bd.icd, bd.pinyin
+        from exm_med_result_referral a
+        left join bas_die bd on a.id_die = bd.id_die and bd.fg_valid = '0'
+        left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+        <if test="keywords != null and keywords != '' ">
+            AND (bd.name like concat('%',#{keywords},'%')
+            or   bd.icd like concat('%',#{keywords},'%')
+            or   bd.pinyin like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+
+    <select id="listQzItem" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisVo">
+        call P_GET_DIAGNOSISL(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+
+    <select id="listPcnzItem" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisVo">
+        call P_GET_UN_REFERRAL(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getDiagnosislReason" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfAnalysisVo">
+        call P_GET_DIAGNOSISL_REASON(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getUnReferralReason" statementType="CALLABLE"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfAnalysisVo">
+        call P_GET_UN_REFERRAL_REASON(
+        #{idTestexecResult,mode=IN,jdbcType=INTEGER},
+        #{parCode,mode=OUT,jdbcType=INTEGER},
+        #{parMsg,mode=OUT,jdbcType=VARCHAR}
+        )
+    </select>
+    <select id="getInques" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
+        SELECT
+            a.des_inques AS question ,
+            a.des_answer AS answer
+        FROM
+            faq_med_case_inques_list a
+        WHERE
+            id_med_case = #{idMedCase}
+        and a.id_inques in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="getBody" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
+        SELECT
+            a.des_body AS question ,
+            a.des_result AS answer
+        FROM
+          faq_med_case_body_list a
+        WHERE
+            id_med_case = #{idMedCase}
+        and a.id_body in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+
+    <select id="getCheck" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo">
+        SELECT
+            a.na_item AS question ,
+            a.val_result AS answer
+        FROM
+            faq_med_case_inspect_list a
+        WHERE
+            id_med_case = #{idMedCase}
+        and a.id_inspect_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="getIdMedCase" resultType="java.lang.Long">
+        select id_med_case from faq_med_tag a
+        left join bas_medical_tag b on a.id_tag = b.id_tag
+        where a.id_medicalrec = #{idMedicalrec} and b.cd_med_asse = #{cdMedAsse}
     </select>
 
 </mapper>
