@@ -56,6 +56,11 @@ public class FaqMedCaseInquesList extends BasMediaVo implements Serializable {
     private String desAnswer;
 
     /**
+     * 是否阳性
+     */
+    private String isMasculine;
+
+    /**
      * 多媒体id
      */
     private Long idMedia;

@@ -742,8 +742,11 @@
             a.id_student ,
             b.id_medicalrec,
             c.id_demo ,
+            d.id_med_case as idMedCase,
             d.name as patName,
             d.sex as patSex,
+            d.age as patAge,
+            d.complaint as complaint,
             e.real_name as distributeDoc,
             f.na_testplan ,
             f.id_testpaper ,
@@ -945,6 +948,7 @@
             c.id_med_case_list ,
             c.id_inques ,
             c.des_inques,
+            c.is_masculine,
             IF(d.id_med_case_list is null,0,1) as extQa
         FROM
             faq_med_tag a
@@ -967,7 +971,7 @@
     </select>
     <select id="listConsQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomConsVo">
         SELECT
-            a.id_testexec_result_inques , a.fg_clue ,
+            a.id_testexec_result_inques,b.is_masculine, a.fg_clue ,
             b.des_inques , b.id_answer , b.des_answer , b.des_expert ,
             c.sd_type, c.path
         FROM
@@ -1032,6 +1036,7 @@
             c.des_body ,
             c.id_body ,
             c.cd_check ,
+            c.sd_body ,
             e.name AS cdCheckText , d.id_die, f.name as idDieText,
             IF(d.id_med_case_list IS NULL , 0 , 1) AS extQa
         FROM
@@ -1091,6 +1096,7 @@
         SELECT
             c.id_med_case_list ,
 	        c.na_item,
+            c.is_masculine,
 	        c.id_inspect_item, d.id_die, e.name as idDieText,
             IF(d.id_med_case_list is null,0,1) as extQa
         FROM
@@ -1141,6 +1147,7 @@
         SELECT
             a.id_testexec_result_inspect , a.fg_clue ,
             b.na_item , b.id_result , b.val_result, b.des_stand, b.des_expert ,
+            b.is_masculine,
             c.sd_type, c.path
         FROM
             exm_med_result_inspect a

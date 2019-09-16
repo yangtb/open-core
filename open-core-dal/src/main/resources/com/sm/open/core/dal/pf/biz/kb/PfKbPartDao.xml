@@ -78,6 +78,7 @@
                 des_inques,
                 id_answer,
                 des_answer,
+                is_masculine,
                 id_media,
             <if test="fgReason!=null">
                 fg_reason,
@@ -96,6 +97,7 @@
                 #{desInques},
                 #{idAnswer},
                 #{desAnswer},
+                #{isMasculine},
                 #{idMedia},
             <if test="fgReason!=null">
                 #{fgReason},
@@ -119,6 +121,7 @@
             </if>
                 des_stand,
                 id_result,
+                is_masculine,
                 val_result,
                 des_result,
             <if test="idMedia!=null">
@@ -149,6 +152,7 @@
             </if>
                 #{desStand},
                 #{idResult},
+                #{isMasculine,},
                 #{valResult},
                 #{desResult},
             <if test="idMedia!=null">
@@ -725,6 +729,7 @@
             des_inques = #{desInques},
             id_answer = #{idAnswer},
             des_answer = #{desAnswer},
+            is_masculine = #{isMasculine},
             id_media = #{idMedia},
             fg_reason = #{fgReason},
             fg_back = #{fgBack},
@@ -743,6 +748,7 @@
             na_short = #{naShort},
             des_stand = #{desStand},
             id_result = #{idResult},
+            is_masculine = #{isMasculine},
             val_result = #{valResult},
             des_result = #{desResult},
             id_media = #{idMedia},
@@ -889,7 +895,7 @@
     <select id="listFaqMedCaseInques" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
         SELECT
             fmci.id_med_case_list, fmci.id_med_case, fmci.id_inques_ca, fmci.id_inques, fmci.des_inques, fmci.id_answer,
-            fmci.des_answer, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
+            fmci.des_answer, fmci.is_masculine, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
             bm.sd_type, bm.path
         FROM
             faq_med_case_inques_list fmci
@@ -942,7 +948,7 @@
     <select id="listExams" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
         SELECT
             fmci.id_med_case_list,fmci.id_med_case, fmci.id_inspect, fmci.id_inspect_item, fmci.na_item, 
-            fmci.na_short, fmci.des_stand, fmci.id_result, fmci.val_result, fmci.des_result, fmci.id_media, fmci.cost_money,
+            fmci.na_short, fmci.des_stand, fmci.id_result,fmci.is_masculine, fmci.val_result, fmci.des_result, fmci.id_media, fmci.cost_money,
             fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
             bm.sd_type, bm.path
         FROM

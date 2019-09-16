@@ -450,6 +450,7 @@
             bmt.fg_show_make,
             bmt.fg_show_exec,
             bmt.name ,
+            bm.name as pName ,
             bmt.cd_med_asse ,
             bm.path ,
             bma.script,

@@ -62,6 +62,11 @@ public class FaqMedCaseInspectList extends BasMediaVo implements Serializable {
     private Long idResult;
 
     /**
+     * 是否阳性
+     */
+    private String isMasculine;
+
+    /**
      * 结果值
      */
     private String valResult;

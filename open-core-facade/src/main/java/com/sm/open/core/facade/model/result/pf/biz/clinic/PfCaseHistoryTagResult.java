@@ -15,6 +15,7 @@ public class PfCaseHistoryTagResult extends FaqMedTagResult implements Serializa
 
     private Long idTag;
     private String name;
+    private String pName;
     private String cdMedAsse;
     private String path;
     /**

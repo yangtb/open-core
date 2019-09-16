@@ -110,5 +110,10 @@ public class FaqMedCaseInspectListParam implements Serializable {
      */
     private String fgCarried;
 
+    /**
+     * 是否阳性
+     */
+    private String isMasculine;
+
 
 }

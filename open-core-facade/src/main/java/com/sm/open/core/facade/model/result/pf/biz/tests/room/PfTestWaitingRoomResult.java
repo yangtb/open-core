@@ -61,6 +61,14 @@ public class PfTestWaitingRoomResult implements Serializable {
      */
     private String patSex;
     /**
+     * 年龄
+     */
+    private String patAge;
+    /**
+     * 患者主诉
+     */
+    private String complaint;
+    /**
      * 分配医师
      */
     private String distributeDoc;
