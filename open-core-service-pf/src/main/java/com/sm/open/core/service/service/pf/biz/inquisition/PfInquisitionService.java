@@ -68,6 +68,14 @@ public interface PfInquisitionService {
     List<BasInques> listQuestion(PfInquisitionQuestionDto dto);
 
     /**
+     * 预设问题列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasInques> listPreQuestion(PfInquisitionQuestionDto dto);
+
+    /**
      * 新增问题
      *
      * @param dto

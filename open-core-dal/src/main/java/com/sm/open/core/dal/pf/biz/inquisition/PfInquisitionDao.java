@@ -174,4 +174,21 @@ public interface PfInquisitionDao {
      * @return
      */
     BasInquesAnswer selectBasInquesAnswerById(Long idAnswer);
+
+    /**
+     * 查询预设问题id
+     *
+     * @param idInques
+     * @return
+     */
+    BasInques selectPreIds(@Param("idInques") Long idInques);
+
+    /**
+     * 获取预设值问题
+     *
+     * @param ids
+     * @return
+     */
+    List<BasInques> listPreQuestion(@Param("ids") List<Long> ids);
+
 }

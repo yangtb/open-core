@@ -66,5 +66,15 @@ public class BasInquesParam implements Serializable {
      */
     private Date gmtModify;
 
+    /**
+     * 问诊标签
+     */
+    private String sdInquesLabel;
+
+    private Long idInquesPre;
+    private Long idInquesPre2;
+    private Long idInquesPre3;
+    private Long idInquesPre4;
+    private Long idInquesPre5;
 
 }

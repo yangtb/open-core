@@ -16,6 +16,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -54,6 +55,32 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
     @Override
     public List<BasInques> listQuestion(PfInquisitionQuestionDto dto) {
         return pfInquisitionDao.listQuestion(dto);
+    }
+
+    @Override
+    public List<BasInques> listPreQuestion(PfInquisitionQuestionDto dto) {
+        BasInques basInques = pfInquisitionDao.selectPreIds(dto.getIdInques());
+        if (basInques == null) {
+            return null;
+        }
+        List<Long> ids = new ArrayList<>();
+        if (basInques.getIdInquesPre() != null) {
+            ids.add(basInques.getIdInquesPre());
+        }
+        if (basInques.getIdInquesPre2() != null) {
+            ids.add(basInques.getIdInquesPre2());
+        }
+        if (basInques.getIdInquesPre3() != null) {
+            ids.add(basInques.getIdInquesPre3());
+        }
+        if (basInques.getIdInquesPre4() != null) {
+            ids.add(basInques.getIdInquesPre4());
+        }
+        if (basInques.getIdInquesPre5() != null) {
+            ids.add(basInques.getIdInquesPre5());
+        }
+        List<BasInques> list= pfInquisitionDao.listPreQuestion(ids);
+        return list;
     }
 
     @Override

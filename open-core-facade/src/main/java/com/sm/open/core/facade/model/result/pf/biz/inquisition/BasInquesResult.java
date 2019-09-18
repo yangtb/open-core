@@ -71,5 +71,10 @@ public class BasInquesResult implements Serializable {
      */
     private Date gmtModify;
 
+    /**
+     * 问诊标签
+     */
+    private String sdInquesLabel;
+
 
 }

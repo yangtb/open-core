@@ -62,6 +62,14 @@ public interface PfInquisitionFacade {
     PfPageResult listQuestion(PfInquisitionQuestionParam param);
 
     /**
+     * 预设问题列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listPreQuestion(PfInquisitionQuestionParam param);
+
+    /**
      * 新增问题
      *
      * @param param

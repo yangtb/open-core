@@ -119,6 +119,20 @@ public class PfInquisitionFacadeImpl implements PfInquisitionFacade {
     }
 
     @Override
+    public PfPageResult listPreQuestion(PfInquisitionQuestionParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfInquisitionQuestionDto dto = BeanUtil.convert(param, PfInquisitionQuestionDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfInquisitionService.listPreQuestion(dto), BasInquesResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfInquisitionFacadeImpl-listPreQuestion-error】获取预设问题列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfInquisitionConstant.PAGE_QUESTION_LIST_ERROR, PfInquisitionConstant.PAGE_QUESTION_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
     public CommonResult<Boolean> addQuestion(BasInquesParam param) {
         try {
             /* 参数校验 */

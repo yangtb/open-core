@@ -35,7 +35,13 @@
             creator,
             gmt_create,
             operator,
-            gmt_modify
+            gmt_modify,
+            sd_inques_label,
+            id_inques_pre,
+            id_inques_pre2,
+            id_inques_pre3,
+            id_inques_pre4,
+            id_inques_pre5
         )
         VALUES
         (
@@ -44,7 +50,13 @@
             #{creator},
             now(),
             #{operator},
-            now()
+            now(),
+            #{sdInquesLabel},
+            #{idInquesPre},
+            #{idInquesPre2},
+            #{idInquesPre3},
+            #{idInquesPre4},
+            #{idInquesPre5}
         )
     </insert>
 
@@ -136,7 +148,13 @@
             fg_active = #{fgActive},
             </if>
             operator = #{operator},
-            gmt_modify = now()
+            gmt_modify = now(),
+            sd_inques_label = #{sdInquesLabel},
+            id_inques_pre = #{idInquesPre},
+            id_inques_pre2 = #{idInquesPre2},
+            id_inques_pre3 = #{idInquesPre3},
+            id_inques_pre4 = #{idInquesPre4},
+            id_inques_pre5 = #{idInquesPre5}
         WHERE
             id_inques = #{idInques}
     </update>
@@ -244,7 +262,7 @@
     <select id="listQuestion" resultType="com.sm.open.core.model.entity.BasInques">
         SELECT
             bi.id_inques, bi.des_inques, bi.id_inques_ca,bic.name as idInquesCaText, bi.fg_active,
-            bi.fg_valid, bi.creator, bi.gmt_create, bi.operator, bi.gmt_modify
+            bi.fg_valid, bi.creator, bi.gmt_create, bi.operator, bi.gmt_modify, bi.sd_inques_label
         FROM
             bas_inques bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
         WHERE
@@ -350,6 +368,36 @@
 
     <select id="isExistDefaultAnswer" resultType="java.lang.Boolean">
         select count(1) from bas_inques_answer where id_inques = #{idInques} and fg_default ='1' AND fg_valid = '0'
+    </select>
+
+    <select id="selectPreIds" resultType="com.sm.open.core.model.entity.BasInques">
+        SELECT
+            id_inques_pre ,
+            id_inques_pre2 ,
+            id_inques_pre3 ,
+            id_inques_pre4 ,
+            id_inques_pre5
+        FROM
+            bas_inques
+        WHERE
+            id_inques = #{idInques}
+    </select>
+    <select id="listPreQuestion" resultType="com.sm.open.core.model.entity.BasInques">
+        SELECT
+            bi.id_inques ,
+            bi.des_inques ,
+            bi.id_inques_ca ,
+            bic. NAME AS idInquesCaText
+        FROM
+            bas_inques bi
+        LEFT JOIN bas_inques_ca bic ON bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.fg_valid = '0'
+        and bi.id_inques in (
+        <foreach collection="ids" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
     </select>
 
 
