@@ -7,6 +7,7 @@ import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -174,4 +175,11 @@ public interface PfExamDao {
      * @return
      */
     BasItemResult selectItemResultById(Long idResult);
+
+    /**
+     * treeSelect
+     *
+     * @return
+     */
+    List<PfTreeSelectVo> listQuestionClassifyTreeSelect();
 }

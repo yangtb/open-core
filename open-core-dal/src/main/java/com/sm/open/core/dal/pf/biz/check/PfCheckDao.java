@@ -7,6 +7,7 @@ import com.sm.open.core.model.entity.BasBody;
 import com.sm.open.core.model.entity.BasBodyCa;
 import com.sm.open.core.model.entity.BasBodyResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -174,4 +175,11 @@ public interface PfCheckDao {
      * @return
      */
     List<BasCheckSearchVo> searchCheck(PfCommonSearchDto dto);
+
+    /**
+     * treeSelect
+     *
+     * @return
+     */
+    List<PfTreeSelectVo> listQuestionClassifyTreeSelect();
 }

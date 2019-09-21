@@ -87,7 +87,13 @@
                 fg_back,
             </if>
                 des_expert,
-                fg_carried
+                fg_carried,
+                sd_inques_label,
+                id_inques_pre,
+                id_inques_pre2,
+                id_inques_pre3,
+                id_inques_pre4,
+                id_inques_pre5
         )
         VALUES
         (
@@ -106,7 +112,13 @@
                 #{fgBack},
             </if>
                 #{desExpert},
-                #{fgCarried}
+                #{fgCarried},
+                #{sdInquesLabel},
+                #{idInquesPre},
+                #{idInquesPre2},
+                #{idInquesPre3},
+                #{idInquesPre4},
+                #{idInquesPre5}
         )
     </insert>
     <insert id="addExam" useGeneratedKeys="true" keyProperty="idMedCaseList">
@@ -734,7 +746,13 @@
             fg_reason = #{fgReason},
             fg_back = #{fgBack},
             des_expert = #{desExpert},
-            fg_carried = #{fgCarried}
+            fg_carried = #{fgCarried},
+            sd_inques_label = #{sdInquesLabel},
+            id_inques_pre = #{idInquesPre},
+            id_inques_pre2 = #{idInquesPre2},
+            id_inques_pre3 = #{idInquesPre3},
+            id_inques_pre4 = #{idInquesPre4},
+            id_inques_pre5 = #{idInquesPre5}
         WHERE
             id_med_case_list = #{idMedCaseList}
     </update>
@@ -891,12 +909,15 @@
         <if test="keyword != null and keyword != ''">
             AND fmci.des_inques like concat('%',#{keyword},'%')
         </if>
+        <if test="idInquesCa != null">
+            AND fmci.id_inques_ca = #{idInquesCa}
+        </if>
     </select>
     <select id="listFaqMedCaseInques" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
         SELECT
             fmci.id_med_case_list, fmci.id_med_case, fmci.id_inques_ca, fmci.id_inques, fmci.des_inques, fmci.id_answer,
             fmci.des_answer, fmci.is_masculine, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
-            bm.sd_type, bm.path
+            bm.sd_type, bm.path, fmci.sd_inques_label
         FROM
             faq_med_case_inques_list fmci
         LEFT join bas_media bm on fmci.id_media = bm.id_media
@@ -905,6 +926,9 @@
         AND fmci.fg_valid = '0'
         <if test="keyword != null and keyword != ''">
             AND fmci.des_inques like concat('%',#{keyword},'%')
+        </if>
+        <if test="idInquesCa != null">
+            AND fmci.id_inques_ca = #{idInquesCa}
         </if>
         limit #{offset}, #{limit}
     </select>
@@ -944,6 +968,9 @@
         <if test="keyword != null and keyword != ''">
             AND fmci.na_item like concat('%',#{keyword},'%')
         </if>
+        <if test="idInspect != null">
+            AND fmci.id_inspect = #{idInspect}
+        </if>
     </select>
     <select id="listExams" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
         SELECT
@@ -959,6 +986,9 @@
         AND fmci.fg_valid = '0'
         <if test="keyword != null and keyword != ''">
             AND fmci.na_item like concat('%',#{keyword},'%')
+        </if>
+        <if test="idInspect != null">
+            AND fmci.id_inspect = #{idInspect}
         </if>
         limit #{offset}, #{limit}
     </select>
@@ -999,6 +1029,9 @@
         <if test="keyword != null and keyword != ''">
             AND fmcbl.des_body like concat('%',#{keyword},'%')
         </if>
+        <if test="idBodyCa != null">
+            AND fmcbl.id_body_ca = #{idBodyCa}
+        </if>
     </select>
     <select id="listChecks" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
         SELECT
@@ -1014,6 +1047,9 @@
         AND fmcbl.fg_valid = '0'
         <if test="keyword != null and keyword != ''">
             AND fmcbl.des_body like concat('%',#{keyword},'%')
+        </if>
+        <if test="idBodyCa != null">
+            AND fmcbl.id_body_ca = #{idBodyCa}
         </if>
         limit #{offset}, #{limit}
     </select>
@@ -1147,6 +1183,38 @@
         WHERE
             a.fg_active = '1'
           AND a.fg_valid = '0'
+    </select>
+    <select id="listPreQuestion" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            bi.id_med_case_list ,
+            bi.id_inques ,
+            bi.des_inques ,
+            bi.id_inques_ca ,
+            bic.name AS idInquesCaText
+        FROM
+            faq_med_case_inques_list bi
+        LEFT JOIN bas_inques_ca bic ON bi.id_inques_ca = bic.id_inques_ca
+        WHERE
+            bi.fg_valid = '0'
+        and bi.id_inques in (
+        <foreach collection="ids" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+        and bi.id_med_case = #{idMedCase}
+    </select>
+    <select id="selectPreIds" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            id_inques_pre ,
+            id_inques_pre2 ,
+            id_inques_pre3 ,
+            id_inques_pre4 ,
+            id_inques_pre5 ,
+            id_med_case
+        FROM
+            faq_med_case_inques_list
+        WHERE
+            id_med_case_list = #{idMedCaseList}
     </select>
 
 

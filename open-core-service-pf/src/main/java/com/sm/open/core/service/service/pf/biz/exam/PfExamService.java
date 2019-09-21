@@ -1,11 +1,13 @@
 package com.sm.open.core.service.service.pf.biz.exam;
 
-import com.sm.open.core.facade.model.result.pf.biz.exam.BasInspectItemResult;
 import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
-import com.sm.open.core.model.entity.*;
+import com.sm.open.core.model.entity.BasInspectCa;
+import com.sm.open.core.model.entity.BasInspectItem;
+import com.sm.open.core.model.entity.BasItemResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 
 import java.util.List;
@@ -25,6 +27,12 @@ public interface PfExamService {
      */
     List<PfCommonZtreeVo> listQuestionClassifyTree();
 
+    /**
+     * treeSelect
+     *
+     * @return
+     */
+    List<PfTreeSelectVo> listQuestionClassifyTreeSelect();
 
     /**
      * 新增题库分类信息

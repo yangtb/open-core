@@ -231,4 +231,12 @@ public interface PfKbPartFacade {
      * @return
      */
     CommonResult<Boolean> bachAddExam(PfSaveAsMedParam param);
+
+    /**
+     * 问诊预设列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult<FaqMedCaseInquesListResult> listPreQuestion(FaqMedCaseInquesListParam param);
 }

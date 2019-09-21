@@ -474,4 +474,17 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
                     PfKbPartConstant.BACH_ADD_EXAM_ERROR, PfKbPartConstant.BACH_ADD_EXAM_ERROR_MSG));
         }
     }
+
+    @Override
+    public PfPageResult<FaqMedCaseInquesListResult> listPreQuestion(FaqMedCaseInquesListParam param) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfKbPartService.listPreQuestion(param.getIdMedCaseList()), FaqMedCaseInquesListResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-listPreQuestion-error】获取预设问题列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfKbPartConstant.BACH_ADD_EXAM_ERROR, "获取预设问题列表失败");
+        }
+    }
+
 }

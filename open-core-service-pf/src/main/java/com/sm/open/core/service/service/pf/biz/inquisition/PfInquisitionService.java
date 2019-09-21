@@ -7,6 +7,7 @@ import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
 
 import java.util.List;
@@ -26,6 +27,12 @@ public interface PfInquisitionService {
      */
     List<PfCommonZtreeVo> listQuestionClassifyTree();
 
+    /**
+     * treeSelect
+     *
+     * @return
+     */
+    List<PfTreeSelectVo> listQuestionClassifyTreeSelect();
 
     /**
      * 新增问诊题库分类信息

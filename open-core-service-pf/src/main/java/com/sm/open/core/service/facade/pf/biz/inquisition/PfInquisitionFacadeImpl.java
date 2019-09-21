@@ -1,5 +1,6 @@
 package com.sm.open.core.service.facade.pf.biz.inquisition;
 
+import com.alibaba.fastjson.JSON;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
@@ -49,6 +50,21 @@ public class PfInquisitionFacadeImpl implements PfInquisitionFacade {
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("【PfInquisitionFacadeImpl-listQuestionClassifyTree】查询题库分类tree失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfInquisitionConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR,
+                    PfInquisitionConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<String> listQuestionClassifyTreeSelect() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(JSON.toJSONString(pfInquisitionService.listQuestionClassifyTreeSelect()));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfInquisitionFacadeImpl-listQuestionClassifyTreeSelect】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfInquisitionFacadeImpl-listQuestionClassifyTreeSelect】查询题库分类tree失败", e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfInquisitionConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR,
                     PfInquisitionConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR_MSG));

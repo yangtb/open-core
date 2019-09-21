@@ -7,6 +7,7 @@ import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -190,5 +191,12 @@ public interface PfInquisitionDao {
      * @return
      */
     List<BasInques> listPreQuestion(@Param("ids") List<Long> ids);
+
+    /**
+     * treeSelect
+     *
+     * @return
+     */
+    List<PfTreeSelectVo> listQuestionClassifyTreeSelect();
 
 }

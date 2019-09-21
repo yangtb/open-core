@@ -30,6 +30,12 @@ public interface PfExamFacade {
     CommonResult<List<PfCommonZtreeResult>> listQuestionClassifyTree();
 
     /**
+     * treeSelect
+     * @return
+     */
+    CommonResult<String> listQuestionClassifyTreeSelect();
+
+    /**
      * 新增题库信息
      *
      * @param param

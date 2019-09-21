@@ -1,5 +1,6 @@
 package com.sm.open.core.service.facade.pf.biz.exam;
 
+import com.alibaba.fastjson.JSON;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
@@ -21,6 +22,7 @@ import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
+import com.sm.open.core.service.facade.pf.biz.check.PfCheckConstant;
 import com.sm.open.core.service.service.pf.biz.exam.PfExamService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -49,6 +51,22 @@ public class PfExamFacadeImpl implements PfExamFacade {
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("【PfExamFacadeImpl-listQuestionClassifyTree】查询题库分类tree失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfExamConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR,
+                    PfExamConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<String> listQuestionClassifyTreeSelect() {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(JSON.toJSONString(pfExamService.listQuestionClassifyTreeSelect()));
+
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfExamFacadeImpl-listQuestionClassifyTreeSelect】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfExamFacadeImpl-listQuestionClassifyTreeSelect】查询题库分类tree失败", e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfExamConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR,
                     PfExamConstant.LIST_QUESTION_CLASSIFY_TREE_ERROR_MSG));

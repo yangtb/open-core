@@ -36,6 +36,11 @@ public class FaqMedCaseInquesListResult extends BasMediaResult implements Serial
     private Long idInquesCa;
 
     /**
+     * 问诊分类
+     */
+    private String idInquesCaText;
+
+    /**
      * 问题id
      */
     private Long idInques;
@@ -89,5 +94,10 @@ public class FaqMedCaseInquesListResult extends BasMediaResult implements Serial
      * 扩展字段
      */
     private boolean extQa;
+
+    /**
+     * 问诊标签
+     */
+    private String sdInquesLabel;
 
 }

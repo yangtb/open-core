@@ -390,4 +390,35 @@
     </select>
 
 
+    <resultMap id="questionTreeResultMap" type="com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo">
+        <id property="id" column="id_inspect"/>
+        <id property="name" column="name"/>
+        <id property="open" column="open"/>
+        <collection property="children" column="id_inspect"
+                    select="selectChildQuestion" ofType="com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo" />
+    </resultMap>
+    <select id="listQuestionClassifyTreeSelect" resultMap="questionTreeResultMap">
+        SELECT
+            id_inspect ,
+            name ,
+            true as open
+        FROM
+            bas_inspect_ca
+        WHERE
+            fg_active = '1'
+        AND id_par IS NULL
+    </select>
+    <select id="selectChildQuestion" resultMap="questionTreeResultMap">
+        SELECT
+            id_inspect ,
+            name ,
+            true as open
+        FROM
+            bas_inspect_ca
+        WHERE
+            id_par = #{id}
+        and fg_active = '1'
+    </select>
+
+
 </mapper>

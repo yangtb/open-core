@@ -9,6 +9,7 @@ import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 import com.sm.open.core.service.service.pf.biz.exam.PfExamService;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,11 @@ public class PfExamServiceImpl implements PfExamService {
     @Override
     public List<PfCommonZtreeVo> listQuestionClassifyTree() {
         return pfExamDao.listQuestionClassifyTree();
+    }
+
+    @Override
+    public List<PfTreeSelectVo> listQuestionClassifyTreeSelect() {
+        return pfExamDao.listQuestionClassifyTreeSelect();
     }
 
     @Override

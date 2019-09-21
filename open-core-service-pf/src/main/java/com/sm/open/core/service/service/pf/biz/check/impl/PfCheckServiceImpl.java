@@ -9,6 +9,7 @@ import com.sm.open.core.model.entity.BasBody;
 import com.sm.open.core.model.entity.BasBodyCa;
 import com.sm.open.core.model.entity.BasBodyResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo;
 import com.sm.open.core.service.service.pf.biz.check.PfCheckService;
 import org.apache.commons.lang3.StringUtils;
@@ -26,6 +27,11 @@ public class PfCheckServiceImpl implements PfCheckService {
     @Override
     public List<PfCommonZtreeVo> listQuestionClassifyTree() {
         return pfCheckDao.listQuestionClassifyTree();
+    }
+
+    @Override
+    public List<PfTreeSelectVo> listQuestionClassifyTreeSelect() {
+        return pfCheckDao.listQuestionClassifyTreeSelect();
     }
 
     @Override

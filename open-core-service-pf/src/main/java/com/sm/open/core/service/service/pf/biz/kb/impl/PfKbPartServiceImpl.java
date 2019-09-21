@@ -552,4 +552,33 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         }
         return pfKbPartDao.bachAddExam(dto) >= 1 ? true : false;
     }
+
+    @Override
+    public List<FaqMedCaseInquesList> listPreQuestion(Long idMedCaseList) {
+        FaqMedCaseInquesList faqMedCaseInquesList = pfKbPartDao.selectPreIds(idMedCaseList);
+        if (faqMedCaseInquesList == null) {
+            return null;
+        }
+        List<Long> ids = new ArrayList<>();
+        if (faqMedCaseInquesList.getIdInquesPre() != null) {
+            ids.add(faqMedCaseInquesList.getIdInquesPre());
+        }
+        if (faqMedCaseInquesList.getIdInquesPre2() != null) {
+            ids.add(faqMedCaseInquesList.getIdInquesPre2());
+        }
+        if (faqMedCaseInquesList.getIdInquesPre3() != null) {
+            ids.add(faqMedCaseInquesList.getIdInquesPre3());
+        }
+        if (faqMedCaseInquesList.getIdInquesPre4() != null) {
+            ids.add(faqMedCaseInquesList.getIdInquesPre4());
+        }
+        if (faqMedCaseInquesList.getIdInquesPre5() != null) {
+            ids.add(faqMedCaseInquesList.getIdInquesPre5());
+        }
+        if (CollectionUtils.isEmpty(ids)) {
+            return null;
+        }
+        List<FaqMedCaseInquesList> list= pfKbPartDao.listPreQuestion(ids, faqMedCaseInquesList.getIdMedCase());
+        return list;
+    }
 }

@@ -36,6 +36,11 @@ public class FaqMedCaseInquesList extends BasMediaVo implements Serializable {
     private Long idInquesCa;
 
     /**
+     * 问诊分类
+     */
+    private String idInquesCaText;
+
+    /**
      * 问题id
      */
     private Long idInques;
@@ -89,5 +94,16 @@ public class FaqMedCaseInquesList extends BasMediaVo implements Serializable {
      * 扩展字段
      */
     private boolean extQa;
+
+    /**
+     * 问诊标签
+     */
+    private String sdInquesLabel;
+
+    private Long idInquesPre;
+    private Long idInquesPre2;
+    private Long idInquesPre3;
+    private Long idInquesPre4;
+    private Long idInquesPre5;
 
 }

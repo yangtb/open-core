@@ -30,6 +30,12 @@ public interface PfInquisitionFacade {
     CommonResult<List<PfCommonZtreeResult>> listQuestionClassifyTree();
 
     /**
+     * treeSelect
+     * @return
+     */
+    CommonResult<String> listQuestionClassifyTreeSelect();
+
+    /**
      * 新增问诊题库信息
      *
      * @param param

@@ -7,8 +7,8 @@ import com.sm.open.core.model.entity.BasBody;
 import com.sm.open.core.model.entity.BasBodyCa;
 import com.sm.open.core.model.entity.BasBodyResult;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo;
-import com.sm.open.core.model.vo.pf.biz.exam.BasExamSearchVo;
 
 import java.util.List;
 
@@ -27,6 +27,12 @@ public interface PfCheckService {
      */
     List<PfCommonZtreeVo> listQuestionClassifyTree();
 
+    /**
+     * treeSelect
+     *
+     * @return
+     */
+    List<PfTreeSelectVo> listQuestionClassifyTreeSelect();
 
     /**
      * 新增题库分类信息

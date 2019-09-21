@@ -440,4 +440,22 @@ public interface PfKbPartDao {
      */
     Integer copyKbExam(@Param("oldIdMedCase") Long oldIdMedCase,
                        @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 查询预设问题id
+     *
+     * @param idMedCaseList
+     * @return
+     */
+    FaqMedCaseInquesList selectPreIds(@Param("idMedCaseList") Long idMedCaseList);
+
+    /**
+     * 问诊预设列表
+     *
+     * @param ids
+     * @param idMedCaseList
+     * @return
+     */
+    List<FaqMedCaseInquesList> listPreQuestion(@Param("ids") List<Long> ids,
+                                               @Param("idMedCase") Long idMedCase);
 }

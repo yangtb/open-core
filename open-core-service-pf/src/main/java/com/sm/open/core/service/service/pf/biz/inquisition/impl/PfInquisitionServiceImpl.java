@@ -9,6 +9,7 @@ import com.sm.open.core.model.entity.BasInques;
 import com.sm.open.core.model.entity.BasInquesAnswer;
 import com.sm.open.core.model.entity.BasInquesCa;
 import com.sm.open.core.model.vo.pf.biz.PfCommonZtreeVo;
+import com.sm.open.core.model.vo.pf.biz.PfTreeSelectVo;
 import com.sm.open.core.model.vo.pf.biz.inquisition.BasInquesSearchVo;
 import com.sm.open.core.service.service.pf.biz.inquisition.PfInquisitionService;
 import org.apache.commons.lang3.StringUtils;
@@ -28,6 +29,12 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
     @Override
     public List<PfCommonZtreeVo> listQuestionClassifyTree() {
         return pfInquisitionDao.listQuestionClassifyTree();
+    }
+
+    @Override
+    public List<PfTreeSelectVo> listQuestionClassifyTreeSelect() {
+        List<PfTreeSelectVo> list = pfInquisitionDao.listQuestionClassifyTreeSelect();
+        return list;
     }
 
     @Override

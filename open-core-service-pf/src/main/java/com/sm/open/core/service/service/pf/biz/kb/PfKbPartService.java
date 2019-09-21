@@ -263,4 +263,13 @@ public interface PfKbPartService {
      * @return
      */
     boolean bachAddExam(PfSaveAsMedDto dto);
+
+    /**
+     * 问诊预设列表
+     *
+     * @param idMedCaseList
+     * @return
+     */
+    List<FaqMedCaseInquesList> listPreQuestion(Long idMedCaseList);
+
 }
