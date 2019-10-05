@@ -38,4 +38,9 @@ public class PfCatalogueTreeParam implements Serializable  {
      * 扩展id
      */
     private Long extId;
+
+    /**
+     * 包含疾病 1 包含 0不包含
+     */
+    private int includeDie;
 }

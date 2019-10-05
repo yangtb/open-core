@@ -160,6 +160,57 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
+    public boolean saveKbGuide(FaqMedCaseGuide dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {
+            if (dto.getOldIdMedCase() == null) {
+                // 直接新增
+                FaqMedCase faqMedCase = new FaqMedCase();
+                faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+                faqMedCase.setCreator(dto.getCreator());
+                faqMedCase.setOperator(dto.getCreator());
+                faqMedCase.setName(dto.getCaseName());
+                faqMedCase.setIdOrg(dto.getIdOrg());
+                faqMedCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqMedCase.setCdMedAsse("010");
+                faqMedCase.setFgPublic(YesOrNoNum.NO.getCode());
+                pfKbPartDao.addKbPart(faqMedCase);
+
+                FaqMedCaseGuide faqMedCaseGuide = new FaqMedCaseGuide();
+                faqMedCaseGuide.setIdMedCase(faqMedCase.getIdMedCase());
+                faqMedCaseGuide.setGuideContent(dto.getGuideContent());
+                faqMedCaseGuide.setGuideNotesUrl(dto.getGuideNotesUrl());
+                pfKbPartDao.saveKbGuide(faqMedCaseGuide);
+
+                // 3 保存病例标签
+                dto.setIdMedCase(faqMedCase.getIdMedCase());
+                pfCaseHistoryDao.saveMedTag(dto);
+                return true;
+            }
+            // 病例维护 1-生成主表记录
+            FaqMedCase faqMedCase = new FaqMedCase();
+            faqMedCase.setIdMedCase(dto.getOldIdMedCase());
+            faqMedCase.setCreator(dto.getCreator());
+            faqMedCase.setName(dto.getCaseName());
+            faqMedCase.setIdOrg(dto.getIdOrg());
+            pfKbPartDao.copyKbPart(faqMedCase);
+            // 2-复制子表
+            pfKbPartDao.copyKbGuide(dto.getOldIdMedCase(), faqMedCase.getIdMedCase());
+            // 3 保存病例标签
+            dto.setIdMedCase(faqMedCase.getIdMedCase());
+            pfCaseHistoryDao.saveMedTag(dto);
+            return true;
+        }
+        return pfKbPartDao.saveKbGuide(dto) == 1 ? true : false;
+    }
+
+    @Override
+    public FaqMedCaseGuide selectKbGuide(Long idMedCase) {
+        return pfKbPartDao.selectKbGuide(idMedCase);
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
     public boolean saveKbPic(FaqMedCasePic dto) {
         if (StringUtils.isNotBlank(dto.getTagFlag())
                 && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdMedCase() == null) {

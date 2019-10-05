@@ -65,13 +65,15 @@
         (
             id_eva_case_item,
             sd_eva_referral,
-            id_die
+            id_die,
+            fg_die_class
         )
         VALUES
         (
             #{idEvaCaseItem},
             #{sdEvaReferral},
-            #{idDie}
+            #{idDie},
+            #{fgDieClass}
         )
     </insert>
     <insert id="addDiagnosis" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
@@ -87,6 +89,9 @@
             <if test="idDie!=null">
                 id_die,
             </if>
+            <if test="fgDieMain!=null">
+                fg_die_main,
+            </if>
         </trim>
         )
         VALUES
@@ -100,6 +105,9 @@
             </if>
             <if test="idDie!=null">
                 #{idDie},
+            </if>
+            <if test="fgDieMain!=null">
+                #{fgDieMain},
             </if>
         </trim>
         )
@@ -590,7 +598,8 @@
         SET
             id_eva_case_item = #{idEvaCaseItem},
             sd_eva_referral = #{sdEvaReferral},
-            id_die = #{idDie}
+            id_die = #{idDie},
+            fg_die_class = #{fgDieClass}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -598,7 +607,8 @@
         UPDATE faq_eva_case_item_diagnosis
         SET
             id_eva_case_item = #{idEvaCaseItem},
-            id_die = #{idDie}
+            id_die = #{idDie},
+            fg_die_main = #{fgDieMain}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -935,10 +945,12 @@
             a.id_eva_case_item ,
             a.sd_eva_referral ,
             a.id_die ,
-            b.name AS idDieText
+	        IFNULL(b.NAME,c.NAME) AS idDieText ,
+            a.fg_die_class
         FROM
             faq_eva_case_item_referral a
-        LEFT JOIN bas_die b ON a.id_die = b.id_die
+        LEFT JOIN bas_die b ON a.id_die = b.id_die and a.fg_die_class = '2'
+        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
     </select>
@@ -947,7 +959,8 @@
             a.id_eva_case_item_list ,
             a.id_eva_case_item ,
             a.id_die ,
-            b.name AS idDieText
+            b.name AS idDieText ,
+            a.fg_die_main
         FROM
             faq_eva_case_item_diagnosis a
         LEFT JOIN bas_die b ON a.id_die = b.id_die

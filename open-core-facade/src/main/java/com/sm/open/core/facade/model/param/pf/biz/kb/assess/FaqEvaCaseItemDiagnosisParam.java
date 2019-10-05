@@ -33,5 +33,9 @@ public class FaqEvaCaseItemDiagnosisParam implements Serializable {
      */
     private Long idDie;
 
+    /**
+     * 主机板标识
+     */
+    private String fgDieMain;
 
 }

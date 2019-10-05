@@ -37,4 +37,9 @@ public class FaqEvaCaseItemDiagnosis implements Serializable {
      * 疾病名称
      */
     private String idDieText;
+
+    /**
+     * 主疾病标识
+     */
+    private String fgDieMain;
 }

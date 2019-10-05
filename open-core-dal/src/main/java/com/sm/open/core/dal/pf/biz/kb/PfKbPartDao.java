@@ -124,6 +124,22 @@ public interface PfKbPartDao {
     FaqMedCaseText selectKbText(@Param("idMedCase") Long idMedCase);
 
     /**
+     * 组件 - add评估指南
+     *
+     * @param dto
+     * @return
+     */
+    Integer saveKbGuide(FaqMedCaseGuide dto);
+
+    /**
+     * 查询评估指南
+     *
+     * @param idMedCase
+     * @return
+     */
+    FaqMedCaseGuide selectKbGuide(@Param("idMedCase") Long idMedCase);
+
+    /**
      * 组件 - add图片
      *
      * @param dto
@@ -380,6 +396,16 @@ public interface PfKbPartDao {
      */
     Integer copyKbText(@Param("oldIdMedCase") Long oldIdMedCase,
                        @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 复制文本
+     *
+     * @param oldIdMedCase
+     * @param idMedCase
+     * @return
+     */
+    Integer copyKbGuide(@Param("oldIdMedCase") Long oldIdMedCase,
+                        @Param("idMedCase") Long idMedCase);
 
     /**
      * 复制图片

@@ -197,6 +197,37 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
         }
     }
 
+    @Override
+    public CommonResult<Boolean> saveKbGuide(FaqMedCaseGuideParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbPartService.saveKbGuide(BeanUtil.convert(param, FaqMedCaseGuide.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-saveKbGuide】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-saveKbGuide】保存评估指南失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.SAVE_KB_GUIDE_ERROR, PfKbPartConstant.SAVE_KB_GUIDE_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<FaqMedCaseGuideResult> selectKbGuide(Long idMedCase) {
+        try {
+            Assert.isTrue(idMedCase != null, "idMedCase");
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfKbPartService.selectKbGuide(idMedCase), FaqMedCaseGuideResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbPartFacadeImpl-selectKbGuide】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbPartFacadeImpl-selectKbGuide】查询评估指南失败, idMedCase:" + idMedCase, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbPartConstant.SELECT_KB_GUIDE_ERROR, PfKbPartConstant.SELECT_KB_GUIDE_ERROR_MSG));
+        }
+    }
+
 
     @Override
     public CommonResult<Boolean> saveKbPic(FaqMedCasePicParam param) {

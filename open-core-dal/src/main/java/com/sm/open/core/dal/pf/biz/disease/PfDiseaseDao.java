@@ -23,6 +23,21 @@ public interface PfDiseaseDao {
     List<PfDiseaseZtreeVo> listDiseaseCatalogueTree(PfCatalogueTreeDto dto);
 
     /**
+     * 疾病目录树
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiseaseZtreeVo> listDieCatalogueTree(PfCatalogueTreeDto dto);
+
+    /**
+     * 疾病
+     *
+     * @return
+     */
+    List<PfDiseaseZtreeVo> listDiseaseTree();
+
+    /**
      * 疾病目录信息
      *
      * @param idDieClass 基本目录id

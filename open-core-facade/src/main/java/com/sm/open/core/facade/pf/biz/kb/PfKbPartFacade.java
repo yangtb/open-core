@@ -97,6 +97,22 @@ public interface PfKbPartFacade {
     CommonResult<FaqMedCaseTextResult> selectKbText(Long idMedCase);
 
     /**
+     * 组件 - add评估指南
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> saveKbGuide(FaqMedCaseGuideParam param);
+
+    /**
+     * 查询评估指南
+     *
+     * @param idMedCase
+     * @return
+     */
+    CommonResult<FaqMedCaseGuideResult> selectKbGuide(Long idMedCase);
+
+    /**
      * 组件 - add图片
      *
      * @param param

@@ -40,6 +40,12 @@
             (#{idMedCase},#{content})
         ON DUPLICATE KEY UPDATE content = #{content}
     </insert>
+    <insert id="saveKbGuide">
+        INSERT INTO faq_med_case_guide(id_med_case, guide_content, guide_notes_url)
+        VALUES
+            (#{idMedCase}, #{guideContent}, #{guideNotesUrl})
+        ON DUPLICATE KEY UPDATE guide_content = #{guideContent}, guide_notes_url = #{guideNotesUrl}
+    </insert>
     <insert id="saveKbPic">
         INSERT INTO faq_med_case_pic(id_med_case , id_media)
         VALUES
@@ -525,6 +531,15 @@
         WHERE
             id_med_case = #{oldIdMedCase}
     </insert>
+    <insert id="copyKbGuide">
+        INSERT INTO faq_med_case_guide(id_med_case , guide_content, guide_notes_url)
+        SELECT
+            #{idMedCase}, guide_content, guide_notes_url
+        FROM
+            faq_med_case_guide
+        WHERE
+            id_med_case = #{oldIdMedCase}
+    </insert>
     <insert id="copyKbPic">
         INSERT INTO faq_med_case_pic(id_med_case , id_media)
         SELECT
@@ -937,6 +952,14 @@
             id_med_case,content
         from
             faq_med_case_text
+        where
+            id_med_case = #{idMedCase}
+    </select>
+    <select id="selectKbGuide" resultType="com.sm.open.core.model.entity.FaqMedCaseGuide">
+        select
+            id_med_case, guide_content, guide_notes_url
+        from
+            faq_med_case_guide
         where
             id_med_case = #{idMedCase}
     </select>

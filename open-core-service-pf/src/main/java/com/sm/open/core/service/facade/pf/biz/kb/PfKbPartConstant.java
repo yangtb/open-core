@@ -23,6 +23,12 @@ public class PfKbPartConstant {
     public static final String SELECT_KB_TEXT_ERROR                         = "selectKbTextError";
     public static final String SELECT_KB_TEXT_ERROR_MSG                     = "查询文本失败";
 
+    public static final String SAVE_KB_GUIDE_ERROR                          = "saveKbGuideError";
+    public static final String SAVE_KB_GUIDE_ERROR_MSG                      = "保存评估指南失败";
+
+    public static final String SELECT_KB_GUIDE_ERROR                        = "selectKbGuideError";
+    public static final String SELECT_KB_GUIDE_ERROR_MSG                    = "查询评估指南失败";
+
     public static final String SAVE_KB_PIC_ERROR                            = "saveKbPicError";
     public static final String SAVE_KB_PIC_ERROR_MSG                        = "保存图片失败";
 

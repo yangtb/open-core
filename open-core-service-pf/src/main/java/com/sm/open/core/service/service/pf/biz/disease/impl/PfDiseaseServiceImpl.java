@@ -12,6 +12,7 @@ import com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo;
 import com.sm.open.core.service.service.pf.biz.disease.PfDiseaseService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
+import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
@@ -26,7 +27,17 @@ public class PfDiseaseServiceImpl implements PfDiseaseService {
 
     @Override
     public List<PfDiseaseZtreeVo> listDiseaseCatalogueTree(PfCatalogueTreeDto dto) {
-        return pfDiseaseDao.listDiseaseCatalogueTree(dto);
+
+        if (dto.getIncludeDie() == 0) {
+            return pfDiseaseDao.listDiseaseCatalogueTree(dto);
+        } else {
+            List<PfDiseaseZtreeVo> list = pfDiseaseDao.listDieCatalogueTree(dto);
+            List<PfDiseaseZtreeVo> listDie = pfDiseaseDao.listDiseaseTree();
+            if (!CollectionUtils.isEmpty(list)) {
+                list.addAll(listDie);
+            }
+            return list;
+        }
     }
 
     @Override

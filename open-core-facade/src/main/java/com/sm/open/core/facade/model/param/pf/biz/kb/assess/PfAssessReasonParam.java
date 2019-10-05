@@ -70,4 +70,10 @@ public class PfAssessReasonParam extends FaqEvaCaseItemParam implements Serializ
      * 组件编码
      */
     private String cdEvaAsse;
+
+
+    /**
+     * 主疾病标识
+     */
+    private String fgDieMain;
 }

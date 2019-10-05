@@ -225,6 +225,21 @@
         </if>
     </select>
 
+    <select id="listDieCatalogueTree"
+            resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
+        SELECT
+            id_dieclass,
+            cd AS id ,
+            cd_par AS pId ,
+            name,
+            fg_active,
+            1 as is_parent
+        FROM
+            bas_die_class
+        WHERE
+            fg_active = '1'
+    </select>
+
     <select id="selectDiseaseDetail" resultType="com.sm.open.core.model.entity.BasDieClass">
         SELECT
             id_dieclass, name, cd, cd_par, icd_b, icd_e, fg_active, fg_valid,
@@ -237,6 +252,20 @@
 
     <select id="isExistDiseaseCatalogue" resultType="java.lang.Integer">
          select count(1) from bas_die_class where cd = #{cd} and fg_valid = '0'
+    </select>
+
+    <select id="listDiseaseTree" resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
+        SELECT
+            id_die,
+            CONCAT('die-', id_die) AS id ,
+            cd_dieclass AS pId ,
+            name,
+            fg_active,
+            0 as is_parent
+        FROM
+            bas_die
+        WHERE
+            fg_active = '1'
     </select>
 
 </mapper>

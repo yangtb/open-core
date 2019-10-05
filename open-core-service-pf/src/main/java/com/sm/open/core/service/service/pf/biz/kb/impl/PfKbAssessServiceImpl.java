@@ -192,6 +192,11 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
 
             for (FaqEvaCaseItemDiagnosis faqEvaCaseItemDiagnosis : list) {
                 faqEvaCaseItemDiagnosis.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                String fgDieMain = "0";
+                if (StringUtils.isNotBlank(faqEvaCaseItemDiagnosis.getFgDieMain())) {
+                    fgDieMain = faqEvaCaseItemDiagnosis.getFgDieMain();
+                }
+                faqEvaCaseItemDiagnosis.setFgDieMain(fgDieMain);
                 if (faqEvaCaseItemDiagnosis.getIdEvaCaseItemList() == null) {
                     pfKbAssessDao.addDiagnosis(faqEvaCaseItemDiagnosis);
                 } else {

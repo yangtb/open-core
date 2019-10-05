@@ -21,6 +21,11 @@ public class PfDiseaseZtreeResult extends PfCommonZtreeResult implements Seriali
     private Long idDieclass;
 
     /**
+     * 疾病id
+     */
+    private Long idDie;
+
+    /**
      * 激活标志
      */
     private String fgActive;
