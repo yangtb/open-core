@@ -942,6 +942,14 @@
         <if test="keyword != null and keyword != ''">
             AND c.des_inques like concat('%',#{keyword},'%')
         </if>
+        <if test="sdInquesLabel != null and sdInquesLabel != ''">
+            and c.sd_inques_label = #{sdInquesLabel}
+            and c.id_inques_pre is null
+            and c.id_inques_pre2 is null
+            and c.id_inques_pre3 is null
+            and c.id_inques_pre4 is null
+            and c.id_inques_pre5 is null
+        </if>
     </select>
     <select id="listTestCons" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
         SELECT
@@ -965,6 +973,61 @@
         <if test="keyword != null and keyword != ''">
             AND c.des_inques like concat('%',#{keyword},'%')
         </if>
+        <if test="sdInquesLabel != null and sdInquesLabel != ''">
+            and c.sd_inques_label = #{sdInquesLabel}
+            and c.id_inques_pre is null
+            and c.id_inques_pre2 is null
+            and c.id_inques_pre3 is null
+            and c.id_inques_pre4 is null
+            and c.id_inques_pre5 is null
+        </if>
+        order by
+            c.id_med_case_list
+        limit #{offset}, #{limit}
+    </select>
+    <select id="countTestConsPre" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inques_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inques d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        AND(
+            c.id_inques_pre = #{idInques}
+            OR c.id_inques_pre2 = #{idInques}
+            OR c.id_inques_pre3 = #{idInques}
+            OR c.id_inques_pre4 = #{idInques}
+            OR c.id_inques_pre5 = #{idInques}
+        )
+    </select>
+    <select id="listTestConsPre" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
+        SELECT
+            c.id_med_case_list ,
+            c.id_inques ,
+            c.des_inques,
+            c.is_masculine,
+            IF(d.id_med_case_list is null,0,1) as extQa
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inques_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inques d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        AND(
+            c.id_inques_pre = #{idInques}
+            OR c.id_inques_pre2 = #{idInques}
+            OR c.id_inques_pre3 = #{idInques}
+            OR c.id_inques_pre4 = #{idInques}
+            OR c.id_inques_pre5 = #{idInques}
+        )
         order by
             c.id_med_case_list
         limit #{offset}, #{limit}

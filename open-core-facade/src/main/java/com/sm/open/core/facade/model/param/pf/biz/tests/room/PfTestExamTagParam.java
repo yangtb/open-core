@@ -54,4 +54,18 @@ public class PfTestExamTagParam extends PfPageParam implements Serializable {
      */
     private String keyword;
 
+    /**
+     * 问诊标签
+     */
+    private String sdInquesLabel;
+
+    /**
+     * 前置条件的问诊项 1是 0否
+     */
+    private int inquesPreFlag;
+
+    /**
+     * 问诊ID
+     */
+    private Long idInques;
 }

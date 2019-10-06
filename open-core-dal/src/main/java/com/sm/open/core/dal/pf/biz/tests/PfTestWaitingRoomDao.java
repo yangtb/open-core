@@ -120,6 +120,22 @@ public interface PfTestWaitingRoomDao {
     List<FaqMedCaseInquesList> listTestCons(PfTestExamTagDto dto);
 
     /**
+     * 问诊总数 - 前置条件
+     *
+     * @param dto
+     * @return
+     */
+    Long countTestConsPre(PfTestExamTagDto dto);
+
+    /**
+     * 查询问诊信息 - 前置条件
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseInquesList> listTestConsPre(PfTestExamTagDto dto);
+
+    /**
      * 问诊 - 保存问答问题
      *
      * @param dto

@@ -137,12 +137,20 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public Long countTestCons(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.countTestCons(dto);
+        if (dto.getInquesPreFlag() == 0) {
+            return pfTestWaitingRoomDao.countTestCons(dto);
+        } else {
+            return pfTestWaitingRoomDao.countTestConsPre(dto);
+        }
     }
 
     @Override
     public List<FaqMedCaseInquesList> listTestCons(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.listTestCons(dto);
+        if (dto.getInquesPreFlag() == 0) {
+            return pfTestWaitingRoomDao.listTestCons(dto);
+        } else {
+            return pfTestWaitingRoomDao.listTestConsPre(dto);
+        }
     }
 
     @Override
