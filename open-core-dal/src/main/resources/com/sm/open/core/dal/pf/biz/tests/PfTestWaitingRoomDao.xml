@@ -400,6 +400,24 @@
             <if test="dieSumary!=null">
                 die_sumary,
             </if>
+            <if test="desConditionHpi!=null">
+                des_condition_hpi,
+            </if>
+            <if test="desConditionPe!=null">
+                des_condition_pe,
+            </if>
+            <if test="desConditionFe!=null">
+                des_condition_fe,
+            </if>
+            <if test="desSumaryHpi!=null">
+                des_sumary_hpi,
+            </if>
+            <if test="desSumaryPe!=null">
+                des_sumary_pe,
+            </if>
+            <if test="desSumaryFe!=null">
+                des_sumary_fe,
+            </if>
                 gmt_create,
         </trim>
         )
@@ -414,6 +432,24 @@
             </if>
             <if test="dieSumary!=null">
                 #{dieSumary},
+            </if>
+            <if test="desConditionHpi!=null">
+                #{desConditionHpi},
+            </if>
+            <if test="desConditionPe!=null">
+                #{desConditionPe},
+            </if>
+            <if test="desConditionFe!=null">
+                #{desConditionFe},
+            </if>
+            <if test="desSumaryHpi!=null">
+                #{desSumaryHpi},
+            </if>
+            <if test="desSumaryPe!=null">
+                #{desSumaryPe},
+            </if>
+            <if test="desSumaryFe!=null">
+                #{desSumaryFe},
             </if>
                 now(),
         </trim>
@@ -618,7 +654,29 @@
     <update id="editSummary">
         UPDATE exm_med_result_summary
         SET
-            die_sumary = #{dieSumary}
+        <trim suffixOverrides=",">
+            <if test="dieSumary != null and dieSumary!=''">
+                die_sumary = #{dieSumary},
+            </if>
+            <if test="desConditionHpi != null and desConditionHpi!=''">
+                des_condition_hpi = #{desConditionHpi},
+            </if>
+            <if test="desConditionPe != null and desConditionPe!=''">
+                des_condition_pe = #{desConditionPe},
+            </if>
+            <if test="desConditionFe != null and desConditionFe!=''">
+                des_condition_fe = #{desConditionFe},
+            </if>
+            <if test="desSumaryHpi != null and desSumaryHpi!=''">
+                des_sumary_hpi = #{desSumaryHpi},
+            </if>
+            <if test="desSumaryPe != null and desSumaryPe!=''">
+                des_sumary_pe = #{desSumaryPe},
+            </if>
+            <if test="desSumaryFe != null and desSumaryFe!=''">
+                des_sumary_fe = #{desSumaryFe},
+            </if>
+        </trim>
         WHERE
             id_testexec_result_sumary = #{idTestexecResultSumary}
     </update>
@@ -626,20 +684,62 @@
         update
             exm_med_result_inspect
         set
-            id_die = #{idDie}
+        <trim suffixOverrides=",">
+            <choose>
+                <when test="idTestexecResultInspect == null">
+                    id_die = #{idDie},
+                </when>
+                <otherwise>
+                    <if test="desReply != null and desReply != ''">
+                        des_reply = #{desReply},
+                    </if>
+                    <if test="fgValid != null and fgValid != ''">
+                        fg_valid=#{fgValid},
+                    </if>
+                </otherwise>
+            </choose>
+        </trim>
         where
-            id_testexec_result = #{idTestexecResult}
-        and id_med_case_list = #{idMedCaseList}
+        <choose>
+            <when test="idTestexecResultInspect != null">
+                id_testexec_result_inspect = #{idTestexecResultInspect}
+            </when>
+            <otherwise>
+                id_testexec_result = #{idTestexecResult}
+                and id_med_case_list = #{idMedCaseList}
+            </otherwise>
+        </choose>
         and fg_valid = '0'
     </update>
     <update id="editCheckQa">
         update
             exm_med_result_body
         set
-            id_die = #{idDie}
+        <trim suffixOverrides=",">
+            <choose>
+                <when test="idTestexecResultBody == null">
+                    id_die = #{idDie},
+                </when>
+                <otherwise>
+                    <if test="desReply != null and desReply != ''">
+                        des_reply = #{desReply},
+                    </if>
+                    <if test="fgValid != null and fgValid != ''">
+                        fg_valid=#{fgValid},
+                    </if>
+                </otherwise>
+            </choose>
+        </trim>
         where
-            id_testexec_result = #{idTestexecResult}
-        and id_med_case_list = #{idMedCaseList}
+        <choose>
+            <when test="idTestexecResultBody != null">
+                id_testexec_result_body = #{idTestexecResultBody}
+            </when>
+            <otherwise>
+                id_testexec_result = #{idTestexecResult}
+                and id_med_case_list = #{idMedCaseList}
+            </otherwise>
+        </choose>
         and fg_valid = '0'
     </update>
     <update id="editEva">
@@ -656,6 +756,19 @@
     </update>
     <update id="saveExecSerialNo">
         update exm_testexec set cur_serialno = #{curSerialno} where id_testexec = #{idTestexec}
+    </update>
+    <update id="editConsQa">
+        update exm_med_result_inques
+        set
+        <trim suffixOverrides=",">
+            <if test="desReason != null and desReason != ''">
+                des_reason = #{desReason},
+            </if>
+            <if test="desReply != null and desReply != ''">
+                des_reply = #{desReply},
+            </if>
+        </trim>
+        where id_testexec_result_inques = #{idTestexecResultInques}
     </update>
     <delete id="delCheckQa">
         update exm_med_result_body
@@ -1036,7 +1149,7 @@
         SELECT
             a.id_testexec_result_inques,b.is_masculine, a.fg_clue ,
             b.des_inques , b.id_answer , b.des_answer , b.des_expert ,
-            c.sd_type, c.path
+            c.sd_type, c.path, b.fg_reason, b.fg_back, a.des_reason, a.des_reply
         FROM
             exm_med_result_inques a
         LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1100,7 +1213,7 @@
             c.id_body ,
             c.cd_check ,
             c.sd_body ,
-            e.name AS cdCheckText , d.id_die, f.name as idDieText,
+            e.name AS cdCheckText , d.id_die,
             IF(d.id_med_case_list IS NULL , 0 , 1) AS extQa
         FROM
             faq_med_tag a
@@ -1109,7 +1222,6 @@
         LEFT JOIN bas_body_ca e ON c.id_body_ca = e.id_body_ca
         LEFT JOIN exm_med_result_body d ON c.id_med_case_list = d.id_med_case_list AND d.fg_valid = '0'
         and d.id_testexec_result = #{idTestexecResult}
-        left join bas_die f on d.id_die = f.id_die
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
@@ -1195,7 +1307,7 @@
         SELECT
             a.id_testexec_result_body , a.fg_clue ,
             b.des_body , b.id_result , b.des_result , b.des_expert ,
-            c.sd_type, c.path
+            c.sd_type, c.path, b.fg_reason, b.fg_back, a.des_reply
         FROM
             exm_med_result_body a
         LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1211,7 +1323,7 @@
             a.id_testexec_result_inspect , a.fg_clue ,
             b.na_item , b.id_result , b.val_result, b.des_stand, b.des_expert ,
             b.is_masculine,
-            c.sd_type, c.path
+            c.sd_type, c.path, b.fg_reason, b.fg_back, a.des_reply
         FROM
             exm_med_result_inspect a
         LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1306,7 +1418,13 @@
             id_testexec_result,
             die_sumary,
             fg_valid,
-            gmt_create
+            gmt_create, 
+            des_condition_hpi, 
+            des_condition_pe, 
+            des_condition_fe, 
+            des_sumary_hpi, 
+            des_sumary_pe, 
+            des_sumary_fe
         from
             exm_med_result_summary
         where
@@ -1676,6 +1794,18 @@
         select id_med_case from faq_med_tag a
         left join bas_medical_tag b on a.id_tag = b.id_tag
         where a.id_medicalrec = #{idMedicalrec} and b.cd_med_asse = #{cdMedAsse}
+    </select>
+
+    <select id="getIdByIdTestexecResult" resultType="java.lang.Long">
+        select id_testexec_result_sumary from exm_med_result_summary where id_testexec_result = #{idTestexecResult}
+    </select>
+    <select id="selectManyDie" resultType="java.lang.String">
+        select name from bas_die
+        where id_die in (
+        <foreach collection="idDies" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
     </select>
 
 </mapper>

@@ -19,10 +19,7 @@ import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperR
 import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperStudentResult;
 import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.tests.PfTestWaitingRoomFacade;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestEvaDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
+import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
@@ -224,6 +221,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveConsQa】保存问诊出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_CONS_QA_ERROR, PfTestPaperConstant.SAVE_CONS_QA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> editConsQa(PfExmMedResultParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.editConsQa(BeanUtil.convert(param, PfExmMedResultDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-editConsQa】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-editConsQa】编辑问诊出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_CHECK_QA_ERROR, PfTestPaperConstant.SAVE_CHECK_QA_ERROR_MSG));
         }
     }
 
@@ -652,6 +664,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectDiagnosis-error】查询诊断出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR, PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<ExmMedResultSummaryResult> selectSummary(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfTestWaitingRoomService.selectSummary(idTestexecResult), ExmMedResultSummaryResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectSummary】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectSummary-error】查询诊断小结出错, idTestexecResult:{}", idTestexecResult, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR, PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR_MSG));
         }

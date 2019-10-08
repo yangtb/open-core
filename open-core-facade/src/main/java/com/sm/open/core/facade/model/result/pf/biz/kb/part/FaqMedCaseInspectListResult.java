@@ -124,7 +124,7 @@ public class FaqMedCaseInspectListResult extends BasMediaResult implements Seria
     /**
      * 疾病id
      */
-    private Long idDie;
+    private String idDie;
 
     /**
      * 疾病名称

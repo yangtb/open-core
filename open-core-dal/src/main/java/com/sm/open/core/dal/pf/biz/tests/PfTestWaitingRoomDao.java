@@ -144,6 +144,14 @@ public interface PfTestWaitingRoomDao {
     Integer saveConsQa(ExmMedResultInques dto);
 
     /**
+     * 问诊 - 编辑问答问题
+     *
+     * @param dto
+     * @return
+     */
+    Integer editConsQa(ExmMedResultInques dto);
+
+    /**
      * 问诊 - 是否存在
      *
      * @param dto
@@ -202,6 +210,14 @@ public interface PfTestWaitingRoomDao {
     List<FaqMedCaseBodyList> listTestCheck(PfTestExamTagDto dto);
 
     /**
+     * 获取疾病名称，逗号隔开
+     *
+     * @param idDies
+     * @return
+     */
+    List<String> selectManyDie(@Param("idDies") List<String> idDies);
+
+    /**
      * 检查 - 保存问答问题
      *
      * @param dto
@@ -233,7 +249,7 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer delCheckQa(@Param("idTestexecResultBody") Long idTestexecResultBody,
-                       @Param("idDie") Long idDie,
+                       @Param("idDie") String idDie,
                        @Param("fgValid") String fgValid);
 
     /**
@@ -301,7 +317,7 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer delExamQa(@Param("idTestexecResultInspect") Long idTestexecResultInspect,
-                      @Param("idDie") Long idDie,
+                      @Param("idDie") String idDie,
                       @Param("fgValid") String fgValid);
 
     /**
@@ -463,6 +479,14 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     Integer editSummary(ExmMedResultSummary dto);
+
+    /**
+     * 获取小结主键
+     *
+     * @param idTestexecResult 病例结果ID
+     * @return
+     */
+    Long getIdByIdTestexecResult(@Param("idTestexecResult") Long idTestexecResult);
 
     /**
      * 保存确诊理由

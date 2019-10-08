@@ -38,7 +38,7 @@ public class ExmMedResultInspect implements Serializable {
     /**
      * 拟诊id
      */
-    private Long idDie;
+    private String idDie;
 
     /**
      * 检验项目ID
@@ -60,4 +60,8 @@ public class ExmMedResultInspect implements Serializable {
      */
     private Date gmtCreate;
 
+    /**
+     * 解释患者的回复
+     */
+    private String desReply;
 }

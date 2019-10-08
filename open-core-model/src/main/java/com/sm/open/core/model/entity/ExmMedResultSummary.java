@@ -45,4 +45,40 @@ public class ExmMedResultSummary implements Serializable {
      */
     private Date gmtCreate;
 
+    /**
+     *
+     * isNullAble:1
+     */
+    private String desConditionHpi;
+
+    /**
+     *
+     * isNullAble:1
+     */
+    private String desConditionPe;
+
+    /**
+     *
+     * isNullAble:1
+     */
+    private String desConditionFe;
+
+    /**
+     *
+     * isNullAble:1
+     */
+    private String desSumaryHpi;
+
+    /**
+     *
+     * isNullAble:1
+     */
+    private String desSumaryPe;
+
+    /**
+     *
+     * isNullAble:1
+     */
+    private String desSumaryFe;
+
 }

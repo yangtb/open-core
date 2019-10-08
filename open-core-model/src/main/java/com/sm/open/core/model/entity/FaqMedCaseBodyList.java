@@ -105,7 +105,7 @@ public class FaqMedCaseBodyList extends BasMediaVo implements Serializable {
     /**
      * 疾病id
      */
-    private Long idDie;
+    private String idDie;
 
     /**
      * 疾病名称

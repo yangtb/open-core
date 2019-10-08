@@ -39,7 +39,7 @@ public class ExmMedResultBody implements Serializable {
     /**
      * 拟诊id
      */
-    private Long idDie;
+    private String idDie;
 
     /**
      * 检查明细ID
@@ -60,6 +60,11 @@ public class ExmMedResultBody implements Serializable {
      * 创建时间
      */
     private Date gmtCreate;
+
+    /**
+     * 解释患者的回复
+     */
+    private String desReply;
 
 
 }

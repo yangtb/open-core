@@ -1,4 +1,4 @@
-package com.sm.open.core.facade.model.param.pf.biz.tests.room;
+package com.sm.open.core.facade.model.result.pf.biz.tests.room;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class ExmMedResultSummaryParam implements Serializable {
+public class ExmMedResultSummaryResult implements Serializable {
 
     private static final long serialVersionUID = 1542177162675L;
 
@@ -44,7 +44,6 @@ public class ExmMedResultSummaryParam implements Serializable {
      * 创建时间
      */
     private Date gmtCreate;
-
     /**
      *
      * isNullAble:1

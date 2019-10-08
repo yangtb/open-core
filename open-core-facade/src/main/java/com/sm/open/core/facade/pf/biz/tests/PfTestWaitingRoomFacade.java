@@ -84,7 +84,6 @@ public interface PfTestWaitingRoomFacade {
      */
     PfPageResult listTestCons(PfTestExamTagParam param);
 
-
     /**
      * 问诊 - 保存问答问题
      *
@@ -92,6 +91,14 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<Long> saveConsQa(ExmMedResultInquesParam param);
+
+    /**
+     * 问诊 - 编辑问答问题
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> editConsQa(PfExmMedResultParam param);
 
     /**
      * 问诊 - 线索标志
@@ -327,6 +334,14 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult);
+
+    /**
+     * 查询诊断小结
+     *
+     * @param idTestexecResult 病例结果ID
+     * @return
+     */
+    CommonResult<ExmMedResultSummaryResult> selectSummary(Long idTestexecResult);
 
     /**
      * 查询已做问诊、检查、检验

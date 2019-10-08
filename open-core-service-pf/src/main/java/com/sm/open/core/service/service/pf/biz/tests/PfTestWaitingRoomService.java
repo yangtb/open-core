@@ -1,9 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.tests;
 
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestEvaDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestExamTagDto;
-import com.sm.open.core.model.dto.pf.biz.tests.PfTestWatingRoomDto;
+import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
@@ -111,6 +108,14 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     Long saveConsQa(ExmMedResultInques dto);
+
+    /**
+     * 问诊 - 编辑问答问题
+     *
+     * @param dto
+     * @return
+     */
+    boolean editConsQa(PfExmMedResultDto dto);
 
     /**
      * 问诊 - 线索标志
@@ -360,6 +365,14 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     PfWaitingRoomDiagnosisVo selectDiagnosis(Long idTestexecResult);
+
+    /**
+     * 查询诊断小结
+     *
+     * @param idTestexecResult 病例结果ID
+     * @return
+     */
+    ExmMedResultSummary selectSummary(Long idTestexecResult);
 
     /**
      * 查询已做问诊、检查、检验

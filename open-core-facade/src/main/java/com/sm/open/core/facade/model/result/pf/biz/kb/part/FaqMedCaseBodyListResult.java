@@ -105,7 +105,7 @@ public class FaqMedCaseBodyListResult extends BasMediaResult implements Serializ
     /**
      * 疾病id
      */
-    private Long idDie;
+    private String idDie;
 
     /**
      * 疾病名称

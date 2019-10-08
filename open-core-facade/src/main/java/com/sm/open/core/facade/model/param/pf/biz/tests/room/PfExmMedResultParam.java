@@ -5,7 +5,6 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.Date;
 
 /**
  * 临床模拟_测试执行_病例结果_问诊
@@ -15,7 +14,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class ExmMedResultInquesParam implements Serializable {
+public class PfExmMedResultParam implements Serializable {
 
     private static final long serialVersionUID = 1541867770936L;
 
@@ -24,37 +23,12 @@ public class ExmMedResultInquesParam implements Serializable {
      * 主键
      * <p>
      */
-    private Long idTestexecResultInques;
+    private Long id;
 
     /**
-     * 病例结果ID
+     * 1 问诊 2 体检 3辅助检查
      */
-    private Long idTestexecResult;
-
-    /**
-     * 问题ID
-     */
-    private Long idInques;
-
-    /**
-     * 问诊明细ID
-     */
-    private Long idMedCaseList;
-
-    /**
-     * 线索标记
-     */
-    private String fgClue;
-
-    /**
-     * 0 正常，1 删除
-     */
-    private String fgValid;
-
-    /**
-     * 创建时间
-     */
-    private Date gmtCreate;
+    private Integer type;
 
     /**
      * 说明理由

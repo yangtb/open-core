@@ -166,6 +166,28 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
+    public boolean editConsQa(PfExmMedResultDto dto) {
+        if (dto.getType() == 1) {
+            ExmMedResultInques exmMedResultInques = new ExmMedResultInques();
+            exmMedResultInques.setIdTestexecResultInques(dto.getId());
+            exmMedResultInques.setDesReason(dto.getDesReason());
+            exmMedResultInques.setDesReply(dto.getDesReply());
+            return pfTestWaitingRoomDao.editConsQa(exmMedResultInques) == 1 ? true : false;
+        } else if (dto.getType() == 2) {
+            ExmMedResultBody exmMedResultBody = new ExmMedResultBody();
+            exmMedResultBody.setIdTestexecResultBody(dto.getId());
+            exmMedResultBody.setDesReply(dto.getDesReply());
+            return pfTestWaitingRoomDao.editCheckQa(exmMedResultBody) == 1 ? true : false;
+        } else if (dto.getType() == 3) {
+            ExmMedResultInspect exmMedResultInspect = new ExmMedResultInspect();
+            exmMedResultInspect.setIdTestexecResultInspect(dto.getId());
+            exmMedResultInspect.setDesReply(dto.getDesReply());
+            return pfTestWaitingRoomDao.editExamQa(exmMedResultInspect) == 1 ? true : false;
+        }
+        return true;
+    }
+
+    @Override
     public boolean updateConsStatus(PfBachChangeStatusDto dto) {
         return pfTestWaitingRoomDao.updateConsStatus(dto) >= 1 ? true : false;
     }
@@ -187,7 +209,16 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public List<FaqMedCaseBodyList> listTestCheck(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.listTestCheck(dto);
+        List<FaqMedCaseBodyList> lists = pfTestWaitingRoomDao.listTestCheck(dto);
+        for (FaqMedCaseBodyList item : lists) {
+            // 查询疾病
+            if (StringUtils.isNotBlank(item.getIdDie())) {
+                List<String> idDies = Arrays.asList(item.getIdDie().split(","));
+                List<String> idDieTexts = pfTestWaitingRoomDao.selectManyDie(idDies);
+                item.setIdDieText(StringUtils.join(idDieTexts.toArray(), ","));
+            }
+        }
+        return lists;
     }
 
     @Override
@@ -224,7 +255,16 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public List<FaqMedCaseInspectList> listTestExam(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.listTestExam(dto);
+        List<FaqMedCaseInspectList> lists = pfTestWaitingRoomDao.listTestExam(dto);
+        for (FaqMedCaseInspectList item : lists) {
+            // 查询疾病
+            if (StringUtils.isNotBlank(item.getIdDie())) {
+                List<String> idDies = Arrays.asList(item.getIdDie().split(","));
+                List<String> idDieTexts = pfTestWaitingRoomDao.selectManyDie(idDies);
+                item.setIdDieText(StringUtils.join(idDieTexts.toArray(), ","));
+            }
+        }
+        return lists;
     }
 
     @Override
@@ -345,7 +385,14 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public Long saveSummary(ExmMedResultSummary dto) {
         if (dto.getIdTestexecResultSumary() == null) {
-            pfTestWaitingRoomDao.addSummary(dto);
+            // 根据
+            Long idTestexecResultSumary = pfTestWaitingRoomDao.getIdByIdTestexecResult(dto.getIdTestexecResult());
+            if (idTestexecResultSumary == null) {
+                pfTestWaitingRoomDao.addSummary(dto);
+            } else {
+                dto.setIdTestexecResultSumary(idTestexecResultSumary);
+                pfTestWaitingRoomDao.editSummary(dto);
+            }
         } else {
             pfTestWaitingRoomDao.editSummary(dto);
         }
@@ -403,6 +450,11 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             diagnosisVo.setDieSumary(summary.getDieSumary());
         }
         return diagnosisVo;
+    }
+
+    @Override
+    public ExmMedResultSummary selectSummary(Long idTestexecResult) {
+        return pfTestWaitingRoomDao.selectSummary(idTestexecResult);
     }
 
     @Override
