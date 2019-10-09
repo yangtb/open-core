@@ -3,16 +3,19 @@ package com.sm.open.core.service.service.pf.biz.tests.impl;
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.core.dal.pf.biz.disease.PfDiseaseDao;
 import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPaperDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestWaitingRoomDao;
 import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.enums.TestPlanStatusEnum;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
+import com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
 import com.sm.open.core.model.vo.pf.biz.test.eva.*;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
@@ -43,6 +46,9 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Resource
     private PfTestPlanDao pfTestPlanDao;
+
+    @Resource
+    private PfDiseaseDao pfDiseaseDao;
 
     @Override
     public Long countWaitingRoom(PfTestWatingRoomDto dto) {
@@ -713,6 +719,22 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             }
         }
         return allList;
+    }
+
+    @Override
+    public List<PfDiseaseZtreeVo> listDiseaseCatalogueTree(PfCatalogueTreeDto dto) {
+        if (dto.getMainCatalogue() == 1) {
+            return pfDiseaseDao.listDiseaseCatalogueTree(dto);
+        } else {
+            List<PfDiseaseZtreeVo> list = pfDiseaseDao.listDieCatalogueTree(dto);
+            List<PfDiseaseZtreeVo> listDie = pfDiseaseDao.listDiseaseTreeByCondition(dto, list);
+            if (CollectionUtils.isEmpty(list)) {
+                return listDie;
+            } else {
+                list.addAll(listDie);
+            }
+            return list;
+        }
     }
 
     private List<PfDiagnosticAnalysisDetailVo> getQaDetal(PfAnalysisVo pfAnalysisVo, Long idMedicalrec) {

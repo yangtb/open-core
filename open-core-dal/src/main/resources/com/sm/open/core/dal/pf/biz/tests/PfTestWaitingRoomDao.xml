@@ -238,6 +238,7 @@
             <if test="idDie!=null">
                 id_die,
             </if>
+                fg_die_class,
                 fg_exclude,
                 gmt_create,
                 gmt_modify
@@ -255,6 +256,7 @@
             <if test="idDie!=null">
                 #{idDie},
             </if>
+                #{fgDieClass},
                 '0', now(), now()
         </trim>
         )
@@ -1651,12 +1653,14 @@
            a.fg_exclude ,
            a.fg_valid ,
            a.gmt_create ,
-           a.gmt_modify, b.name as idDieText
+           a.gmt_modify,
+           IFNULL(b.NAME,c.NAME) AS idDieText
         from exm_med_result_referral a
-        left join bas_die b on a.id_die = b.id_die
+        left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
+        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
         WHERE
             a.id_testexec_result = #{idTestexecResult}
-          AND a.fg_valid = '0'
+        AND a.fg_valid = '0'
     </select>
     <select id="listReferralReason" resultType="com.sm.open.core.model.vo.pf.biz.test.PfReferralReasonVo">
         SELECT

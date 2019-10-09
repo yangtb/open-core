@@ -223,6 +223,14 @@
                 </otherwise>
             </choose>
         </if>
+        <choose>
+            <when test="mainCatalogue == 1">
+                and (cd_par is null or cd_par = '')
+            </when>
+            <when test="mainCatalogue == 2">
+                and cd_par is not null
+            </when>
+        </choose>
     </select>
 
     <select id="listDieCatalogueTree"
@@ -238,6 +246,20 @@
             bas_die_class
         WHERE
             fg_active = '1'
+        <choose>
+            <when test="mainCatalogue == 1">
+                and (cd_par is null or cd_par = '')
+            </when>
+            <when test="mainCatalogue == 2">
+                and cd_par is not null
+                <if test="mainCatalogueId != null and mainCatalogueId != '' ">
+                    AND cd_par = #{mainCatalogueId}
+                </if>
+                <if test="keyword != null and keyword != '' ">
+                    AND name like concat('%',#{keyword},'%')
+                </if>
+            </when>
+        </choose>
     </select>
 
     <select id="selectDiseaseDetail" resultType="com.sm.open.core.model.entity.BasDieClass">
@@ -266,6 +288,33 @@
             bas_die
         WHERE
             fg_active = '1'
+    </select>
+    <select id="listDiseaseTreeByCondition"
+            resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
+        SELECT
+            id_die,
+            CONCAT('die-', id_die) AS id ,
+            cd_dieclass AS pId ,
+            name,
+            fg_active,
+            0 as is_parent
+        FROM
+            bas_die
+        WHERE
+            fg_active = '1'
+        <if test="dto.keyword != null and dto.keyword != '' ">
+            AND name like concat('%',#{dto.keyword},'%')
+        </if>
+        <if test="dto.mainCatalogueId != null and dto.mainCatalogueId != '' ">
+            <if test="list != null and list.size() > 0">
+                and cd_dieclass in (
+                <foreach collection="list" item="item" separator="," >
+                    #{item.idDieclass}
+                </foreach>
+                )
+            </if>
+
+        </if>
     </select>
 
 </mapper>

@@ -2,8 +2,10 @@ package com.sm.open.core.service.service.pf.biz.tests;
 
 import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
+import com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
 import com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisDetailVo;
 import com.sm.open.core.model.vo.pf.biz.test.eva.PfDiagnosticAnalysisVo;
@@ -510,5 +512,13 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     List<PfDiagnosticAnalysisDetailVo> listDiagnosticAnalysisDetail(PfTestEvaDto dto);
+
+    /**
+     * 疾病目录树
+     *
+     * @param dto
+     * @return
+     */
+    List<PfDiseaseZtreeVo> listDiseaseCatalogueTree(PfCatalogueTreeDto dto);
 
 }

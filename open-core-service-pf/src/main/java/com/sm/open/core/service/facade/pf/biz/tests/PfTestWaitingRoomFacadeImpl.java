@@ -5,9 +5,11 @@ import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
 import com.sm.open.core.facade.model.param.pf.biz.tests.room.*;
 import com.sm.open.core.facade.model.param.pf.common.PfBachChangeStatusParam;
+import com.sm.open.core.facade.model.param.pf.common.PfCatalogueTreeParam;
 import com.sm.open.core.facade.model.param.pf.common.PfCommonListParam;
 import com.sm.open.core.facade.model.result.pf.biz.clinic.PfCaseHistoryTagResult;
 import com.sm.open.core.facade.model.result.pf.biz.disease.BasDieResult;
+import com.sm.open.core.facade.model.result.pf.biz.disease.PfDiseaseZtreeResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyListResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseBodyResult;
 import com.sm.open.core.facade.model.result.pf.biz.kb.part.FaqMedCaseInquesListResult;
@@ -21,6 +23,7 @@ import com.sm.open.core.facade.model.rpc.*;
 import com.sm.open.core.facade.pf.biz.tests.PfTestWaitingRoomFacade;
 import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
+import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo;
@@ -933,6 +936,22 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiagnosticAnalysisDetail-error】查询病例诊断分析详情失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR, PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<List<PfDiseaseZtreeResult>> listDiseaseCatalogueTree(PfCatalogueTreeParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listDiseaseCatalogueTree(
+                            BeanUtil.convert(param, PfCatalogueTreeDto.class)), PfDiseaseZtreeResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listDiseaseCatalogueTree】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiseaseCatalogueTree】编辑疾病信息失败", e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfDiseaseConstant.LIST_DISEASE_CATALOGUE_TREE_ERROR, PfDiseaseConstant.LIST_DISEASE_CATALOGUE_TREE_ERROR_MSG));
         }
     }
 

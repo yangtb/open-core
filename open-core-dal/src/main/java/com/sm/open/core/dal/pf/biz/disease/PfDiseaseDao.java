@@ -38,6 +38,16 @@ public interface PfDiseaseDao {
     List<PfDiseaseZtreeVo> listDiseaseTree();
 
     /**
+     * 疾病
+     *
+     * @param dto 关键字
+     * @param list
+     * @return
+     */
+    List<PfDiseaseZtreeVo> listDiseaseTreeByCondition(@Param("dto") PfCatalogueTreeDto dto,
+                                                      @Param("list") List<PfDiseaseZtreeVo> list);
+
+    /**
      * 疾病目录信息
      *
      * @param idDieClass 基本目录id
