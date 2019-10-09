@@ -11,6 +11,7 @@ import com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo;
 import com.sm.open.core.model.vo.pf.biz.test.eva.PfExecLogVo;
 import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -212,6 +213,14 @@ public interface PfTestWaitingRoomService {
      * @return
      */
     Long saveExamQa(ExmMedResultInspect dto);
+
+    /**
+     * 检验 - 批量保存问答问题
+     *
+     * @param dto
+     * @return
+     */
+    BigDecimal saveBatchExamQa(PfTestExamTagDto dto);
 
     /**
      * 检验 - 编辑问答问题

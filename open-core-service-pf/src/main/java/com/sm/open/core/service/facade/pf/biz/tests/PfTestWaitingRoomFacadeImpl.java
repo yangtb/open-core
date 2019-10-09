@@ -37,6 +37,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.List;
 
 @Component("pfTestWaitingRoomFacade")
@@ -386,6 +387,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveExamQa】保存检验出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_EXAM_QA_ERROR, PfTestPaperConstant.SAVE_EXAM_QA_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<BigDecimal> saveBatchExamQa(PfTestExamTagParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveBatchExamQa(BeanUtil.convert(param, PfTestExamTagDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveBatchExamQa】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveBatchExamQa】批量保存检验出错, param:{}", param , e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_EXAM_QA_ERROR, PfTestPaperConstant.SAVE_EXAM_QA_ERROR_MSG));
         }

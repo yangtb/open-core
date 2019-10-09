@@ -817,6 +817,15 @@
         </foreach>
         )
     </delete>
+    <delete id="delExamQaByIdTestexecResult">
+        delete from exm_med_result_inspect
+        where id_testexec_result = #{idTestexecResult}
+        and id_inspect_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
 
     <select id="countWaitingRoom" resultType="java.lang.Long">
         SELECT
@@ -1213,7 +1222,8 @@
             c.id_body ,
             c.cd_check ,
             c.sd_body ,
-            e.name AS cdCheckText , d.id_die,
+            e.name AS cdCheckText ,
+            IF(d.id_die = '',null,d.id_die) as id_die,
             IF(d.id_med_case_list IS NULL , 0 , 1) AS extQa
         FROM
             faq_med_tag a
@@ -1272,7 +1282,8 @@
             c.id_med_case_list ,
 	        c.na_item,
             c.is_masculine,
-	        c.id_inspect_item, d.id_die, e.name as idDieText,
+	        c.id_inspect_item,
+            IF(d.id_die = '',null,d.id_die) as id_die, e.name as idDieText,
             IF(d.id_med_case_list is null,0,1) as extQa
         FROM
             faq_med_tag a
@@ -1806,6 +1817,51 @@
             #{item}
         </foreach>
         )
+    </select>
+
+    <select id="listAllExamByIdInspect" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
+        SELECT
+            c.id_med_case_list, c.id_inspect_item
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case
+        AND c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inspect d ON c.id_med_case_list = d.id_med_case_list
+        AND d.fg_valid = '0'
+        AND d.id_testexec_result = #{idTestexecResult}
+        LEFT JOIN bas_die e ON d.id_die = e.id_die
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = '006'
+        AND c.id_inspect = #{idInspect}
+        and d.id_testexec_result_inspect is null
+    </select>
+    <select id="sumCostMoney" resultType="java.math.BigDecimal">
+        SELECT
+            IFNULL(sum(c.cost_money), 0.00) as cost_money
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case
+        AND c.fg_valid = '0'
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = '006'
+        AND c.id_inspect = #{idInspect}
+    </select>
+    <select id="listAllIdInspect" resultType="java.lang.Long">
+        SELECT
+            c.id_inspect_item
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case
+        AND c.fg_valid = '0'
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = '006'
+        AND c.id_inspect = #{idInspect}
     </select>
 
 </mapper>

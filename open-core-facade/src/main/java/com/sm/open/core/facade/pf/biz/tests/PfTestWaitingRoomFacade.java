@@ -10,6 +10,7 @@ import com.sm.open.core.facade.model.result.pf.biz.tests.room.paper.PfTestPaperR
 import com.sm.open.core.facade.model.rpc.CommonResult;
 import com.sm.open.core.facade.model.rpc.PfPageResult;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -181,6 +182,14 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<Long> saveExamQa(ExmMedResultInspectParam param);
+
+    /**
+     * 检验 - 批量保存
+     *
+     * @param dto
+     * @return
+     */
+    CommonResult<BigDecimal> saveBatchExamQa(PfTestExamTagParam dto);
 
     /**
      * 检验 - 编辑

@@ -68,4 +68,11 @@ public class PfTestExamTagDto extends PageParam implements Serializable {
      * 问诊ID
      */
     private Long idInques;
+
+    /**
+     * 检验ID
+     */
+    private Long idInspect;
+
+    private boolean checked;
 }

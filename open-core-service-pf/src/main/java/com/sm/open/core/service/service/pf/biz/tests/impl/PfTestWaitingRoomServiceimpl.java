@@ -23,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -277,6 +278,32 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             dto.setIdTestexecResultInspect(idTestexecResultInspect);
         }
         return dto.getIdTestexecResultInspect();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public BigDecimal saveBatchExamQa(PfTestExamTagDto dto) {
+        if (dto.isChecked()) {
+            // 获取分类节点下的所有检验项目
+            List<FaqMedCaseInspectList> list = pfTestWaitingRoomDao.listAllExamByIdInspect(dto);
+            for (FaqMedCaseInspectList item : list) {
+                // 勾选该分类节点下的所有检验项目
+                ExmMedResultInspect exmMedResultInspect = new ExmMedResultInspect();
+                exmMedResultInspect.setIdTestexecResult(dto.getIdTestexecResult());
+                exmMedResultInspect.setIdMedCaseList(item.getIdMedCaseList());
+                exmMedResultInspect.setIdInspectItem(item.getIdInspectItem());
+
+                pfTestWaitingRoomDao.saveExamQa(exmMedResultInspect);
+            }
+            // 统计金额
+            return pfTestWaitingRoomDao.sumCostMoney(dto);
+        } else {
+            List<Long> list = pfTestWaitingRoomDao.listAllIdInspect(dto);
+            // 删除检验项目
+            pfTestWaitingRoomDao.delExamQaByIdTestexecResult(dto.getIdTestexecResult(), list);
+            // 统计金额
+            return BigDecimal.ZERO;
+        }
     }
 
     @Override

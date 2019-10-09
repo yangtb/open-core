@@ -10,6 +10,7 @@ import com.sm.open.core.model.vo.pf.biz.test.paper.PfTestPaperInfoVo;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Repository
@@ -285,12 +286,46 @@ public interface PfTestWaitingRoomDao {
     List<FaqMedCaseInspectList> listTestExam(PfTestExamTagDto dto);
 
     /**
+     * 检验 - 信息
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqMedCaseInspectList> listAllExamByIdInspect(PfTestExamTagDto dto);
+
+    /**
+     * 查询
+     *
+     * @param dto
+     * @return
+     */
+    List<Long> listAllIdInspect(PfTestExamTagDto dto);
+
+    /**
      * 检验 - 保存问答问题
      *
      * @param dto
      * @return
      */
     Integer saveExamQa(ExmMedResultInspect dto);
+
+    /**
+     * 计算金额
+     *
+     * @param dto
+     * @return
+     */
+    BigDecimal sumCostMoney(PfTestExamTagDto dto);
+
+    /**
+     * 删除检验问答
+     *
+     * @param idTestexecResult
+     * @param list
+     * @return
+     */
+    Integer delExamQaByIdTestexecResult(@Param("idTestexecResult") Long idTestexecResult,
+                                        @Param("list") List<Long> list);
 
     /**
      * 检验 - 编辑问答问题
