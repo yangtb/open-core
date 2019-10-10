@@ -657,25 +657,25 @@
         UPDATE exm_med_result_summary
         SET
         <trim suffixOverrides=",">
-            <if test="dieSumary != null and dieSumary!=''">
+            <if test="dieSumary != null">
                 die_sumary = #{dieSumary},
             </if>
-            <if test="desConditionHpi != null and desConditionHpi!=''">
+            <if test="desConditionHpi != null">
                 des_condition_hpi = #{desConditionHpi},
             </if>
-            <if test="desConditionPe != null and desConditionPe!=''">
+            <if test="desConditionPe != null">
                 des_condition_pe = #{desConditionPe},
             </if>
-            <if test="desConditionFe != null and desConditionFe!=''">
+            <if test="desConditionFe != null">
                 des_condition_fe = #{desConditionFe},
             </if>
-            <if test="desSumaryHpi != null and desSumaryHpi!=''">
+            <if test="desSumaryHpi != null">
                 des_sumary_hpi = #{desSumaryHpi},
             </if>
-            <if test="desSumaryPe != null and desSumaryPe!=''">
+            <if test="desSumaryPe != null">
                 des_sumary_pe = #{desSumaryPe},
             </if>
-            <if test="desSumaryFe != null and desSumaryFe!=''">
+            <if test="desSumaryFe != null">
                 des_sumary_fe = #{desSumaryFe},
             </if>
         </trim>
