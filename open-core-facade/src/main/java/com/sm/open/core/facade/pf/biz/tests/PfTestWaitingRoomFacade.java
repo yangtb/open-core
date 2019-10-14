@@ -512,4 +512,20 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     PfPageResult listDiagnosticChart(PfTestExamTagParam param);
+
+    /**
+     * 考试完成后所需跳转信息
+     *
+     * @param idTestplanDetail
+     * @return
+     */
+    CommonResult<PfWaitingRoomFinishResult> selectFinishExamInfo(Long idTestplanDetail);
+
+    /**
+     * 患者页签idMedCase
+     *
+     * @param idTestplanDetail
+     * @return
+     */
+    CommonResult<Long> selectAssessPatIdMedCase(Long idTestplanDetail);
 }

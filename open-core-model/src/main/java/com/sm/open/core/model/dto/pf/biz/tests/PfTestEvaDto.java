@@ -53,4 +53,9 @@ public class PfTestEvaDto implements Serializable {
      * 思维导图类型 3=鉴别诊断
      */
     private Integer chartType;
+
+    /**
+     * 过滤标识
+     */
+    private boolean filterFlag;
 }

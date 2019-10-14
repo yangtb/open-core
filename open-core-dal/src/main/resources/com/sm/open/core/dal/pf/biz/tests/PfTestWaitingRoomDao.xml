@@ -1040,8 +1040,8 @@
         FROM
             exm_testplan_detail a
         LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
-        LEFT JOIN bas_medical_tag c ON b.id_tag = c.id_tag AND c.cd_med_asse = '003'
-        LEFT JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case
+        LEFT JOIN faq_med_case c ON b.id_med_case = c.id_med_case
+        inner JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case AND c.cd_med_asse = '003'
         LEFT JOIN user_info e ON a.id_student = e.user_id
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
@@ -1049,7 +1049,6 @@
         WHERE
             a.sd_testplan_detail IN('0' , '1')
         AND f.id_org = #{idOrg}
-        AND d.id_med_case IS NOT NULL
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1070,7 +1069,7 @@
             a.id_testplan ,
             a.id_student ,
             b.id_medicalrec,
-            c.id_demo ,
+            k.id_demo ,
             d.id_med_case as idMedCase,
             d.name as patName,
             d.sex as patSex,
@@ -1083,8 +1082,8 @@
         FROM
             exm_testplan_detail a
         LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
-        LEFT JOIN bas_medical_tag c ON b.id_tag = c.id_tag AND c.cd_med_asse = '003'
-        LEFT JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case
+        LEFT JOIN faq_med_case c ON b.id_med_case = c.id_med_case
+        inner JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case AND c.cd_med_asse = '003'
         LEFT JOIN user_info e ON a.id_student = e.user_id
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
@@ -1092,7 +1091,6 @@
         WHERE
             a.sd_testplan_detail IN('0' , '1')
         AND f.id_org = #{idOrg}
-        AND d.id_med_case IS NOT NULL
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1114,9 +1112,8 @@
             exm_testexec m
         LEFT JOIN exm_testplan_detail a ON m.id_testplan_detail = a.id_testplan_detail
         LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
-        LEFT JOIN faq_medicalrec k ON b.id_medicalrec = k.id_medicalrec
-        LEFT JOIN bas_medical_tag c ON b.id_tag = c.id_tag AND c.cd_med_asse = '003'
-        LEFT JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case
+        LEFT JOIN faq_med_case c ON b.id_med_case = c.id_med_case
+        inner JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case AND c.cd_med_asse = '003'
         LEFT JOIN user_info e ON a.id_student = e.user_id
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
@@ -1145,7 +1142,6 @@
                 </otherwise>
             </choose>
         </if>
-        AND d.id_med_case IS NOT NULL
     </select>
     <select id="listReceivePat" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestReceivePatVo">
         SELECT
@@ -1157,7 +1153,7 @@
             m.dt_exec_begin AS receiveDate ,
             m.duration AS receiveConsumingTime ,
             b.id_medicalrec ,
-            c.id_demo ,
+            k.id_demo ,
             d.name AS patName ,
             d.sex AS patSex ,
             d.age ,
@@ -1175,8 +1171,8 @@
         LEFT JOIN exm_testplan_detail a ON m.id_testplan_detail = a.id_testplan_detail
         LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
         LEFT JOIN faq_medicalrec k ON b.id_medicalrec = k.id_medicalrec
-        LEFT JOIN bas_medical_tag c ON b.id_tag = c.id_tag AND c.cd_med_asse = '003'
-        LEFT JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case
+        LEFT JOIN faq_med_case c ON b.id_med_case = c.id_med_case
+        inner JOIN faq_med_case_patient d ON d.id_med_case = b.id_med_case AND c.cd_med_asse = '003'
         LEFT JOIN user_info e ON a.id_student = e.user_id
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
@@ -1186,7 +1182,6 @@
             a.sd_testplan_detail = '2'
         and m.sd_testexec = '2'
         AND f.id_org = #{idOrg}
-        AND d.id_med_case IS NOT NULL
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1742,6 +1737,9 @@
         LEFT JOIN bas_demo_asses b ON a.id_dimemsion = b.id_dimemsion
         WHERE
             id_testexec_result = #{idTestexecResult}
+        <if test="filterFlag == 1">
+            and b.fg_system_algorithm = '1'
+        </if>
         ORDER BY
             IFNULL(b.par_dimemsion, a.id_dimemsion) , a.id_dimemsion,
             b.sort
@@ -2163,6 +2161,29 @@
             </if>
         </where>
         limit #{offset}, #{limit}
+    </select>
+    <select id="selectFinishExamInfo" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomFinishVo">
+        SELECT
+            a.id_medicalrec ,
+            a.id_student ,
+            b.id_testpaper ,
+            c.sd_use
+        FROM
+            exm_testplan_detail a
+        LEFT JOIN exm_testplan b ON a.id_testplan = b.id_testplan
+        LEFT JOIN faq_medicalrec c ON a.id_medicalrec = c.id_medicalrec
+        WHERE
+            a.id_testplan_detail = #{idTestplanDetail}
+    </select>
+    <select id="selectAssessPatIdMedCase" resultType="java.lang.Long">
+        SELECT
+            c.id_med_case
+        FROM
+            exm_testplan_detail a
+        LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
+        inner JOIN faq_med_case c ON b.id_med_case = c.id_med_case  AND c.cd_med_asse = '003'
+        WHERE
+            a.id_testplan_detail = #{idTestplanDetail}
     </select>
 
 </mapper>

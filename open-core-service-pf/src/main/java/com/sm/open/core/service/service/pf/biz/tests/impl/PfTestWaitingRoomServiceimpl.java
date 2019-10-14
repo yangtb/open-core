@@ -875,6 +875,16 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return pfTestWaitingRoomDao.listDiagnosticChart(dto);
     }
 
+    @Override
+    public PfWaitingRoomFinishVo selectFinishExamInfo(Long idTestplanDetail) {
+        return pfTestWaitingRoomDao.selectFinishExamInfo(idTestplanDetail);
+    }
+
+    @Override
+    public Long selectAssessPatIdMedCase(Long idTestplanDetail) {
+        return pfTestWaitingRoomDao.selectAssessPatIdMedCase(idTestplanDetail);
+    }
+
     private List<PfDiagnosticAnalysisDetailVo> getQaDetal(PfAnalysisVo pfAnalysisVo, Long idMedicalrec) {
         Integer sdEvaEffciency = pfAnalysisVo.getSdEvaEffciency();
         String idReason = pfAnalysisVo.getIdReason();

@@ -1001,5 +1001,35 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
         }
     }
 
+    @Override
+    public CommonResult<PfWaitingRoomFinishResult> selectFinishExamInfo(Long idTestplanDetail) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convert(pfTestWaitingRoomService.selectFinishExamInfo(idTestplanDetail), PfWaitingRoomFinishResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectFinishExamInfo】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectFinishExamInfo-error】获取考试完成后所需跳转信息, idTestplanDetail:{}", idTestplanDetail, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_EVA_RESULT_ERROR, "获取考试完成后所需跳转信息失败"));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> selectAssessPatIdMedCase(Long idTestplanDetail) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.selectAssessPatIdMedCase(idTestplanDetail));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectAssessPatIdMedCase】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectAssessPatIdMedCase-error】患者页签idMedCase, idTestplanDetail:{}", idTestplanDetail, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_EVA_RESULT_ERROR, "获取患者页签idMedCase失败"));
+        }
+    }
+
+
 
 }
