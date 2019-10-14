@@ -38,4 +38,9 @@ public class PfTestEvaParam implements Serializable {
      * 类型 ：1=确诊项 2=排除拟诊项
      */
     private Integer type;
+
+    /**
+     * 思维导图类型 3=鉴别诊断
+     */
+    private Integer chartType;
 }

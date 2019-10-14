@@ -55,4 +55,14 @@ public class ExmMedResultDiagnosis implements Serializable {
      */
     private Long idTestexecResultReferral;
 
+    /**
+     * 诊断理由
+     */
+    private String desDieReason;
+
+    /**
+     * 疾病分类标记，如果为1 表示存储的是疾病目录，如果为2 表示存储的是疾病
+     */
+    private String fgDieClass;
+
 }

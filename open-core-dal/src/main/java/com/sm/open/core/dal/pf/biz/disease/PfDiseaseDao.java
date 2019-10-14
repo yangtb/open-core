@@ -130,4 +130,12 @@ public interface PfDiseaseDao {
      * @return
      */
     Integer delDiseaseInfo(PfBachChangeStatusDto dto);
+
+    /**
+     * 疾病名称
+     *
+     * @param list
+     * @return
+     */
+    List<BasDie> listDieNameByIds(@Param("list") List<Long> list);
 }

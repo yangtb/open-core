@@ -80,4 +80,10 @@ public class ExmMedResultReferral implements Serializable {
      * 疾病分类标记，如果为1 表示存储的是疾病目录，如果为2 表示存储的是疾病
      */
     private String fgDieClass;
+
+    /**
+     * 目录，1 = 是，0 = 否
+     */
+    private int catalogue;
+
 }

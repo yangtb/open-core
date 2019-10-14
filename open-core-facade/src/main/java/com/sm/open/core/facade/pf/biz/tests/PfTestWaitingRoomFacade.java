@@ -291,6 +291,14 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<Long> saveDiagnosis(ExmMedResultDiagnosisParam param);
 
     /**
+     * 保存鉴别诊断
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveIdentifyDiagnosis(ExmMedResultIdentifyParam param);
+
+    /**
      * 删除诊断
      *
      * @param idTestexecResultDiagnosis 主键
@@ -341,10 +349,10 @@ public interface PfTestWaitingRoomFacade {
     /**
      * 查询诊断、诊断小结
      *
-     * @param idTestexecResult 病例结果ID
+     * @param param
      * @return
      */
-    CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult);
+    CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(ExmMedResultDiagnosisParam param);
 
     /**
      * 查询诊断小结
@@ -489,4 +497,19 @@ public interface PfTestWaitingRoomFacade {
      */
     CommonResult<List<PfDiseaseZtreeResult>> listDiseaseCatalogueTree(PfCatalogueTreeParam param);
 
+    /**
+     * 思维导图
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<String> selectReferralChartData(PfTestEvaParam param);
+
+    /**
+     * 查询诊断分析、鉴别诊断列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listDiagnosticChart(PfTestExamTagParam param);
 }

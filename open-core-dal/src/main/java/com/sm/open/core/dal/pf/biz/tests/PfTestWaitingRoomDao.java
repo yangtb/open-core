@@ -256,6 +256,15 @@ public interface PfTestWaitingRoomDao {
     /**
      * 检查 - 线索标志
      *
+     * @param idTestexecResult
+     * @return
+     */
+    Integer updateCheckStatusByIdTestexecResult(@Param("idTestexecResult") Long idTestexecResult,
+                                                @Param("operationType") String operationType);
+
+    /**
+     * 检查 - 线索标志
+     *
      * @param dto
      * @return
      */
@@ -354,6 +363,15 @@ public interface PfTestWaitingRoomDao {
     Integer delExamQa(@Param("idTestexecResultInspect") Long idTestexecResultInspect,
                       @Param("idDie") String idDie,
                       @Param("fgValid") String fgValid);
+
+    /**
+     * 检验 - 线索标志
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    Integer updateExamStatusByIdTestexecResult(@Param("idTestexecResult") Long idTestexecResult,
+                                               @Param("operationType") String operationType);
 
     /**
      * 检验 - 线索标志
@@ -476,6 +494,14 @@ public interface PfTestWaitingRoomDao {
     Integer delShortDrugs(@Param("id") Long id);
 
     /**
+     * 获取诊断id
+     *
+     * @param dto
+     * @return
+     */
+    Long getDiagnosisId(ExmMedResultDiagnosis dto);
+
+    /**
      * 保存诊断
      *
      * @param dto
@@ -588,6 +614,13 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     ExmMedResultDiagnosis selectDiagnosis(Long idTestexecResult);
+
+    /**
+     * 产讯诊断
+     * @param dto
+     * @return
+     */
+    PfWaitingRoomDiagnosisVo selectDiagnosisNew(ExmMedResultDiagnosis dto);
 
     /**
      * 查询诊断小结
@@ -849,5 +882,69 @@ public interface PfTestWaitingRoomDao {
      */
     List<PfDiagnosticAnalysisDetailVo> getCheck(@Param("list") List<String> idReasonList,
                                                 @Param("idMedCase") Long idMedCase);
+
+    /**
+     * 鉴别诊断 - add
+     *
+     * @param dto
+     * @return
+     */
+    int insertExmMedResultIdentify(ExmMedResultIdentify dto);
+
+    /**
+     * 鉴别诊断 - add
+     *
+     * @param dto
+     * @return
+     */
+    int updateExmMedResultIdentify(ExmMedResultIdentify dto);
+
+    /**
+     * 确诊理由 - add
+     *
+     * @param dto
+     * @return
+     */
+    int insertExmMedResultIdentifyReason(ExmMedResultIdentifyReason dto);
+
+    /**
+     * 确诊理由 - edit
+     *
+     * @param dto
+     * @return
+     */
+    int updateExmMedResultIdentifyReason(ExmMedResultIdentifyReason dto);
+
+    /**
+     * 删除已有确诊理由
+     *
+     * @param idTestexecResultIdentify
+     * @return
+     */
+    int delExmMedResultIdentifyReason(Long idTestexecResultIdentify);
+
+    /**
+     * 获取拟诊
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<String> getNzDie(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
+     * 诊断分析、鉴别诊断总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countDiagnosticChart(PfTestExamTagDto dto);
+
+    /**
+     * 获取诊断分析、鉴别诊断列表
+     *
+     * @param dto
+     * @return
+     */
+    List<PfWaitingRoomChartDetailVo> listDiagnosticChart(PfTestExamTagDto dto);
 
 }

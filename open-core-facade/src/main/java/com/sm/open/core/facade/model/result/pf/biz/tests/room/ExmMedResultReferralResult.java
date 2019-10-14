@@ -76,4 +76,9 @@ public class ExmMedResultReferralResult implements Serializable {
      */
     private Date gmtModify;
 
+    /**
+     * 目录，1 = 是，0 = 否
+     */
+    private int catalogue;
+
 }

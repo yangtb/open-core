@@ -49,4 +49,8 @@ public class PfTestEvaDto implements Serializable {
      */
     private String parMsg;
 
+    /**
+     * 思维导图类型 3=鉴别诊断
+     */
+    private Integer chartType;
 }

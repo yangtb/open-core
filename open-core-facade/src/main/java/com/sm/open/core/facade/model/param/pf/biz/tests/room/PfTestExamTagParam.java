@@ -76,4 +76,9 @@ public class PfTestExamTagParam extends PfPageParam implements Serializable {
 
 
     private boolean checked;
+
+    /**
+     * 类型
+     */
+    private Integer type;
 }

@@ -1,5 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.tests.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.BeanUtil;
@@ -14,6 +15,7 @@ import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.enums.TestPlanStatusEnum;
+import com.sm.open.core.model.vo.pf.PfOrgChartVo;
 import com.sm.open.core.model.vo.pf.biz.casehistory.FaqMedicalrecVo;
 import com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo;
 import com.sm.open.core.model.vo.pf.biz.test.*;
@@ -31,6 +33,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
@@ -245,8 +248,12 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return pfTestWaitingRoomDao.editCheckQa(dto) == 1 ? true : false;
     }
 
+    @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateCheckStatus(PfBachChangeStatusDto dto) {
+        if ("1".equals(dto.getExtType())) {
+            pfTestWaitingRoomDao.updateCheckStatusByIdTestexecResult(dto.getExtId(), dto.getOperationType());
+        }
         return pfTestWaitingRoomDao.updateCheckStatus(dto) >= 1 ? true : false;
     }
 
@@ -319,6 +326,9 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public boolean updateExamStatus(PfBachChangeStatusDto dto) {
+        if ("1".equals(dto.getExtType())) {
+            pfTestWaitingRoomDao.updateExamStatusByIdTestexecResult(dto.getExtId(), dto.getOperationType());
+        }
         return pfTestWaitingRoomDao.updateExamStatus(dto) >= 1 ? true : false;
     }
 
@@ -400,11 +410,55 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public Long saveDiagnosis(ExmMedResultDiagnosis dto) {
         if (dto.getIdTestexecResultDiagnosis() == null) {
-            pfTestWaitingRoomDao.addDiagnosis(dto);
+            if (StringUtils.isNotBlank(dto.getFgDieClass())) {
+                Long idTestexecResultDiagnosis = pfTestWaitingRoomDao.getDiagnosisId(dto);
+                if (idTestexecResultDiagnosis == null) {
+                    pfTestWaitingRoomDao.addDiagnosis(dto);
+                } else {
+                    dto.setIdTestexecResultDiagnosis(idTestexecResultDiagnosis);
+                    pfTestWaitingRoomDao.editDiagnosis(dto);
+                }
+            } else {
+                pfTestWaitingRoomDao.addDiagnosis(dto);
+            }
         } else {
             pfTestWaitingRoomDao.editDiagnosis(dto);
         }
         return dto.getIdTestexecResultDiagnosis();
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Long saveIdentifyDiagnosis(ExmMedResultIdentify dto) {
+        // 鉴别诊断
+        if (dto.getIdTestexecResultIdentify() == null) {
+            pfTestWaitingRoomDao.insertExmMedResultIdentify(dto);
+        } else {
+            pfTestWaitingRoomDao.updateExmMedResultIdentify(dto);
+        }
+        // 删除确诊理由
+        pfTestWaitingRoomDao.delExmMedResultIdentifyReason(dto.getIdTestexecResultIdentify());
+        // 确诊理由
+        List<ExmMedResultIdentifyReason> reasonList;
+        if (StringUtils.isBlank(dto.getReasonList())) {
+            return dto.getIdTestexecResultIdentify();
+        } else {
+            reasonList = JSON.parseArray(dto.getReasonList(), ExmMedResultIdentifyReason.class);
+        }
+        if (!CollectionUtils.isEmpty(reasonList)) {
+            for (ExmMedResultIdentifyReason item : reasonList) {
+                item.setIdTestexecResultIdentify(dto.getIdTestexecResultIdentify());
+                if (item.getSdEvaEffciency().equals("1")) {
+                    item.setIdInques(item.getExtId());
+                } else if (item.getSdEvaEffciency().equals("2")) {
+                    item.setIdBody(item.getExtId());
+                } else if (item.getSdEvaEffciency().equals("3")) {
+                    item.setIdInspectItem(item.getExtId());
+                }
+                pfTestWaitingRoomDao.insertExmMedResultIdentifyReason(item);
+            }
+        }
+        return dto.getIdTestexecResultIdentify();
     }
 
     @Transactional(rollbackFor = Exception.class)
@@ -468,20 +522,21 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public PfWaitingRoomDiagnosisVo selectDiagnosis(Long idTestexecResult) {
-        PfWaitingRoomDiagnosisVo diagnosisVo = new PfWaitingRoomDiagnosisVo();
-        //ExmMedResultDiagnosis diagnosis = pfTestWaitingRoomDao.selectDiagnosis(idTestexecResult);
+    public PfWaitingRoomDiagnosisVo selectDiagnosis(ExmMedResultDiagnosis dto) {
+        PfWaitingRoomDiagnosisVo diagnosisVo = pfTestWaitingRoomDao.selectDiagnosisNew(dto);
+        /*
+        ExmMedResultDiagnosis diagnosis = pfTestWaitingRoomDao.selectDiagnosis(idTestexecResult);
         ExmMedResultSummary summary = pfTestWaitingRoomDao.selectSummary(idTestexecResult);
-        /*if (diagnosis != null) {
+        if (diagnosis != null) {
             diagnosisVo.setIdTestexecResultDiagnosis(diagnosis.getIdTestexecResultDiagnosis());
             diagnosisVo.setIdTestexecResult(idTestexecResult);
             diagnosisVo.setIdDie(diagnosis.getIdDie());
             diagnosisVo.setIdDieText(diagnosis.getIdDieText());
-        }*/
+        }
         if (summary != null) {
             diagnosisVo.setIdTestexecResultSumary(summary.getIdTestexecResultSumary());
             diagnosisVo.setDieSumary(summary.getDieSumary());
-        }
+        }*/
         return diagnosisVo;
     }
 
@@ -735,6 +790,89 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             }
             return list;
         }
+    }
+
+    @Override
+    public String selectReferralChartData(PfTestEvaDto dto) {
+        PfOrgChartVo pfOrgChartVo = new PfOrgChartVo();
+        if (dto.getChartType() == 1 || dto.getChartType() == 2) {
+            // 一级目录固定
+            pfOrgChartVo.setName("拟诊");
+            pfOrgChartVo.setType(1);
+            // 二级目录
+            List<String> nzDies = pfTestWaitingRoomDao.getNzDie(dto.getIdTestexecResult());
+            List<Long> idDies = new ArrayList<>();
+            if (!CollectionUtils.isEmpty(nzDies)) {
+                for (String item : nzDies) {
+                    if (StringUtils.isBlank(item)) {
+                        continue;
+                    }
+                    List<String> list = Arrays.asList(StringUtils.split(item, ","));
+                    for (String idDie : list) {
+                        idDies.add(Long.valueOf(idDie));
+                    }
+                }
+            }
+            idDies = idDies.stream().distinct().collect(Collectors.toList());
+            List<BasDie> basDies = pfDiseaseDao.listDieNameByIds(idDies);
+
+            List<PfOrgChartVo> twoChartList = new ArrayList<>();
+            PfOrgChartVo twoChart;
+            PfOrgChartVo thirdChart;
+            PfOrgChartVo fourChart;
+            for (BasDie basDie : basDies) {
+                twoChart = new PfOrgChartVo();
+                twoChart.setName(basDie.getName());
+                twoChart.setType(2);
+                // 四级目录
+                fourChart = new PfOrgChartVo();
+                fourChart.setName("鉴别诊断");
+                fourChart.setType(4);
+                fourChart.setId(String.valueOf(basDie.getIdDie()));
+                List<PfOrgChartVo> fourChartList = new ArrayList<>();
+                fourChartList.add(fourChart);
+                // 三级目录
+                thirdChart = new PfOrgChartVo();
+                thirdChart.setName("诊断分析");
+                thirdChart.setType(3);
+                thirdChart.setId(String.valueOf(basDie.getIdDie()));
+                thirdChart.setChildren(fourChartList);
+                List<PfOrgChartVo> thirdChartList = new ArrayList<>();
+                thirdChartList.add(thirdChart);
+                // 二级目录
+                twoChart.setChildren(thirdChartList);
+                twoChartList.add(twoChart);
+            }
+            pfOrgChartVo.setChildren(twoChartList);
+        } else if (dto.getChartType() == 3) {
+            // 一级目录固定
+            pfOrgChartVo.setName("初步诊断");
+            pfOrgChartVo.setType(1);
+            // 二级目录
+            List<ExmMedResultDiagnosis> list = pfTestWaitingRoomDao.listDiagnosis(dto.getIdTestexecResult());
+
+            List<PfOrgChartVo> children = new ArrayList<>();
+            PfOrgChartVo chartVo;
+            for (ExmMedResultDiagnosis item : list) {
+                chartVo = new PfOrgChartVo();
+                chartVo.setId(String.valueOf(item.getIdDie()));
+                chartVo.setName(item.getIdDieText());
+                chartVo.setType(2);
+                children.add(chartVo);
+            }
+            pfOrgChartVo.setChildren(children);
+        }
+        return JSON.toJSONString(pfOrgChartVo);
+    }
+
+    @Override
+    public Long countDiagnosticChart(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.countDiagnosticChart(dto);
+    }
+
+    @Override
+    public List<PfWaitingRoomChartDetailVo> listDiagnosticChart(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.listDiagnosticChart(dto);
     }
 
     private List<PfDiagnosticAnalysisDetailVo> getQaDetal(PfAnalysisVo pfAnalysisVo, Long idMedicalrec) {

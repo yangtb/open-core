@@ -586,6 +586,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<Long> saveIdentifyDiagnosis(ExmMedResultIdentifyParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.saveIdentifyDiagnosis(BeanUtil.convert(param, ExmMedResultIdentify.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveIdentifyDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveIdentifyDiagnosis-error】保存诊断出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR, PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<Boolean> delDiagnosis(Long idTestexecResultDiagnosis) {
         try {
             return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.delDiagnosis(idTestexecResultDiagnosis));
@@ -674,15 +689,15 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
-    public CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(Long idTestexecResult) {
+    public CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(ExmMedResultDiagnosisParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convert(pfTestWaitingRoomService.selectDiagnosis(idTestexecResult), PfWaitingRoomDiagnosisResult.class));
+                    BeanUtil.convert(pfTestWaitingRoomService.selectDiagnosis(BeanUtil.convert(param, ExmMedResultDiagnosis.class)), PfWaitingRoomDiagnosisResult.class));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectDiagnosis】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectDiagnosis-error】查询诊断出错, idTestexecResult:{}", idTestexecResult, e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectDiagnosis-error】查询诊断出错, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR, PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR_MSG));
         }
@@ -952,6 +967,37 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiseaseCatalogueTree】编辑疾病信息失败", e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfDiseaseConstant.LIST_DISEASE_CATALOGUE_TREE_ERROR, PfDiseaseConstant.LIST_DISEASE_CATALOGUE_TREE_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public CommonResult<String> selectReferralChartData(PfTestEvaParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.selectReferralChartData(
+                            BeanUtil.convert(param, PfTestEvaDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectReferralChartData】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectReferralChartData-error】查询思维导图失败, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR, PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR_MSG));
+        }
+    }
+
+    @Override
+    public PfPageResult listDiagnosticChart(PfTestExamTagParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
+
+            return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countDiagnosticChart(dto),
+                    BeanUtil.convertList(pfTestWaitingRoomService.listDiagnosticChart(dto),
+                            PfWaitingRoomChartDetailResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiagnosticChart-error】获取诊断分析、鉴别诊断列表，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR_MSG);
         }
     }
 

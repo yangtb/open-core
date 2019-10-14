@@ -41,4 +41,9 @@ public class PfWaitingRoomDiagnosisVo implements Serializable {
      */
     private String dieSumary;
 
+    /**
+     * 诊断理由
+     */
+    private String desDieReason;
+
 }

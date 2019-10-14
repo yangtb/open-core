@@ -316,5 +316,17 @@
 
         </if>
     </select>
+    <select id="listDieNameByIds" resultType="com.sm.open.core.model.entity.BasDie">
+        SELECT
+            id_die, name
+        FROM
+            bas_die
+        WHERE
+            id_die in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
 
 </mapper>

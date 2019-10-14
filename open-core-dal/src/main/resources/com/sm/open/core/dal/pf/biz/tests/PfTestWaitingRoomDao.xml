@@ -367,6 +367,12 @@
             <if test="idTestexecResultReferral!=null">
                 id_testexec_result_referral,
             </if>
+            <if test="desDieReason!=null">
+                des_die_reason,
+            </if>
+            <if test="fgDieClass!=null">
+                fg_die_class,
+            </if>
                 gmt_create,
         </trim>
         )
@@ -384,6 +390,12 @@
             </if>
             <if test="idTestexecResultReferral!=null">
                 #{idTestexecResultReferral},
+            </if>
+            <if test="desDieReason!=null">
+                #{desDieReason},
+            </if>
+            <if test="fgDieClass!=null">
+                #{fgDieClass},
             </if>
                 now(),
         </trim>
@@ -574,6 +586,106 @@
             )
         </foreach>
     </insert>
+    <insert id="insertExmMedResultIdentify"  useGeneratedKeys="true" keyProperty="idTestexecResultIdentify">
+        INSERT INTO exm_med_result_identify
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultIdentify!=null">
+                id_testexec_result_identify,
+            </if>
+            <if test="idTestexecResult!=null">
+                id_testexec_result,
+            </if>
+            <if test="naDie!=null">
+                na_die,
+            </if>
+            <if test="desDieReason!=null">
+                des_die_reason,
+            </if>
+                gmt_create,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultIdentify!=null">
+                #{idTestexecResultIdentify},
+            </if>
+            <if test="idTestexecResult!=null">
+                #{idTestexecResult},
+            </if>
+            <if test="naDie!=null">
+                #{naDie},
+            </if>
+            <if test="desDieReason!=null">
+                #{desDieReason},
+            </if>
+                now(),
+        </trim>
+        )
+    </insert>
+    <insert id="insertExmMedResultIdentifyReason"  useGeneratedKeys="true" keyProperty="idIdentifyReason">
+        INSERT INTO exm_med_result_identify_reason
+        (
+        <trim suffixOverrides=",">
+            <if test="idIdentifyReason!=null">
+                id_identify_reason,
+            </if>
+            <if test="idTestexecResultIdentify!=null">
+                id_testexec_result_identify,
+            </if>
+            <if test="sdEvaEffciency!=null">
+                sd_eva_effciency,
+            </if>
+            <if test="idInques!=null">
+                id_inques,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
+            <if test="idMedCaseList!=null">
+                id_med_case_list,
+            </if>
+            <if test="fgValid!=null">
+                fg_valid,
+            </if>
+                gmt_create,
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idIdentifyReason!=null">
+                #{idIdentifyReason},
+            </if>
+            <if test="idTestexecResultIdentify!=null">
+                #{idTestexecResultIdentify},
+            </if>
+            <if test="sdEvaEffciency!=null">
+                #{sdEvaEffciency},
+            </if>
+            <if test="idInques!=null">
+                #{idInques},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="idInspectItem!=null">
+                #{idInspectItem},
+            </if>
+            <if test="idMedCaseList!=null">
+                #{idMedCaseList},
+            </if>
+            <if test="fgValid!=null">
+                #{fgValid},
+            </if>
+                now(),
+        </trim>
+        )
+    </insert>
     <update id="endExam">
         update
             exm_testexec
@@ -596,6 +708,20 @@
         </foreach>
         )
     </update>
+    <update id="updateCheckStatusByIdTestexecResult">
+        update
+            exm_med_result_body
+        set
+            fg_clue='0'
+        where
+            id_testexec_result = #{idTestexecResult}
+        <if test="operationType == '1'.toString()">
+            AND (id_die not LIKE '%,%' or id_die is null)
+        </if>
+        <if test="operationType == '2'.toString()">
+            and id_die LIKE '%,%'
+        </if>
+    </update>
     <update id="updateCheckStatus">
         update
             exm_med_result_body
@@ -607,6 +733,20 @@
             #{item}
         </foreach>
         )
+    </update>
+    <update id="updateExamStatusByIdTestexecResult">
+        update
+            exm_med_result_inspect
+        set
+            fg_clue='0'
+        where
+            id_testexec_result = #{idTestexecResult}
+        <if test="operationType == '1'.toString()">
+            and (id_die not LIKE '%,%' or id_die is null)
+        </if>
+        <if test="operationType == '2'.toString()">
+            and id_die LIKE '%,%'
+        </if>
     </update>
     <update id="updateExamStatus">
         update
@@ -649,7 +789,20 @@
     <update id="editDiagnosis">
         UPDATE exm_med_result_diagnosis
         SET
-            id_die = #{idDie}
+        <trim suffixOverrides=",">
+            <if test="idDie!=null">
+                id_die = #{idDie},
+            </if>
+            <if test="idTestexecResultReferral!=null">
+                id_testexec_result_referral = #{idTestexecResultReferral},
+            </if>
+            <if test="desDieReason!=null">
+                des_die_reason = #{desDieReason},
+            </if>
+            <if test="fgDieClass!=null">
+                fg_die_class = #{fgDieClass},
+            </if>
+        </trim>
         WHERE
             id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
     </update>
@@ -772,6 +925,55 @@
         </trim>
         where id_testexec_result_inques = #{idTestexecResultInques}
     </update>
+    <update id="updateExmMedResultIdentify">
+        UPDATE exm_med_result_identify
+        SET
+        <trim suffixOverrides=",">
+            <if test="idTestexecResult != null">
+                id_testexec_result = #{idTestexecResult},
+            </if>
+            <if test="naDie != null and naDie!=''">
+                na_die = #{naDie},
+            </if>
+            <if test="desDieReason != null and desDieReason!=''">
+                des_die_reason = #{desDieReason},
+            </if>
+            <if test="fgValid != null and fgValid!=''">
+                fg_valid = #{fgValid},
+            </if>
+        </trim>
+        WHERE
+            id_testexec_result_identify = #{idTestexecResultIdentify}
+    </update>
+    <update id="updateExmMedResultIdentifyReason">
+        UPDATE exm_med_result_identify_reason
+        SET
+        <trim suffixOverrides=",">
+            <if test="idTestexecResultIdentify != null">
+                id_testexec_result_identify = #{idTestexecResultIdentify},
+            </if>
+            <if test="sdEvaEffciency != null and sdEvaEffciency!=''">
+                sd_eva_effciency = #{sdEvaEffciency},
+            </if>
+            <if test="idInques != null">
+                id_inques = #{idInques},
+            </if>
+            <if test="idBody != null">
+                id_body = #{idBody},
+            </if>
+            <if test="idInspectItem != null">
+                id_inspect_item = #{idInspectItem},
+            </if>
+            <if test="idMedCaseList != null">
+                id_med_case_list = #{idMedCaseList},
+            </if>
+            <if test="fgValid != null and fgValid!=''">
+                fg_valid = #{fgValid},
+            </if>
+        </trim>
+        WHERE
+            id_identify_reason = #{idIdentifyReason}
+    </update>
     <delete id="delCheckQa">
         update exm_med_result_body
         set
@@ -827,6 +1029,9 @@
             #{item}
         </foreach>
         )
+    </delete>
+    <delete id="delExmMedResultIdentifyReason">
+        delete from exm_med_result_identify_reason where id_testexec_result_identify = #{idTestexecResultIdentify}
     </delete>
 
     <select id="countWaitingRoom" resultType="java.lang.Long">
@@ -1404,9 +1609,10 @@
             a.id_testexec_result,
             a.id_die,
             a.gmt_create,
-            b.name as idDieText
+            IFNULL(b.NAME,c.NAME) as idDieText
         from exm_med_result_diagnosis a
-        left join bas_die b on a.id_die = b.id_die
+        left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
+        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
         where
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
@@ -1424,6 +1630,17 @@
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
         limit 1
+    </select>
+    <select id="selectDiagnosisNew" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomDiagnosisVo">
+        select
+            des_die_reason
+        from
+            exm_med_result_diagnosis
+        where
+            id_testexec_result = #{idTestexecResult}
+        and id_testexec_result_referral = #{idTestexecResultReferral}
+        and id_die = #{idDie}
+        and fg_die_class = #{fgDieClass}
     </select>
     <select id="selectSummary" resultType="com.sm.open.core.model.entity.ExmMedResultSummary">
         select
@@ -1654,7 +1871,8 @@
            a.fg_valid ,
            a.gmt_create ,
            a.gmt_modify,
-           IFNULL(b.NAME,c.NAME) AS idDieText
+           IFNULL(b.NAME,c.NAME) AS idDieText,
+           IF(b.NAME is null, 1, 0) as catalogue
         from exm_med_result_referral a
         left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
         LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
@@ -1866,6 +2084,85 @@
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = '006'
         AND c.id_inspect = #{idInspect}
+    </select>
+    <select id="getDiagnosisId" resultType="java.lang.Long">
+        select
+            id_testexec_result_diagnosis
+        from
+            exm_med_result_diagnosis
+        where
+            id_testexec_result = #{idTestexecResult}
+        and id_testexec_result_referral = #{idTestexecResultReferral}
+        and id_die = #{idDie}
+        and fg_die_class = #{fgDieClass}
+    </select>
+    <select id="getNzDie" resultType="java.lang.String">
+        select id_die from exm_med_result_body where id_testexec_result = #{idTestexecResult} and id_die is not null
+        union
+        select id_die from exm_med_result_inspect where id_testexec_result = #{idTestexecResult} and id_die is not null
+    </select>
+    <select id="countDiagnosticChart" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        from
+            (SELECT
+                CONCAT('body-',a.id_testexec_result_body) as id, a.fg_clue, b.des_body as checkItem, b.des_result, a.id_die
+                FROM
+                exm_med_result_body a
+                LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
+                WHERE
+                a.id_testexec_result = #{idTestexecResult}
+                union all
+                SELECT
+                CONCAT('inspect-',a.id_testexec_result_inspect) as id, a.fg_clue, b.na_item, b.val_result, a.id_die
+                FROM
+                exm_med_result_inspect a
+                LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
+                WHERE
+                a.id_testexec_result = #{idTestexecResult}
+            ) temp
+        <where>
+            <if test="type == 1">
+                temp.id_die not LIKE '%,%' or temp.id_die is null
+            </if>
+            <if test="type == 2">
+                temp.id_die LIKE '%,%'
+            </if>
+        </where>
+    </select>
+    <select id="listDiagnosticChart"
+            resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomChartDetailVo">
+        SELECT
+            id ,
+            fg_clue ,
+            checkItem ,
+            des_result
+        FROM
+            (SELECT
+                CONCAT('body-',a.id_testexec_result_body) as id, a.fg_clue, b.des_body as checkItem, b.des_result, a.id_die
+            FROM
+                exm_med_result_body a
+            LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
+            WHERE
+                a.id_testexec_result = #{idTestexecResult}
+            union all
+            SELECT
+                CONCAT('inspect-',a.id_testexec_result_inspect) as id, a.fg_clue, b.na_item, b.val_result, a.id_die
+            FROM
+                exm_med_result_inspect a
+            LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
+            WHERE
+                a.id_testexec_result = #{idTestexecResult}
+            ) temp
+        <where>
+            <if test="type == 1">
+                temp.id_die not LIKE '%,%' or temp.id_die is null
+            </if>
+            <if test="type == 2">
+                temp.id_die LIKE '%,%'
+            </if>
+        </where>
+        limit #{offset}, #{limit}
     </select>
 
 </mapper>
