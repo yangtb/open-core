@@ -542,6 +542,65 @@
         from faq_eva_case_item_order
         where id_eva_case_item = #{oldIdEvaCaseItem}
     </insert>
+    <insert id="saveThorough"  useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
+        INSERT INTO faq_eva_case_item_crs_thorough
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                id_eva_case_item_list,
+            </if>
+            <if test="idEvaCaseItem!=null">
+                id_eva_case_item,
+            </if>
+            <if test="sdEvaMust!=null">
+                sd_eva_must,
+            </if>
+            <if test="idInques!=null">
+                id_inques,
+            </if>
+            <if test="idBody!=null">
+                id_body,
+            </if>
+            <if test="idInspectItem!=null">
+                id_inspect_item,
+            </if>
+        </trim>
+        )
+        VALUES
+        (
+        <trim suffixOverrides=",">
+            <if test="idEvaCaseItemList!=null">
+                #{idEvaCaseItemList},
+            </if>
+            <if test="idEvaCaseItem!=null">
+                #{idEvaCaseItem},
+            </if>
+            <if test="sdEvaMust!=null">
+                #{sdEvaMust},
+            </if>
+            <if test="idInques!=null">
+                #{idInques},
+            </if>
+            <if test="idBody!=null">
+                #{idBody},
+            </if>
+            <if test="idInspectItem!=null">
+                #{idInspectItem},
+            </if>
+        </trim>
+        )
+    </insert>
+    <update id="editThorough">
+        UPDATE faq_eva_case_item_crs_thorough
+        SET
+            id_eva_case_item = #{idEvaCaseItem},
+            sd_eva_must = #{sdEvaMust},
+            id_inques = #{idInques},
+            id_body = #{idBody},
+            id_inspect_item = #{idInspectItem}
+        WHERE
+            id_eva_case_item_list = #{idEvaCaseItemList}
+    </update>
 
     <update id="editKbAssess">
         UPDATE faq_eva_case
@@ -751,6 +810,15 @@
             faq_eva_case_item
         WHERE
             id_eva_case_item in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </delete>
+    <delete id="delThorough">
+        delete from faq_eva_case_item_crs_thorough
+        WHERE
+        id_eva_case_item_list in (
         <foreach collection="list" item="item" separator="," >
             #{item}
         </foreach>
@@ -1107,5 +1175,51 @@
         from faq_eva_case_item
         WHERE
             id_eva_case = #{idEvaCase}
+    </select>
+    <select id="listKbThorough" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
+        SELECT
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_must AS sdEva
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_crs_thorough b ON a.id_eva_case_item = b.id_eva_case_item
+        WHERE
+             a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            b.sd_eva_must
+    </select>
+    <select id="listThoroughAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemThorough">
+        SELECT
+            a.id_eva_case_item_list ,
+            a.id_eva_case_item ,
+            a.sd_eva_must ,
+            a.id_inques, a.id_body, a.id_inspect_item,
+        <if test='sdType == "1"'>
+            b.des_inques AS desText
+        </if>
+        <if test='sdType == "2"'>
+            b.des_body AS desText
+        </if>
+        <if test='sdType == "3"'>
+            b.na_item AS desText
+        </if>
+        FROM
+            faq_eva_case_item_crs_thorough a
+        <if test='sdType == "1"'>
+            LEFT JOIN faq_med_case_inques_list b ON a.id_inques = b.id_inques and b.id_med_case = #{extId}
+        </if>
+        <if test='sdType == "2"'>
+            LEFT JOIN faq_med_case_body_list b ON a.id_body = b.id_body and b.id_med_case = #{extId}
+        </if>
+        <if test='sdType == "3"'>
+            LEFT JOIN faq_med_case_inspect_list b ON a.id_inspect_item = b.id_inspect_item and b.id_med_case = #{extId}
+        </if>
+        WHERE
+        a.id_eva_case_item = #{idEvaCaseItem}
     </select>
 </mapper>

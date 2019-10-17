@@ -71,6 +71,10 @@ public class PfKbAssessConstant {
     public static final String SAVE_MUST_ERROR                             = "saveMustError";
     public static final String SAVE_MUST_ERROR_MSG                         = "保存覆盖必须检查列表失败";
 
+    public static final String KB_THOROUGH_ERROR                            = "kbThoroughError";
+
+
+
     public static final String SAVE_EFFCIENCY_ERROR                        = "saveEffciencyError";
     public static final String SAVE_EFFCIENCY_ERROR_MSG                    = "保存检查效率列表失败";
 

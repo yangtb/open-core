@@ -438,6 +438,82 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
     }
 
     @Override
+    public List<FaqEvaCaseItem> listKbThorough(PfAssessCommonDto dto) {
+        return pfKbAssessDao.listKbThorough(dto);
+    }
+
+    @Override
+    public List<FaqEvaCaseItemThorough> listThoroughAnswer(PfAssessCommonDto dto) {
+        return pfKbAssessDao.listThoroughAnswer(dto);
+    }
+
+    @Override
+    public boolean delThorough(PfBachChangeStatusDto dto) {
+        return pfKbAssessDao.delThorough(dto) >= 1 ? true : false;
+    }
+
+    @Transactional(rollbackFor = Exception.class)
+    @Override
+    public Long saveThorough(PfAssessThoroughDto dto) {
+        if (StringUtils.isNotBlank(dto.getTagFlag())
+                && dto.getTagFlag().equals(YesOrNoNum.YES.getCode()) && dto.getIdEvaCase() == null) {
+
+            FaqEvaTag tagDto = new FaqEvaTag();
+            tagDto.setIdMedicalrec(dto.getIdMedicalrec());
+            tagDto.setIdTag(dto.getIdTag());
+            FaqEvaTag tagVo = pfCaseHistoryDao.selectEvaTag(tagDto);
+            if (tagVo == null) {
+                // 直接新增
+                FaqEvaCase faqEvaCase = new FaqEvaCase();
+                faqEvaCase.setIdEvaCase(dto.getOldIdEvaCase());
+                faqEvaCase.setCreator(dto.getCreator());
+                faqEvaCase.setOperator(dto.getCreator());
+                faqEvaCase.setName(dto.getCaseName());
+                faqEvaCase.setIdOrg(dto.getIdOrg());
+                faqEvaCase.setCdEvaAsse("010");
+                faqEvaCase.setFgPublic(YesOrNoNum.NO.getCode());
+                faqEvaCase.setFgActive(YesOrNoNum.YES.getCode());
+                faqEvaCase.setFgGroup(YesOrNoNum.YES.getCode());
+                pfKbAssessDao.addKbAssess(faqEvaCase);
+
+                dto.setIdEvaCase(faqEvaCase.getIdEvaCase());
+
+                // 3 保存病例标签
+                FaqEvaTag faqEvaTag = new FaqEvaTag();
+                faqEvaTag.setIdMedicalrec(dto.getIdMedicalrec());
+                faqEvaTag.setIdTag(dto.getIdTag());
+                faqEvaTag.setIdEvaCase(faqEvaCase.getIdEvaCase());
+                pfCaseHistoryDao.saveEvaTag(faqEvaTag);
+            } else {
+                dto.setIdEvaCase(tagVo.getIdEvaCase());
+            }
+        }
+
+        if (dto.getIdEvaCaseItem() == null) {
+            pfKbAssessDao.addItem(dto);
+        } else {
+            pfKbAssessDao.editItem(dto);
+        }
+        List<FaqEvaCaseItemThorough> list = dto.getList();
+        if (!CollectionUtils.isEmpty(list)) {
+            List<String> list2 = new ArrayList<>();
+            list2.add(null);
+            list.removeAll(list2);
+
+            for (FaqEvaCaseItemThorough faqEvaCaseItemThorough : list) {
+                faqEvaCaseItemThorough.setSdEvaMust(dto.getSdEva());
+                faqEvaCaseItemThorough.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                if (faqEvaCaseItemThorough.getIdEvaCaseItemList() == null) {
+                    pfKbAssessDao.saveThorough(faqEvaCaseItemThorough);
+                } else {
+                    pfKbAssessDao.editThorough(faqEvaCaseItemThorough);
+                }
+            }
+        }
+        return dto.getIdEvaCaseItem();
+    }
+
+    @Override
     public List<FaqEvaCaseItem> listKbEffciency(PfAssessCommonDto dto) {
         return pfKbAssessDao.listKbEffciency(dto);
     }

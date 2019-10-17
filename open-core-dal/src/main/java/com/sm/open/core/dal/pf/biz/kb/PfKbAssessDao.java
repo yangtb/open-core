@@ -286,6 +286,46 @@ public interface PfKbAssessDao {
     Long editMust(FaqEvaCaseItemMust dto);
 
     /**
+     * 全面检查估表 - 评估项 - 列表
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqEvaCaseItem> listKbThorough(PfAssessCommonDto dto);
+
+    /**
+     * 全面检查估表 - 等效答案列表
+     *
+     * @param dto
+     * @return
+     */
+    List<FaqEvaCaseItemThorough> listThoroughAnswer(PfAssessCommonDto dto);
+
+    /**
+     * 全面检查估表 - 删除等效答案
+     *
+     * @param dto
+     * @return
+     */
+    Integer delThorough(PfBachChangeStatusDto dto);
+
+    /**
+     * 全面检查估表 - 保存等效答案
+     *
+     * @param dto
+     * @return
+     */
+    Long saveThorough(FaqEvaCaseItemThorough dto);
+
+    /**
+     * 全面检查估表 - 编辑等效答案
+     *
+     * @param dto
+     * @return
+     */
+    Long editThorough(FaqEvaCaseItemThorough dto);
+
+    /**
      * 检查效率 - 评估项 - 列表
      *
      * @param dto

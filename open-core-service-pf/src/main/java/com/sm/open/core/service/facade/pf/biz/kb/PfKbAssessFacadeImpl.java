@@ -427,6 +427,77 @@ public class PfKbAssessFacadeImpl implements PfKbAssessFacade {
         }
     }
 
+
+    @Override
+    public PfPageResult listKbThorough(PfAssessCommonParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfAssessCommonDto dto = BeanUtil.convert(param, PfAssessCommonDto.class);
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfKbAssessService.listKbThorough(dto), FaqEvaCaseItemResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbAssessFacadeImpl-listKbThorough-error】获取评估项-全面检查估表列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfKbAssessConstant.KB_THOROUGH_ERROR, "获取评估项-全面检查估表列表失败");
+        }
+    }
+
+    @Override
+    public CommonResult<List<FaqEvaCaseItemThoroughResult>> listThoroughAnswer(PfAssessCommonParam param) {
+        try {
+            PfAssessCommonDto dto = BeanUtil.convert(param, PfAssessCommonDto.class);
+            dto.setExtId(getIdMedCase(param.getExtId(), param.getSdType()));
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfKbAssessService.listThoroughAnswer(dto), FaqEvaCaseItemThoroughResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbAssessFacadeImpl-listThoroughAnswer】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbAssessFacadeImpl-listThoroughAnswer】获取全面检查估表列表失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbAssessConstant.KB_THOROUGH_ERROR, "获取全面检查估表列表失败"));
+        }
+    }
+
+    @Override
+    public CommonResult<Boolean> delThorough(PfBachChangeStatusParam param) {
+        try {
+            Assert.isTrue(CollectionUtils.isNotEmpty(param.getList()), "入参不能为空");
+            if (StringUtils.isBlank(param.getStatus())) {
+                param.setStatus(YesOrNoNum.YES.getCode());
+            }
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfKbAssessService.delThorough(BeanUtil.convert(param, PfBachChangeStatusDto.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbAssessFacadeImpl-delThorough】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbAssessFacadeImpl-delThorough】删除全面检查估表列表失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbAssessConstant.KB_THOROUGH_ERROR, "删除全面检查估表列表失败"));
+        }
+    }
+
+    @Override
+    public CommonResult<Long> saveThorough(PfAssessThoroughParam param) {
+        try {
+            List<FaqEvaCaseItemThorough> list = BeanUtil.convertList(param.getList(), FaqEvaCaseItemThorough.class);
+            PfAssessThoroughDto dto = BeanUtil.convert(param, PfAssessThoroughDto.class);
+            dto.setList(list);
+            return ResultFactory.initCommonResultWithSuccess(pfKbAssessService.saveThorough(dto));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfKbAssessFacadeImpl-saveThorough】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfKbAssessFacadeImpl-saveThorough】保存全面检查估表列表失败, param:" + param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfKbAssessConstant.KB_THOROUGH_ERROR, "保存全面检查估表列表失败"));
+        }
+    }
+
+
+
+
     @Override
     public PfPageResult listKbEffciency(PfAssessCommonParam param) {
         try {

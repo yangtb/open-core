@@ -202,6 +202,40 @@ public interface PfKbAssessFacade {
      */
     CommonResult<Long> saveMust(PfAssessMustParam param);
 
+
+    /**
+     * 全面检查估表 - 评估项 - 列表
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listKbThorough(PfAssessCommonParam param);
+
+    /**
+     * 全面检查估表 - 等效答案列表
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<List<FaqEvaCaseItemThoroughResult>> listThoroughAnswer(PfAssessCommonParam param);
+
+    /**
+     * 全面检查估表 - 删除等效答案
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> delThorough(PfBachChangeStatusParam param);
+
+    /**
+     * 全面检查估表 - 保存等效答案
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Long> saveThorough(PfAssessThoroughParam param);
+
+
     /**
      * 检查效率 - 评估项 - 列表
      *
