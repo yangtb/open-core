@@ -569,4 +569,12 @@ public interface PfTestWaitingRoomService {
      */
     Long selectAssessPatIdMedCase(Long idTestplanDetail);
 
+    /**
+     * 查询病例评估指南
+     *
+     * @param idTestplanDetail
+     * @return
+     */
+    String selectEvaGuideContent(Long idTestplanDetail);
+
 }

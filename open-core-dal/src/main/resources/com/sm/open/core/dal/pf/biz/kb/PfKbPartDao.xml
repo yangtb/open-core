@@ -1135,6 +1135,7 @@
         WHERE
             a.fg_active = '1'
         AND a.fg_valid = '0'
+        AND b.id_answer is not null
     </select>
     <select id="selectOldCheckRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseBodyList">
         SELECT
@@ -1167,7 +1168,8 @@
         AND b.fg_valid = '0'
         WHERE
             a.fg_active = '1'
-          AND a.fg_valid = '0'
+        AND a.fg_valid = '0'
+        AND b.id_result is not null
     </select>
     <select id="selectOldExamRecord" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
         SELECT
@@ -1205,7 +1207,8 @@
                 AND b.fg_valid = '0'
         WHERE
             a.fg_active = '1'
-          AND a.fg_valid = '0'
+        AND a.fg_valid = '0'
+        AND b.id_result is not null
     </select>
     <select id="listPreQuestion" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
         SELECT

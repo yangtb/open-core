@@ -528,4 +528,12 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     CommonResult<Long> selectAssessPatIdMedCase(Long idTestplanDetail);
+
+    /**
+     * 查询病例评估指南
+     *
+     * @param idTestplanDetail
+     * @return
+     */
+    CommonResult<String> selectEvaGuideContent(Long idTestplanDetail);
 }

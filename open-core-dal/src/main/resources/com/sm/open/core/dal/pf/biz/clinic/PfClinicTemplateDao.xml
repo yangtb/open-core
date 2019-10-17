@@ -495,7 +495,8 @@
             a.id_med_case
         FROM
             faq_med_tag a
-        left join bas_med_asse b on a.id_tag = b.id_med_asse
+        left join bas_medical_tag c on a.id_tag = c.id_tag
+        left join bas_med_asse b on c.cd_med_asse = b.cd_med_asse
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         and b.cd_med_asse = #{cdMedAsse}

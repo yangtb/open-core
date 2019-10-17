@@ -346,6 +346,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             ExmMedResultDiagnosis diagnosis = new ExmMedResultDiagnosis();
             diagnosis.setIdTestexecResult(dto.getIdTestexecResult());
             diagnosis.setIdDie(dto.getIdDie());
+            diagnosis.setFgDieClass(dto.getFgDieClass());
             diagnosis.setIdTestexecResultReferral(dto.getIdTestexecResultReferral());
             pfTestWaitingRoomDao.addDiagnosis(diagnosis);
         } else {
@@ -802,17 +803,19 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             // 二级目录
             List<String> nzDies = pfTestWaitingRoomDao.getNzDie(dto.getIdTestexecResult());
             List<Long> idDies = new ArrayList<>();
-            if (!CollectionUtils.isEmpty(nzDies)) {
-                for (String item : nzDies) {
-                    if (StringUtils.isBlank(item)) {
-                        continue;
-                    }
-                    List<String> list = Arrays.asList(StringUtils.split(item, ","));
-                    for (String idDie : list) {
-                        idDies.add(Long.valueOf(idDie));
-                    }
+            if (CollectionUtils.isEmpty(nzDies)) {
+                return JSON.toJSONString(pfOrgChartVo);
+            }
+            for (String item : nzDies) {
+                if (StringUtils.isBlank(item)) {
+                    continue;
+                }
+                List<String> list = Arrays.asList(StringUtils.split(item, ","));
+                for (String idDie : list) {
+                    idDies.add(Long.valueOf(idDie));
                 }
             }
+
             idDies = idDies.stream().distinct().collect(Collectors.toList());
             List<BasDie> basDies = pfDiseaseDao.listDieNameByIds(idDies);
 
@@ -883,6 +886,11 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public Long selectAssessPatIdMedCase(Long idTestplanDetail) {
         return pfTestWaitingRoomDao.selectAssessPatIdMedCase(idTestplanDetail);
+    }
+
+    @Override
+    public String selectEvaGuideContent(Long idTestplanDetail) {
+        return pfTestWaitingRoomDao.selectEvaGuideContent(idTestplanDetail);
     }
 
     private List<PfDiagnosticAnalysisDetailVo> getQaDetal(PfAnalysisVo pfAnalysisVo, Long idMedicalrec) {

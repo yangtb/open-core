@@ -1030,6 +1030,19 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
         }
     }
 
+    @Override
+    public CommonResult<String> selectEvaGuideContent(Long idTestplanDetail) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.selectEvaGuideContent(idTestplanDetail));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectEvaGuideContent】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectEvaGuideContent-error】查询病例评估指南, idTestplanDetail:{}", idTestplanDetail, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_EVA_RESULT_ERROR, "获取查询病例评估指南失败"));
+        }
+    }
 
 
 }

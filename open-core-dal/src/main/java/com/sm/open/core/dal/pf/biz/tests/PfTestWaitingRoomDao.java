@@ -963,4 +963,12 @@ public interface PfTestWaitingRoomDao {
      */
     Long selectAssessPatIdMedCase(Long idTestplanDetail);
 
+    /**
+     * 查询病例评估指南
+     *
+     * @param idMedCase
+     * @return
+     */
+    String selectEvaGuideContent(@Param("idTestplanDetail") Long idTestplanDetail);
+
 }

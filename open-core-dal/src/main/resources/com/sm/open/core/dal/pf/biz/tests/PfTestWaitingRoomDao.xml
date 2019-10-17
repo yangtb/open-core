@@ -2186,4 +2186,23 @@
             a.id_testplan_detail = #{idTestplanDetail}
     </select>
 
+    <select id="selectEvaGuideContent" resultType="java.lang.String">
+        select
+            guide_content
+        from
+            faq_med_case_guide
+        where
+            id_med_case =
+        (
+            SELECT
+                c.id_med_case
+            FROM
+                exm_testplan_detail a
+            LEFT JOIN faq_med_tag b ON a.id_medicalrec = b.id_medicalrec
+            inner JOIN faq_med_case c ON b.id_med_case = c.id_med_case  AND c.cd_med_asse = '010'
+            WHERE
+                a.id_testplan_detail = #{idTestplanDetail}
+        )
+    </select>
+
 </mapper>
