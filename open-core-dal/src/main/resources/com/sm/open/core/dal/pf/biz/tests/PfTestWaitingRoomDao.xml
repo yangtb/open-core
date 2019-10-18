@@ -1729,7 +1729,8 @@
             a.weight_dimemsion ,
             a.score_dimemsion ,
             a.weight_score_dimemsion,
-            b.fg_system_algorithm
+            b.fg_system_algorithm,
+            des_dimemsion
         FROM
             exm_eva_dimension a
         LEFT JOIN bas_demo_asses b ON a.id_dimemsion = b.id_dimemsion

@@ -48,11 +48,6 @@ public class BasInquesAnswer extends BasMediaVo implements Serializable {
     private List<BasMedia> mediaList;
 
     /**
-     * 多媒体文件，多个逗号隔开
-     */
-    private String mediaUrls;
-
-    /**
      * 是否需要说明理由
      */
     private String fgReason;

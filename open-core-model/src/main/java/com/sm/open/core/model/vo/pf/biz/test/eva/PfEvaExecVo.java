@@ -29,4 +29,6 @@ public class PfEvaExecVo extends ExmEvaDimension implements Serializable {
 
     private String fgSystemAlgorithm;
 
+    private String desDimemsion;
+
 }

@@ -68,9 +68,6 @@
             <if test="idMedia!=null">
                 id_media,
             </if>
-            <if test="mediaUrls!=null">
-                media_urls,
-            </if>
             <if test="fgReason!=null">
                 fg_reason,
             </if>
@@ -96,9 +93,6 @@
                 #{idInques},
             <if test="idMedia!=null">
                 #{idMedia},
-            </if>
-            <if test="mediaUrls!=null">
-                #{mediaUrls},
             </if>
             <if test="fgReason!=null">
                 #{fgReason},
@@ -195,7 +189,6 @@
             <if test="idMedia != null">
             id_media = #{idMedia},
             </if>
-            media_urls = #{mediaUrls},
             fg_reason = #{fgReason},
             fg_back = #{fgBack},
             des_expert = #{desExpert},
@@ -289,8 +282,7 @@
     <select id="listAnswer" resultType="com.sm.open.core.model.entity.BasInquesAnswer">
         select
             bia.id_answer, bia.des_answer, bia.id_inques, bia.id_media, bia.fg_reason, bia.fg_back, bia.des_expert,
-            bia.fg_tag, bia.fg_default, bia.fg_active, bia.fg_valid, bia.creator, bia.gmt_create, bia.operator, bia.gmt_modify,
-	        bia.media_urls
+            bia.fg_tag, bia.fg_default, bia.fg_active, bia.fg_valid, bia.creator, bia.gmt_create, bia.operator, bia.gmt_modify
         from
             bas_inques_answer bia
         where

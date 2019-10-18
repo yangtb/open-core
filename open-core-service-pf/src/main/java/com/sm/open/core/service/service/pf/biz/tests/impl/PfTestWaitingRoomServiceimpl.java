@@ -608,7 +608,13 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public List<PfEvaExecVo> listEva(PfTestEvaDto dto) {
-        return pfTestWaitingRoomDao.listEva(dto);
+        List<PfEvaExecVo> list = pfTestWaitingRoomDao.listEva(dto);
+        for (PfEvaExecVo item : list) {
+            if (StringUtils.isNotBlank(item.getNzName()) && "1".equals(item.getFgSystemAlgorithm())) {
+                item.setNzName(item.getNzName() + "(" + item.getDesDimemsion() + ")");
+            }
+        }
+        return list;
     }
 
     @Override
