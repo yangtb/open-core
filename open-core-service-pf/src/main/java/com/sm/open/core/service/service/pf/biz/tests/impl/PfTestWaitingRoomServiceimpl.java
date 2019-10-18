@@ -610,7 +610,8 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     public List<PfEvaExecVo> listEva(PfTestEvaDto dto) {
         List<PfEvaExecVo> list = pfTestWaitingRoomDao.listEva(dto);
         for (PfEvaExecVo item : list) {
-            if (StringUtils.isNotBlank(item.getNzName()) && "1".equals(item.getFgSystemAlgorithm())) {
+            if (StringUtils.isNotBlank(item.getNzName()) && "1".equals(item.getFgSystemAlgorithm())
+                    && StringUtils.isNotBlank(item.getDesDimemsion())) {
                 item.setNzName(item.getNzName() + "(" + item.getDesDimemsion() + ")");
             }
         }
