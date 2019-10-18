@@ -300,6 +300,22 @@ public interface PfKbPartDao {
     Integer bachAddAllCons(List<FaqMedCaseInquesList> list);
 
     /**
+     * 删除所有问诊
+     *
+     * @param idMedCase
+     * @return
+     */
+    Integer delAllConsByIdMedCase(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 批量添加问诊
+     *
+     * @param idMedCase
+     * @return
+     */
+    Integer bachAddAllConsByIdMedCase(@Param("idMedCase") Long idMedCase);
+
+    /**
      * 查询原有问诊记录
      *
      * @param idMedCase
@@ -332,6 +348,22 @@ public interface PfKbPartDao {
     Integer bachAddAllCheck(List<FaqMedCaseBodyList> list);
 
     /**
+     * 删除所有检查
+     *
+     * @param idMedCase
+     * @return
+     */
+    Integer delAllCheckByIdMedCase(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 批量添加检查
+     *
+     * @param idMedCase
+     * @return
+     */
+    Integer bachAddAllCheckByIdMedCase(@Param("idMedCase") Long idMedCase);
+
+    /**
      * 查询原有检查记录
      *
      * @param idMedCase
@@ -362,6 +394,22 @@ public interface PfKbPartDao {
      * @return
      */
     Integer bachAddAllExam(List<FaqMedCaseInspectList> list);
+
+    /**
+     * 删除所有辅助检查
+     *
+     * @param idMedCase
+     * @return
+     */
+    Integer delAllExamByIdMedCase(@Param("idMedCase") Long idMedCase);
+
+    /**
+     * 批量添加辅助检查
+     *
+     * @param idMedCase
+     * @return
+     */
+    Integer bachAddAllExamByIdMedCase(@Param("idMedCase") Long idMedCase);
 
     /**
      * 查询原有辅助检查记录

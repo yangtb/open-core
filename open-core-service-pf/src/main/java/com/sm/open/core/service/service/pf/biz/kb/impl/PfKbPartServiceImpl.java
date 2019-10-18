@@ -518,7 +518,7 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
             // 全部引入
-            List<FaqMedCaseInquesList> oldDatas = pfKbPartDao.selectOldConsRecord(dto.getExtId());
+            /*List<FaqMedCaseInquesList> oldDatas = pfKbPartDao.selectOldConsRecord(dto.getExtId());
             List<FaqMedCaseInquesList> allDatas = pfKbPartDao.selectAllConsRecord(dto.getExtId());
             allDatas.removeIf(allData -> {
                 boolean flag = false;
@@ -532,7 +532,11 @@ public class PfKbPartServiceImpl implements PfKbPartService {
             if (CollectionUtils.isEmpty(allDatas)) {
                 return true;
             }
-            return pfKbPartDao.bachAddAllCons(allDatas) >= 1 ? true : false;
+            return pfKbPartDao.bachAddAllCons(allDatas) >= 1 ? true : false;*/
+            // 删除
+            pfKbPartDao.delAllConsByIdMedCase(dto.getExtId());
+            // 批量插入
+            return pfKbPartDao.bachAddAllConsByIdMedCase(dto.getExtId()) >= 1 ? true : false;
         }
         return pfKbPartDao.bachAddCons(dto) >= 1 ? true : false;
     }
@@ -570,7 +574,7 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
             // 全部引入
-            List<FaqMedCaseBodyList> oldDatas = pfKbPartDao.selectOldCheckRecord(dto.getExtId());
+            /*List<FaqMedCaseBodyList> oldDatas = pfKbPartDao.selectOldCheckRecord(dto.getExtId());
             List<FaqMedCaseBodyList> allDatas = pfKbPartDao.selectAllCheckRecord(dto.getExtId());
             allDatas.removeIf(allData -> {
                 boolean flag = false;
@@ -584,7 +588,11 @@ public class PfKbPartServiceImpl implements PfKbPartService {
             if (CollectionUtils.isEmpty(allDatas)) {
                 return true;
             }
-            return pfKbPartDao.bachAddAllCheck(allDatas) >= 1 ? true : false;
+            return pfKbPartDao.bachAddAllCheck(allDatas) >= 1 ? true : false;*/
+            // 删除
+            pfKbPartDao.delAllCheckByIdMedCase(dto.getExtId());
+            // 批量插入
+            return pfKbPartDao.bachAddAllCheckByIdMedCase(dto.getExtId()) >= 1 ? true : false;
         }
         return pfKbPartDao.bachAddCheck(dto) >= 1 ? true : false;
     }
@@ -622,7 +630,7 @@ public class PfKbPartServiceImpl implements PfKbPartService {
         }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
             // 全部引入
-            List<FaqMedCaseInspectList> oldDatas = pfKbPartDao.selectOldExamRecord(dto.getExtId());
+           /* List<FaqMedCaseInspectList> oldDatas = pfKbPartDao.selectOldExamRecord(dto.getExtId());
             List<FaqMedCaseInspectList> allDatas = pfKbPartDao.selectAllExamRecord(dto.getExtId());
             allDatas.removeIf(allData -> {
                 boolean flag = false;
@@ -636,7 +644,11 @@ public class PfKbPartServiceImpl implements PfKbPartService {
             if (CollectionUtils.isEmpty(allDatas)) {
                 return true;
             }
-            return pfKbPartDao.bachAddAllExam(allDatas) >= 1 ? true : false;
+            return pfKbPartDao.bachAddAllExam(allDatas) >= 1 ? true : false;*/
+            // 删除
+            pfKbPartDao.delAllExamByIdMedCase(dto.getExtId());
+            // 批量插入
+            return pfKbPartDao.bachAddAllExamByIdMedCase(dto.getExtId()) >= 1 ? true : false;
         }
         return pfKbPartDao.bachAddExam(dto) >= 1 ? true : false;
     }
