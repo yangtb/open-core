@@ -1,10 +1,12 @@
 package com.sm.open.core.facade.model.result.pf.biz.tests.room;
 
+import com.sm.open.core.facade.model.result.pf.common.media.BasMediaResult;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -76,5 +78,16 @@ public class PfWaitingRoomConsResult implements Serializable {
      * 解释患者的回复
      */
     private String desReply;
+
+
+    /**
+     * 多媒体id
+     */
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMediaResult> mediaList;
 
 }

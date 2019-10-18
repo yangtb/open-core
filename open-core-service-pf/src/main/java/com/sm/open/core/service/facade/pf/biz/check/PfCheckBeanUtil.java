@@ -1,8 +1,11 @@
 package com.sm.open.core.service.facade.pf.biz.check;
 
 import com.sm.open.care.core.utils.BeanUtil;
+import com.sm.open.core.facade.model.result.pf.biz.check.BasBodyResultResult;
 import com.sm.open.core.facade.model.result.pf.biz.check.BasCheckSearchItemResult;
 import com.sm.open.core.facade.model.result.pf.biz.check.BasCheckSearchResult;
+import com.sm.open.core.facade.model.result.pf.common.media.BasMediaResult;
+import com.sm.open.core.model.entity.BasBodyResult;
 import com.sm.open.core.model.vo.pf.biz.check.BasCheckSearchVo;
 import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.BeanUtils;
@@ -28,4 +31,23 @@ public class PfCheckBeanUtil {
         }
         return resList;
     }
+
+
+    public static List<BasBodyResultResult> convertAnswerList(List<BasBodyResult> reqList) {
+        List<BasBodyResultResult> resList;
+
+        if (CollectionUtils.isEmpty(reqList)) {
+            return null;
+        }
+        resList = new ArrayList<>(reqList.size());
+        BasBodyResultResult res;
+        for (BasBodyResult basBodyResult : reqList) {
+            res = new BasBodyResultResult();
+            BeanUtils.copyProperties(basBodyResult, res);
+            res.setMediaList(BeanUtil.convertList(basBodyResult.getMediaList(), BasMediaResult.class));
+            resList.add(res);
+        }
+        return resList;
+    }
+    
 }

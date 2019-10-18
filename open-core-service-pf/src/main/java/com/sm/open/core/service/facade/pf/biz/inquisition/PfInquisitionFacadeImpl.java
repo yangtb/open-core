@@ -207,7 +207,7 @@ public class PfInquisitionFacadeImpl implements PfInquisitionFacade {
             PfPageParam.initPageDto(param);
             PfInquisitionQuestionDto dto = BeanUtil.convert(param, PfInquisitionQuestionDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(0L,
-                    BeanUtil.convertList(pfInquisitionService.listAnswer(dto), BasInquesAnswerResult.class));
+                    PfInquisitionBeanUtil.convertAnswerList(pfInquisitionService.listAnswer(dto)));
         } catch (Exception e) {
             LOGGER.error("【PfInquisitionFacadeImpl-listAnswer-error】获取问题答案列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(

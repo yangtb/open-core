@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 基础_检验结果
@@ -17,7 +18,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BasItemResultResult extends BasMediaResult implements Serializable {
+public class BasItemResultResult implements Serializable {
 
     private static final long serialVersionUID = 1538920283902L;
 
@@ -45,7 +46,12 @@ public class BasItemResultResult extends BasMediaResult implements Serializable 
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMediaResult> mediaList;
 
     /**
      * 费用

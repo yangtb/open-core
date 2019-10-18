@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * 知识库_检验_检验明细
@@ -16,7 +17,7 @@ import java.math.BigDecimal;
 @Setter
 @Getter
 @ToString
-public class FaqMedCaseInspectListResult extends BasMediaResult implements Serializable {
+public class FaqMedCaseInspectListResult implements Serializable {
 
     private static final long serialVersionUID = 1540204457337L;
 
@@ -79,7 +80,12 @@ public class FaqMedCaseInspectListResult extends BasMediaResult implements Seria
     /**
      * 多媒体id
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMediaResult> mediaList;
 
     /**
      * 费用

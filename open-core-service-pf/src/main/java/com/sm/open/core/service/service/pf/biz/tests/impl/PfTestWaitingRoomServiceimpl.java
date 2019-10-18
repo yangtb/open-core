@@ -9,6 +9,7 @@ import com.sm.open.core.dal.pf.biz.kb.PfCaseHistoryDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPaperDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestPlanDao;
 import com.sm.open.core.dal.pf.biz.tests.PfTestWaitingRoomDao;
+import com.sm.open.core.dal.pf.common.upload.PfUploadDao;
 import com.sm.open.core.model.dto.pf.biz.tests.*;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
@@ -52,6 +53,9 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Resource
     private PfDiseaseDao pfDiseaseDao;
+
+    @Resource
+    private PfUploadDao pfUploadDao;
 
     @Override
     public Long countWaitingRoom(PfTestWatingRoomDto dto) {
@@ -204,7 +208,19 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public List<PfWaitingRoomConsVo> listConsQa(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.listConsQa(dto);
+        List<PfWaitingRoomConsVo> list = pfTestWaitingRoomDao.listConsQa(dto);
+        List<Long> ids;
+        for (PfWaitingRoomConsVo item : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(item.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(item.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                item.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override
@@ -259,7 +275,19 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public List<PfWaitingRoomCheckVo> listCheckQa(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.listCheckQa(dto);
+        List<PfWaitingRoomCheckVo> list = pfTestWaitingRoomDao.listCheckQa(dto);
+        List<Long> ids;
+        for (PfWaitingRoomCheckVo item : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(item.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(item.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                item.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override
@@ -334,7 +362,19 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public List<PfWaitingRoomExamVo> listExamQa(PfTestExamTagDto dto) {
-        return pfTestWaitingRoomDao.listExamQa(dto);
+        List<PfWaitingRoomExamVo> list = pfTestWaitingRoomDao.listExamQa(dto);
+        List<Long> ids;
+        for (PfWaitingRoomExamVo item : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(item.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(item.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                item.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Transactional(rollbackFor = Exception.class)

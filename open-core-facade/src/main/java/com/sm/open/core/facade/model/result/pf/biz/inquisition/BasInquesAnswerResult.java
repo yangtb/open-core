@@ -6,7 +6,8 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
-import java.util.*;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 问题答案
@@ -16,7 +17,7 @@ import java.util.*;
 @Setter
 @Getter
 @ToString
-public class BasInquesAnswerResult extends BasMediaResult implements Serializable {
+public class BasInquesAnswerResult implements Serializable {
 
     private static final long serialVersionUID = 1538663005183L;
 
@@ -39,7 +40,17 @@ public class BasInquesAnswerResult extends BasMediaResult implements Serializabl
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMediaResult> mediaList;
+
+    /**
+     * 多媒体文件，多个逗号隔开
+     */
+    private String mediaUrls;
 
     /**
      * 是否需要说明理由

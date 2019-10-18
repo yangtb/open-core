@@ -2,6 +2,7 @@ package com.sm.open.core.service.service.pf.biz.inquisition.impl;
 
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.biz.inquisition.PfInquisitionDao;
+import com.sm.open.core.dal.pf.common.upload.PfUploadDao;
 import com.sm.open.core.model.dto.pf.biz.inquisition.PfInquisitionQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
@@ -18,6 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -25,6 +27,9 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
 
     @Resource
     private PfInquisitionDao pfInquisitionDao;
+
+    @Resource
+    private PfUploadDao pfUploadDao;
 
     @Override
     public List<PfCommonZtreeVo> listQuestionClassifyTree() {
@@ -107,7 +112,19 @@ public class PfInquisitionServiceImpl implements PfInquisitionService {
 
     @Override
     public List<BasInquesAnswer> listAnswer(PfInquisitionQuestionDto dto) {
-        return pfInquisitionDao.listAnswer(dto);
+        List<BasInquesAnswer> list = pfInquisitionDao.listAnswer(dto);
+        List<Long> ids;
+        for (BasInquesAnswer basInquesAnswer : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(basInquesAnswer.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(basInquesAnswer.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                basInquesAnswer.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Transactional(rollbackFor = Exception.class)

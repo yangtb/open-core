@@ -38,7 +38,7 @@ public class BasBodyResultParam implements Serializable {
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
 
     /**
      * 是否需要说明理由

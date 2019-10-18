@@ -21,6 +21,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -77,7 +78,19 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public List<FaqMedCaseInquesList> listFaqMedCaseInques(PfPartCommonDto dto) {
-        return pfKbPartDao.listFaqMedCaseInques(dto);
+        List<FaqMedCaseInquesList> list = pfKbPartDao.listFaqMedCaseInques(dto);
+        List<Long> ids;
+        for (FaqMedCaseInquesList item : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(item.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(item.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                item.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override
@@ -319,7 +332,19 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public List<FaqMedCaseInspectList> listExams(PfPartCommonDto dto) {
-        return pfKbPartDao.listExams(dto);
+        List<FaqMedCaseInspectList> list = pfKbPartDao.listExams(dto);
+        List<Long> ids;
+        for (FaqMedCaseInspectList faqMedCaseInspectList : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(faqMedCaseInspectList.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(faqMedCaseInspectList.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                faqMedCaseInspectList.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override
@@ -356,7 +381,19 @@ public class PfKbPartServiceImpl implements PfKbPartService {
 
     @Override
     public List<FaqMedCaseBodyList> listChecks(PfPartCommonDto dto) {
-        return pfKbPartDao.listChecks(dto);
+        List<FaqMedCaseBodyList> list = pfKbPartDao.listChecks(dto);
+        List<Long> ids;
+        for (FaqMedCaseBodyList item : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(item.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(item.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                item.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override

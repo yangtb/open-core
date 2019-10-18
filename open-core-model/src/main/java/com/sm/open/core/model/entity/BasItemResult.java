@@ -1,6 +1,5 @@
 package com.sm.open.core.model.entity;
 
-import com.sm.open.core.model.vo.pf.common.media.BasMediaVo;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,6 +7,7 @@ import lombok.ToString;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 基础_检验结果
@@ -17,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BasItemResult extends BasMediaVo implements Serializable {
+public class BasItemResult implements Serializable {
 
     private static final long serialVersionUID = 1538920283902L;
 
@@ -45,7 +45,12 @@ public class BasItemResult extends BasMediaVo implements Serializable {
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMedia> mediaList;
 
     /**
      * 费用

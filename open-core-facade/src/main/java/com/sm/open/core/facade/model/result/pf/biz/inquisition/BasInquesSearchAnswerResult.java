@@ -31,7 +31,7 @@ public class BasInquesSearchAnswerResult implements Serializable {
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
 
     /**
      * 多媒体类型

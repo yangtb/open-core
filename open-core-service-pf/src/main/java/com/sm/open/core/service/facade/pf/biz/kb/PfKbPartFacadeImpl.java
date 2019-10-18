@@ -103,7 +103,7 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
             PfPageParam.initPageDto(param);
             PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(pfKbPartService.countFaqMedCaseInques(dto),
-                    BeanUtil.convertList(pfKbPartService.listFaqMedCaseInques(dto), FaqMedCaseInquesListResult.class));
+                    PfKbPartBeanUtil.convertConsList(pfKbPartService.listFaqMedCaseInques(dto)));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listFaqMedCaseInques-error】获取问诊问题明细列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
@@ -298,7 +298,7 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
             PfPageParam.initPageDto(param);
             PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(pfKbPartService.countExams(dto),
-                    BeanUtil.convertList(pfKbPartService.listExams(dto), FaqMedCaseInspectListResult.class));
+                    PfKbPartBeanUtil.convertExamList(pfKbPartService.listExams(dto)));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listExams-error】获取检验定义列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
@@ -367,7 +367,7 @@ public class PfKbPartFacadeImpl implements PfKbPartFacade {
             PfPageParam.initPageDto(param);
             PfPartCommonDto dto = BeanUtil.convert(param, PfPartCommonDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(pfKbPartService.countChecks(dto),
-                    BeanUtil.convertList(pfKbPartService.listChecks(dto), FaqMedCaseBodyListResult.class));
+                    PfKbPartBeanUtil.convertCheckList(pfKbPartService.listChecks(dto)));
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listChecks-error】获取检查列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(

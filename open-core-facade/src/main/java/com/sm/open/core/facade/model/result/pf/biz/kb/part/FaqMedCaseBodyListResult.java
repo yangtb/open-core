@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 /**
  * 知识库_检查_检查明细
@@ -15,7 +16,7 @@ import java.io.Serializable;
 @Setter
 @Getter
 @ToString
-public class FaqMedCaseBodyListResult extends BasMediaResult implements Serializable {
+public class FaqMedCaseBodyListResult implements Serializable {
 
     private static final long serialVersionUID = 1540450805283L;
 
@@ -70,7 +71,12 @@ public class FaqMedCaseBodyListResult extends BasMediaResult implements Serializ
     /**
      * 多媒体id
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMediaResult> mediaList;
 
     /**
      * 是否需要说明理由

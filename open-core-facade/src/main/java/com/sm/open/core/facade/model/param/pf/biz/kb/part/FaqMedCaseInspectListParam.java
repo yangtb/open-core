@@ -73,7 +73,7 @@ public class FaqMedCaseInspectListParam implements Serializable {
     /**
      * 多媒体id
      */
-    private Long idMedia;
+    private String idMedia;
 
     /**
      * 费用

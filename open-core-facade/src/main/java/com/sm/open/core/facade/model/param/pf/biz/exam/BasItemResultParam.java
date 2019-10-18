@@ -44,7 +44,7 @@ public class BasItemResultParam implements Serializable {
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
 
     /**
      * 费用

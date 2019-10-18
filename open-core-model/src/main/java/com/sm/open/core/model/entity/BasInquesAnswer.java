@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 问题答案
@@ -39,7 +40,17 @@ public class BasInquesAnswer extends BasMediaVo implements Serializable {
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMedia> mediaList;
+
+    /**
+     * 多媒体文件，多个逗号隔开
+     */
+    private String mediaUrls;
 
     /**
      * 是否需要说明理由

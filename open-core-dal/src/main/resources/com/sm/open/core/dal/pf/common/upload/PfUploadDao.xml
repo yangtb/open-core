@@ -36,7 +36,7 @@
     </insert>
     <select id="selectBaseMediaByIds" resultType="com.sm.open.core.model.entity.BasMedia">
         select
-            id_media, sd_type, name, format, size, path
+            id_media, des, sd_type, name, format, size, path
         from
             bas_media
         WHERE

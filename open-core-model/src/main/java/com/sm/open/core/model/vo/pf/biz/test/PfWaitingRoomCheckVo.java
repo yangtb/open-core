@@ -1,10 +1,12 @@
 package com.sm.open.core.model.vo.pf.biz.test;
 
+import com.sm.open.core.model.entity.BasMedia;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -65,4 +67,13 @@ public class PfWaitingRoomCheckVo implements Serializable {
      */
     private String desReply;
 
+    /**
+     * 多媒体id
+     */
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMedia> mediaList;
 }

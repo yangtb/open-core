@@ -195,7 +195,7 @@ public class PfCheckFacadeImpl implements PfCheckFacade {
             PfPageParam.initPageDto(param);
             PfCheckQuestionDto dto = BeanUtil.convert(param, PfCheckQuestionDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(0L,
-                    BeanUtil.convertList(pfCheckService.listAnswer(dto), BasBodyResultResult.class));
+                    PfCheckBeanUtil.convertAnswerList(pfCheckService.listAnswer(dto)));
         } catch (Exception e) {
             LOGGER.error("【PfCheckFacadeImpl-listAnswer-error】获取问题答案列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(

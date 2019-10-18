@@ -999,11 +999,9 @@
         SELECT
             fmci.id_med_case_list,fmci.id_med_case, fmci.id_inspect, fmci.id_inspect_item, fmci.na_item, 
             fmci.na_short, fmci.des_stand, fmci.id_result,fmci.is_masculine, fmci.val_result, fmci.des_result, fmci.id_media, fmci.cost_money,
-            fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
-            bm.sd_type, bm.path
+            fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried
         FROM
             faq_med_case_inspect_list fmci
-        LEFT join bas_media bm on fmci.id_media = bm.id_media
         WHERE
             fmci.id_med_case = #{idMedCase}
         AND fmci.fg_valid = '0'
@@ -1020,11 +1018,9 @@
         SELECT
             fmci.id_med_case_list,fmci.id_med_case, fmci.id_inspect, fmci.id_inspect_item, fmci.na_item,
             fmci.na_short, fmci.des_stand, fmci.id_result, fmci.val_result, fmci.des_result, fmci.id_media, fmci.cost_money,
-            fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
-            bm.sd_type, bm.path
+            fmci.cost_time, fmci.fg_show, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried
         FROM
             faq_med_case_inspect_list fmci
-        LEFT join bas_media bm on fmci.id_media = bm.id_media
         WHERE
             fmci.id_med_case_list = #{idMedCaseList}
         AND fmci.fg_valid = '0'
@@ -1032,11 +1028,9 @@
     <select id="selectConsById" resultType="com.sm.open.core.model.entity.FaqMedCaseInquesList">
          SELECT
             fmci.id_med_case_list, fmci.id_med_case, fmci.id_inques_ca, fmci.id_inques, fmci.des_inques, fmci.id_answer,
-            fmci.des_answer, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried,
-            bm.sd_type, bm.path
+            fmci.des_answer, fmci.id_media, fmci.fg_reason, fmci.fg_back, fmci.des_expert, fmci.fg_carried
         FROM
             faq_med_case_inques_list fmci
-        LEFT join bas_media bm on fmci.id_media = bm.id_media
         WHERE
             fmci.id_med_case_list = #{idMedCaseList}
         AND fmci.fg_valid = '0'
@@ -1060,11 +1054,9 @@
         SELECT
             fmcbl.id_med_case_list, fmcbl.id_med_case, fmcbl.id_body_ca, fmcbl.id_body,
             fmcbl.des_body, fmcbl.sd_body, fmcbl.cd_check, fmcbl.id_result, fmcbl.des_result,
-            fmcbl.id_media, fmcbl.fg_reason, fmcbl.fg_back, fmcbl.des_expert, fmcbl.fg_carried, fmcbl.fg_valid,
-            bm.sd_type, bm.path
+            fmcbl.id_media, fmcbl.fg_reason, fmcbl.fg_back, fmcbl.des_expert, fmcbl.fg_carried, fmcbl.fg_valid
         FROM
             faq_med_case_body_list fmcbl
-        LEFT join bas_media bm on fmcbl.id_media = bm.id_media
         WHERE
             fmcbl.id_med_case = #{idMedCase}
         AND fmcbl.fg_valid = '0'
@@ -1080,11 +1072,9 @@
         SELECT
             fmcbl.id_med_case_list, fmcbl.id_med_case, fmcbl.id_body_ca, fmcbl.id_body,
             fmcbl.des_body, fmcbl.sd_body, fmcbl.cd_check, fmcbl.id_result, fmcbl.des_result,
-            fmcbl.id_media, fmcbl.fg_reason, fmcbl.fg_back, fmcbl.des_expert, fmcbl.fg_carried, fmcbl.fg_valid,
-            bm.sd_type, bm.path
+            fmcbl.id_media, fmcbl.fg_reason, fmcbl.fg_back, fmcbl.des_expert, fmcbl.fg_carried, fmcbl.fg_valid
         FROM
             faq_med_case_body_list fmcbl
-        LEFT join bas_media bm on fmcbl.id_media = bm.id_media
         WHERE
             fmcbl.id_med_case_list = #{idMedCaseList}
     </select>

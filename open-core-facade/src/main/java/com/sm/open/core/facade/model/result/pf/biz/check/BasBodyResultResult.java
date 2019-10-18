@@ -7,6 +7,7 @@ import lombok.ToString;
 
 import java.io.Serializable;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 基础_体检结果
@@ -16,7 +17,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class BasBodyResultResult extends BasMediaResult implements Serializable {
+public class BasBodyResultResult implements Serializable {
 
     private static final long serialVersionUID = 1538920232797L;
 
@@ -39,7 +40,12 @@ public class BasBodyResultResult extends BasMediaResult implements Serializable 
     /**
      * 多媒体ID
      */
-    private Long idMedia;
+    private String idMedia;
+
+    /**
+     * 多媒体
+     */
+    private List<BasMediaResult> mediaList;
 
     /**
      * 是否需要说明理由

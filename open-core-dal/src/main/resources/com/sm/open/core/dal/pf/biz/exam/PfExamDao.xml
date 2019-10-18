@@ -287,10 +287,9 @@
         select
             bir.id_result, bir.val_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money,
             bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.fg_tag,  bir.fg_default,
-            bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
-	        bm.sd_type, bm.path
+            bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify
         from
-            bas_item_result bir left join bas_media bm on bir.id_media = bm.id_media
+            bas_item_result bir
         where
             bir.fg_valid = '0'
         and bir.id_inspect_item = #{idInspectItem}
@@ -345,13 +344,11 @@
             bic.name AS idInspectText , bii.id_inspect_item ,
             bii.na_item , bii.id_inspect , bii.na_short , bii.des_stand ,
             bir.id_result , bir.val_result, bir.des_result , bir.id_media , bir.cost_money , bir.cost_time ,
-            bir.fg_show , bir.fg_reason , bir.fg_back , bir.des_expert,
-            bm.sd_type, bm.path
+            bir.fg_show , bir.fg_reason , bir.fg_back , bir.des_expert
         FROM
             bas_inspect_item bii
         LEFT JOIN bas_item_result bir ON bii.id_inspect_item = bir.id_inspect_item
         LEFT JOIN bas_inspect_ca bic ON bii.id_inspect = bic.id_inspect
-        left join bas_media bm on bir.id_media = bm.id_media
         WHERE
             bii.fg_active = '1'
         AND (bir.fg_active = '1' or bir.fg_active is null) and bir.fg_valid = '0'
@@ -377,10 +374,9 @@
         select
             bir.id_result, bir.val_result, bir.des_result, bir.id_inspect_item, bir.id_media, bir.cost_money,
             bir.cost_time, bir.fg_show, bir.fg_reason, bir.fg_back, bir.des_expert, bir.
-            fg_tag, bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify,
-	        bm.sd_type, bm.path
+            fg_tag, bir.fg_active, bir.fg_valid, bir.creator, bir.gmt_create, bir.operator, bir.gmt_modify
         from
-            bas_item_result bir left join bas_media bm on bir.id_media = bm.id_media
+            bas_item_result
         where
             bir.fg_valid = '0'
         and bir.id_result = #{idResult}

@@ -2,6 +2,7 @@ package com.sm.open.core.service.service.pf.biz.exam.impl;
 
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.biz.exam.PfExamDao;
+import com.sm.open.core.dal.pf.common.upload.PfUploadDao;
 import com.sm.open.core.model.dto.pf.biz.exam.PfExamQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
@@ -16,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -23,6 +26,9 @@ public class PfExamServiceImpl implements PfExamService {
 
     @Resource
     private PfExamDao pfExamDao;
+
+    @Resource
+    private PfUploadDao pfUploadDao;
 
     @Override
     public List<PfCommonZtreeVo> listQuestionClassifyTree() {
@@ -78,7 +84,19 @@ public class PfExamServiceImpl implements PfExamService {
 
     @Override
     public List<BasItemResult> listAnswer(PfExamQuestionDto dto) {
-        return pfExamDao.listAnswer(dto);
+        List<BasItemResult> list = pfExamDao.listAnswer(dto);
+        List<Long> ids;
+        for (BasItemResult basItemResult : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(basItemResult.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(basItemResult.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                basItemResult.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override

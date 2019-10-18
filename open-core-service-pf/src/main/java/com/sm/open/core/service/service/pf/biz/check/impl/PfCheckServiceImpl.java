@@ -2,6 +2,7 @@ package com.sm.open.core.service.service.pf.biz.check.impl;
 
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.core.dal.pf.biz.check.PfCheckDao;
+import com.sm.open.core.dal.pf.common.upload.PfUploadDao;
 import com.sm.open.core.model.dto.pf.biz.check.PfCheckQuestionDto;
 import com.sm.open.core.model.dto.pf.common.PfBachChangeStatusDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
@@ -16,6 +17,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Service
@@ -23,6 +26,9 @@ public class PfCheckServiceImpl implements PfCheckService {
 
     @Resource
     private PfCheckDao pfCheckDao;
+
+    @Resource
+    private PfUploadDao pfUploadDao;
 
     @Override
     public List<PfCommonZtreeVo> listQuestionClassifyTree() {
@@ -78,7 +84,19 @@ public class PfCheckServiceImpl implements PfCheckService {
 
     @Override
     public List<BasBodyResult> listAnswer(PfCheckQuestionDto dto) {
-        return pfCheckDao.listAnswer(dto);
+        List<BasBodyResult> list = pfCheckDao.listAnswer(dto);
+        List<Long> ids;
+        for (BasBodyResult basBodyResult : list) {
+            ids = new ArrayList<>();
+            if (StringUtils.isNotBlank(basBodyResult.getIdMedia())) {
+                List<String> idsStr = Arrays.asList(basBodyResult.getIdMedia().split(","));
+                for (String str : idsStr) {
+                    ids.add(Long.valueOf(str));
+                }
+                basBodyResult.setMediaList(pfUploadDao.selectBaseMediaByIds(ids));
+            }
+        }
+        return list;
     }
 
     @Override

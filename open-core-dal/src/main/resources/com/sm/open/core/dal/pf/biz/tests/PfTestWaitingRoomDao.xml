@@ -1360,7 +1360,7 @@
         SELECT
             a.id_testexec_result_inques,b.is_masculine, a.fg_clue ,
             b.des_inques , b.id_answer , b.des_answer , b.des_expert ,
-            c.sd_type, c.path, b.fg_reason, b.fg_back, a.des_reason, a.des_reply
+            b.id_media, b.fg_reason, b.fg_back, a.des_reason, a.des_reply
         FROM
             exm_med_result_inques a
         LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1520,11 +1520,10 @@
         SELECT
             a.id_testexec_result_body , a.fg_clue ,
             b.des_body , b.id_result , b.des_result , b.des_expert ,
-            c.sd_type, c.path, b.fg_reason, b.fg_back, a.des_reply
+            b.id_media, b.fg_reason, b.fg_back, a.des_reply
         FROM
             exm_med_result_body a
         LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
-        LEFT JOIN bas_media c on b.id_media = c.id_media
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
@@ -1536,11 +1535,10 @@
             a.id_testexec_result_inspect , a.fg_clue ,
             b.na_item , b.id_result , b.val_result, b.des_stand, b.des_expert ,
             b.is_masculine,
-            c.sd_type, c.path, b.fg_reason, b.fg_back, a.des_reply
+            b.id_media, b.fg_reason, b.fg_back, a.des_reply
         FROM
             exm_med_result_inspect a
         LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
-        LEFT JOIN bas_media c on b.id_media = c.id_media
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'

@@ -262,8 +262,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     public CommonResult<List<PfWaitingRoomConsResult>> listConsQa(PfTestExamTagParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfTestWaitingRoomService.listConsQa(BeanUtil.convert(param, PfTestExamTagDto.class)),
-                            PfWaitingRoomConsResult.class));
+                    PfTestBeanUtil.convertConsList(pfTestWaitingRoomService.listConsQa(BeanUtil.convert(param, PfTestExamTagDto.class))));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listConsQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -354,8 +353,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     public CommonResult<List<PfWaitingRoomCheckResult>> listCheckQa(PfTestExamTagParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfTestWaitingRoomService.listCheckQa(BeanUtil.convert(param, PfTestExamTagDto.class)),
-                            PfWaitingRoomCheckResult.class));
+                    PfTestBeanUtil.convertCheckList(pfTestWaitingRoomService.listCheckQa(BeanUtil.convert(param, PfTestExamTagDto.class))));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listCheckQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
@@ -444,8 +442,7 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     public CommonResult<List<PfWaitingRoomExamResult>> listExamQa(PfTestExamTagParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfTestWaitingRoomService.listExamQa(BeanUtil.convert(param, PfTestExamTagDto.class)),
-                            PfWaitingRoomExamResult.class));
+                    PfTestBeanUtil.convertExamList(pfTestWaitingRoomService.listExamQa(BeanUtil.convert(param, PfTestExamTagDto.class))));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listExamQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

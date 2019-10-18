@@ -68,6 +68,9 @@
             <if test="idMedia!=null">
                 id_media,
             </if>
+            <if test="mediaUrls!=null">
+                media_urls,
+            </if>
             <if test="fgReason!=null">
                 fg_reason,
             </if>
@@ -93,6 +96,9 @@
                 #{idInques},
             <if test="idMedia!=null">
                 #{idMedia},
+            </if>
+            <if test="mediaUrls!=null">
+                #{mediaUrls},
             </if>
             <if test="fgReason!=null">
                 #{fgReason},
@@ -189,6 +195,7 @@
             <if test="idMedia != null">
             id_media = #{idMedia},
             </if>
+            media_urls = #{mediaUrls},
             fg_reason = #{fgReason},
             fg_back = #{fgBack},
             des_expert = #{desExpert},
@@ -283,9 +290,9 @@
         select
             bia.id_answer, bia.des_answer, bia.id_inques, bia.id_media, bia.fg_reason, bia.fg_back, bia.des_expert,
             bia.fg_tag, bia.fg_default, bia.fg_active, bia.fg_valid, bia.creator, bia.gmt_create, bia.operator, bia.gmt_modify,
-	        bm.sd_type, bm.path
+	        bia.media_urls
         from
-            bas_inques_answer bia left join bas_media bm on bia.id_media = bm.id_media
+            bas_inques_answer bia
         where
             bia.fg_valid = '0'
         and bia.id_inques = #{idInques}

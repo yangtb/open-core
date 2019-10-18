@@ -22,7 +22,6 @@ import com.sm.open.core.model.dto.pf.common.PfCommonSearchDto;
 import com.sm.open.core.model.entity.BasInspectCa;
 import com.sm.open.core.model.entity.BasInspectItem;
 import com.sm.open.core.model.entity.BasItemResult;
-import com.sm.open.core.service.facade.pf.biz.check.PfCheckConstant;
 import com.sm.open.core.service.service.pf.biz.exam.PfExamService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -195,7 +194,7 @@ public class PfExamFacadeImpl implements PfExamFacade {
             PfPageParam.initPageDto(param);
             PfExamQuestionDto dto = BeanUtil.convert(param, PfExamQuestionDto.class);
             return PfResultFactory.initPagePfResultWithSuccess(0L,
-                    BeanUtil.convertList(pfExamService.listAnswer(dto), BasItemResultResult.class));
+                    PfExamBeanUtil.convertAnswerList(pfExamService.listAnswer(dto)));
         } catch (Exception e) {
             LOGGER.error("【PfExamFacadeImpl-listAnswer-error】获取问题答案列表失败，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
