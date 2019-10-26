@@ -1594,7 +1594,7 @@
             a.id_testexec_result,
             a.id_die,
             a.gmt_create,
-            b.NAME, as idDieText
+            b.NAME as idDieText
         from exm_med_result_diagnosis a
         left join bas_die b on a.id_die = b.id_die
         where
