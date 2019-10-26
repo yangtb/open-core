@@ -38,6 +38,13 @@ public interface PfDiseaseDao {
     List<PfDiseaseZtreeVo> listDiseaseTree();
 
     /**
+     * 目录下疾病
+     *
+     * @return
+     */
+    List<PfDiseaseZtreeVo> listDiseaseTreeDetail(PfCatalogueTreeDto dto);
+
+    /**
      * 疾病
      *
      * @param dto 关键字

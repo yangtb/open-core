@@ -467,7 +467,7 @@
         AND bmt.fg_active = '1'
         AND bmt.id_demo = #{idDemo}
         ORDER BY
-            bmt.sort
+            IF(bmt.process_serialno is null,bmt.sort,bmt.process_serialno)
     </select>
 
     <select id="listAllAssessTag" resultType="com.sm.open.core.model.vo.pf.biz.clinic.PfAssessTagVo">

@@ -188,10 +188,10 @@ public interface PfTestWaitingRoomFacade {
     /**
      * 检验 - 批量保存
      *
-     * @param dto
+     * @param param
      * @return
      */
-    CommonResult<BigDecimal> saveBatchExamQa(PfTestExamTagParam dto);
+    CommonResult<BigDecimal> saveBatchExamQa(List<ExmMedResultInspectParam> param);
 
     /**
      * 检验 - 编辑

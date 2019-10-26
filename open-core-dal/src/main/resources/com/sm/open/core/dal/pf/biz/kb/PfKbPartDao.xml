@@ -327,6 +327,7 @@
         FROM
             bas_inques a
         LEFT JOIN bas_inques_answer b ON a.id_inques = b.id_inques AND b.fg_default = '1' and b.fg_active = '1' and b.fg_valid = '0'
+        LEFT JOIN faq_med_case_inques_list c on c.id_med_case = #{extId} and a.id_inques = c.id_inques
         WHERE
             a.fg_active = '1' and a.fg_valid = '0'
         and a.id_inques in (
@@ -334,6 +335,7 @@
                 #{item}
             </foreach>
             )
+        and c.id_med_case_list is null
     </insert>
     <insert id="bachAddAllCons">
         INSERT INTO faq_med_case_inques_list(
@@ -381,14 +383,15 @@
             b.id_result,b.des_result,b.id_media,b.fg_reason,b.fg_back,b.des_expert
         FROM
             bas_body a
-        LEFT JOIN bas_body_result b ON a.id_body = b.id_body
-        AND b.fg_default = '1'
+        LEFT JOIN bas_body_result b ON a.id_body = b.id_body AND b.fg_default = '1'
+        LEFT JOIN faq_med_case_body_list c on c.id_med_case = #{extId} and a.id_body = c.id_body
         WHERE
             a.id_body in (
         <foreach collection="list" item="item" separator="," >
             #{item}
         </foreach>
         )
+        and c.id_med_case_list is null
     </insert>
     <insert id="bachAddAllCheck">
         INSERT INTO faq_med_case_body_list(
@@ -445,14 +448,15 @@
             b.fg_show,b.fg_reason,b.fg_back,b.des_expert
         FROM
             bas_inspect_item a
-        LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item
-        AND b.fg_default = '1'
+        LEFT JOIN bas_item_result b ON a.id_inspect_item = b.id_inspect_item AND b.fg_default = '1'
+        left join faq_med_case_inspect_list c on c.id_med_case = #{extId} and a.id_inspect_item = c.id_inspect_item
         WHERE
             a.id_inspect_item in (
         <foreach collection="list" item="item" separator="," >
             #{item}
         </foreach>
         )
+        and c.id_med_case_list is null
     </insert>
     <insert id="bachAddAllExam">
         INSERT INTO faq_med_case_inspect_list(

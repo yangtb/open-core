@@ -289,6 +289,18 @@
         WHERE
             fg_active = '1'
     </select>
+    <select id="listDiseaseTreeDetail" resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
+        SELECT
+            id_die,
+            name
+        FROM
+            bas_die
+        WHERE
+            fg_active = '1'
+        <if test="queryChildCatalogue == 1">
+            and cd_dieclass = #{id}
+        </if>
+    </select>
     <select id="listDiseaseTreeByCondition"
             resultType="com.sm.open.core.model.vo.pf.biz.disease.PfDiseaseZtreeVo">
         SELECT

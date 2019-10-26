@@ -370,9 +370,6 @@
             <if test="desDieReason!=null">
                 des_die_reason,
             </if>
-            <if test="fgDieClass!=null">
-                fg_die_class,
-            </if>
                 gmt_create,
         </trim>
         )
@@ -393,9 +390,6 @@
             </if>
             <if test="desDieReason!=null">
                 #{desDieReason},
-            </if>
-            <if test="fgDieClass!=null">
-                #{fgDieClass},
             </if>
                 now(),
         </trim>
@@ -798,9 +792,6 @@
             </if>
             <if test="desDieReason!=null">
                 des_die_reason = #{desDieReason},
-            </if>
-            <if test="fgDieClass!=null">
-                fg_die_class = #{fgDieClass},
             </if>
         </trim>
         WHERE
@@ -1515,6 +1506,7 @@
         where
             id_testexec_result = #{idTestexecResult}
         and id_med_case_list = #{idMedCaseList}
+        AND fg_valid = '0'
     </select>
     <select id="listCheckQa" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomCheckVo">
         SELECT
@@ -1602,10 +1594,9 @@
             a.id_testexec_result,
             a.id_die,
             a.gmt_create,
-            IFNULL(b.NAME,c.NAME) as idDieText
+            b.NAME, as idDieText
         from exm_med_result_diagnosis a
-        left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
-        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
+        left join bas_die b on a.id_die = b.id_die
         where
             a.id_testexec_result = #{idTestexecResult}
         and a.fg_valid = '0'
@@ -1633,7 +1624,6 @@
             id_testexec_result = #{idTestexecResult}
         and id_testexec_result_referral = #{idTestexecResultReferral}
         and id_die = #{idDie}
-        and fg_die_class = #{fgDieClass}
     </select>
     <select id="selectSummary" resultType="com.sm.open.core.model.entity.ExmMedResultSummary">
         select
@@ -1930,17 +1920,26 @@
     </select>
     <select id="listAllReferralDie" resultType="com.sm.open.core.model.entity.BasDie">
         select
-            bd.id_die, bd.name, bd.cd_dieclass, bdc.name as cdDieclassText, bd.icd, bd.pinyin
+            a.id_testexec_result_referral,
+            IFNULL(bd.id_die,d.id_dieclass) as id_die,
+            if(a.fg_die_class = '1', CONCAT(d.NAME, '（目录）'), CONCAT(bd.NAME, '（疾病）')) as name,
+            bd.cd_dieclass ,
+            bdc.NAME AS cdDieclassText ,
+            bd.icd ,
+            bd.pinyin,
+            a.fg_die_class
         from exm_med_result_referral a
-        left join bas_die bd on a.id_die = bd.id_die and bd.fg_valid = '0'
+        left join bas_die bd on a.id_die = bd.id_die and bd.fg_valid = '0' and a.fg_die_class = '2'
         left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
+        LEFT JOIN bas_die_class d ON a.id_die = d.cd and a.fg_die_class = '1'
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
         <if test="keywords != null and keywords != '' ">
             AND (bd.name like concat('%',#{keywords},'%')
             or   bd.icd like concat('%',#{keywords},'%')
-            or   bd.pinyin like concat('%',#{keywords},'%'))
+            or   bd.pinyin like concat('%',#{keywords},'%')
+            or d.name like concat('%',#{keywords},'%'))
         </if>
     </select>
 
@@ -2037,6 +2036,36 @@
         </foreach>
         )
     </select>
+    <select id="selectManyNzDie" resultType="java.lang.String">
+        select
+            IFNULL(b.NAME,c.NAME) AS idDieText
+        from exm_med_result_referral a
+        left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
+        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
+        WHERE
+        a.id_testexec_result_referral in (
+        <foreach collection="ids" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+        AND a.fg_valid = '0'
+    </select>
+    <select id="selectManyNzDieMap" resultType="java.util.Map">
+        select
+            IFNULL(b.NAME,c.NAME) AS idDieText,
+            a.fg_exclude as fgExclude
+        from exm_med_result_referral a
+        left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
+        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
+        WHERE
+            a.id_testexec_result_referral in (
+        <foreach collection="ids" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+        AND a.fg_valid = '0'
+    </select>
+
 
     <select id="listAllExamByIdInspect" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
         SELECT
@@ -2091,12 +2120,20 @@
             id_testexec_result = #{idTestexecResult}
         and id_testexec_result_referral = #{idTestexecResultReferral}
         and id_die = #{idDie}
-        and fg_die_class = #{fgDieClass}
     </select>
     <select id="getNzDie" resultType="java.lang.String">
         select id_die from exm_med_result_body where id_testexec_result = #{idTestexecResult} and id_die is not null
         union
         select id_die from exm_med_result_inspect where id_testexec_result = #{idTestexecResult} and id_die is not null
+    </select>
+    <select id="getReferralId" resultType="java.lang.String">
+        SELECT
+            a.id_testexec_result_referral
+        FROM
+            exm_med_result_referral a
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
     </select>
     <select id="countDiagnosticChart" resultType="java.lang.Long">
         SELECT
@@ -2202,6 +2239,26 @@
             WHERE
                 a.id_testplan_detail = #{idTestplanDetail}
         )
+    </select>
+    <select id="examAmountTotal" resultType="java.math.BigDecimal">
+        SELECT
+            IFNULL(sum(c.cost_money), 0.00) as cost_money
+        FROM
+            faq_med_tag a
+        LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        LEFT JOIN faq_med_case_inspect_list c ON c.id_med_case = a.id_med_case and c.fg_valid = '0'
+        LEFT JOIN exm_med_result_inspect d on c.id_med_case_list = d.id_med_case_list and d.fg_valid = '0'
+        and d.id_testexec_result = #{idTestexecResult}
+        WHERE
+            a.id_medicalrec = #{idMedicalrec}
+        AND b.cd_med_asse = #{cdMedAsse}
+        and d.id_testexec_result_inspect is not null
+        <if test="extItemId != null">
+            AND c.id_inspect = #{extItemId}
+        </if>
+        <if test="keyword != null and keyword != ''">
+            AND c.na_item like concat('%',#{keyword},'%')
+        </if>
     </select>
 
 </mapper>

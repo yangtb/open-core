@@ -30,11 +30,7 @@ import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
@@ -240,7 +236,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             // 查询疾病
             if (StringUtils.isNotBlank(item.getIdDie())) {
                 List<String> idDies = Arrays.asList(item.getIdDie().split(","));
-                List<String> idDieTexts = pfTestWaitingRoomDao.selectManyDie(idDies);
+                List<String> idDieTexts = pfTestWaitingRoomDao.selectManyNzDie(idDies);
                 item.setIdDieText(StringUtils.join(idDieTexts.toArray(), ","));
             }
         }
@@ -302,11 +298,16 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             // 查询疾病
             if (StringUtils.isNotBlank(item.getIdDie())) {
                 List<String> idDies = Arrays.asList(item.getIdDie().split(","));
-                List<String> idDieTexts = pfTestWaitingRoomDao.selectManyDie(idDies);
+                List<String> idDieTexts = pfTestWaitingRoomDao.selectManyNzDie(idDies);
                 item.setIdDieText(StringUtils.join(idDieTexts.toArray(), ","));
             }
         }
         return lists;
+    }
+
+    @Override
+    public BigDecimal examAmountTotal(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.examAmountTotal(dto);
     }
 
     @Override
@@ -323,28 +324,18 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Transactional(rollbackFor = Exception.class)
     @Override
-    public BigDecimal saveBatchExamQa(PfTestExamTagDto dto) {
-        if (dto.isChecked()) {
-            // 获取分类节点下的所有检验项目
-            List<FaqMedCaseInspectList> list = pfTestWaitingRoomDao.listAllExamByIdInspect(dto);
-            for (FaqMedCaseInspectList item : list) {
-                // 勾选该分类节点下的所有检验项目
-                ExmMedResultInspect exmMedResultInspect = new ExmMedResultInspect();
-                exmMedResultInspect.setIdTestexecResult(dto.getIdTestexecResult());
-                exmMedResultInspect.setIdMedCaseList(item.getIdMedCaseList());
-                exmMedResultInspect.setIdInspectItem(item.getIdInspectItem());
-
-                pfTestWaitingRoomDao.saveExamQa(exmMedResultInspect);
-            }
-            // 统计金额
-            return pfTestWaitingRoomDao.sumCostMoney(dto);
-        } else {
-            List<Long> list = pfTestWaitingRoomDao.listAllIdInspect(dto);
-            // 删除检验项目
-            pfTestWaitingRoomDao.delExamQaByIdTestexecResult(dto.getIdTestexecResult(), list);
-            // 统计金额
+    public BigDecimal saveBatchExamQa(List<ExmMedResultInspect> list) {
+        if (CollectionUtils.isEmpty(list)) {
             return BigDecimal.ZERO;
         }
+
+        for (ExmMedResultInspect exmMedResultInspect : list) {
+            if (pfTestWaitingRoomDao.isExistExamQa(exmMedResultInspect) == null) {
+                pfTestWaitingRoomDao.saveExamQa(exmMedResultInspect);
+            }
+        }
+        // 统计金额
+        return BigDecimal.ZERO;
     }
 
     @Override
@@ -451,16 +442,12 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public Long saveDiagnosis(ExmMedResultDiagnosis dto) {
         if (dto.getIdTestexecResultDiagnosis() == null) {
-            if (StringUtils.isNotBlank(dto.getFgDieClass())) {
-                Long idTestexecResultDiagnosis = pfTestWaitingRoomDao.getDiagnosisId(dto);
-                if (idTestexecResultDiagnosis == null) {
-                    pfTestWaitingRoomDao.addDiagnosis(dto);
-                } else {
-                    dto.setIdTestexecResultDiagnosis(idTestexecResultDiagnosis);
-                    pfTestWaitingRoomDao.editDiagnosis(dto);
-                }
-            } else {
+            Long idTestexecResultDiagnosis = pfTestWaitingRoomDao.getDiagnosisId(dto);
+            if (idTestexecResultDiagnosis == null) {
                 pfTestWaitingRoomDao.addDiagnosis(dto);
+            } else {
+                dto.setIdTestexecResultDiagnosis(idTestexecResultDiagnosis);
+                pfTestWaitingRoomDao.editDiagnosis(dto);
             }
         } else {
             pfTestWaitingRoomDao.editDiagnosis(dto);
@@ -848,44 +835,51 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             pfOrgChartVo.setName("拟诊");
             pfOrgChartVo.setType(1);
             // 二级目录
-            List<String> nzDies = pfTestWaitingRoomDao.getNzDie(dto.getIdTestexecResult());
-            List<Long> idDies = new ArrayList<>();
-            if (CollectionUtils.isEmpty(nzDies)) {
-                return JSON.toJSONString(pfOrgChartVo);
-            }
-            for (String item : nzDies) {
-                if (StringUtils.isBlank(item)) {
-                    continue;
+
+            List<String> idReferrals = new ArrayList<>();
+            if (dto.getChartType() == 1) {
+                List<String> nzDies = pfTestWaitingRoomDao.getNzDie(dto.getIdTestexecResult());
+                if (CollectionUtils.isEmpty(nzDies)) {
+                    return JSON.toJSONString(pfOrgChartVo);
                 }
-                List<String> list = Arrays.asList(StringUtils.split(item, ","));
-                for (String idDie : list) {
-                    idDies.add(Long.valueOf(idDie));
+                for (String item : nzDies) {
+                    if (StringUtils.isBlank(item)) {
+                        continue;
+                    }
+                    List<String> list = Arrays.asList(StringUtils.split(item, ","));
+                    for (String idDie : list) {
+                        idReferrals.add(idDie);
+                    }
                 }
+            } else if (dto.getChartType() == 2) {
+                idReferrals = pfTestWaitingRoomDao.getReferralId(dto.getIdTestexecResult());
             }
 
-            idDies = idDies.stream().distinct().collect(Collectors.toList());
-            List<BasDie> basDies = pfDiseaseDao.listDieNameByIds(idDies);
+            //idReferrals = idReferrals.stream().distinct().collect(Collectors.toList());
+            if (CollectionUtils.isEmpty(idReferrals)) {
+                return JSON.toJSONString(pfOrgChartVo);
+            }
+            List<Map<String, String>> basDies = pfTestWaitingRoomDao.selectManyNzDieMap(idReferrals);
 
             List<PfOrgChartVo> twoChartList = new ArrayList<>();
             PfOrgChartVo twoChart;
             PfOrgChartVo thirdChart;
             PfOrgChartVo fourChart;
-            for (BasDie basDie : basDies) {
+            for (Map<String, String> map : basDies) {
                 twoChart = new PfOrgChartVo();
-                twoChart.setName(basDie.getName());
+                twoChart.setName(map.containsKey("idDieText") ? map.get("idDieText") : "");
+                twoChart.setFgExclude(map.containsKey("fgExclude") ? map.get("fgExclude") : "0");
                 twoChart.setType(2);
                 // 四级目录
                 fourChart = new PfOrgChartVo();
                 fourChart.setName("鉴别诊断");
                 fourChart.setType(4);
-                fourChart.setId(String.valueOf(basDie.getIdDie()));
                 List<PfOrgChartVo> fourChartList = new ArrayList<>();
                 fourChartList.add(fourChart);
                 // 三级目录
                 thirdChart = new PfOrgChartVo();
                 thirdChart.setName("诊断分析");
                 thirdChart.setType(3);
-                thirdChart.setId(String.valueOf(basDie.getIdDie()));
                 thirdChart.setChildren(fourChartList);
                 List<PfOrgChartVo> thirdChartList = new ArrayList<>();
                 thirdChartList.add(thirdChart);

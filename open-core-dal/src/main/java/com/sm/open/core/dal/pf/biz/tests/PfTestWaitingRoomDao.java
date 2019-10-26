@@ -12,6 +12,7 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public interface PfTestWaitingRoomDao {
@@ -217,6 +218,22 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<String> selectManyDie(@Param("idDies") List<String> idDies);
+
+    /**
+     * 获取拟诊名称，逗号隔开
+     *
+     * @param ids
+     * @return
+     */
+    List<String> selectManyNzDie(@Param("ids") List<String> ids);
+
+    /**
+     * 获取拟诊名称，逗号隔开
+     *
+     * @param ids
+     * @return
+     */
+    List<Map<String, String>> selectManyNzDieMap(@Param("ids") List<String> ids);
 
     /**
      * 检查 - 保存问答问题
@@ -932,6 +949,14 @@ public interface PfTestWaitingRoomDao {
     List<String> getNzDie(@Param("idTestexecResult") Long idTestexecResult);
 
     /**
+     * 获取拟诊
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<String> getReferralId(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
      * 诊断分析、鉴别诊断总数
      *
      * @param dto
@@ -966,9 +991,17 @@ public interface PfTestWaitingRoomDao {
     /**
      * 查询病例评估指南
      *
-     * @param idMedCase
+     * @param idTestplanDetail
      * @return
      */
     String selectEvaGuideContent(@Param("idTestplanDetail") Long idTestplanDetail);
+
+    /**
+     * 检验金额
+     *
+     * @param dto
+     * @return
+     */
+    BigDecimal examAmountTotal(PfTestExamTagDto dto);
 
 }

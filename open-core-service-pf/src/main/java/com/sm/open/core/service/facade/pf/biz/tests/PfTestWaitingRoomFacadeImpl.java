@@ -369,8 +369,11 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
         try {
             PfPageParam.initPageDto(param);
             PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
-            return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestExam(dto),
+            PfPageResult pageResult = PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countTestExam(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listTestExam(dto), FaqMedCaseInspectListResult.class));
+            // 统计金额
+            pageResult.setExt(String.valueOf(pfTestWaitingRoomService.examAmountTotal(dto)));
+            return pageResult;
         } catch (Exception e) {
             LOGGER.error("【PfKbPartFacadeImpl-listTestExam-error】查询检验列表出错，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
@@ -394,15 +397,15 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
-    public CommonResult<BigDecimal> saveBatchExamQa(PfTestExamTagParam param) {
+    public CommonResult<BigDecimal> saveBatchExamQa(List<ExmMedResultInspectParam> param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    pfTestWaitingRoomService.saveBatchExamQa(BeanUtil.convert(param, PfTestExamTagDto.class)));
+                    pfTestWaitingRoomService.saveBatchExamQa(BeanUtil.convertList(param, ExmMedResultInspect.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-saveBatchExamQa】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
-            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveBatchExamQa】批量保存检验出错, param:{}", param , e);
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-saveBatchExamQa】批量保存检验出错, param:{}", param, e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
                     PfTestPaperConstant.SAVE_EXAM_QA_ERROR, PfTestPaperConstant.SAVE_EXAM_QA_ERROR_MSG));
         }
@@ -971,14 +974,14 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     public CommonResult<String> selectReferralChartData(PfTestEvaParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.selectReferralChartData(
-                            BeanUtil.convert(param, PfTestEvaDto.class)));
+                    BeanUtil.convert(param, PfTestEvaDto.class)));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectReferralChartData】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
         } catch (Exception e) {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectReferralChartData-error】查询思维导图失败, param:{}", param.toString(), e);
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(
-                    PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR, PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR_MSG));
+                    PfTestPaperConstant.LIST_DIAGNOSTIC_ANALYSIS_DETAIL_ERROR, "查询思维导图失败"));
         }
     }
 

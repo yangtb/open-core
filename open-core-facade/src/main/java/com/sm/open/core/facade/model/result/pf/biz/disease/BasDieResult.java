@@ -86,4 +86,14 @@ public class BasDieResult implements Serializable {
      */
     private Date gmtModify;
 
+    /**
+     * 疾病分类标记，如果为1 表示存储的是疾病目录，如果为2 表示存储的是疾病
+     */
+    private String fgDieClass;
+
+    /**
+     * 拟诊id
+     */
+    private Long idTestexecResultReferral;
+
 }

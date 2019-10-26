@@ -24,6 +24,8 @@ public class PfPageResult<T> implements Serializable {
 
 	private List<T> data = new ArrayList<T>();
 
+	private String ext;
+
 	public PfPageResult() {
 		this.code = code;
 	}
@@ -85,6 +87,14 @@ public class PfPageResult<T> implements Serializable {
 
 	public void setData(List<T> data) {
 		this.data = data;
+	}
+
+	public String getExt() {
+		return ext;
+	}
+
+	public void setExt(String ext) {
+		this.ext = ext;
 	}
 
 	@Override

@@ -209,6 +209,14 @@ public interface PfTestWaitingRoomService {
     List<FaqMedCaseInspectList> listTestExam(PfTestExamTagDto dto);
 
     /**
+     * 检验金额
+     *
+     * @param dto
+     * @return
+     */
+    BigDecimal examAmountTotal(PfTestExamTagDto dto);
+
+    /**
      * 检验 - 保存问答问题
      *
      * @param dto
@@ -219,10 +227,10 @@ public interface PfTestWaitingRoomService {
     /**
      * 检验 - 批量保存问答问题
      *
-     * @param dto
+     * @param list
      * @return
      */
-    BigDecimal saveBatchExamQa(PfTestExamTagDto dto);
+    BigDecimal saveBatchExamQa(List<ExmMedResultInspect> list);
 
     /**
      * 检验 - 编辑问答问题

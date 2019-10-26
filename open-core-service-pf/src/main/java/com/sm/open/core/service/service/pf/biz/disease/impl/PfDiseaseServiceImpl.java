@@ -28,6 +28,11 @@ public class PfDiseaseServiceImpl implements PfDiseaseService {
     @Override
     public List<PfDiseaseZtreeVo> listDiseaseCatalogueTree(PfCatalogueTreeDto dto) {
 
+        // 查询单个目录
+        if (dto.getQueryChildCatalogue() == 1) {
+            return pfDiseaseDao.listDiseaseTreeDetail(dto);
+        }
+
         if (dto.getIncludeDie() == 0) {
             return pfDiseaseDao.listDiseaseCatalogueTree(dto);
         } else {

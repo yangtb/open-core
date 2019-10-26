@@ -629,22 +629,6 @@ public class PfKbPartServiceImpl implements PfKbPartService {
             }
         }
         if (dto.getExtType().equals(YesOrNoNum.YES.getCode())) {
-            // 全部引入
-           /* List<FaqMedCaseInspectList> oldDatas = pfKbPartDao.selectOldExamRecord(dto.getExtId());
-            List<FaqMedCaseInspectList> allDatas = pfKbPartDao.selectAllExamRecord(dto.getExtId());
-            allDatas.removeIf(allData -> {
-                boolean flag = false;
-                for (FaqMedCaseInspectList oldData : oldDatas) {
-                    if (oldData.getIdInspectItem().equals(allData.getIdInspectItem())) {
-                        flag = true;
-                    }
-                }
-                return flag;
-            });
-            if (CollectionUtils.isEmpty(allDatas)) {
-                return true;
-            }
-            return pfKbPartDao.bachAddAllExam(allDatas) >= 1 ? true : false;*/
             // 删除
             pfKbPartDao.delAllExamByIdMedCase(dto.getExtId());
             // 批量插入
