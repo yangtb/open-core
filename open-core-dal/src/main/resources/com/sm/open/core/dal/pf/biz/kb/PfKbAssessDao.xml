@@ -901,6 +901,9 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
             b.sd_eva_referral
     </select>
     <select id="listKbDiagnosis" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
@@ -933,7 +936,12 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
-            b.sd_eva_effciency
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_effciency,
+            b.id_die,
+            c.name
     </select>
     <select id="listKbCover" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -951,7 +959,10 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
-            b.sd_eva_cover
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_cover, b.id_die, c.name
     </select>
     <select id="listKbMust" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -969,7 +980,10 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
-            b.sd_eva_must
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_must, b.id_die, c.name
     </select>
     <select id="listKbEffciency" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -987,7 +1001,11 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
-            b.sd_eva_effciency
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.sd_eva_effciency,
+            b.qua_upper
     </select>
     <select id="listKbOrder" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -1004,6 +1022,9 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
             b.sd_eva_order
     </select>
 
@@ -1191,6 +1212,9 @@
         AND a.cd_eva_asse = #{cdEvaAsse}
         GROUP BY
             a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
             b.sd_eva_must
     </select>
     <select id="listThoroughAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemThorough">

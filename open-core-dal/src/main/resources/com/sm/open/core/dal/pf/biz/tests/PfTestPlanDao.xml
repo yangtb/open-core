@@ -351,9 +351,8 @@
         where
             a.id_testplan = #{idTestplan}
         GROUP BY
-            a.id_testplan_student ,
-            a.id_student ,
-            a.id_testplan
+            a.id_testplan_student,  a.id_student,  a.id_testplan,
+            b.real_name, b.phone_no
     </select>
     <select id="listPlanDetail" resultType="com.sm.open.core.model.entity.ExmTestplanDetail">
         SELECT
