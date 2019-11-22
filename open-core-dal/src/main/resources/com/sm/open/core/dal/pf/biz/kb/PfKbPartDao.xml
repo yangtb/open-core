@@ -335,6 +335,7 @@
                 #{item}
             </foreach>
             )
+        and c.fg_valid = '0'
         and c.id_med_case_list is null
     </insert>
     <insert id="bachAddAllCons">
@@ -391,6 +392,7 @@
             #{item}
         </foreach>
         )
+        and c.fg_valid = '0'
         and c.id_med_case_list is null
     </insert>
     <insert id="bachAddAllCheck">
@@ -456,6 +458,7 @@
             #{item}
         </foreach>
         )
+        AND c.fg_valid = '0'
         and c.id_med_case_list is null
     </insert>
     <insert id="bachAddAllExam">
