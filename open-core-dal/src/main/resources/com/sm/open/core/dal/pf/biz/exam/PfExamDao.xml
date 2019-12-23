@@ -249,6 +249,9 @@
             count(1)
         FROM
             bas_inspect_item bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        <if test="idMedCase != null">
+            left join faq_med_case_inspect_list c on c.id_med_case = #{idMedCase} and bii.id_inspect_item = c.id_inspect_item and c.fg_valid = '0'
+        </if>
         WHERE
             bii.fg_valid = '0'
         <if test="idInspect != null and idInspect != ''">
@@ -259,6 +262,9 @@
         </if>
         <if test="keywords != null and keywords != '' ">
             AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+        <if test="idMedCase != null">
+            and c.id_med_case_list IS NULL
         </if>
     </select>
 
@@ -269,6 +275,9 @@
             bic.name as idInspectText
         FROM
             bas_inspect_item bii left join bas_inspect_ca bic on bii.id_inspect = bic.id_inspect
+        <if test="idMedCase != null">
+            left join faq_med_case_inspect_list c on c.id_med_case = #{idMedCase} and bii.id_inspect_item = c.id_inspect_item and c.fg_valid = '0'
+        </if>
         WHERE
             bii.fg_valid = '0'
         <if test="idInspect != null and idInspect != ''">
@@ -279,6 +288,9 @@
         </if>
         <if test="keywords != null and keywords != '' ">
             AND (bic.name like concat('%',#{keywords},'%') or bii.na_item like concat('%',#{keywords},'%'))
+        </if>
+        <if test="idMedCase != null">
+            and c.id_med_case_list IS NULL
         </if>
         limit #{offset}, #{limit}
     </select>

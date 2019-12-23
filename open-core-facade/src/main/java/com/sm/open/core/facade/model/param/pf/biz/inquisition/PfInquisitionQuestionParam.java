@@ -37,4 +37,9 @@ public class PfInquisitionQuestionParam extends PfPageParam implements Serializa
      * 扩展id
      */
     private Long extId;
+
+    /**
+     * 过滤标识
+     */
+    private Long idMedCase;
 }

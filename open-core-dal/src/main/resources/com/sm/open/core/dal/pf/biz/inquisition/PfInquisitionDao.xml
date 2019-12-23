@@ -246,6 +246,9 @@
             count(1)
         FROM
             bas_inques bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        <if test="idMedCase != null">
+            left JOIN faq_med_case_inques_list c ON c.id_med_case = #{idMedCase} AND bi.id_inques = c.id_inques and c.fg_valid = '0'
+        </if>
         WHERE
             bi.fg_valid = '0'
         <if test="idInquesCa != null and idInquesCa != ''">
@@ -256,6 +259,9 @@
         </if>
         <if test="keywords != null and keywords != '' ">
             AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
+        </if>
+        <if test="idMedCase != null">
+            and c.id_med_case_list IS NULL
         </if>
     </select>
 
@@ -265,6 +271,9 @@
             bi.fg_valid, bi.creator, bi.gmt_create, bi.operator, bi.gmt_modify, bi.sd_inques_label
         FROM
             bas_inques bi left join bas_inques_ca bic on bi.id_inques_ca = bic.id_inques_ca
+        <if test="idMedCase != null">
+            left JOIN faq_med_case_inques_list c ON c.id_med_case = #{idMedCase} AND bi.id_inques = c.id_inques and c.fg_valid = '0'
+        </if>
         WHERE
             bi.fg_valid = '0'
         <if test="idInquesCa != null and idInquesCa != ''">
@@ -275,6 +284,9 @@
         </if>
         <if test="keywords != null and keywords != '' ">
             AND (bi.des_inques like concat('%',#{keywords},'%') or bic.name like concat('%',#{keywords},'%'))
+        </if>
+        <if test="idMedCase != null">
+            and c.id_med_case_list IS NULL
         </if>
         limit #{offset}, #{limit}
     </select>

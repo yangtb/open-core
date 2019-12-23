@@ -237,6 +237,9 @@
             count(1)
         FROM
             bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        <if test="idMedCase != null">
+            LEFT JOIN faq_med_case_body_list c on c.id_med_case = #{idMedCase} and bb.id_body = c.id_body and c.fg_valid = '0'
+        </if>
         WHERE
             bb.fg_valid = '0'
         <if test="idBodyCa != null and idBodyCa != ''">
@@ -247,6 +250,9 @@
         </if>
         <if test="keywords != null and keywords != '' ">
             AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        <if test="idMedCase != null">
+            and c.id_med_case_list IS NULL
         </if>
     </select>
 
@@ -257,6 +263,9 @@
             bb.fg_valid, bb.creator, bb.gmt_create, bb.operator, bb.gmt_modify
         FROM
             bas_body bb left join bas_body_ca bbc on bb.id_body_ca = bbc.id_body_ca
+        <if test="idMedCase != null">
+            LEFT JOIN faq_med_case_body_list c on c.id_med_case = #{idMedCase} and bb.id_body = c.id_body and c.fg_valid = '0'
+        </if>
         WHERE
             bb.fg_valid = '0'
         <if test="idBodyCa != null and idBodyCa != ''">
@@ -267,6 +276,9 @@
         </if>
         <if test="keywords != null and keywords != '' ">
             AND (bbc.name like concat('%',#{keywords},'%') or bb.des_body like concat('%',#{keywords},'%'))
+        </if>
+        <if test="idMedCase != null">
+            and c.id_med_case_list IS NULL
         </if>
         limit #{offset}, #{limit}
     </select>

@@ -1258,7 +1258,7 @@
             AND c.des_inques like concat('%',#{keyword},'%')
         </if>
         <if test="sdInquesLabel != null and sdInquesLabel != ''">
-            and c.sd_inques_label = #{sdInquesLabel}
+            AND CONCAT(',', c.sd_inques_label) LIKE concat('%',#{sdInquesLabel},'%')
             and c.id_inques_pre is null
             and c.id_inques_pre2 is null
             and c.id_inques_pre3 is null
@@ -1289,7 +1289,7 @@
             AND c.des_inques like concat('%',#{keyword},'%')
         </if>
         <if test="sdInquesLabel != null and sdInquesLabel != ''">
-            and c.sd_inques_label = #{sdInquesLabel}
+            AND CONCAT(',', c.sd_inques_label) LIKE concat('%',#{sdInquesLabel},'%')
             and c.id_inques_pre is null
             and c.id_inques_pre2 is null
             and c.id_inques_pre3 is null
@@ -1876,11 +1876,11 @@
             a.fg_exclude ,
             CASE a.sd_eva_effciency
                 WHEN '1' THEN
-                    b.des_inques
+                    CONCAT(b.des_inques,'(', b.des_answer ,')')
                 WHEN '2' THEN
-                    c.des_body
+                    CONCAT(c.des_body,'(', c.des_result ,')')
                 WHEN '3' THEN
-                    d.na_item
+                    CONCAT(d.na_item,'(', d.des_stand ,')')
                 ELSE
                     ''
                 END AS idText

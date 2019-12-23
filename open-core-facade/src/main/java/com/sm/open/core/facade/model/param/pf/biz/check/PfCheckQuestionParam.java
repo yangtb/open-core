@@ -39,4 +39,5 @@ public class PfCheckQuestionParam extends PfPageParam implements Serializable {
      */
     private Long extId;
 
+    private Long idMedCase;
 }
