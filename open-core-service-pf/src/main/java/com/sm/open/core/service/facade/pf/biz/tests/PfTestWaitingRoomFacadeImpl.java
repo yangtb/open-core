@@ -472,6 +472,21 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<Boolean> updateReferral(ExmMedResultReferralParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.updateReferral(BeanUtil.convert(param, ExmMedResultReferral.class)));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-updateReferral】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-updateReferral-error】修改拟诊出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_REFERRAL_ERROR, PfTestPaperConstant.SAVE_REFERRAL_ERROR_MSG));
+        }
+    }
+
+    @Override
     public CommonResult<List<ExmMedResultReferralResult>> listReferral(PfTestExamTagParam param) {
         try {
             return ResultFactory.initCommonResultWithSuccess(

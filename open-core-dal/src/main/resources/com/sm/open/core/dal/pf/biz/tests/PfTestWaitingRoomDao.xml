@@ -965,6 +965,11 @@
         WHERE
             id_identify_reason = #{idIdentifyReason}
     </update>
+    <update id="updateReferral">
+        update exm_med_result_referral
+        set id_die = #{idDie}, fg_die_class = 2
+        where id_testexec_result_referral = #{idTestexecResultReferral}
+    </update>
     <delete id="delCheckQa">
         update exm_med_result_body
         set

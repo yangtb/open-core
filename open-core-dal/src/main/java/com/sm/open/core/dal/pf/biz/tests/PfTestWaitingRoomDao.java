@@ -415,6 +415,14 @@ public interface PfTestWaitingRoomDao {
     Integer saveReferral(ExmMedResultReferral dto);
 
     /**
+     * 拟诊 - 修改
+     *
+     * @param dto
+     * @return
+     */
+    Integer updateReferral(ExmMedResultReferral dto);
+
+    /**
      * 拟诊 - 排除
      *
      * @param dto

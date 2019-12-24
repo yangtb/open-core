@@ -226,6 +226,14 @@ public interface PfTestWaitingRoomFacade {
     CommonResult<Long> saveReferral(ExmMedResultReferralParam param);
 
     /**
+     * 拟诊 - 修改
+     *
+     * @param param
+     * @return
+     */
+    CommonResult<Boolean> updateReferral(ExmMedResultReferralParam param);
+
+    /**
      * 已添加拟诊
      *
      * @param param

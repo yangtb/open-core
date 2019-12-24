@@ -33,4 +33,9 @@ public class PfDiseaseInfoParam extends PfPageParam implements Serializable {
      * 搜索关键字
      */
     private String keywords;
+
+    /**
+     * 目录id
+     */
+    private Long catalogueId;
 }

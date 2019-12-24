@@ -390,6 +390,11 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
+    public boolean updateReferral(ExmMedResultReferral dto) {
+        return pfTestWaitingRoomDao.updateReferral(dto) == 1 ? true : false;
+    }
+
+    @Override
     public List<ExmMedResultReferral> listReferral(PfTestExamTagDto dto) {
         return pfTestWaitingRoomDao.listReferral(dto);
     }

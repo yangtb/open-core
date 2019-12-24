@@ -168,6 +168,9 @@
             or   icd like concat('%',#{keywords},'%')
             or   pinyin like concat('%',#{keywords},'%'))
         </if>
+        <if test="catalogueId != null">
+            AND cd_dieclass = #{catalogueId}
+        </if>
     </select>
 
     <select id="listDiseaseInfo" resultType="com.sm.open.core.model.entity.BasDie">
@@ -195,6 +198,9 @@
             AND (bd.name like concat('%',#{keywords},'%')
             or   bd.icd like concat('%',#{keywords},'%')
             or   bd.pinyin like concat('%',#{keywords},'%'))
+        </if>
+        <if test="catalogueId != null">
+            AND cd_dieclass = #{catalogueId}
         </if>
         limit #{offset}, #{limit}
     </select>
