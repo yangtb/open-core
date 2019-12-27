@@ -864,25 +864,27 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             if (CollectionUtils.isEmpty(idReferrals)) {
                 return JSON.toJSONString(pfOrgChartVo);
             }
-            List<Map<String, String>> basDies = pfTestWaitingRoomDao.selectManyNzDieMap(idReferrals);
+            List<ChartVo> basDies = pfTestWaitingRoomDao.selectManyNzDieMap(idReferrals);
 
             List<PfOrgChartVo> twoChartList = new ArrayList<>();
             PfOrgChartVo twoChart;
             PfOrgChartVo thirdChart;
             PfOrgChartVo fourChart;
-            for (Map<String, String> map : basDies) {
+            for (ChartVo chartVo : basDies) {
                 twoChart = new PfOrgChartVo();
-                twoChart.setName(map.containsKey("idDieText") ? map.get("idDieText") : "");
-                twoChart.setFgExclude(map.containsKey("fgExclude") ? map.get("fgExclude") : "0");
+                twoChart.setName(chartVo.getIdDieText());
+                twoChart.setFgExclude(StringUtils.isNotBlank(chartVo.getFgExclude())? chartVo.getFgExclude() : "0");
                 twoChart.setType(2);
                 // 四级目录
                 fourChart = new PfOrgChartVo();
+                fourChart.setId(String.valueOf(chartVo.getIdTestexecResultReferral()));
                 fourChart.setName("鉴别诊断");
                 fourChart.setType(4);
                 List<PfOrgChartVo> fourChartList = new ArrayList<>();
                 fourChartList.add(fourChart);
                 // 三级目录
                 thirdChart = new PfOrgChartVo();
+                thirdChart.setId(String.valueOf(chartVo.getIdTestexecResultReferral()));
                 thirdChart.setName("诊断分析");
                 thirdChart.setType(3);
                 thirdChart.setChildren(fourChartList);

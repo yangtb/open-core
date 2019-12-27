@@ -12,7 +12,6 @@ import org.springframework.stereotype.Repository;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
 
 @Repository
 public interface PfTestWaitingRoomDao {
@@ -233,7 +232,7 @@ public interface PfTestWaitingRoomDao {
      * @param ids
      * @return
      */
-    List<Map<String, String>> selectManyNzDieMap(@Param("ids") List<String> ids);
+    List<ChartVo> selectManyNzDieMap(@Param("ids") List<String> ids);
 
     /**
      * 检查 - 保存问答问题

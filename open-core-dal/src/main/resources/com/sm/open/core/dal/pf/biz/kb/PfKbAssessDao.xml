@@ -66,14 +66,16 @@
             id_eva_case_item,
             sd_eva_referral,
             id_die,
-            fg_die_class
+            fg_die_class,
+            fg_crs
         )
         VALUES
         (
             #{idEvaCaseItem},
             #{sdEvaReferral},
             #{idDie},
-            #{fgDieClass}
+            #{fgDieClass},
+            #{fgCrs}
         )
     </insert>
     <insert id="addDiagnosis" useGeneratedKeys="true" keyProperty="idEvaCaseItemList">
@@ -92,6 +94,9 @@
             <if test="fgDieMain!=null">
                 fg_die_main,
             </if>
+            <if test="fgCrs!=null">
+                fg_crs,
+            </if>
         </trim>
         )
         VALUES
@@ -108,6 +113,9 @@
             </if>
             <if test="fgDieMain!=null">
                 #{fgDieMain},
+            </if>
+            <if test="fgCrs!=null">
+                #{fgCrs},
             </if>
         </trim>
         )
@@ -137,6 +145,9 @@
             <if test="idDie!=null">
                 id_die,
             </if>
+            <if test="fgCrs!=null">
+                fg_crs,
+            </if>
         </trim>
         )
         VALUES
@@ -162,6 +173,9 @@
             </if>
             <if test="idDie!=null">
                 #{idDie},
+            </if>
+            <if test="fgCrs!=null">
+                #{fgCrs},
             </if>
         </trim>
         )
@@ -191,6 +205,9 @@
             <if test="idInspectItem!=null">
                 id_inspect_item,
             </if>
+            <if test="fgCrs!=null">
+                fg_crs,
+            </if>
         </trim>
         )
         VALUES
@@ -216,6 +233,9 @@
             </if>
             <if test="idInspectItem!=null">
                 #{idInspectItem},
+            </if>
+            <if test="fgCrs!=null">
+                #{fgCrs},
             </if>
         </trim>
         )
@@ -245,6 +265,9 @@
             <if test="idDie!=null">
                 id_die,
             </if>
+            <if test="fgCrs!=null">
+                fg_crs,
+            </if>
         </trim>
         )
         VALUES
@@ -270,6 +293,9 @@
             </if>
             <if test="idDie!=null">
                 #{idDie},
+            </if>
+            <if test="fgCrs!=null">
+                #{fgCrs},
             </if>
         </trim>
         )
@@ -564,6 +590,9 @@
             <if test="idInspectItem!=null">
                 id_inspect_item,
             </if>
+            <if test="fgCrs!=null">
+                fg_crs,
+            </if>
         </trim>
         )
         VALUES
@@ -587,6 +616,9 @@
             <if test="idInspectItem!=null">
                 #{idInspectItem},
             </if>
+            <if test="fgCrs!=null">
+                #{fgCrs},
+            </if>
         </trim>
         )
     </insert>
@@ -597,7 +629,8 @@
             sd_eva_must = #{sdEvaMust},
             id_inques = #{idInques},
             id_body = #{idBody},
-            id_inspect_item = #{idInspectItem}
+            id_inspect_item = #{idInspectItem},
+            fg_crs = #{fgCrs}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -658,7 +691,8 @@
             id_eva_case_item = #{idEvaCaseItem},
             sd_eva_referral = #{sdEvaReferral},
             id_die = #{idDie},
-            fg_die_class = #{fgDieClass}
+            fg_die_class = #{fgDieClass},
+            fg_crs = #{fgCrs}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -667,6 +701,7 @@
         SET
             id_eva_case_item = #{idEvaCaseItem},
             id_die = #{idDie},
+            fg_crs = #{fgCrs},
             fg_die_main = #{fgDieMain}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
@@ -679,7 +714,8 @@
             id_inques = #{idInques},
             id_body = #{idBody},
             id_inspect_item = #{idInspectItem},
-            id_die = #{idDie}
+            id_die = #{idDie},
+            fg_crs = #{fgCrs}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -691,7 +727,8 @@
             id_die = #{idDie},
             id_inques = #{idInques},
             id_body = #{idBody},
-            id_inspect_item = #{idInspectItem}
+            id_inspect_item = #{idInspectItem},
+            fg_crs = #{fgCrs}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
     </update>
@@ -703,6 +740,7 @@
             id_die = #{idDie},
             id_inques = #{idInques},
             id_body = #{idBody},
+            fg_crs = #{fgCrs},
             id_inspect_item = #{idInspectItem}
         WHERE
             id_eva_case_item_list = #{idEvaCaseItemList}
@@ -892,7 +930,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_referral AS sdEva
+            b.sd_eva_referral AS sdEva ,
+            b.fg_crs
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_referral b ON a.id_eva_case_item = b.id_eva_case_item
@@ -904,19 +943,28 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_referral
+            b.sd_eva_referral ,
+            b.fg_crs
     </select>
     <select id="listKbDiagnosis" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
             a.id_eva_case_item ,
             a.id_eva_case ,
             a.item_name ,
-            a.score_eva
+            a.score_eva ,
+            b.fg_crs
         FROM
             faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_diagnosis b ON a.id_eva_case_item = b.id_eva_case_item
         WHERE
             a.id_eva_case = #{idEvaCase}
         and a.cd_eva_asse = #{cdEvaAsse}
+        GROUP BY
+            a.id_eva_case_item ,
+            a.id_eva_case ,
+            a.item_name ,
+            a.score_eva ,
+            b.fg_crs
     </select>
     <select id="listKbReason" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -926,7 +974,8 @@
             a.score_eva ,
             b.sd_eva_effciency AS sdEva,
             b.id_die,
-            c.name as idDieText
+            c.name as idDieText,
+            b.fg_crs
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_reason b ON a.id_eva_case_item = b.id_eva_case_item
@@ -941,7 +990,8 @@
             a.score_eva ,
             b.sd_eva_effciency,
             b.id_die,
-            c.name
+            c.name,
+            b.fg_crs
     </select>
     <select id="listKbCover" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -949,7 +999,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_cover AS sdEva, b.id_die, c.name as idDieText
+            b.sd_eva_cover AS sdEva, b.id_die, c.name as idDieText,
+            b.fg_crs
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_cover b ON a.id_eva_case_item = b.id_eva_case_item
@@ -962,7 +1013,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_cover, b.id_die, c.name
+            b.sd_eva_cover, b.id_die, c.name,
+            b.fg_crs
     </select>
     <select id="listKbMust" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -970,7 +1022,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_must AS sdEva, b.id_die, c.name as idDieText
+            b.sd_eva_must AS sdEva, b.id_die, c.name as idDieText,
+            b.fg_crs
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_must b ON a.id_eva_case_item = b.id_eva_case_item
@@ -983,7 +1036,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_must, b.id_die, c.name
+            b.sd_eva_must, b.id_die, c.name,
+            b.fg_crs
     </select>
     <select id="listKbEffciency" resultType="com.sm.open.core.model.entity.FaqEvaCaseItem">
         SELECT
@@ -1203,7 +1257,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_must AS sdEva
+            b.sd_eva_must AS sdEva,
+            b.fg_crs
         FROM
             faq_eva_case_item a
         LEFT JOIN faq_eva_case_item_crs_thorough b ON a.id_eva_case_item = b.id_eva_case_item
@@ -1215,7 +1270,8 @@
             a.id_eva_case ,
             a.item_name ,
             a.score_eva ,
-            b.sd_eva_must
+            b.sd_eva_must,
+            b.fg_crs
     </select>
     <select id="listThoroughAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemThorough">
         SELECT

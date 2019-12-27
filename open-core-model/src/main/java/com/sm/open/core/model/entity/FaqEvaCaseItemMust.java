@@ -58,4 +58,8 @@ public class FaqEvaCaseItemMust implements Serializable {
      */
     private String desText;
 
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 }

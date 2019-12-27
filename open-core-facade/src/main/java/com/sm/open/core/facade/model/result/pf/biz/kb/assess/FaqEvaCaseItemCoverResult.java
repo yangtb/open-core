@@ -63,4 +63,8 @@ public class FaqEvaCaseItemCoverResult implements Serializable {
      */
     private String desText;
 
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 }

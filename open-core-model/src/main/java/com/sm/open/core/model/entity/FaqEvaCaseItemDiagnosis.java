@@ -42,4 +42,9 @@ public class FaqEvaCaseItemDiagnosis implements Serializable {
      * 主疾病标识
      */
     private String fgDieMain;
+
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 }

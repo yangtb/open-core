@@ -53,4 +53,8 @@ public class FaqEvaCaseItemReasonParam implements Serializable {
      */
     private Long idDie;
 
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 }

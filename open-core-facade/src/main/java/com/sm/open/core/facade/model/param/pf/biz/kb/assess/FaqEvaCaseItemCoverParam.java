@@ -53,5 +53,9 @@ public class FaqEvaCaseItemCoverParam implements Serializable {
      */
     private Long idInspectItem;
 
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 
 }

@@ -70,4 +70,9 @@ public class FaqEvaCaseItemResult implements Serializable {
      */
     private String fgDieMain;
 
+    /**
+     * crs标志
+     */
+    private String fgCrs;
+
 }

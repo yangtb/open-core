@@ -56,4 +56,9 @@ public class FaqEvaCaseItemThoroughParam implements Serializable {
      * 字典文本
      */
     private String desText;
+
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 }

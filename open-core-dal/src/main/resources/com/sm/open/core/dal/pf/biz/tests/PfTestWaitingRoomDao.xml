@@ -2055,8 +2055,9 @@
         )
         AND a.fg_valid = '0'
     </select>
-    <select id="selectManyNzDieMap" resultType="java.util.Map">
+    <select id="selectManyNzDieMap" resultType="com.sm.open.core.model.vo.pf.biz.test.ChartVo">
         select
+            a.id_testexec_result_referral,
             IFNULL(b.NAME,c.NAME) AS idDieText,
             a.fg_exclude as fgExclude
         from exm_med_result_referral a

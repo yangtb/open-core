@@ -58,4 +58,8 @@ public class FaqEvaCaseItemReasonResult implements Serializable {
      */
     private Long idDie;
 
+    /**
+     * crs标志
+     */
+    private String fgCrs;
 }
