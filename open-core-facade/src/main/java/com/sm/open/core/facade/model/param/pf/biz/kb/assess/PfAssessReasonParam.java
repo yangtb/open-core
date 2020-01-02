@@ -76,4 +76,9 @@ public class PfAssessReasonParam extends FaqEvaCaseItemParam implements Serializ
      * 主疾病标识
      */
     private String fgDieMain;
+
+    /**
+     * 从病例引入标识
+     */
+    private int fromCaseFlag;
 }

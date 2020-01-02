@@ -87,4 +87,5 @@ public class PfTestExamTagParam extends PfPageParam implements Serializable {
      * idMedCaseList集合
      */
     private List<Long> idMedCaseLists;
+    private String idTestexecResultReferral;
 }

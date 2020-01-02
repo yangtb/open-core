@@ -73,4 +73,9 @@ public class PfAssessMustDto extends FaqEvaCaseItem implements Serializable {
      */
     private String cdEvaAsse;
 
+    /**
+     * 从病例引入标识
+     */
+    private int fromCaseFlag;
+
 }

@@ -230,10 +230,34 @@
         where fm.id_medicalrec = #{idMedicalrec}
     </select>
     <select id="selectMedTag" resultType="com.sm.open.core.model.entity.FaqMedTag">
-        select id_med_tag,id_med_case from faq_med_tag where id_medicalrec = #{idMedicalrec} and id_tag = #{idTag}
+        select a.id_med_tag, a.id_med_case
+        from faq_med_tag a
+        <if test="cdMedAsse != null">
+            LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag
+        </if>
+        where a.id_medicalrec = #{idMedicalrec}
+        <if test="idTag != null">
+            and a.id_tag = #{idTag}
+        </if>
+        <if test="cdMedAsse != null">
+            AND b.cd_med_asse = #{cdMedAsse}
+        </if>
+        limit 1
     </select>
     <select id="selectEvaTag" resultType="com.sm.open.core.model.entity.FaqEvaTag">
-        select id_eva_tag,id_eva_case from faq_eva_tag where id_medicalrec = #{idMedicalrec} and id_tag = #{idTag}
+        select a.id_eva_tag, a.id_eva_case
+        from faq_eva_tag a
+        <if test="cdEvaAsse != null">
+            LEFT JOIN bas_eva_tag b ON a.id_tag = b.id_tag
+        </if>
+        where id_medicalrec = #{idMedicalrec}
+        <if test="idTag != null">
+            and a.id_tag = #{idTag}
+        </if>
+        <if test="cdEvaAsse != null">
+            AND b.cd_eva_asse = #{cdEvaAsse}
+        </if>
+        limit 1
     </select>
 
 </mapper>

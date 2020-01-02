@@ -280,6 +280,10 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
                 }
             }
         }
+        // 删除无效的等效答案数据（从病例引入的数据）
+        if (dto.getFromCaseFlag() != 1) {
+            pfKbAssessDao.delFromCaseDefaultReason(dto.getIdEvaCaseItem());
+        }
         return dto.getIdEvaCaseItem();
     }
 
@@ -356,6 +360,10 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
                     pfKbAssessDao.editCover(faqEvaCaseItemCover);
                 }
             }
+        }
+        // 删除无效的等效答案数据（从病例引入的数据）
+        if (dto.getFromCaseFlag() != 1) {
+            pfKbAssessDao.delFromCaseDefaultCover(dto.getIdEvaCaseItem());
         }
         return dto.getIdEvaCaseItem();
     }
@@ -434,6 +442,10 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
                 }
             }
         }
+        // 删除无效的等效答案数据（从病例引入的数据）
+        if (dto.getFromCaseFlag() != 1) {
+            pfKbAssessDao.delFromCaseDefaultMust(dto.getIdEvaCaseItem());
+        }
         return dto.getIdEvaCaseItem();
     }
 
@@ -509,6 +521,10 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
                     pfKbAssessDao.editThorough(faqEvaCaseItemThorough);
                 }
             }
+        }
+        // 删除无效的等效答案数据（从病例引入的数据）
+        if (dto.getFromCaseFlag() != 1) {
+            pfKbAssessDao.delFromCaseDefaultThorough(dto.getIdEvaCaseItem());
         }
         return dto.getIdEvaCaseItem();
     }

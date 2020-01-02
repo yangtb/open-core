@@ -70,4 +70,8 @@ public class PfAssessThoroughParam extends FaqEvaCaseItemParam implements Serial
      */
     private String cdEvaAsse;
 
+    /**
+     * 从病例引入标识
+     */
+    private int fromCaseFlag;
 }

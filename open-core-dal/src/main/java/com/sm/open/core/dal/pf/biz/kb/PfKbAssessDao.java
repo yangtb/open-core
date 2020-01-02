@@ -502,4 +502,38 @@ public interface PfKbAssessDao {
     Integer copyKbAssess007(@Param("oldIdEvaCaseItem") Long oldIdEvaCaseItem,
                             @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
 
+
+    /**
+     * 删除无效的等效答案数据（从病例引入的数据）
+     *
+     * @param idEvaCaseItem
+     * @return
+     */
+    Integer delFromCaseDefaultMust(@Param("idEvaCaseItem") Long idEvaCaseItem);
+
+
+    /**
+     * 删除无效的等效答案数据（从病例引入的数据）
+     *
+     * @param idEvaCaseItem
+     * @return
+     */
+    Integer delFromCaseDefaultReason(@Param("idEvaCaseItem") Long idEvaCaseItem);
+
+    /**
+     * 删除无效的等效答案数据（从病例引入的数据）
+     *
+     * @param idEvaCaseItem
+     * @return
+     */
+    Integer delFromCaseDefaultCover(@Param("idEvaCaseItem") Long idEvaCaseItem);
+
+
+    /**
+     * 删除无效的等效答案数据（从病例引入的数据）
+     *
+     * @param idEvaCaseItem
+     * @return
+     */
+    Integer delFromCaseDefaultThorough(@Param("idEvaCaseItem") Long idEvaCaseItem);
 }

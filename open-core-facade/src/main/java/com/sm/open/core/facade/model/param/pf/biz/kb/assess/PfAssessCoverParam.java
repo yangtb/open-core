@@ -70,4 +70,9 @@ public class PfAssessCoverParam extends FaqEvaCaseItemParam implements Serializa
      * 组件编码
      */
     private String cdEvaAsse;
+
+    /**
+     * 从病例引入标识
+     */
+    private int fromCaseFlag;
 }

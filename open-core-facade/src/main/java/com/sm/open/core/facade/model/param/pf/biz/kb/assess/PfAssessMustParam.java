@@ -71,4 +71,8 @@ public class PfAssessMustParam extends FaqEvaCaseItemParam implements Serializab
      */
     private String cdEvaAsse;
 
+    /**
+     * 从病例引入标识
+     */
+    private int fromCaseFlag;
 }

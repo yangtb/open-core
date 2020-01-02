@@ -862,7 +862,42 @@
         </foreach>
         )
     </delete>
-
+    <delete id="delFromCaseDefaultMust">
+        DELETE FROM
+            faq_eva_case_item_must
+        WHERE
+            id_eva_case_item = #{idEvaCaseItem}
+        AND id_inques IS NULL
+        AND id_body IS NULL
+        AND id_inspect_item IS NULL
+    </delete>
+    <delete id="delFromCaseDefaultReason">
+        DELETE FROM
+            faq_eva_case_item_reason
+        WHERE
+            id_eva_case_item = #{idEvaCaseItem}
+        AND id_inques IS NULL
+        AND id_body IS NULL
+        AND id_inspect_item IS NULL
+    </delete>
+    <delete id="delFromCaseDefaultCover">
+        DELETE FROM
+            faq_eva_case_item_cover
+        WHERE
+            id_eva_case_item = #{idEvaCaseItem}
+        AND id_inques IS NULL
+        AND id_body IS NULL
+        AND id_inspect_item IS NULL
+    </delete>
+    <delete id="delFromCaseDefaultThorough">
+        DELETE FROM
+            faq_eva_case_item_crs_thorough
+        WHERE
+            id_eva_case_item = #{idEvaCaseItem}
+        AND id_inques IS NULL
+        AND id_body IS NULL
+        AND id_inspect_item IS NULL
+    </delete>
 
     <select id="countKbAssess" resultType="java.lang.Long">
         SELECT
@@ -1138,6 +1173,7 @@
         </if>
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
+        and (a.id_inques is not null or a.id_body is not null or a.id_inspect_item is not null)
     </select>
     <select id="listCoverAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemCover">
         SELECT
@@ -1168,6 +1204,7 @@
         left join bas_die c on c.id_die = a.id_die
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
+        and (a.id_inques is not null or a.id_body is not null or a.id_inspect_item is not null)
     </select>
     <select id="listMustAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemMust">
         SELECT
@@ -1197,6 +1234,7 @@
         </if>
         WHERE
             a.id_eva_case_item = #{idEvaCaseItem}
+        and (a.id_inques is not null or a.id_body is not null or a.id_inspect_item is not null)
     </select>
     <select id="listOrderAnswer" resultType="com.sm.open.core.model.entity.FaqEvaCaseItemOrder">
         SELECT
@@ -1301,5 +1339,6 @@
         </if>
         WHERE
         a.id_eva_case_item = #{idEvaCaseItem}
+        and (a.id_inques is not null or a.id_body is not null or a.id_inspect_item is not null)
     </select>
 </mapper>

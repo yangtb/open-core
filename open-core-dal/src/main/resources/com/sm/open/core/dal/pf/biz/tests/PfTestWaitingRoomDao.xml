@@ -2163,10 +2163,12 @@
             ) temp
         <where>
             <if test="type == 1">
-                temp.id_die not LIKE '%,%' or temp.id_die is null
+                (temp.id_die not LIKE '%,%' or temp.id_die is null)
+                and temp.id_die = #{idTestexecResultReferral}
             </if>
             <if test="type == 2">
                 temp.id_die LIKE '%,%'
+                and CONCAT(',',temp.id_die) LIKE concat('%',#{idTestexecResultReferral},'%')
             </if>
         </where>
     </select>
@@ -2196,10 +2198,12 @@
             ) temp
         <where>
             <if test="type == 1">
-                temp.id_die not LIKE '%,%' or temp.id_die is null
+                (temp.id_die not LIKE '%,%' or temp.id_die is null)
+                and temp.id_die = #{idTestexecResultReferral}
             </if>
             <if test="type == 2">
                 temp.id_die LIKE '%,%'
+                and CONCAT(',',temp.id_die) LIKE concat('%',#{idTestexecResultReferral},'%')
             </if>
         </where>
         limit #{offset}, #{limit}
