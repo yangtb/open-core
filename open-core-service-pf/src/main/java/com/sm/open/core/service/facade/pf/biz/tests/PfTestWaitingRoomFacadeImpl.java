@@ -719,6 +719,22 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<List<PfWaitingRoomDiagnosisResult>> listDiagnosis(ExmMedResultDiagnosisParam param) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                     BeanUtil.convertList(pfTestWaitingRoomService.listDiagnosis(BeanUtil.convert(param, ExmMedResultDiagnosis.class)),
+                             PfWaitingRoomDiagnosisResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiagnosis-error】查询初步诊断列表出错, param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SELECT_DIAGNOSIS_ERROR, "查询初步诊断列表出错"));
+        }
+    }
+
+    @Override
     public CommonResult<ExmMedResultSummaryResult> selectSummary(Long idTestexecResult) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
@@ -1013,6 +1029,31 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
             LOGGER.error("【PfTestWaitingRoomFacadeImpl-listDiagnosticChart-error】获取诊断分析、鉴别诊断列表，param:{}", param.toString(), e);
             return PfResultFactory.initPageResultWithError(
                     PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public PfPageResult listEvaDimension(Long idTestexecResultDimension) {
+        try {
+            return PfResultFactory.initPagePfResultWithSuccess(0L,
+                    BeanUtil.convertList(pfTestWaitingRoomService.listEvaDimension(idTestexecResultDimension),
+                            PfWaitingRoomDimensionResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listEvaDimension-error】获取评估维度明细列表失败，param:{}", idTestexecResultDimension, e);
+            return PfResultFactory.initPageResultWithError(
+                    PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, "获取评估维度明细列表失败");
+        }
+    }
+
+    @Override
+    public CommonResult<String> selectIdStr(PfTestExamTagParam param) {
+        try {
+            PfTestExamTagDto dto = BeanUtil.convert(param, PfTestExamTagDto.class);
+            return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.selectIdStr(dto));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-selectIdStr-error】获取诊断分析、鉴别诊断线索，param:{}", param.toString(), e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, "获取诊断分析、鉴别诊断线索失败"));
         }
     }
 

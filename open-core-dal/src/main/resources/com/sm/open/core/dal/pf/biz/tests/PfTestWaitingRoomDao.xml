@@ -371,6 +371,9 @@
                 des_die_reason,
             </if>
                 gmt_create,
+            <if test="mainFlag!=null">
+                main_flag,
+            </if>
         </trim>
         )
         VALUES
@@ -392,6 +395,9 @@
                 #{desDieReason},
             </if>
                 now(),
+            <if test="mainFlag!=null">
+                #{mainFlag},
+            </if>
         </trim>
         )
     </insert>
@@ -793,6 +799,9 @@
             <if test="desDieReason!=null">
                 des_die_reason = #{desDieReason},
             </if>
+            <if test="mainFlag!=null">
+                main_flag = #{mainFlag},
+            </if>
         </trim>
         WHERE
             id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
@@ -997,7 +1006,8 @@
         update exm_med_result_order_short_drugs set fg_valid = '1' where id_order_short_drugs = #{id}
     </delete>
     <delete id="delDiagnosis">
-        update exm_med_result_diagnosis set fg_valid = '1' where id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
+        <!-- update exm_med_result_diagnosis set fg_valid = '1' where id_testexec_result_diagnosis = #{idTestexecResultDiagnosis} -->
+        delete from exm_med_result_diagnosis where id_testexec_result_diagnosis = #{idTestexecResultDiagnosis}
     </delete>
     <delete id="delDieReason">
         update exm_med_result_die_reason set fg_valid = '1' where id_die_reason = #{idDieReason}
@@ -1599,7 +1609,9 @@
             a.id_testexec_result,
             a.id_die,
             a.gmt_create,
-            b.NAME as idDieText
+            b.NAME as idDieText,
+	        a.des_die_reason,
+	        a.main_flag
         from exm_med_result_diagnosis a
         left join bas_die b on a.id_die = b.id_die
         where
@@ -1622,7 +1634,7 @@
     </select>
     <select id="selectDiagnosisNew" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomDiagnosisVo">
         select
-            des_die_reason
+            des_die_reason, main_flag
         from
             exm_med_result_diagnosis
         where
@@ -1871,6 +1883,7 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+        AND a.fg_exclude = '0'
     </select>
     <select id="listReferralReason" resultType="com.sm.open.core.model.vo.pf.biz.test.PfReferralReasonVo">
         SELECT
@@ -2072,6 +2085,18 @@
         AND a.fg_valid = '0'
     </select>
 
+    <select id="selectManyDieMap" resultType="com.sm.open.core.model.vo.pf.biz.test.ChartVo">
+        SELECT
+            a.id_die ,
+            b. NAME AS idDieText ,
+            a.main_flag
+        FROM
+            exm_med_result_diagnosis a
+        LEFT JOIN bas_die b ON a.id_die = b.id_die
+        WHERE
+            a.id_testexec_result = #{idTestexecResult}
+        AND a.fg_valid = '0'
+    </select>
 
     <select id="listAllExamByIdInspect" resultType="com.sm.open.core.model.entity.FaqMedCaseInspectList">
         SELECT
@@ -2140,6 +2165,7 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+	    AND a.fg_exclude = '0'
     </select>
     <select id="countDiagnosticChart" resultType="java.lang.Long">
         SELECT
@@ -2208,6 +2234,51 @@
         </where>
         limit #{offset}, #{limit}
     </select>
+
+    <select id="selectIdTestexecResultReferral" resultType="java.lang.Long">
+        SELECT
+            id_testexec_result_referral
+        FROM
+            exm_med_result_referral
+        WHERE
+            id_die = #{idDie}
+        AND fg_die_class = '2'
+        AND id_testexec_result = #{idTestexecResult}
+        LIMIT 1
+    </select>
+
+    <select id="selectIdStr" resultType="java.lang.String">
+        SELECT
+            GROUP_CONCAT(id)
+        FROM
+            (SELECT
+                CONCAT('body-',a.id_testexec_result_body) as id, a.fg_clue, b.des_body as checkItem, b.des_result, a.id_die
+            FROM
+                exm_med_result_body a
+            LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
+            WHERE
+                a.id_testexec_result = #{idTestexecResult}
+            union all
+            SELECT
+                CONCAT('inspect-',a.id_testexec_result_inspect) as id, a.fg_clue, b.na_item, b.val_result, a.id_die
+            FROM
+                exm_med_result_inspect a
+            LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
+            WHERE
+                a.id_testexec_result = #{idTestexecResult}
+            ) temp
+        <where>
+            <if test="type == 1">
+                (temp.id_die not LIKE '%,%' or temp.id_die is null)
+                and temp.id_die = #{idTestexecResultReferral}
+            </if>
+            <if test="type == 2">
+                temp.id_die LIKE '%,%'
+                and CONCAT(',',temp.id_die) LIKE concat('%',#{idTestexecResultReferral},'%')
+            </if>
+        </where>
+    </select>
+
     <select id="selectFinishExamInfo" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomFinishVo">
         SELECT
             a.id_medicalrec ,
@@ -2269,6 +2340,15 @@
         <if test="keyword != null and keyword != ''">
             AND c.na_item like concat('%',#{keyword},'%')
         </if>
+    </select>
+    <select id="listEvaDimension" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomDimensionVo">
+        select
+            (case when score_eva = score_result then 1 ELSE 0 end) as flag,
+            name_eva
+        from
+            exm_eva_log
+        where
+            id_testexec_result_dimension = #{idTestexecResultDimension}
     </select>
 
 </mapper>

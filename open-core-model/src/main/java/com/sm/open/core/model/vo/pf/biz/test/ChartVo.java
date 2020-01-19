@@ -18,6 +18,10 @@ public class ChartVo implements Serializable {
      */
     private Long idTestexecResultReferral;
 
+    /**
+     * 疾病id
+     */
+    private Long idDie;
 
     /**
      * 疾病名称
@@ -28,4 +32,9 @@ public class ChartVo implements Serializable {
      * 排除标志
      */
     private String fgExclude;
+
+    /**
+     * 主诊断：0=否，1=是
+     */
+    private Integer mainFlag;
 }

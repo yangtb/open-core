@@ -503,6 +503,9 @@ public interface PfKbAssessDao {
                             @Param("newIdEvaCaseItem") Long newIdEvaCaseItem);
 
 
+    boolean isExistFromCaseMust(FaqEvaCaseItem dto);
+
+
     /**
      * 删除无效的等效答案数据（从病例引入的数据）
      *

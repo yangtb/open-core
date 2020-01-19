@@ -374,17 +374,17 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         if (dto.getIdTestexecResultReferral() == null) {
             pfTestWaitingRoomDao.saveReferral(dto);
             // 导入到确诊
-            ExmMedResultDiagnosis diagnosis = new ExmMedResultDiagnosis();
+            /*ExmMedResultDiagnosis diagnosis = new ExmMedResultDiagnosis();
             diagnosis.setIdTestexecResult(dto.getIdTestexecResult());
             diagnosis.setIdDie(dto.getIdDie());
             diagnosis.setFgDieClass(dto.getFgDieClass());
             diagnosis.setIdTestexecResultReferral(dto.getIdTestexecResultReferral());
-            pfTestWaitingRoomDao.addDiagnosis(diagnosis);
+            pfTestWaitingRoomDao.addDiagnosis(diagnosis);*/
         } else {
             // 排除拟诊
             pfTestWaitingRoomDao.outReferral(dto);
             // 修改确诊标识
-            pfTestWaitingRoomDao.updateQzFlag(dto.getIdTestexecResultReferral());
+            // pfTestWaitingRoomDao.updateQzFlag(dto.getIdTestexecResultReferral());
         }
         return dto.getIdTestexecResultReferral();
     }
@@ -572,6 +572,12 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         }*/
         return diagnosisVo;
     }
+
+    @Override
+    public List<ExmMedResultDiagnosis> listDiagnosis(ExmMedResultDiagnosis dto) {
+        return pfTestWaitingRoomDao.listDiagnosis(dto.getIdTestexecResult());
+    }
+
 
     @Override
     public ExmMedResultSummary selectSummary(Long idTestexecResult) {
@@ -835,7 +841,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public String selectReferralChartData(PfTestEvaDto dto) {
         PfOrgChartVo pfOrgChartVo = new PfOrgChartVo();
-        if (dto.getChartType() == 1 || dto.getChartType() == 2) {
+        if (dto.getChartType() == 1) {
             // 一级目录固定
             pfOrgChartVo.setName("拟诊");
             pfOrgChartVo.setType(1);
@@ -895,6 +901,56 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
                 twoChartList.add(twoChart);
             }
             pfOrgChartVo.setChildren(twoChartList);
+        } else if (dto.getChartType() == 2) {
+            // 一级目录固定
+            pfOrgChartVo.setName("初步诊断");
+            pfOrgChartVo.setType(1);
+            // 二级目录
+            List<ChartVo> basDies = pfTestWaitingRoomDao.selectManyDieMap(dto.getIdTestexecResult());
+
+            List<PfOrgChartVo> twoChartList = new ArrayList<>();
+            PfOrgChartVo twoChart;
+            PfOrgChartVo thirdChart;
+            PfOrgChartVo fourChart;
+            for (ChartVo chartVo : basDies) {
+                twoChart = new PfOrgChartVo();
+                twoChart.setName(chartVo.getIdDieText());
+                twoChart.setMainFlag(chartVo.getMainFlag());
+                twoChart.setFgExclude(StringUtils.isNotBlank(chartVo.getFgExclude())? chartVo.getFgExclude() : "0");
+                twoChart.setType(2);
+
+                PfTestExamTagDto pfTestExamTagDto = new PfTestExamTagDto();
+                pfTestExamTagDto.setType(2);
+                pfTestExamTagDto.setIdDie(chartVo.getIdDie());
+                pfTestExamTagDto.setIdTestexecResult(dto.getIdTestexecResult());
+                List<PfOrgChartVo> fourChartList = new ArrayList<>();
+                if (this.countDiagnosticChart(pfTestExamTagDto) >= 1) {
+                    // 四级目录
+                    fourChart = new PfOrgChartVo();
+                    fourChart.setId(String.valueOf(chartVo.getIdDie()));
+                    fourChart.setName("鉴别诊断");
+                    fourChart.setType(4);
+                    fourChartList.add(fourChart);
+                }
+                PfTestExamTagDto pfTestExamTagDto2 = new PfTestExamTagDto();
+                pfTestExamTagDto2.setType(1);
+                pfTestExamTagDto2.setIdDie(chartVo.getIdDie());
+                pfTestExamTagDto2.setIdTestexecResult(dto.getIdTestexecResult());
+                List<PfOrgChartVo> thirdChartList = new ArrayList<>();
+                if (this.countDiagnosticChart(pfTestExamTagDto2) >= 1) {
+                    // 三级目录
+                    thirdChart = new PfOrgChartVo();
+                    thirdChart.setId(String.valueOf(chartVo.getIdDie()));
+                    thirdChart.setName("诊断分析");
+                    thirdChart.setType(3);
+                    thirdChart.setChildren(fourChartList);
+                    thirdChartList.add(thirdChart);
+                }
+                // 二级目录
+                twoChart.setChildren(thirdChartList);
+                twoChartList.add(twoChart);
+            }
+            pfOrgChartVo.setChildren(twoChartList);
         } else if (dto.getChartType() == 3) {
             // 一级目录固定
             pfOrgChartVo.setName("初步诊断");
@@ -918,12 +974,30 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public Long countDiagnosticChart(PfTestExamTagDto dto) {
+        if (dto.getIdTestexecResultReferral() == null & dto.getIdDie() != null) {
+            Long idTestexecResultReferral = pfTestWaitingRoomDao.selectIdTestexecResultReferral(dto.getIdDie(), dto.getIdTestexecResult());
+            dto.setIdTestexecResultReferral(String.valueOf(idTestexecResultReferral));
+        }
         return pfTestWaitingRoomDao.countDiagnosticChart(dto);
     }
 
     @Override
     public List<PfWaitingRoomChartDetailVo> listDiagnosticChart(PfTestExamTagDto dto) {
+        if (dto.getIdTestexecResultReferral() == null & dto.getIdDie() != null) {
+            Long idTestexecResultReferral = pfTestWaitingRoomDao.selectIdTestexecResultReferral(dto.getIdDie(), dto.getIdTestexecResult());
+            dto.setIdTestexecResultReferral(String.valueOf(idTestexecResultReferral));
+        }
         return pfTestWaitingRoomDao.listDiagnosticChart(dto);
+    }
+
+    @Override
+    public List<PfWaitingRoomDimensionVo> listEvaDimension(Long idTestexecResultDimension) {
+        return pfTestWaitingRoomDao.listEvaDimension(idTestexecResultDimension);
+    }
+
+    @Override
+    public String selectIdStr(PfTestExamTagDto dto) {
+        return pfTestWaitingRoomDao.selectIdStr(dto);
     }
 
     @Override

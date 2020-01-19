@@ -65,4 +65,8 @@ public class ExmMedResultDiagnosis implements Serializable {
      */
     private String fgDieClass;
 
+    /**
+     * 主诊断：0=否，1=是
+     */
+    private Integer mainFlag;
 }

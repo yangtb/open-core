@@ -258,32 +258,39 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
                 dto.setIdEvaCase(tagVo.getIdEvaCase());
             }
         }
-        if (dto.getIdEvaCaseItem() == null) {
-            pfKbAssessDao.addItem(dto);
-        } else {
-            pfKbAssessDao.editItem(dto);
-        }
-        List<FaqEvaCaseItemReason> list = dto.getList();
-        if (!CollectionUtils.isEmpty(list)) {
-            List<String> list2 = new ArrayList<>();
-            list2.add(null);
-            list.removeAll(list2);
 
-            for (FaqEvaCaseItemReason faqEvaCaseItemReason : list) {
-                faqEvaCaseItemReason.setSdEvaEffciency(dto.getSdEva());
-                faqEvaCaseItemReason.setIdEvaCaseItem(dto.getIdEvaCaseItem());
-                faqEvaCaseItemReason.setIdDie(dto.getIdDie());
-                if (faqEvaCaseItemReason.getIdEvaCaseItemList() == null) {
-                    pfKbAssessDao.saveReason(faqEvaCaseItemReason);
-                } else {
-                    pfKbAssessDao.editReason(faqEvaCaseItemReason);
+        // 从病例引入的数据）去重
+        boolean fromCaseFlag = false;
+        if (dto.getFromCaseFlag() == 1) {
+            fromCaseFlag = pfKbAssessDao.isExistFromCaseMust(dto);
+        }
+
+        if (!fromCaseFlag) {
+            if (dto.getIdEvaCaseItem() == null) {
+                pfKbAssessDao.addItem(dto);
+            } else {
+                pfKbAssessDao.editItem(dto);
+            }
+            List<FaqEvaCaseItemReason> list = dto.getList();
+            if (!CollectionUtils.isEmpty(list)) {
+                List<String> list2 = new ArrayList<>();
+                list2.add(null);
+                list.removeAll(list2);
+
+                for (FaqEvaCaseItemReason faqEvaCaseItemReason : list) {
+                    faqEvaCaseItemReason.setSdEvaEffciency(dto.getSdEva());
+                    faqEvaCaseItemReason.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                    faqEvaCaseItemReason.setIdDie(dto.getIdDie());
+                    if (faqEvaCaseItemReason.getIdEvaCaseItemList() == null) {
+                        pfKbAssessDao.saveReason(faqEvaCaseItemReason);
+                    } else {
+                        pfKbAssessDao.editReason(faqEvaCaseItemReason);
+                    }
                 }
             }
         }
-        // 删除无效的等效答案数据（从病例引入的数据）
-        if (dto.getFromCaseFlag() != 1) {
-            pfKbAssessDao.delFromCaseDefaultReason(dto.getIdEvaCaseItem());
-        }
+
+
         return dto.getIdEvaCaseItem();
     }
 
@@ -339,31 +346,36 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
             }
         }
 
-        if (dto.getIdEvaCaseItem() == null) {
-            pfKbAssessDao.addItem(dto);
-        } else {
-            pfKbAssessDao.editItem(dto);
-        }
-        List<FaqEvaCaseItemCover> list = dto.getList();
-        if (!CollectionUtils.isEmpty(list)) {
-            List<String> list2 = new ArrayList<>();
-            list2.add(null);
-            list.removeAll(list2);
 
-            for (FaqEvaCaseItemCover faqEvaCaseItemCover : list) {
-                faqEvaCaseItemCover.setSdEvaCover(dto.getSdEva());
-                faqEvaCaseItemCover.setIdDie(dto.getIdDie());
-                faqEvaCaseItemCover.setIdEvaCaseItem(dto.getIdEvaCaseItem());
-                if (faqEvaCaseItemCover.getIdEvaCaseItemList() == null) {
-                    pfKbAssessDao.saveCover(faqEvaCaseItemCover);
-                } else {
-                    pfKbAssessDao.editCover(faqEvaCaseItemCover);
+        // 从病例引入的数据）去重
+        boolean fromCaseFlag = false;
+        if (dto.getFromCaseFlag() == 1) {
+            fromCaseFlag = pfKbAssessDao.isExistFromCaseMust(dto);
+        }
+
+        if (!fromCaseFlag) {
+            if (dto.getIdEvaCaseItem() == null) {
+                pfKbAssessDao.addItem(dto);
+            } else {
+                pfKbAssessDao.editItem(dto);
+            }
+            List<FaqEvaCaseItemCover> list = dto.getList();
+            if (!CollectionUtils.isEmpty(list)) {
+                List<String> list2 = new ArrayList<>();
+                list2.add(null);
+                list.removeAll(list2);
+
+                for (FaqEvaCaseItemCover faqEvaCaseItemCover : list) {
+                    faqEvaCaseItemCover.setSdEvaCover(dto.getSdEva());
+                    faqEvaCaseItemCover.setIdDie(dto.getIdDie());
+                    faqEvaCaseItemCover.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                    if (faqEvaCaseItemCover.getIdEvaCaseItemList() == null) {
+                        pfKbAssessDao.saveCover(faqEvaCaseItemCover);
+                    } else {
+                        pfKbAssessDao.editCover(faqEvaCaseItemCover);
+                    }
                 }
             }
-        }
-        // 删除无效的等效答案数据（从病例引入的数据）
-        if (dto.getFromCaseFlag() != 1) {
-            pfKbAssessDao.delFromCaseDefaultCover(dto.getIdEvaCaseItem());
         }
         return dto.getIdEvaCaseItem();
     }
@@ -420,32 +432,37 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
             }
         }
 
-        if (dto.getIdEvaCaseItem() == null) {
-            pfKbAssessDao.addItem(dto);
-        } else {
-            pfKbAssessDao.editItem(dto);
+        // 从病例引入的数据）去重
+        boolean fromCaseFlag = false;
+        if (dto.getFromCaseFlag() == 1) {
+            fromCaseFlag = pfKbAssessDao.isExistFromCaseMust(dto);
         }
-        List<FaqEvaCaseItemMust> list = dto.getList();
-        if (!CollectionUtils.isEmpty(list)) {
-            List<String> list2 = new ArrayList<>();
-            list2.add(null);
-            list.removeAll(list2);
 
-            for (FaqEvaCaseItemMust faqEvaCaseItemMust : list) {
-                faqEvaCaseItemMust.setSdEvaMust(dto.getSdEva());
-                faqEvaCaseItemMust.setIdDie(dto.getIdDie());
-                faqEvaCaseItemMust.setIdEvaCaseItem(dto.getIdEvaCaseItem());
-                if (faqEvaCaseItemMust.getIdEvaCaseItemList() == null) {
-                    pfKbAssessDao.saveMust(faqEvaCaseItemMust);
-                } else {
-                    pfKbAssessDao.editMust(faqEvaCaseItemMust);
+        if (!fromCaseFlag) {
+            if (dto.getIdEvaCaseItem() == null) {
+                pfKbAssessDao.addItem(dto);
+            } else {
+                pfKbAssessDao.editItem(dto);
+            }
+            List<FaqEvaCaseItemMust> list = dto.getList();
+            if (!CollectionUtils.isEmpty(list)) {
+                List<String> list2 = new ArrayList<>();
+                list2.add(null);
+                list.removeAll(list2);
+
+                for (FaqEvaCaseItemMust faqEvaCaseItemMust : list) {
+                    faqEvaCaseItemMust.setSdEvaMust(dto.getSdEva());
+                    faqEvaCaseItemMust.setIdDie(dto.getIdDie());
+                    faqEvaCaseItemMust.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                    if (faqEvaCaseItemMust.getIdEvaCaseItemList() == null) {
+                        pfKbAssessDao.saveMust(faqEvaCaseItemMust);
+                    } else {
+                        pfKbAssessDao.editMust(faqEvaCaseItemMust);
+                    }
                 }
             }
         }
-        // 删除无效的等效答案数据（从病例引入的数据）
-        if (dto.getFromCaseFlag() != 1) {
-            pfKbAssessDao.delFromCaseDefaultMust(dto.getIdEvaCaseItem());
-        }
+
         return dto.getIdEvaCaseItem();
     }
 
@@ -501,30 +518,34 @@ public class PfKbAssessServiceImpl implements PfKbAssessService {
             }
         }
 
-        if (dto.getIdEvaCaseItem() == null) {
-            pfKbAssessDao.addItem(dto);
-        } else {
-            pfKbAssessDao.editItem(dto);
+        // 从病例引入的数据）去重
+        boolean fromCaseFlag = false;
+        if (dto.getFromCaseFlag() == 1) {
+            fromCaseFlag = pfKbAssessDao.isExistFromCaseMust(dto);
         }
-        List<FaqEvaCaseItemThorough> list = dto.getList();
-        if (!CollectionUtils.isEmpty(list)) {
-            List<String> list2 = new ArrayList<>();
-            list2.add(null);
-            list.removeAll(list2);
 
-            for (FaqEvaCaseItemThorough faqEvaCaseItemThorough : list) {
-                faqEvaCaseItemThorough.setSdEvaMust(dto.getSdEva());
-                faqEvaCaseItemThorough.setIdEvaCaseItem(dto.getIdEvaCaseItem());
-                if (faqEvaCaseItemThorough.getIdEvaCaseItemList() == null) {
-                    pfKbAssessDao.saveThorough(faqEvaCaseItemThorough);
-                } else {
-                    pfKbAssessDao.editThorough(faqEvaCaseItemThorough);
+        if (!fromCaseFlag) {
+            if (dto.getIdEvaCaseItem() == null) {
+                pfKbAssessDao.addItem(dto);
+            } else {
+                pfKbAssessDao.editItem(dto);
+            }
+            List<FaqEvaCaseItemThorough> list = dto.getList();
+            if (!CollectionUtils.isEmpty(list)) {
+                List<String> list2 = new ArrayList<>();
+                list2.add(null);
+                list.removeAll(list2);
+
+                for (FaqEvaCaseItemThorough faqEvaCaseItemThorough : list) {
+                    faqEvaCaseItemThorough.setSdEvaMust(dto.getSdEva());
+                    faqEvaCaseItemThorough.setIdEvaCaseItem(dto.getIdEvaCaseItem());
+                    if (faqEvaCaseItemThorough.getIdEvaCaseItemList() == null) {
+                        pfKbAssessDao.saveThorough(faqEvaCaseItemThorough);
+                    } else {
+                        pfKbAssessDao.editThorough(faqEvaCaseItemThorough);
+                    }
                 }
             }
-        }
-        // 删除无效的等效答案数据（从病例引入的数据）
-        if (dto.getFromCaseFlag() != 1) {
-            pfKbAssessDao.delFromCaseDefaultThorough(dto.getIdEvaCaseItem());
         }
         return dto.getIdEvaCaseItem();
     }

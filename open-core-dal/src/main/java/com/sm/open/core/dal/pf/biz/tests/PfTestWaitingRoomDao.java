@@ -235,6 +235,14 @@ public interface PfTestWaitingRoomDao {
     List<ChartVo> selectManyNzDieMap(@Param("ids") List<String> ids);
 
     /**
+     * 获取疾病名称，逗号隔开
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<ChartVo> selectManyDieMap(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
      * 检查 - 保存问答问题
      *
      * @param dto
@@ -978,6 +986,19 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfWaitingRoomChartDetailVo> listDiagnosticChart(PfTestExamTagDto dto);
+
+    /**
+     * 查询拟诊id
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    Long selectIdTestexecResultReferral(@Param("idDie") Long idDie,
+                                        @Param("idTestexecResult") Long idTestexecResult);
+
+    List<PfWaitingRoomDimensionVo> listEvaDimension(@Param("idTestexecResultDimension") Long idTestexecResultDimension);
+
+    String selectIdStr(PfTestExamTagDto dto);
 
     /**
      *考试完成后所需跳转信息

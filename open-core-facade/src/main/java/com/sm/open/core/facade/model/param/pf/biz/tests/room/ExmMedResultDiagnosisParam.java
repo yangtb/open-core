@@ -59,4 +59,9 @@ public class ExmMedResultDiagnosisParam implements Serializable {
      * 拟诊id
      */
     private Long idTestexecResultReferral;
+
+    /**
+     * 主诊断：0=否，1=是
+     */
+    private Integer mainFlag;
 }

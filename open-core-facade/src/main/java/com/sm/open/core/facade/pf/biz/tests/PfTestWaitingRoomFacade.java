@@ -362,6 +362,8 @@ public interface PfTestWaitingRoomFacade {
      */
     CommonResult<PfWaitingRoomDiagnosisResult> selectDiagnosis(ExmMedResultDiagnosisParam param);
 
+    CommonResult<List<PfWaitingRoomDiagnosisResult>> listDiagnosis(ExmMedResultDiagnosisParam param);
+
     /**
      * 查询诊断小结
      *
@@ -520,6 +522,10 @@ public interface PfTestWaitingRoomFacade {
      * @return
      */
     PfPageResult listDiagnosticChart(PfTestExamTagParam param);
+
+    PfPageResult listEvaDimension(Long idTestexecResultDimension);
+
+    CommonResult<String> selectIdStr(PfTestExamTagParam param);
 
     /**
      * 考试完成后所需跳转信息

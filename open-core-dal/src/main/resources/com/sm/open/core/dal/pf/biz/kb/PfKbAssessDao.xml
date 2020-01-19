@@ -1341,4 +1341,14 @@
         a.id_eva_case_item = #{idEvaCaseItem}
         and (a.id_inques is not null or a.id_body is not null or a.id_inspect_item is not null)
     </select>
+    <select id="isExistFromCaseMust" resultType="java.lang.Boolean">
+        SELECT
+            count(1)
+        FROM
+            faq_eva_case_item
+        WHERE
+            id_eva_case = #{idEvaCase}
+        AND cd_eva_asse = #{cdEvaAsse}
+        AND item_name = #{itemName}
+    </select>
 </mapper>
