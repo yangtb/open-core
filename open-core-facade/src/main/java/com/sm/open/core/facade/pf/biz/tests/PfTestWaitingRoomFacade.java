@@ -306,6 +306,19 @@ public interface PfTestWaitingRoomFacade {
      */
     CommonResult<Long> saveIdentifyDiagnosis(ExmMedResultIdentifyParam param);
 
+
+    CommonResult<Integer> delIdentify(Long idTestexecResultIdentify);
+
+    CommonResult<List<ExmMedResultIdentifyReasonResult>> listIdentifyReasons(Long idTestexecResultIdentify);
+
+    /**
+     * 鉴别诊断列表
+     *
+     * @param idTestexecResult 病例结果id
+     * @return
+     */
+    CommonResult<List<ExmMedResultIdentifyResult>> listIdentifyDiagnosis(Long idTestexecResult);
+
     /**
      * 删除诊断
      *

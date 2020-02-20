@@ -1,4 +1,4 @@
-package com.sm.open.core.model.entity;
+package com.sm.open.core.facade.model.result.pf.biz.tests.room;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -15,7 +15,7 @@ import java.util.Date;
 @Setter
 @Getter
 @ToString
-public class ExmMedResultIdentifyReason implements Serializable {
+public class ExmMedResultIdentifyReasonResult implements Serializable {
 
     private static final long serialVersionUID = 1570773224818L;
 
@@ -84,5 +84,4 @@ public class ExmMedResultIdentifyReason implements Serializable {
      * 扩展ID
      */
     private Long extId;
-
 }

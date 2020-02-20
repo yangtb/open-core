@@ -1039,6 +1039,9 @@
     <delete id="delExmMedResultIdentifyReason">
         delete from exm_med_result_identify_reason where id_testexec_result_identify = #{idTestexecResultIdentify}
     </delete>
+    <delete id="delIdentify">
+        delete from exm_med_result_identify where id_testexec_result_identify = #{idTestexecResultIdentify}
+    </delete>
 
     <select id="countWaitingRoom" resultType="java.lang.Long">
         SELECT
@@ -2349,6 +2352,40 @@
             exm_eva_log
         where
             id_testexec_result_dimension = #{idTestexecResultDimension}
+    </select>
+    <select id="listIdentifyDiagnosis" resultType="com.sm.open.core.model.entity.ExmMedResultIdentify">
+        SELECT
+            id_testexec_result_identify ,
+            id_testexec_result ,
+            na_die ,
+            des_die_reason
+        FROM
+            exm_med_result_identify
+        WHERE
+            fg_valid = '0'
+        AND id_testexec_result = #{idTestexecResult}
+    </select>
+    <select id="listIdentifyReasons" resultType="com.sm.open.core.model.entity.ExmMedResultIdentifyReason">
+        SELECT
+            a.id_identify_reason ,
+            a.id_testexec_result_identify ,
+            a.sd_eva_effciency ,
+            a.id_inques ,
+            a.id_body ,
+            a.id_inspect_item ,
+            a.id_med_case_list ,
+            case a.sd_eva_effciency when '1' then b.des_inques when '2' then c.des_body when '3' then d.na_item else '' end as idText
+        FROM
+            exm_med_result_identify_reason a
+        LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
+        AND a.sd_eva_effciency = 1
+        LEFT JOIN faq_med_case_body_list c ON a.id_med_case_list = c.id_med_case_list
+        AND a.sd_eva_effciency = 2
+        LEFT JOIN faq_med_case_inspect_list d ON a.id_med_case_list = d.id_med_case_list
+        AND a.sd_eva_effciency = 3
+        WHERE
+            a.id_testexec_result_identify =  #{idTestexecResultIdentify}
+        AND a.fg_valid = '0'
     </select>
 
 </mapper>

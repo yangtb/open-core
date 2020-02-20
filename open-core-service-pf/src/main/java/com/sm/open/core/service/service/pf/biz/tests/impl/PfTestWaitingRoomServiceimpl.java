@@ -494,6 +494,28 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         return dto.getIdTestexecResultIdentify();
     }
 
+    @Override
+    public Integer delIdentify(Long idTestexecResultIdentify) {
+        pfTestWaitingRoomDao.delIdentify(idTestexecResultIdentify);
+        pfTestWaitingRoomDao.delExmMedResultIdentifyReason(idTestexecResultIdentify);
+        return 1;
+    }
+
+    @Override
+    public List<ExmMedResultIdentifyReason> listIdentifyReasons(Long idTestexecResultIdentify) {
+        return pfTestWaitingRoomDao.listIdentifyReasons(idTestexecResultIdentify);
+    }
+
+    @Override
+    public List<ExmMedResultIdentify> listIdentifyDiagnosis(Long idTestexecResult) {
+        List<ExmMedResultIdentify> list = pfTestWaitingRoomDao.listIdentifyDiagnosis(idTestexecResult);
+        for (ExmMedResultIdentify exmMedResultIdentify : list) {
+            List<ExmMedResultIdentifyReason> reasons = pfTestWaitingRoomDao.listIdentifyReasons(idTestexecResult);
+            exmMedResultIdentify.setReasonList(JSON.toJSONString(reasons));
+        }
+        return list;
+    }
+
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean delDiagnosis(Long idTestexecResultDiagnosis) {

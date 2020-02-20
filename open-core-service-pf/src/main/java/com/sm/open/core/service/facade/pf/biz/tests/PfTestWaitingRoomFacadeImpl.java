@@ -616,6 +616,51 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
+    public CommonResult<Integer> delIdentify(Long idTestexecResultIdentify) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    pfTestWaitingRoomService.delIdentify(idTestexecResultIdentify));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-delIdentify】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-delIdentify-error】删除鉴别诊断出错, idTestexecResultIdentify:{}", idTestexecResultIdentify, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR, "删除鉴别诊断出错"));
+        }
+    }
+
+    @Override
+    public CommonResult<List<ExmMedResultIdentifyReasonResult>> listIdentifyReasons(Long idTestexecResultIdentify) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listIdentifyReasons(idTestexecResultIdentify), ExmMedResultIdentifyReasonResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listIdentifyReasons】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listIdentifyReasons-error】查询鉴别诊断原因列表出错, idTestexecResultIdentify:{}", idTestexecResultIdentify, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR, "查询鉴别诊断原因列表出错"));
+        }
+    }
+
+    @Override
+    public CommonResult<List<ExmMedResultIdentifyResult>> listIdentifyDiagnosis(Long idTestexecResult) {
+        try {
+            return ResultFactory.initCommonResultWithSuccess(
+                    BeanUtil.convertList(pfTestWaitingRoomService.listIdentifyDiagnosis(idTestexecResult), ExmMedResultIdentifyResult.class));
+        } catch (BizRuntimeException e) {
+            LOGGER.warn("【PfTestWaitingRoomFacadeImpl-listIdentifyDiagnosis】, 校验警告:{}", e.getMessage());
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));
+        } catch (Exception e) {
+            LOGGER.error("【PfTestWaitingRoomFacadeImpl-listIdentifyDiagnosis-error】查询鉴别诊断列表出错, idTestexecResult:{}", idTestexecResult, e);
+            return CommonResult.toCommonResult(ResultFactory.initResultWithError(
+                    PfTestPaperConstant.SAVE_DIAGNOSIS_ERROR, "查询鉴别诊断列表出错"));
+        }
+    }
+
+    @Override
     public CommonResult<Boolean> delDiagnosis(Long idTestexecResultDiagnosis) {
         try {
             return ResultFactory.initCommonResultWithSuccess(pfTestWaitingRoomService.delDiagnosis(idTestexecResultDiagnosis));

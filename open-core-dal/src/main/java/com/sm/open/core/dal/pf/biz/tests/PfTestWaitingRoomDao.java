@@ -932,6 +932,14 @@ public interface PfTestWaitingRoomDao {
     int updateExmMedResultIdentify(ExmMedResultIdentify dto);
 
     /**
+     * 删除鉴别诊断
+     *
+     * @param idTestexecResultIdentify
+     * @return
+     */
+    Integer delIdentify(@Param("idTestexecResultIdentify") Long idTestexecResultIdentify);
+
+    /**
      * 确诊理由 - add
      *
      * @param dto
@@ -954,6 +962,22 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     int delExmMedResultIdentifyReason(Long idTestexecResultIdentify);
+
+    /**
+     * 鉴别诊断列表
+     *
+     * @param idTestexecResult
+     * @return
+     */
+    List<ExmMedResultIdentify> listIdentifyDiagnosis(@Param("idTestexecResult") Long idTestexecResult);
+
+    /**
+     * 鉴别诊断原因列表
+     *
+     * @param idTestexecResultIdentify
+     * @return
+     */
+    List<ExmMedResultIdentifyReason> listIdentifyReasons(@Param("idTestexecResultIdentify") Long idTestexecResultIdentify);
 
     /**
      * 获取拟诊
