@@ -61,6 +61,16 @@ public interface PfDiseaseFacade {
      */
     PfPageResult listDiseaseInfo(PfDiseaseInfoParam param);
 
+    PfPageResult listIdeReason(PfDiseaseInfoParam param);
+
+    /**
+     * 获取目录下所有疾病
+     *
+     * @param param
+     * @return
+     */
+    PfPageResult listDiseaseByCatalogueId(PfDiseaseInfoParam param);
+
     /**
      * 新增疾病信息
      *

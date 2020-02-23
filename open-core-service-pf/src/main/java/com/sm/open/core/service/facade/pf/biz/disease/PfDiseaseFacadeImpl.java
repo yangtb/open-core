@@ -86,6 +86,39 @@ public class PfDiseaseFacadeImpl implements PfDiseaseFacade {
     }
 
     @Override
+    public PfPageResult listIdeReason(PfDiseaseInfoParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfDiseaseInfoDto diseaseInfoDto = BeanUtil.convert(param, PfDiseaseInfoDto.class);
+            Long idEvaCase = pfDiseaseService.getIdEvaCaseByIdMedicalrec(param.getIdMedicalrec());
+            diseaseInfoDto.setIdEvaCase(idEvaCase);
+            return PfResultFactory.initPagePfResultWithSuccess(pfDiseaseService.countIdeReason(diseaseInfoDto),
+                    BeanUtil.convertList(pfDiseaseService.listIdeReason(diseaseInfoDto), BasDieResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfDiseaseFacadeImpl-listIdeReason-error】获取疾病信息列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
+    public PfPageResult listDiseaseByCatalogueId(PfDiseaseInfoParam param) {
+        try {
+            PfPageParam.initPageDto(param);
+            PfDiseaseInfoDto diseaseInfoDto = BeanUtil.convert(param, PfDiseaseInfoDto.class);
+
+            List<String> catalogueIds = pfDiseaseService.getChildCatalogueByCatalogueId(param.getCatalogueId());
+            diseaseInfoDto.setCatalogueIds(catalogueIds);
+            return PfResultFactory.initPagePfResultWithSuccess(pfDiseaseService.countDiseaseByCatalogueId(diseaseInfoDto),
+                    BeanUtil.convertList(pfDiseaseService.listDiseaseByCatalogueId(diseaseInfoDto), BasDieResult.class));
+        } catch (Exception e) {
+            LOGGER.error("【PfDiseaseFacadeImpl-listDiseaseByCatalogueId-error】根据疾病目录id获取疾病信息列表失败，param:{}", param.toString(), e);
+            return PfResultFactory.initPageResultWithError(
+                    PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR, PfDiseaseConstant.PAGE_DISEASE_INFO_LIST_ERROR_MSG);
+        }
+    }
+
+    @Override
     public CommonResult<Long> saveDiseaseCatalogue(BasDieClassParam param) {
         try {
             Assert.isTrue(StringUtils.isNotBlank(param.getName()), "name");

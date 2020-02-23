@@ -719,10 +719,10 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     }
 
     @Override
-    public CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult) {
+    public CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult, boolean flag) {
         try {
             return ResultFactory.initCommonResultWithSuccess(
-                    BeanUtil.convertList(pfTestWaitingRoomService.selectAllReferral(idTestexecResult), ExmMedResultReferralResult.class));
+                    BeanUtil.convertList(pfTestWaitingRoomService.selectAllReferral(idTestexecResult, flag), ExmMedResultReferralResult.class));
         } catch (BizRuntimeException e) {
             LOGGER.warn("【PfTestWaitingRoomFacadeImpl-selectAllReferral】, 校验警告:{}", e.getMessage());
             return CommonResult.toCommonResult(ResultFactory.initResultWithError(e.getErrorCode(), e.getMessage()));

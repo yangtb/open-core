@@ -53,6 +53,14 @@ public interface PfDiseaseService {
     boolean delDiseaseCatalogue(PfChangeStatusDto dto);
 
     /**
+     * 查询子目录
+     *
+     * @param catalogueId
+     * @return
+     */
+    List<String> getChildCatalogueByCatalogueId(String catalogueId);
+
+    /**
      * 疾病信息总数
      *
      * @param dto
@@ -67,6 +75,29 @@ public interface PfDiseaseService {
      * @return
      */
     List<BasDie> listDiseaseInfo(PfDiseaseInfoDto dto);
+
+    Long getIdEvaCaseByIdMedicalrec(Long idMedicalrec);
+
+    Long countIdeReason(PfDiseaseInfoDto dto);
+
+
+    List<BasDie> listIdeReason(PfDiseaseInfoDto dto);
+
+    /**
+     * 疾病总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countDiseaseByCatalogueId(PfDiseaseInfoDto dto);
+
+    /**
+     * 疾病信息列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasDie> listDiseaseByCatalogueId(PfDiseaseInfoDto dto);
 
     /**
      * 新增疾病信息

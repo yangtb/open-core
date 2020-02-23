@@ -114,6 +114,31 @@ public interface PfDiseaseDao {
      */
     List<BasDie> listDiseaseInfo(PfDiseaseInfoDto dto);
 
+
+    /**
+     * 查询子目录
+     *
+     * @param list
+     * @return
+     */
+    List<String> getChildCatalogueByCatalogueId(@Param("list") List<String> list);
+
+    /**
+     * 疾病总数
+     *
+     * @param dto
+     * @return
+     */
+    Long countDiseaseByCatalogueId(PfDiseaseInfoDto dto);
+
+    /**
+     * 疾病信息列表
+     *
+     * @param dto
+     * @return
+     */
+    List<BasDie> listDiseaseByCatalogueId(PfDiseaseInfoDto dto);
+
     /**
      * 新增疾病信息
      *
@@ -145,4 +170,11 @@ public interface PfDiseaseDao {
      * @return
      */
     List<BasDie> listDieNameByIds(@Param("list") List<Long> list);
+
+    Long countIdeReason(PfDiseaseInfoDto dto);
+
+    List<BasDie> listIdeReason(PfDiseaseInfoDto dto);
+
+    Long getIdEvaCaseByIdMedicalrec(@Param("idMedicalrec") Long idMedicalrec);
+
 }

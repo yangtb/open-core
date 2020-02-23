@@ -416,7 +416,7 @@ public interface PfTestWaitingRoomService {
      * @param idTestexecResult 病例结果ID
      * @return
      */
-    List<ExmMedResultReferral> selectAllReferral(Long idTestexecResult);
+    List<ExmMedResultReferral> selectAllReferral(Long idTestexecResult, boolean flag);
 
     /**
      * 查询诊断、诊断小结

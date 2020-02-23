@@ -572,8 +572,8 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public List<ExmMedResultReferral> selectAllReferral(Long idTestexecResult) {
-        return pfTestWaitingRoomDao.selectAllReferral(idTestexecResult);
+    public List<ExmMedResultReferral> selectAllReferral(Long idTestexecResult, boolean flag) {
+        return pfTestWaitingRoomDao.selectAllReferral(idTestexecResult, flag);
     }
 
     @Override
@@ -765,7 +765,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         }
         if (qzFlag) {
             // 导入到确诊
-            saveDieReason(dieReasons);
+            //saveDieReason(dieReasons);
         }
         return pfTestWaitingRoomDao.saveReferralReason(list) >= 1 ? true : false;
     }
@@ -903,21 +903,34 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
                 twoChart.setName(chartVo.getIdDieText());
                 twoChart.setFgExclude(StringUtils.isNotBlank(chartVo.getFgExclude())? chartVo.getFgExclude() : "0");
                 twoChart.setType(2);
-                // 四级目录
-                fourChart = new PfOrgChartVo();
-                fourChart.setId(String.valueOf(chartVo.getIdTestexecResultReferral()));
-                fourChart.setName("鉴别诊断");
-                fourChart.setType(4);
+
+                PfTestExamTagDto pfTestExamTagDto = new PfTestExamTagDto();
+                pfTestExamTagDto.setType(2);
+                pfTestExamTagDto.setIdDie(chartVo.getIdDie());
+                pfTestExamTagDto.setIdTestexecResult(dto.getIdTestexecResult());
                 List<PfOrgChartVo> fourChartList = new ArrayList<>();
-                fourChartList.add(fourChart);
-                // 三级目录
-                thirdChart = new PfOrgChartVo();
-                thirdChart.setId(String.valueOf(chartVo.getIdTestexecResultReferral()));
-                thirdChart.setName("诊断分析");
-                thirdChart.setType(3);
-                thirdChart.setChildren(fourChartList);
+                if (this.countDiagnosticChart(pfTestExamTagDto) >= 1) {
+                    // 四级目录
+                    fourChart = new PfOrgChartVo();
+                    fourChart.setId(String.valueOf(chartVo.getIdDie()));
+                    fourChart.setName("鉴别诊断");
+                    fourChart.setType(4);
+                    fourChartList.add(fourChart);
+                }
+                PfTestExamTagDto pfTestExamTagDto2 = new PfTestExamTagDto();
+                pfTestExamTagDto2.setType(1);
+                pfTestExamTagDto2.setIdDie(chartVo.getIdDie());
+                pfTestExamTagDto2.setIdTestexecResult(dto.getIdTestexecResult());
                 List<PfOrgChartVo> thirdChartList = new ArrayList<>();
-                thirdChartList.add(thirdChart);
+                if (this.countDiagnosticChart(pfTestExamTagDto2) >= 1) {
+                    // 三级目录
+                    thirdChart = new PfOrgChartVo();
+                    thirdChart.setId(String.valueOf(chartVo.getIdDie()));
+                    thirdChart.setName("诊断分析");
+                    thirdChart.setType(3);
+                    thirdChart.setChildren(fourChartList);
+                    thirdChartList.add(thirdChart);
+                }
                 // 二级目录
                 twoChart.setChildren(thirdChartList);
                 twoChartList.add(twoChart);
@@ -1069,11 +1082,32 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
         } else if (sdEvaEffciency == 3) {
             allList = pfTestWaitingRoomDao.getCheck(idReasonList, idMedCase);
         }
-        for (PfDiagnosticAnalysisDetailVo pfDiagnosticAnalysisDetailVo : allList) {
-            pfDiagnosticAnalysisDetailVo.setSdEvaEffciency(sdEvaEffciency);
-            pfDiagnosticAnalysisDetailVo.setFlag(flag);
+
+
+
+        List<PfDiagnosticAnalysisDetailVo> newList = new ArrayList<>();
+        String question = "";
+        String answer = "";
+        int listSize = allList.size();
+        for (int i = 0; i < listSize; i++) {
+            question += allList.get(i).getQuestion();
+            answer += allList.get(i).getAnswer();
+            if (i != listSize - 1) {
+                question += " / ";
+                answer += " / ";
+            }
         }
-        return allList;
+
+        if (StringUtils.isNotBlank(question)) {
+            PfDiagnosticAnalysisDetailVo pfDiagnosticAnalysisDetailVo1 = new PfDiagnosticAnalysisDetailVo();
+            pfDiagnosticAnalysisDetailVo1.setQuestion(question);
+            pfDiagnosticAnalysisDetailVo1.setAnswer(answer);
+            pfDiagnosticAnalysisDetailVo1.setSdEvaEffciency(sdEvaEffciency);
+            pfDiagnosticAnalysisDetailVo1.setFlag(flag);
+            newList.add(pfDiagnosticAnalysisDetailVo1);
+        }
+
+        return newList;
     }
 
 }

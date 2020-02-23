@@ -790,7 +790,8 @@ public interface PfTestWaitingRoomDao {
      * @param idTestexecResult
      * @return
      */
-    List<ExmMedResultReferral> selectAllReferral(@Param("idTestexecResult") Long idTestexecResult);
+    List<ExmMedResultReferral> selectAllReferral(@Param("idTestexecResult") Long idTestexecResult,
+                                                 @Param("flag") boolean flag);
 
     /**
      * 保存拟诊原因

@@ -357,7 +357,7 @@ public interface PfTestWaitingRoomFacade {
      * @param idTestexecResult 病例结果ID
      * @return
      */
-    CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult);
+    CommonResult<List<ExmMedResultReferralResult>> selectAllReferral(Long idTestexecResult, boolean flag);
 
     /**
      * 查询所有诊断

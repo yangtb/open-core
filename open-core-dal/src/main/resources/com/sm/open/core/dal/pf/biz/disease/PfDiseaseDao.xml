@@ -346,5 +346,117 @@
         </foreach>
         )
     </select>
+    <select id="countDiseaseByCatalogueId" resultType="java.lang.Long">
+        SELECT
+            count(1)
+        FROM
+            bas_die bd left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
+        WHERE
+            bd.fg_valid = '0'
+        AND bd.cd_dieclass in (
+        <foreach collection="catalogueIds" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+        <if test="keywords != null and keywords != '' ">
+            AND (bd.name like concat('%',#{keywords},'%')
+            or   bd.icd like concat('%',#{keywords},'%')
+            or   bd.pinyin like concat('%',#{keywords},'%'))
+        </if>
+    </select>
+    <select id="listDiseaseByCatalogueId" resultType="com.sm.open.core.model.entity.BasDie">
+        SELECT
+            bd.id_die, bd.name, bd.cd_dieclass,bdc.name as cdDieclassText,
+            bd.icd, bd.pinyin, bd.fg_active, bd.fg_valid,
+            bd.sort, bd.creator, bd.gmt_create, bd.operator, bd.gmt_modify
+        FROM
+            bas_die bd left join bas_die_class bdc on bd.cd_dieclass = bdc.cd
+        WHERE
+            bd.fg_valid = '0'
+        AND bd.cd_dieclass in (
+        <foreach collection="catalogueIds" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+        <if test="keywords != null and keywords != '' ">
+            AND (bd.name like concat('%',#{keywords},'%')
+            or   bd.icd like concat('%',#{keywords},'%')
+            or   bd.pinyin like concat('%',#{keywords},'%'))
+        </if>
+        limit #{offset}, #{limit}
+    </select>
+    <select id="getChildCatalogueByCatalogueId" resultType="java.lang.String">
+        select cd
+        from bas_die_class
+        where cd_par in (
+        <foreach collection="list" item="item" separator="," >
+            #{item}
+        </foreach>
+        )
+    </select>
+    <select id="countIdeReason" resultType="java.lang.Long">
+        select count(1)
+        from (
+            SELECT
+                b.id_die ,
+                c.name ,
+                c.icd ,
+                bdc.name AS cdDieclassText
+            FROM
+                faq_eva_case_item a
+            LEFT JOIN faq_eva_case_item_diagnosis b ON a.id_eva_case_item = b.id_eva_case_item
+            LEFT JOIN bas_die c ON b.id_die = c.id_die
+            LEFT JOIN bas_die_class bdc ON c.cd_dieclass = bdc.cd
+            WHERE
+                a.id_eva_case = #{idEvaCase}
+            AND a.cd_eva_asse = '002'
+            <if test="keywords != null and keywords != '' ">
+                AND (c.name like concat('%',#{keywords},'%')
+                or   c.icd like concat('%',#{keywords},'%')
+                or   c.pinyin like concat('%',#{keywords},'%'))
+            </if>
+            GROUP BY
+                b.id_die ,
+                c.name ,
+                c.icd ,
+                bdc.name
+        ) temp
+    </select>
+    <select id="listIdeReason" resultType="com.sm.open.core.model.entity.BasDie">
+        SELECT
+            b.id_die ,
+            c.name ,
+            c.icd ,
+            bdc.name AS cdDieclassText
+        FROM
+            faq_eva_case_item a
+        LEFT JOIN faq_eva_case_item_diagnosis b ON a.id_eva_case_item = b.id_eva_case_item
+        LEFT JOIN bas_die c ON b.id_die = c.id_die
+        LEFT JOIN bas_die_class bdc ON c.cd_dieclass = bdc.cd
+        WHERE
+            a.id_eva_case = #{idEvaCase}
+        AND a.cd_eva_asse = '002'
+        <if test="keywords != null and keywords != '' ">
+            AND (c.name like concat('%',#{keywords},'%')
+            or   c.icd like concat('%',#{keywords},'%')
+            or   c.pinyin like concat('%',#{keywords},'%'))
+        </if>
+        GROUP BY
+            b.id_die ,
+            c.name ,
+            c.icd ,
+            bdc.name
+    </select>
+    <select id="getIdEvaCaseByIdMedicalrec" resultType="java.lang.Long">
+        SELECT
+            a.id_eva_case
+        FROM
+            faq_eva_tag a
+        LEFT JOIN bas_eva_tag b ON a.id_tag = b.id_tag
+        WHERE
+            id_medicalrec = #{idMedicalrec}
+        AND b.cd_eva_asse = '002'
+        LIMIT 1
+    </select>
 
 </mapper>

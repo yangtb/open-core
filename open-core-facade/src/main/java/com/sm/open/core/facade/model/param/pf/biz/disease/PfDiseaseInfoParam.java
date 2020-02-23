@@ -37,5 +37,10 @@ public class PfDiseaseInfoParam extends PfPageParam implements Serializable {
     /**
      * 目录id
      */
-    private Long catalogueId;
+    private String catalogueId;
+
+    /**
+     * 病例id
+     */
+    private Long idMedicalrec;
 }

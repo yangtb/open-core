@@ -1886,7 +1886,14 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
-        AND a.fg_exclude = '0'
+        <choose>
+            <when test="flag">
+
+            </when>
+            <otherwise>
+                AND a.fg_exclude = '0'
+            </otherwise>
+        </choose>
     </select>
     <select id="listReferralReason" resultType="com.sm.open.core.model.vo.pf.biz.test.PfReferralReasonVo">
         SELECT
@@ -1956,6 +1963,7 @@
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'
+        AND a.fg_exclude = '0'
         <if test="keywords != null and keywords != '' ">
             AND (bd.name like concat('%',#{keywords},'%')
             or   bd.icd like concat('%',#{keywords},'%')
@@ -2086,6 +2094,7 @@
         </foreach>
         )
         AND a.fg_valid = '0'
+        AND a.fg_exclude = '0'
     </select>
 
     <select id="selectManyDieMap" resultType="com.sm.open.core.model.vo.pf.biz.test.ChartVo">

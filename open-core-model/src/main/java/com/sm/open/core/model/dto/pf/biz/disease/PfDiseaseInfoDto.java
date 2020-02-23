@@ -6,6 +6,7 @@ import lombok.Setter;
 import lombok.ToString;
 
 import java.io.Serializable;
+import java.util.List;
 
 @Setter
 @Getter
@@ -39,4 +40,15 @@ public class PfDiseaseInfoDto extends PageParam implements Serializable {
      * 目录id
      */
     private Long catalogueId;
+
+    /**
+     * 目录id
+     */
+    private List<String> catalogueIds;
+
+    /**
+     * 评估组件案例id
+     */
+    private Long idEvaCase;
+
 }

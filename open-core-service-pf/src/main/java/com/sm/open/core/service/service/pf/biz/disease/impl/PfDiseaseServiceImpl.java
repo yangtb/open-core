@@ -76,6 +76,27 @@ public class PfDiseaseServiceImpl implements PfDiseaseService {
     }
 
     @Override
+    public List<String> getChildCatalogueByCatalogueId(String catalogueId) {
+        List<String> list = new ArrayList<>();
+        list.add(catalogueId);
+
+        List<String> totalList = new ArrayList<>();
+        totalList.add(catalogueId);
+        return childCatalogueByCatalogue(totalList, list);
+    }
+
+    private List<String> childCatalogueByCatalogue(List<String> totalList, List<String> list) {
+        List<String> tempList = pfDiseaseDao.getChildCatalogueByCatalogueId(list);
+        if (CollectionUtils.isEmpty(tempList)) {
+            return totalList;
+        } else {
+            totalList.addAll(tempList);
+            childCatalogueByCatalogue(totalList, tempList);
+        }
+        return totalList;
+    }
+
+    @Override
     public Long countDiseaseInfo(PfDiseaseInfoDto dto) {
         return pfDiseaseDao.countDiseaseInfo(dto);
     }
@@ -83,6 +104,31 @@ public class PfDiseaseServiceImpl implements PfDiseaseService {
     @Override
     public List<BasDie> listDiseaseInfo(PfDiseaseInfoDto dto) {
         return pfDiseaseDao.listDiseaseInfo(dto);
+    }
+
+    @Override
+    public Long getIdEvaCaseByIdMedicalrec(Long idMedicalrec) {
+        return pfDiseaseDao.getIdEvaCaseByIdMedicalrec(idMedicalrec);
+    }
+
+    @Override
+    public Long countIdeReason(PfDiseaseInfoDto dto) {
+        return pfDiseaseDao.countIdeReason(dto);
+    }
+
+    @Override
+    public List<BasDie> listIdeReason(PfDiseaseInfoDto dto) {
+        return pfDiseaseDao.listIdeReason(dto);
+    }
+
+    @Override
+    public Long countDiseaseByCatalogueId(PfDiseaseInfoDto dto) {
+        return pfDiseaseDao.countDiseaseByCatalogueId(dto);
+    }
+
+    @Override
+    public List<BasDie> listDiseaseByCatalogueId(PfDiseaseInfoDto dto) {
+        return pfDiseaseDao.listDiseaseByCatalogueId(dto);
     }
 
     @Override
