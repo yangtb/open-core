@@ -870,7 +870,7 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
             // 二级目录
 
             List<String> idReferrals = new ArrayList<>();
-            if (dto.getChartType() == 1) {
+            /*if (dto.getChartType() == 1) {
                 List<String> nzDies = pfTestWaitingRoomDao.getNzDie(dto.getIdTestexecResult());
                 if (CollectionUtils.isEmpty(nzDies)) {
                     return JSON.toJSONString(pfOrgChartVo);
@@ -883,10 +883,10 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
                     for (String idDie : list) {
                         idReferrals.add(idDie);
                     }
-                }
-            } else if (dto.getChartType() == 2) {
+                }*/
+            //} else if (dto.getChartType() == 2) {
                 idReferrals = pfTestWaitingRoomDao.getReferralId(dto.getIdTestexecResult());
-            }
+            //}
 
             //idReferrals = idReferrals.stream().distinct().collect(Collectors.toList());
             if (CollectionUtils.isEmpty(idReferrals)) {
