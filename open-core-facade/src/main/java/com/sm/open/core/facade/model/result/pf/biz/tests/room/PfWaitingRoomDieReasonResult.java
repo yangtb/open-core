@@ -36,5 +36,9 @@ public class PfWaitingRoomDieReasonResult implements Serializable {
      */
     private Long extId;
 
+    /**
+     * 结果
+     */
+    private String resultText;
 
 }

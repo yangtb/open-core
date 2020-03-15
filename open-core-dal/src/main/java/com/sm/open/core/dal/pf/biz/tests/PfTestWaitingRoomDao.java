@@ -422,6 +422,16 @@ public interface PfTestWaitingRoomDao {
     Integer saveReferral(ExmMedResultReferral dto);
 
     /**
+     * 拟诊排除标识
+     *
+     * @param idTestexecResult
+     * @param idDie
+     * @return
+     */
+    String selectFgExclude(@Param("idTestexecResult") Long idTestexecResult,
+                           @Param("idDie") Long idDie);
+
+    /**
      * 拟诊 - 修改
      *
      * @param dto
@@ -670,7 +680,8 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     List<PfWaitingRoomDieReasonVo> listReadyDieReason(@Param("idTestexecResult") Long idTestexecResult,
-                                                      @Param("keyword") String keyword);
+                                                      @Param("keyword") String keyword,
+                                                      @Param("status") Integer status);
 
     /**
      * 查询确诊理由
@@ -1056,5 +1067,13 @@ public interface PfTestWaitingRoomDao {
      * @return
      */
     BigDecimal examAmountTotal(PfTestExamTagDto dto);
+
+    boolean isExistReferralReason(@Param("idTestexecResultReferral") Long idTestexecResultReferral,
+                                  @Param("id") Long id,
+                                  @Param("sdEvaEffciency") String sdEvaEffciency);
+
+    Long getIdMedCaseListOfBody(@Param("idTestexecResultBody") Long idTestexecResultBody);
+    Long getIdMedCaseListOfCheck(@Param("idTestexecResultInspect") Long idTestexecResultInspect);
+
 
 }

@@ -1,5 +1,6 @@
 package com.sm.open.core.service.service.pf.biz.tests.impl;
 
+import com.alibaba.dubbo.common.utils.CollectionUtils;
 import com.alibaba.fastjson.JSON;
 import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
@@ -26,7 +27,6 @@ import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.util.CollectionUtils;
 
 import javax.annotation.Resource;
 import java.math.BigDecimal;
@@ -263,6 +263,25 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Transactional(rollbackFor = Exception.class)
     @Override
     public boolean updateCheckStatus(PfBachChangeStatusDto dto) {
+        if (dto.isNzFlag()) {
+            List<ExmMedResultReferralReason> list = new ArrayList<>();
+            ExmMedResultReferralReason exmMedResultReferralReason;
+            for (Long id : dto.getList()) {
+                exmMedResultReferralReason = new ExmMedResultReferralReason();
+                exmMedResultReferralReason.setIdTestexecResultReferral(dto.getIdTestexecResultReferral());
+                exmMedResultReferralReason.setIdBody(id);
+                exmMedResultReferralReason.setSdEvaEffciency("2");
+                exmMedResultReferralReason.setFgExclude("0");
+                exmMedResultReferralReason.setGmtCreate(new Date());
+                exmMedResultReferralReason.setIdMedCaseList(pfTestWaitingRoomDao.getIdMedCaseListOfBody(id));
+                if (!pfTestWaitingRoomDao.isExistReferralReason(dto.getIdTestexecResultReferral(), id, "2")) {
+                    list.add(exmMedResultReferralReason);
+                }
+            }
+            if (CollectionUtils.isNotEmpty(list)) {
+                pfTestWaitingRoomDao.saveReferralReason(list);
+            }
+        }
         if ("1".equals(dto.getExtType())) {
             pfTestWaitingRoomDao.updateCheckStatusByIdTestexecResult(dto.getExtId(), dto.getOperationType());
         }
@@ -345,6 +364,25 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
     @Override
     public boolean updateExamStatus(PfBachChangeStatusDto dto) {
+        if (dto.isNzFlag()) {
+            List<ExmMedResultReferralReason> list = new ArrayList<>();
+            ExmMedResultReferralReason exmMedResultReferralReason;
+            for (Long id : dto.getList()) {
+                exmMedResultReferralReason = new ExmMedResultReferralReason();
+                exmMedResultReferralReason.setIdTestexecResultReferral(dto.getIdTestexecResultReferral());
+                exmMedResultReferralReason.setIdInspectItem(id);
+                exmMedResultReferralReason.setSdEvaEffciency("3");
+                exmMedResultReferralReason.setFgExclude("0");
+                exmMedResultReferralReason.setGmtCreate(new Date());
+                exmMedResultReferralReason.setIdMedCaseList(pfTestWaitingRoomDao.getIdMedCaseListOfCheck(id));
+                if (!pfTestWaitingRoomDao.isExistReferralReason(dto.getIdTestexecResultReferral(), id, "3")) {
+                    list.add(exmMedResultReferralReason);
+                }
+            }
+            if (CollectionUtils.isNotEmpty(list)) {
+                pfTestWaitingRoomDao.saveReferralReason(list);
+            }
+        }
         if ("1".equals(dto.getExtType())) {
             pfTestWaitingRoomDao.updateExamStatusByIdTestexecResult(dto.getExtId(), dto.getOperationType());
         }
@@ -372,7 +410,14 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     @Override
     public Long saveReferral(ExmMedResultReferral dto) {
         if (dto.getIdTestexecResultReferral() == null) {
-            pfTestWaitingRoomDao.saveReferral(dto);
+            String fgExclude = pfTestWaitingRoomDao.selectFgExclude(dto.getIdTestexecResult(), dto.getIdDie());
+            if (StringUtils.isBlank(fgExclude)) {
+                pfTestWaitingRoomDao.saveReferral(dto);
+            } else {
+                if ("1".equals(fgExclude)) {
+                    throw new BizRuntimeException("referralExcludeError", "添加失败！原因：拟诊已排除！");
+                }
+            }
             // 导入到确诊
             /*ExmMedResultDiagnosis diagnosis = new ExmMedResultDiagnosis();
             diagnosis.setIdTestexecResult(dto.getIdTestexecResult());
@@ -607,8 +652,8 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
     }
 
     @Override
-    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult, String keyword) {
-        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult, keyword);
+    public List<PfWaitingRoomDieReasonVo> listReadyDieReason(Long idTestexecResult, String keyword, Integer status) {
+        return pfTestWaitingRoomDao.listReadyDieReason(idTestexecResult, keyword, status);
     }
 
     @Override
@@ -906,26 +951,26 @@ public class PfTestWaitingRoomServiceimpl implements PfTestWaitingRoomService {
 
                 PfTestExamTagDto pfTestExamTagDto = new PfTestExamTagDto();
                 pfTestExamTagDto.setType(2);
-                pfTestExamTagDto.setIdDie(chartVo.getIdDie());
+                pfTestExamTagDto.setIdTestexecResultReferral(String.valueOf(chartVo.getIdTestexecResultReferral()));
                 pfTestExamTagDto.setIdTestexecResult(dto.getIdTestexecResult());
                 List<PfOrgChartVo> fourChartList = new ArrayList<>();
                 if (this.countDiagnosticChart(pfTestExamTagDto) >= 1) {
                     // 四级目录
                     fourChart = new PfOrgChartVo();
-                    fourChart.setId(String.valueOf(chartVo.getIdDie()));
+                    fourChart.setId(String.valueOf(chartVo.getIdTestexecResultReferral()));
                     fourChart.setName("鉴别诊断");
                     fourChart.setType(4);
                     fourChartList.add(fourChart);
                 }
                 PfTestExamTagDto pfTestExamTagDto2 = new PfTestExamTagDto();
                 pfTestExamTagDto2.setType(1);
-                pfTestExamTagDto2.setIdDie(chartVo.getIdDie());
+                pfTestExamTagDto2.setIdTestexecResultReferral(String.valueOf(chartVo.getIdTestexecResultReferral()));
                 pfTestExamTagDto2.setIdTestexecResult(dto.getIdTestexecResult());
                 List<PfOrgChartVo> thirdChartList = new ArrayList<>();
                 if (this.countDiagnosticChart(pfTestExamTagDto2) >= 1) {
                     // 三级目录
                     thirdChart = new PfOrgChartVo();
-                    thirdChart.setId(String.valueOf(chartVo.getIdDie()));
+                    thirdChart.setId(String.valueOf(chartVo.getIdTestexecResultReferral()));
                     thirdChart.setName("诊断分析");
                     thirdChart.setType(3);
                     thirdChart.setChildren(fourChartList);

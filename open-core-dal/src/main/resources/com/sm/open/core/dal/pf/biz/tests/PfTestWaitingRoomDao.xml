@@ -1685,7 +1685,8 @@
             '1' AS sdEvaEffciency ,
             a.id_med_case_list AS id ,
             b.des_inques AS idText,
-            b.id_inques as extId
+            b.id_inques as extId,
+            b.des_answer as resultText
         FROM
             exm_med_result_inques a
         LEFT JOIN faq_med_case_inques_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1695,12 +1696,23 @@
         <if test="keyword != null and keyword != ''">
             AND b.des_inques like concat('%',#{keyword},'%')
         </if>
+        <if test="status != null">
+            <choose>
+                <when test="status == 1">
+                    and b.fg_back = '1'
+                </when>
+                <when test="status == 2">
+                    and b.fg_reason = '1'
+                </when>
+            </choose>
+        </if>
         UNION ALL
         SELECT
             '2' AS sdEvaEffciency ,
             a.id_med_case_list AS id ,
             b.des_body AS idText,
-            b.id_body as extId
+            b.id_body as extId,
+            b.des_result as resultText
         FROM
             exm_med_result_body a
         LEFT JOIN faq_med_case_body_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1710,12 +1722,23 @@
         <if test="keyword != null and keyword != ''">
             AND b.des_body like concat('%',#{keyword},'%')
         </if>
+        <if test="status != null">
+            <choose>
+                <when test="status == 1">
+                    and b.fg_back = '1'
+                </when>
+                <when test="status == 2">
+                    and b.fg_reason = '1'
+                </when>
+            </choose>
+        </if>
         UNION ALL
         SELECT
             '3' AS sdEvaEffciency ,
             a.id_med_case_list AS id ,
             b.na_item AS idText,
-            b.id_inspect_item as extId
+            b.id_inspect_item as extId,
+            b.val_result as resultText
         FROM
             exm_med_result_inspect a
         LEFT JOIN faq_med_case_inspect_list b ON a.id_med_case_list = b.id_med_case_list
@@ -1724,6 +1747,16 @@
         AND a.fg_valid = '0'
         <if test="keyword != null and keyword != ''">
             AND b.na_item like concat('%',#{keyword},'%')
+        </if>
+        <if test="status != null">
+            <choose>
+                <when test="status == 1">
+                    and b.fg_back = '1'
+                </when>
+                <when test="status == 2">
+                    and b.fg_reason = '1'
+                </when>
+            </choose>
         </if>
     </select>
     <select id="listEva" resultType="com.sm.open.core.model.vo.pf.biz.test.eva.PfEvaExecVo">
@@ -2395,6 +2428,47 @@
         WHERE
             a.id_testexec_result_identify =  #{idTestexecResultIdentify}
         AND a.fg_valid = '0'
+    </select>
+    <select id="isExistReferralReason" resultType="java.lang.Boolean">
+        SELECT
+            count(1)
+        FROM
+            exm_med_result_referral_reason
+        WHERE
+            id_testexec_result_referral = #{idTestexecResultReferral}
+        <if test="sdEvaEffciency != null and sdEvaEffciency == '2'.toString()">
+            AND id_body = #{id}
+        </if>
+        <if test="sdEvaEffciency != null and sdEvaEffciency == '3'.toString()">
+            AND id_inspect_item = #{id}
+        </if>
+        AND fg_valid = '0'
+    </select>
+    <select id="getIdMedCaseListOfBody" resultType="java.lang.Long">
+        SELECT
+            id_med_case_list
+        FROM
+            exm_med_result_body
+        WHERE
+            id_testexec_result_body = #{idTestexecResultBody}
+    </select>
+    <select id="getIdMedCaseListOfCheck" resultType="java.lang.Long">
+        SELECT
+            id_med_case_list
+        FROM
+            exm_med_result_inspect
+        WHERE
+            id_testexec_result_inspect = #{idTestexecResultInspect}
+    </select>
+    <select id="selectFgExclude" resultType="java.lang.String">
+        SELECT
+            fg_exclude
+        FROM
+            exm_med_result_referral
+        WHERE
+            id_testexec_result = #{idTestexecResult}
+        AND id_die = #{idDie}
+        AND fg_valid = '0'
     </select>
 
 </mapper>

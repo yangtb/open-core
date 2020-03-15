@@ -390,7 +390,7 @@ public interface PfTestWaitingRoomFacade {
      *
      * @return
      */
-    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult, String keyword);
+    CommonResult<List<PfWaitingRoomDieReasonResult>> listReadyDieReason(Long idTestexecResult, String keyword, Integer status);
 
     /**
      * 查询确诊理由
