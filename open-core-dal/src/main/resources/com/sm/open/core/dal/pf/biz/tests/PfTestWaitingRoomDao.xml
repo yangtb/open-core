@@ -1099,7 +1099,7 @@
         LEFT JOIN faq_medicalrec k ON a.id_medicalrec = k.id_medicalrec
         WHERE
             a.sd_testplan_detail IN('0' , '1')
-        AND f.id_org = #{idOrg}
+        AND f.id_org = #{idOrg} and f.fg_active = '1' AND f.fg_valid = '0'
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1246,6 +1246,7 @@
         WHERE
             a.id_medicalrec = #{idMedicalrec}
         AND b.cd_med_asse = #{cdMedAsse}
+        limit 1
     </select>
     <select id="selectPhotoInfo" resultType="com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo">
         SELECT
