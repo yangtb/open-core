@@ -1291,7 +1291,23 @@
             c.id_inques ,
             c.des_inques,
             c.is_masculine,
-            IF(d.id_med_case_list is null,0,1) as extQa
+            IF(d.id_med_case_list is null,0,1) as extQa ,
+            IF((
+            SELECT
+                count(1)
+            FROM
+                faq_med_case_inques_list temp
+            WHERE
+                temp.id_med_case = a.id_med_case
+            AND temp.fg_valid = '0'
+            AND(
+                temp.id_inques_pre = c.id_inques
+                OR temp.id_inques_pre2 = c.id_inques
+                OR temp.id_inques_pre3 = c.id_inques
+                OR temp.id_inques_pre4 = c.id_inques
+                OR temp.id_inques_pre5 = c.id_inques
+            )
+            )=0 , 0 , 1) AS preFlag
         FROM
             faq_med_tag a
         LEFT JOIN bas_medical_tag b ON a.id_tag = b.id_tag

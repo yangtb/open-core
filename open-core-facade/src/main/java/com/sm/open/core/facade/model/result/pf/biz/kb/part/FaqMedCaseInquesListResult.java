@@ -102,6 +102,11 @@ public class FaqMedCaseInquesListResult implements Serializable {
     private boolean extQa;
 
     /**
+     * 是否包含预问诊项目
+     */
+    private boolean preFlag;
+
+    /**
      * 问诊标签
      */
     private String sdInquesLabel;
