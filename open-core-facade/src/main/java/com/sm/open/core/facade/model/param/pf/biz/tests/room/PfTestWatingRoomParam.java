@@ -49,4 +49,8 @@ public class PfTestWatingRoomParam extends PfPageParam implements Serializable {
      */
     private Long currentUserId;
 
+    /**
+     * 所属分类
+     */
+    private Long idMedicalrecCa;
 }

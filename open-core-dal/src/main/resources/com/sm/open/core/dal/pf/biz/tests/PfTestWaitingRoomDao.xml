@@ -1070,6 +1070,9 @@
         <if test="currentUserId != null">
             and a.id_student = #{currentUserId}
         </if>
+        <if test="idMedicalrecCa != null">
+            and k.id_medicalrec_ca = #{idMedicalrecCa}
+        </if>
     </select>
     <select id="listWaitingRoom" resultType="com.sm.open.core.model.vo.pf.biz.test.PfTestWaitingRoomVo">
         SELECT
@@ -1111,6 +1114,9 @@
         </if>
         <if test="currentUserId != null">
             and a.id_student = #{currentUserId}
+        </if>
+        <if test="idMedicalrecCa != null">
+            and k.id_medicalrec_ca = #{idMedicalrecCa}
         </if>
         limit #{offset}, #{limit}
     </select>
