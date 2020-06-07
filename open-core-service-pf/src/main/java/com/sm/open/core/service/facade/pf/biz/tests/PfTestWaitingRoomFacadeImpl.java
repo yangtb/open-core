@@ -1,5 +1,6 @@
 package com.sm.open.core.service.facade.pf.biz.tests;
 
+import com.sm.open.care.core.enums.YesOrNoNum;
 import com.sm.open.care.core.exception.BizRuntimeException;
 import com.sm.open.care.core.utils.Assert;
 import com.sm.open.care.core.utils.BeanUtil;
@@ -27,12 +28,14 @@ import com.sm.open.core.model.dto.pf.common.PfCatalogueTreeDto;
 import com.sm.open.core.model.dto.pf.common.PfCommonListDto;
 import com.sm.open.core.model.entity.*;
 import com.sm.open.core.model.vo.pf.biz.test.PfWaitingRoomPatVo;
+import com.sm.open.core.model.vo.pf.user.role.PfRoleVo;
 import com.sm.open.core.service.facade.pf.biz.disease.PfDiseaseConstant;
 import com.sm.open.core.service.facade.pf.biz.kb.PfKbPartConstant;
 import com.sm.open.core.service.service.pf.biz.clinic.PfClinicTemplateService;
 import com.sm.open.core.service.service.pf.biz.kb.PfKbPartService;
 import com.sm.open.core.service.service.pf.biz.tests.PfTestWaitingRoomService;
 import com.sm.open.core.service.service.pf.user.login.PfUserService;
+import com.sm.open.core.service.service.pf.user.role.PfRoleService;
 import org.apache.commons.collections.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -60,11 +63,24 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
     @Resource
     private PfKbPartService pfKbPartService;
 
+    @Resource
+    private PfRoleService pfRoleService;
+
     @Override
     public PfPageResult listWaitingRoom(PfTestWatingRoomParam param) {
         try {
             PfPageParam.initPageDto(param);
             PfTestWatingRoomDto dto = BeanUtil.convert(param, PfTestWatingRoomDto.class);
+            if (!param.isSuper()) {
+                // 获取角色level
+                PfRoleVo pfRoleVo = pfRoleService.selectRoleLevel(param.getUserId());
+                dto.setLevel(pfRoleVo.getLevel());
+                if ("MCST".equals(pfRoleVo.getCode())) {
+                    dto.setStudent(true);
+                }
+            }
+            dto.setFgSuper(param.isSuper() ? YesOrNoNum.YES.getCode() : YesOrNoNum.NO.getCode());
+
             return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countWaitingRoom(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listWaitingRoom(dto), PfTestWaitingRoomResult.class));
         } catch (Exception e) {
@@ -79,6 +95,16 @@ public class PfTestWaitingRoomFacadeImpl implements PfTestWaitingRoomFacade {
         try {
             PfPageParam.initPageDto(param);
             PfTestWatingRoomDto dto = BeanUtil.convert(param, PfTestWatingRoomDto.class);
+            if (!param.isSuper()) {
+                // 获取角色level
+                PfRoleVo pfRoleVo = pfRoleService.selectRoleLevel(param.getUserId());
+                dto.setLevel(pfRoleVo.getLevel());
+                if ("MCST".equals(pfRoleVo.getCode())) {
+                    dto.setStudent(true);
+                }
+            }
+            dto.setFgSuper(param.isSuper() ? YesOrNoNum.YES.getCode() : YesOrNoNum.NO.getCode());
+
             return PfResultFactory.initPagePfResultWithSuccess(pfTestWaitingRoomService.countReceivePat(dto),
                     BeanUtil.convertList(pfTestWaitingRoomService.listReceivePat(dto), PfTestReceivePatResult.class));
         } catch (Exception e) {

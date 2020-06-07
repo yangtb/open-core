@@ -1055,9 +1055,30 @@
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
         LEFT JOIN faq_medicalrec k ON a.id_medicalrec = k.id_medicalrec
+        <if test='fgSuper == "0"'>
+            LEFT JOIN(
+            SELECT
+                ur.user_id ,
+                min(sr.level) as level
+            FROM
+                user_role ur
+            LEFT JOIN sys_role sr ON ur.role_id = sr.role_id
+            WHERE
+                ur.is_deleted = 'N'
+            group by ur.user_id
+            ORDER BY
+                sr.level DESC
+            ) temp ON e.user_id = temp.user_id
+        </if>
         WHERE
-            a.sd_testplan_detail IN('0' , '1')
-        AND f.id_org = #{idOrg}
+        a.sd_testplan_detail IN('0' , '1')
+        AND f.id_org = #{idOrg} and f.fg_active = '1' AND f.fg_valid = '0'
+        <if test='fgSuper == "0"'>
+            AND temp.level >= #{level}
+        </if>
+        <if test="student">
+            AND e.user_id = #{userId}
+        </if>
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1100,9 +1121,30 @@
         LEFT JOIN exm_testplan f ON a.id_testplan = f.id_testplan
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
         LEFT JOIN faq_medicalrec k ON a.id_medicalrec = k.id_medicalrec
+        <if test='fgSuper == "0"'>
+            LEFT JOIN(
+            SELECT
+                ur.user_id ,
+                min(sr.level) as level
+            FROM
+                user_role ur
+            LEFT JOIN sys_role sr ON ur.role_id = sr.role_id
+            WHERE
+                ur.is_deleted = 'N'
+            group by ur.user_id
+            ORDER BY
+            sr.level DESC
+            ) temp ON e.user_id = temp.user_id
+        </if>
         WHERE
             a.sd_testplan_detail IN('0' , '1')
         AND f.id_org = #{idOrg} and f.fg_active = '1' AND f.fg_valid = '0'
+        <if test='fgSuper == "0"'>
+            AND temp.level >= #{level}
+        </if>
+        <if test="student">
+            AND e.user_id = #{userId}
+        </if>
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1134,10 +1176,33 @@
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
         LEFT JOIN exm_med_result o ON o.id_testexec = m.id_testexec
         LEFT JOIN exm_eva_result p ON o.id_testexec_result = p.id_testexec_result
+        <if test='fgSuper == "0"'>
+            LEFT JOIN(
+            SELECT
+                ur.user_id ,
+                min(sr.level) as level
+            FROM
+                user_role ur
+            LEFT JOIN sys_role sr ON ur.role_id = sr.role_id
+            WHERE
+                ur.is_deleted = 'N'
+            group by ur.user_id
+            ORDER BY
+                sr.level DESC
+            ) temp ON e.user_id = temp.user_id
+        </if>
         WHERE
             a.sd_testplan_detail = '2'
         and m.sd_testexec = '2'
-        AND f.id_org = #{idOrg}
+        <if test="idOrg != null">
+            AND f.id_org = #{idOrg}
+        </if>
+        <if test='fgSuper == "0"'>
+            AND temp.level >= #{level}
+        </if>
+        <if test="student">
+            AND e.user_id = #{userId}
+        </if>
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1193,10 +1258,33 @@
         LEFT JOIN exm_testpaper g ON f.id_testpaper = g.id_testpaper
         LEFT JOIN exm_med_result o ON o.id_testexec = m.id_testexec
         LEFT JOIN exm_eva_result p ON o.id_testexec_result = p.id_testexec_result
+        <if test='fgSuper == "0"'>
+            LEFT JOIN(
+            SELECT
+                ur.user_id ,
+                min(sr.level) as level
+            FROM
+                user_role ur
+            LEFT JOIN sys_role sr ON ur.role_id = sr.role_id
+            WHERE
+                ur.is_deleted = 'N'
+            group by ur.user_id
+            ORDER BY
+                sr.level DESC
+            ) temp ON e.user_id = temp.user_id
+        </if>
         WHERE
             a.sd_testplan_detail = '2'
         and m.sd_testexec = '2'
-        AND f.id_org = #{idOrg}
+        <if test="idOrg != null">
+            AND f.id_org = #{idOrg}
+        </if>
+        <if test='fgSuper == "0"'>
+            AND temp.level >= #{level}
+        </if>
+        <if test="student">
+            AND e.user_id = #{userId}
+        </if>
         <if test="medicalrecName != null and medicalrecName != ''">
             and k.name like concat(#{medicalrecName},'%')
         </if>
@@ -1938,7 +2026,7 @@
            IF(b.NAME is null, 1, 0) as catalogue
         from exm_med_result_referral a
         left join bas_die b on a.id_die = b.id_die and a.fg_die_class = '2'
-        LEFT JOIN bas_die_class c on a.id_die = c.id_dieclass and a.fg_die_class = '1'
+        LEFT JOIN bas_die_class c on a.id_die = c.cd and a.fg_die_class = '1'
         WHERE
             a.id_testexec_result = #{idTestexecResult}
         AND a.fg_valid = '0'

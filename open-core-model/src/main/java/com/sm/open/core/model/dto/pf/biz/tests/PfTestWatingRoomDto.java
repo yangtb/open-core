@@ -53,4 +53,29 @@ public class PfTestWatingRoomDto extends PageParam implements Serializable {
      * 所属分类
      */
     private Long idMedicalrecCa;
+
+    /**
+     * 获取用户id
+     */
+    private Long userId;
+
+    /**
+     * 超级管理员
+     */
+    private boolean isSuper;
+
+    /**
+     * 用户角色级别
+     */
+    private int level;
+
+    /**
+     * 超级管理员 1 是 0否
+     */
+    private String fgSuper;
+
+    /**
+     * 学生用户
+     */
+    private boolean student;
 }
