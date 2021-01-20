@@ -89,7 +89,7 @@
         <jtidy.version>r938</jtidy.version>
 
         <codehaus.jackson.version>1.9.13</codehaus.jackson.version>
-        <fasterxml.jackson.version>2.9.7</fasterxml.jackson.version>
+        <fasterxml.jackson.version>2.12.1</fasterxml.jackson.version>
         <org.apache.geronimo.bundles.json.version>20090211_1</org.apache.geronimo.bundles.json.version>
         <json.version>20151123</json.version>
         <gson.version>2.2.4</gson.version>
