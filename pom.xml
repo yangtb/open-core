@@ -145,7 +145,7 @@
         <tomcat.dbcp.version>6.0.43</tomcat.dbcp.version>
         <commons.dbcp.version>1.4</commons.dbcp.version>
         <druid.version>1.1.6</druid.version>
-        <mybatis.version>3.2.7</mybatis.version>
+        <mybatis.version>3.5.6</mybatis.version>
         <mybatis.spring.version>1.2.2</mybatis.spring.version>
         <mybatis.oscache.version>1.0.0</mybatis.oscache.version>
         <mybatis.ehcache.version>1.0.0</mybatis.ehcache.version>
