@@ -83,7 +83,7 @@
 
         <xstream.version>1.4.7</xstream.version>
 
-        <org.jsoup.version>1.7.2</org.jsoup.version>
+        <org.jsoup.version>1.14.2</org.jsoup.version>
         <htmlcleaner.version>2.5</htmlcleaner.version>
         <htmlparser.version>2.1</htmlparser.version>
         <jtidy.version>r938</jtidy.version>
