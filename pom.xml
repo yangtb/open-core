@@ -69,7 +69,7 @@
         <slf4j.log4j12.version>1.7.25</slf4j.log4j12.version>
         <slf4j.version>1.7.25</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
-        <log4j2.version>2.10.0</log4j2.version>
+        <log4j2.version>2.16.0</log4j2.version>
         <logback.version>1.2.3</logback.version>
 
         <jaxp.ri.version>1.4</jaxp.ri.version>
