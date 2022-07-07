@@ -169,7 +169,7 @@
         <async.http.client.version>1.9.30</async.http.client.version>
 
         <axis2.version>1.6.2</axis2.version>
-        <cxf.ws.version>2.7.6</cxf.ws.version>
+        <cxf.ws.version>2.7.9</cxf.ws.version>
         <cxf.common.utilities.version>2.5.9</cxf.common.utilities.version>
         <jsr311.api.version>1.1.1</jsr311.api.version>
         <javax.ws.rs.api.version>2.0-m09</javax.ws.rs.api.version>
