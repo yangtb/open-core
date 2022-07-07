@@ -149,7 +149,7 @@
         <mybatis.spring.version>1.2.2</mybatis.spring.version>
         <mybatis.oscache.version>1.0.0</mybatis.oscache.version>
         <mybatis.ehcache.version>1.0.0</mybatis.ehcache.version>
-        <hibernate.version>4.2.0.Final</hibernate.version>
+        <hibernate.version>6.0.23.Final</hibernate.version>
         <hibernate.oscache.version>3.6.10.Final</hibernate.oscache.version>
         <hibernate.annotations.version>3.5.6-Final</hibernate.annotations.version>
 
